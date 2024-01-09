@@ -12,7 +12,10 @@ function getPrgByteAtAddress(
 ): number {
 	// Skip the header, then start counting at the startAddress.
 	const offset = 2 - startAddres + address;
-	return offset >= prg.byteLength ? 0 : prg.getUint8(offset);
+	if (offset >= prg.byteLength) {
+		throw new Error("File is too short.");
+	}
+	return prg.getUint8(offset);
 }
 
 function isBitSet(byte: number, bitIndex: number): boolean {
