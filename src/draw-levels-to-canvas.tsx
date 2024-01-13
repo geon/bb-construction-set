@@ -20,19 +20,35 @@ export function drawLevelsToCanvas(
 			if (!level) {
 				throw new Error("Missing level.");
 			}
+
+			// Fill with background color.
+			for (let tileY = 0; tileY < levelHeight; ++tileY) {
+				for (let tileX = 0; tileX < levelWidth; ++tileX) {
+					const tileIndex = tileY * levelWidth + tileX;
+					image.data[tileIndex * 4 + 0] = 0;
+					image.data[tileIndex * 4 + 1] = 0;
+					image.data[tileIndex * 4 + 2] = 0;
+					image.data[tileIndex * 4 + 3] = 255;
+				}
+			}
+
+			// Draw level.
 			const randomColor = [
 				Math.random() * 255,
 				Math.random() * 255,
 				Math.random() * 255,
+				255,
 			];
 			for (let tileY = 0; tileY < levelHeight; ++tileY) {
 				for (let tileX = 0; tileX < levelWidth; ++tileX) {
 					const tileIndex = tileY * levelWidth + tileX;
 					const tileIsSet = levels[levelIndex].tiles[tileIndex];
-					image.data[tileIndex * 4 + 0] = tileIsSet ? randomColor[0] : 0;
-					image.data[tileIndex * 4 + 1] = tileIsSet ? randomColor[1] : 0;
-					image.data[tileIndex * 4 + 2] = tileIsSet ? randomColor[2] : 0;
-					image.data[tileIndex * 4 + 3] = 255;
+					if (tileIsSet) {
+						image.data[tileIndex * 4 + 0] = randomColor[0];
+						image.data[tileIndex * 4 + 1] = randomColor[1];
+						image.data[tileIndex * 4 + 2] = randomColor[2];
+						image.data[tileIndex * 4 + 3] = randomColor[3];
+					}
 				}
 			}
 
