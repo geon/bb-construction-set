@@ -27,6 +27,7 @@ export function parsePrg(prg: DataView): Level[] {
 	const getByte = (address: number) =>
 		getPrgByteAtAddress(prg, startAddres, address);
 
+	const bgColorMetadataArrayAddress = 0xff30;
 	const holeMetadataArrayAddress = 0xc58e;
 	const symmetryMetadataArrayAddress = 0xff94;
 	const bitmapArrayAddress = 0xc5f2;
@@ -35,8 +36,13 @@ export function parsePrg(prg: DataView): Level[] {
 	const levels: Array<Level> = [];
 	let curentBitmapByteAddress = bitmapArrayAddress;
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
-		const holeMetadata = getByte(holeMetadataArrayAddress + levelIndex);
 		const level = createLevel();
+
+		const bgColorMetadata = getByte(bgColorMetadataArrayAddress + levelIndex);
+		level.bgColorLight = bgColorMetadata & 0b1111;
+		level.bgColorDark = (bgColorMetadata & 0b11110000) >> 4;
+
+		const holeMetadata = getByte(holeMetadataArrayAddress + levelIndex);
 
 		// Top and bottom rows.
 		for (let x = 0; x < levelWidth; ++x) {
