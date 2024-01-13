@@ -33,47 +33,43 @@ export function drawLevelsToCanvas(
 			}
 
 			// Draw shadows.
-			const randomColorShadow = [
-				Math.random() * 255,
-				Math.random() * 255,
-				Math.random() * 255,
-				255,
-			];
-			for (let tileY = 0; tileY < levelHeight; ++tileY) {
-				for (let tileX = 0; tileX < levelWidth; ++tileX) {
-					const tileIndex = tileY * levelWidth + tileX;
-					const tileIsSet = levels[levelIndex].tiles[tileIndex];
-					const pixelIndex = tileIndex + levelWidth + 1;
-					if (tileIsSet && pixelIndex < numTiles) {
-						image.data[pixelIndex * 4 + 0] = randomColorShadow[0];
-						image.data[pixelIndex * 4 + 1] = randomColorShadow[1];
-						image.data[pixelIndex * 4 + 2] = randomColorShadow[2];
-						image.data[pixelIndex * 4 + 3] = randomColorShadow[3];
-					}
-				}
-			}
+			drawTiles(
+				image,
+				level.tiles,
+				[Math.random() * 255, Math.random() * 255, Math.random() * 255, 255],
+				levelWidth + 1
+			);
 
 			// Draw level.
-			const randomColor = [
-				Math.random() * 255,
-				Math.random() * 255,
-				Math.random() * 255,
-				255,
-			];
-			for (let tileY = 0; tileY < levelHeight; ++tileY) {
-				for (let tileX = 0; tileX < levelWidth; ++tileX) {
-					const tileIndex = tileY * levelWidth + tileX;
-					const tileIsSet = levels[levelIndex].tiles[tileIndex];
-					if (tileIsSet) {
-						image.data[tileIndex * 4 + 0] = randomColor[0];
-						image.data[tileIndex * 4 + 1] = randomColor[1];
-						image.data[tileIndex * 4 + 2] = randomColor[2];
-						image.data[tileIndex * 4 + 3] = randomColor[3];
-					}
-				}
-			}
+			drawTiles(
+				image,
+				level.tiles,
+				[Math.random() * 255, Math.random() * 255, Math.random() * 255, 255],
+				0
+			);
 
 			ctx.putImageData(image, levelX * levelWidth, levelY * levelHeight);
+		}
+	}
+}
+
+function drawTiles(
+	image: ImageData,
+	tiles: boolean[],
+	color: number[],
+	offset: number
+) {
+	for (let tileY = 0; tileY < levelHeight; ++tileY) {
+		for (let tileX = 0; tileX < levelWidth; ++tileX) {
+			const tileIndex = tileY * levelWidth + tileX;
+			const tileIsSet = tiles[tileIndex];
+			const pixelIndex = tileIndex + offset;
+			if (tileIsSet && pixelIndex < numTiles) {
+				image.data[pixelIndex * 4 + 0] = color[0];
+				image.data[pixelIndex * 4 + 1] = color[1];
+				image.data[pixelIndex * 4 + 2] = color[2];
+				image.data[pixelIndex * 4 + 3] = color[3];
+			}
 		}
 	}
 }
