@@ -32,13 +32,16 @@ export function drawLevelsToCanvas(
 				}
 			}
 
+			const shadowColor = [
+				Math.random() * 255,
+				Math.random() * 255,
+				Math.random() * 255,
+				255,
+			];
 			// Draw shadows.
-			drawTiles(
-				image,
-				level.tiles,
-				[Math.random() * 255, Math.random() * 255, Math.random() * 255, 255],
-				levelWidth + 1
-			);
+			drawTiles(image, level.tiles, shadowColor, 1);
+			drawTiles(image, level.tiles, shadowColor, levelWidth);
+			drawTiles(image, level.tiles, shadowColor, levelWidth + 1);
 
 			// Draw level.
 			drawTiles(
