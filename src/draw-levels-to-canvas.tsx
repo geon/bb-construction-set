@@ -36,16 +36,51 @@ export function drawLevelsToCanvas(
 
 			// Draw shadows.
 			const shadowColor = palette[level.bgColorDark];
-			drawTiles(image, level.tiles, shadowColor, 1);
-			drawTiles(image, level.tiles, shadowColor, levelWidth);
-			drawTiles(image, level.tiles, shadowColor, levelWidth + 1);
+			// The platforms use only the dark background color, and black.
+			drawTiles(image, level.tiles, mixColors([shadowColor, black, black]), 1);
+			drawTiles(
+				image,
+				level.tiles,
+				mixColors([shadowColor, black, black]),
+				levelWidth
+			);
+			drawTiles(
+				image,
+				level.tiles,
+				mixColors([shadowColor, black]),
+				levelWidth + 1
+			);
 
 			// Draw level.
-			drawTiles(image, level.tiles, palette[Math.floor(Math.random() * 16)], 0);
+			drawTiles(
+				image,
+				level.tiles,
+				// The platforms use only the 3 background colors.
+				mixColors([palette[level.bgColorLight], palette[level.bgColorDark]]),
+				0
+			);
 
 			ctx.putImageData(image, levelX * levelWidth, levelY * levelHeight);
 		}
 	}
+}
+
+const black = { r: 0, g: 0, b: 0 };
+
+function mixColors(colors: readonly Color[]): Color {
+	const sum = colors.reduce(
+		(soFar, current) => ({
+			r: soFar.r + current.r,
+			g: soFar.g + current.g,
+			b: soFar.b + current.b,
+		}),
+		black
+	);
+	return {
+		r: sum.r / colors.length,
+		g: sum.g / colors.length,
+		b: sum.b / colors.length,
+	};
 }
 
 function drawTiles(
