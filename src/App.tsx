@@ -48,6 +48,20 @@ function App() {
 					: `${prg.name}, ${Math.round(prg.size / 1024)} kB`}
 			</p>
 			<canvas ref={canvasRef} />
+			<br />
+			<input
+				type="button"
+				onClick={() => {
+					if (!canvasRef.current) {
+						return;
+					}
+					var link = document.createElement("a");
+					link.download = "bubble bobble c64 - all levels.png";
+					link.href = canvasRef.current.toDataURL();
+					link.click();
+				}}
+				value="Download Image"
+			/>
 		</>
 	);
 }
