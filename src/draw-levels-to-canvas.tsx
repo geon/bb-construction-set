@@ -1,4 +1,4 @@
-import { Level, levelHeight, levelWidth } from "./level";
+import { Level, levelHeight, levelWidth, numTiles } from "./level";
 
 export function drawLevelsToCanvas(
 	levels: readonly Level[],
@@ -29,6 +29,27 @@ export function drawLevelsToCanvas(
 					image.data[tileIndex * 4 + 1] = 0;
 					image.data[tileIndex * 4 + 2] = 0;
 					image.data[tileIndex * 4 + 3] = 255;
+				}
+			}
+
+			// Draw shadows.
+			const randomColorShadow = [
+				Math.random() * 255,
+				Math.random() * 255,
+				Math.random() * 255,
+				255,
+			];
+			for (let tileY = 0; tileY < levelHeight; ++tileY) {
+				for (let tileX = 0; tileX < levelWidth; ++tileX) {
+					const tileIndex = tileY * levelWidth + tileX;
+					const tileIsSet = levels[levelIndex].tiles[tileIndex];
+					const pixelIndex = tileIndex + levelWidth + 1;
+					if (tileIsSet && pixelIndex < numTiles) {
+						image.data[pixelIndex * 4 + 0] = randomColorShadow[0];
+						image.data[pixelIndex * 4 + 1] = randomColorShadow[1];
+						image.data[pixelIndex * 4 + 2] = randomColorShadow[2];
+						image.data[pixelIndex * 4 + 3] = randomColorShadow[3];
+					}
 				}
 			}
 
