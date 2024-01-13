@@ -1,4 +1,5 @@
 import { Level, levelHeight, levelWidth, numTiles } from "./level";
+import { Color, palette } from "./palette";
 
 export function drawLevelsToCanvas(
 	levels: readonly Level[],
@@ -22,34 +23,25 @@ export function drawLevelsToCanvas(
 			}
 
 			// Fill with background color.
+			const bgColor = palette[0];
 			for (let tileY = 0; tileY < levelHeight; ++tileY) {
 				for (let tileX = 0; tileX < levelWidth; ++tileX) {
 					const tileIndex = tileY * levelWidth + tileX;
-					image.data[tileIndex * 4 + 0] = 0;
-					image.data[tileIndex * 4 + 1] = 0;
-					image.data[tileIndex * 4 + 2] = 0;
+					image.data[tileIndex * 4 + 0] = bgColor.r;
+					image.data[tileIndex * 4 + 1] = bgColor.g;
+					image.data[tileIndex * 4 + 2] = bgColor.b;
 					image.data[tileIndex * 4 + 3] = 255;
 				}
 			}
 
-			const shadowColor = [
-				Math.random() * 255,
-				Math.random() * 255,
-				Math.random() * 255,
-				255,
-			];
 			// Draw shadows.
+			const shadowColor = palette[Math.floor(Math.random() * 16)];
 			drawTiles(image, level.tiles, shadowColor, 1);
 			drawTiles(image, level.tiles, shadowColor, levelWidth);
 			drawTiles(image, level.tiles, shadowColor, levelWidth + 1);
 
 			// Draw level.
-			drawTiles(
-				image,
-				level.tiles,
-				[Math.random() * 255, Math.random() * 255, Math.random() * 255, 255],
-				0
-			);
+			drawTiles(image, level.tiles, palette[Math.floor(Math.random() * 16)], 0);
 
 			ctx.putImageData(image, levelX * levelWidth, levelY * levelHeight);
 		}
@@ -59,7 +51,7 @@ export function drawLevelsToCanvas(
 function drawTiles(
 	image: ImageData,
 	tiles: boolean[],
-	color: number[],
+	color: Color,
 	offset: number
 ) {
 	for (let tileY = 0; tileY < levelHeight; ++tileY) {
@@ -68,10 +60,10 @@ function drawTiles(
 			const tileIsSet = tiles[tileIndex];
 			const pixelIndex = tileIndex + offset;
 			if (tileIsSet && pixelIndex < numTiles) {
-				image.data[pixelIndex * 4 + 0] = color[0];
-				image.data[pixelIndex * 4 + 1] = color[1];
-				image.data[pixelIndex * 4 + 2] = color[2];
-				image.data[pixelIndex * 4 + 3] = color[3];
+				image.data[pixelIndex * 4 + 0] = color.r;
+				image.data[pixelIndex * 4 + 1] = color.g;
+				image.data[pixelIndex * 4 + 2] = color.b;
+				image.data[pixelIndex * 4 + 3] = 255;
 			}
 		}
 	}

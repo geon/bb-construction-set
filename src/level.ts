@@ -5,8 +5,16 @@ export const numTiles = levelWidth * levelHeight;
 export interface Level {
 	// Should be exactly `numTiles` entries.
 	tiles: Array<boolean>;
+	fgColor: number;
+	bgColorLight: number;
+	bgColorDark: number;
 }
 
 export function createLevel(): Level {
-	return { tiles: Array(numTiles).fill(false) };
+	return {
+		tiles: Array(numTiles).fill(false),
+		fgColor: 0,
+		bgColorLight: 0,
+		bgColorDark: 0,
+	};
 }
