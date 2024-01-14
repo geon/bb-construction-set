@@ -104,8 +104,8 @@ export function drawPlatformCharsToCanvas(
 		return;
 	}
 
-	canvas.width = 8 * 10;
-	canvas.height = 8 * 10;
+	canvas.width = 4 * 8 * 10;
+	canvas.height = 4 * 8 * 10;
 
 	const image = new ImageData(8, 8);
 	for (let levelY = 0; levelY < 10; ++levelY) {
@@ -122,17 +122,24 @@ export function drawPlatformCharsToCanvas(
 				palette[level.bgColorDark],
 				{ r: 255, g: 0, b: 255 }, // Invalid color for platforms. They only use the 3 background colors.
 			];
-			for (let charY = 0; charY < 8; ++charY) {
-				for (let charX = 0; charX < 4; ++charX) {
-					const color = charPalette[level.platformChar.lines[charY][charX]];
-					// Double width pixels.
-					const pixelIndex = charY * 8 + charX * 2;
-					plotPixel(image, pixelIndex, color);
-					plotPixel(image, pixelIndex + 1, color);
+			for (let sidebarY = 0; sidebarY < 4; ++sidebarY) {
+				for (let sidebarX = 0; sidebarX < 4; ++sidebarX) {
+					for (let charY = 0; charY < 8; ++charY) {
+						for (let charX = 0; charX < 4; ++charX) {
+							const color = charPalette[level.platformChar.lines[charY][charX]];
+							// Double width pixels.
+							const pixelIndex = charY * 8 + charX * 2;
+							plotPixel(image, pixelIndex, color);
+							plotPixel(image, pixelIndex + 1, color);
+						}
+					}
+					ctx.putImageData(
+						image,
+						levelX * 32 + sidebarX * 8,
+						levelY * 32 + sidebarY * 8
+					);
 				}
 			}
-
-			ctx.putImageData(image, levelX * 8, levelY * 8);
 		}
 	}
 }
