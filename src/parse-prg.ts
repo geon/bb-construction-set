@@ -53,30 +53,13 @@ export function parsePrg(prg: DataView): Level[] {
 
 		const holeMetadata = getByte(holeMetadataArrayAddress + levelIndex);
 
-		// Top and bottom rows.
-		const topLeft = isBitSet(holeMetadata, 7);
-		const topRight = isBitSet(holeMetadata, 6);
-		const bottomLeft = isBitSet(holeMetadata, 5);
-		const bottomRight = isBitSet(holeMetadata, 4);
-		for (let x = 0; x < levelWidth; ++x) {
-			level.tiles[x] = true;
-			level.tiles[(levelHeight - 1) * levelWidth + x] = true;
-		}
-		// Cut out the holes.
-		for (let x = 0; x < 4; ++x) {
-			if (topLeft) {
-				level.tiles[9 + x] = false;
-			}
-			if (topRight) {
-				level.tiles[19 + x] = false;
-			}
-			if (bottomLeft) {
-				level.tiles[768 + 9 + x] = false;
-			}
-			if (bottomRight) {
-				level.tiles[768 + 19 + x] = false;
-			}
-		}
+		// Top and bottom rows with holes.
+		setTileBitmapTopAndBottom(level, {
+			topLeft: isBitSet(holeMetadata, 7),
+			topRight: isBitSet(holeMetadata, 6),
+			bottomLeft: isBitSet(holeMetadata, 5),
+			bottomRight: isBitSet(holeMetadata, 4),
+		});
 
 		const symmetryMetadata = getByte(symmetryMetadataArrayAddress + levelIndex);
 
@@ -102,6 +85,36 @@ export function parsePrg(prg: DataView): Level[] {
 	}
 
 	return levels;
+}
+
+function setTileBitmapTopAndBottom(
+	level: Level,
+	{
+		topLeft,
+		topRight,
+		bottomLeft,
+		bottomRight,
+	}: Record<"topLeft" | "topRight" | "bottomLeft" | "bottomRight", boolean>
+) {
+	for (let x = 0; x < levelWidth; ++x) {
+		level.tiles[x] = true;
+		level.tiles[(levelHeight - 1) * levelWidth + x] = true;
+	}
+	// Cut out the holes.
+	for (let x = 0; x < 4; ++x) {
+		if (topLeft) {
+			level.tiles[9 + x] = false;
+		}
+		if (topRight) {
+			level.tiles[19 + x] = false;
+		}
+		if (bottomLeft) {
+			level.tiles[768 + 9 + x] = false;
+		}
+		if (bottomRight) {
+			level.tiles[768 + 19 + x] = false;
+		}
+	}
 }
 
 function fillInTileBitmapSides(level: Level) {
