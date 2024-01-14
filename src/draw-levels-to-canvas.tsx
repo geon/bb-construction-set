@@ -38,7 +38,7 @@ export function drawLevelsToCanvas(
 
 			// Draw shadows.
 			const shadowColor = palette[level.bgColorDark];
-			// The platforms use only the dark background color, and black.
+			// The shadows use only the dark background color, and black.
 			drawTiles(image, level.tiles, mixColors([shadowColor, black, black]), 1);
 			drawTiles(
 				image,
