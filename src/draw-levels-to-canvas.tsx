@@ -124,9 +124,10 @@ export function drawPlatformCharsToCanvas(
 			];
 			for (let sidebarY = 0; sidebarY < 4; ++sidebarY) {
 				for (let sidebarX = 0; sidebarX < 4; ++sidebarX) {
+					const char = level.platformChar;
 					for (let charY = 0; charY < 8; ++charY) {
 						for (let charX = 0; charX < 4; ++charX) {
-							const color = charPalette[level.platformChar.lines[charY][charX]];
+							const color = charPalette[char.lines[charY][charX]];
 							// Double width pixels.
 							const pixelIndex = charY * 8 + charX * 2;
 							plotPixel(image, pixelIndex, color);
