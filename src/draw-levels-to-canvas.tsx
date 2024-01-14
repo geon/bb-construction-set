@@ -1,6 +1,7 @@
 import { Level, levelHeight, levelWidth, numTiles } from "./level";
 import { palette } from "./palette";
 import { Color, mixColors, black } from "./color";
+import { CharsetChar } from "./charset-char";
 
 export function drawLevelsToCanvas(
 	levels: readonly Level[],
@@ -116,7 +117,7 @@ export function drawPlatformCharsToCanvas(
 				throw new Error("Missing level.");
 			}
 
-			const charPalette = [
+			const charPalette: [Color, Color, Color, Color] = [
 				palette[0],
 				palette[level.bgColorDark],
 				palette[level.bgColorLight],
@@ -125,15 +126,8 @@ export function drawPlatformCharsToCanvas(
 			for (let sidebarY = 0; sidebarY < 4; ++sidebarY) {
 				for (let sidebarX = 0; sidebarX < 4; ++sidebarX) {
 					const char = level.platformChar;
-					for (let charY = 0; charY < 8; ++charY) {
-						for (let charX = 0; charX < 4; ++charX) {
-							const color = charPalette[char.lines[charY][charX]];
-							// Double width pixels.
-							const pixelIndex = charY * 8 + charX * 2;
-							plotPixel(image, pixelIndex, color);
-							plotPixel(image, pixelIndex + 1, color);
-						}
-					}
+					drawChar(image, char, charPalette);
+
 					ctx.putImageData(
 						image,
 						levelX * 32 + sidebarX * 8,
@@ -141,6 +135,22 @@ export function drawPlatformCharsToCanvas(
 					);
 				}
 			}
+		}
+	}
+}
+
+function drawChar(
+	image: ImageData,
+	char: CharsetChar,
+	charPalette: [Color, Color, Color, Color]
+) {
+	for (let charY = 0; charY < 8; ++charY) {
+		for (let charX = 0; charX < 4; ++charX) {
+			const color = charPalette[char.lines[charY][charX]];
+			// Double width pixels.
+			const pixelIndex = charY * 8 + charX * 2;
+			plotPixel(image, pixelIndex, color);
+			plotPixel(image, pixelIndex + 1, color);
 		}
 	}
 }
