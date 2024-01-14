@@ -118,8 +118,8 @@ export function drawPlatformCharsToCanvas(
 
 			const charPalette = [
 				palette[0],
-				palette[level.bgColorLight],
 				palette[level.bgColorDark],
+				palette[level.bgColorLight],
 				{ r: 255, g: 0, b: 255 }, // Invalid color for platforms. They only use the 3 background colors.
 			];
 			for (let sidebarY = 0; sidebarY < 4; ++sidebarY) {
