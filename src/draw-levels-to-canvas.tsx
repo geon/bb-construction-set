@@ -117,12 +117,7 @@ export function drawPlatformCharsToCanvas(
 				throw new Error("Missing level.");
 			}
 
-			const charPalette: [Color, Color, Color, Color] = [
-				palette[0],
-				palette[level.bgColorDark],
-				palette[level.bgColorLight],
-				{ r: 255, g: 0, b: 255 }, // Invalid color for platforms. They only use the 3 background colors.
-			];
+			const charPalette = getCharPalette(level);
 			for (let sidebarY = 0; sidebarY < 4; ++sidebarY) {
 				for (let sidebarX = 0; sidebarX < 4; ++sidebarX) {
 					const char =
@@ -141,6 +136,15 @@ export function drawPlatformCharsToCanvas(
 			}
 		}
 	}
+}
+
+function getCharPalette(level: Level): [Color, Color, Color, Color] {
+	return [
+		palette[0],
+		palette[level.bgColorDark],
+		palette[level.bgColorLight],
+		{ r: 255, g: 0, b: 255 },
+	];
 }
 
 function drawChar(
