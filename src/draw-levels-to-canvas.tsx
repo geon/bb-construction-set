@@ -78,13 +78,17 @@ function drawTiles(
 			const tileIsSet = tiles[tileIndex];
 			const pixelIndex = tileIndex + offset;
 			if (tileIsSet && pixelIndex < numTiles) {
-				image.data[pixelIndex * 4 + 0] = color.r;
-				image.data[pixelIndex * 4 + 1] = color.g;
-				image.data[pixelIndex * 4 + 2] = color.b;
-				image.data[pixelIndex * 4 + 3] = 255;
+				plotPixel(image, pixelIndex, color);
 			}
 		}
 	}
+}
+
+function plotPixel(image: ImageData, pixelIndex: number, color: Color) {
+	image.data[pixelIndex * 4 + 0] = color.r;
+	image.data[pixelIndex * 4 + 1] = color.g;
+	image.data[pixelIndex * 4 + 2] = color.b;
+	image.data[pixelIndex * 4 + 3] = 255;
 }
 
 export function clearCanvas(canvas: HTMLCanvasElement) {
@@ -121,16 +125,10 @@ export function drawPlatformCharsToCanvas(
 			for (let charY = 0; charY < 8; ++charY) {
 				for (let charX = 0; charX < 4; ++charX) {
 					const color = charPalette[level.platformChar.lines[charY][charX]];
+					// Double width pixels.
 					const pixelIndex = charY * 8 + charX * 2;
-					image.data[pixelIndex * 4 + 0] = color.r;
-					image.data[pixelIndex * 4 + 1] = color.g;
-					image.data[pixelIndex * 4 + 2] = color.b;
-					image.data[pixelIndex * 4 + 3] = 255;
-
-					image.data[(pixelIndex + 1) * 4 + 0] = color.r;
-					image.data[(pixelIndex + 1) * 4 + 1] = color.g;
-					image.data[(pixelIndex + 1) * 4 + 2] = color.b;
-					image.data[(pixelIndex + 1) * 4 + 3] = 255;
+					plotPixel(image, pixelIndex, color);
+					plotPixel(image, pixelIndex + 1, color);
 				}
 			}
 
