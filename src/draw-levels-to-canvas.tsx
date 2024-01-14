@@ -54,11 +54,16 @@ export function drawLevelsToCanvas(
 			);
 
 			// Draw level.
+			const charPalette = getCharPalette(level);
 			drawTiles(
 				image,
 				level.tiles,
 				// The platforms use only the 3 background colors.
-				mixColors([palette[level.bgColorLight], palette[level.bgColorDark]]),
+				mixColors(
+					level.platformChar.lines
+						.flatMap((pixels) => pixels)
+						.map((pixel) => charPalette[pixel])
+				),
 				0
 			);
 
