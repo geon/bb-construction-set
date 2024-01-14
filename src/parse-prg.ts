@@ -87,6 +87,7 @@ export function parsePrg(prg: DataView): Level[] {
 		}
 
 		const isSymmetric = isBitSet(symmetryMetadata, 0);
+
 		const bytesPerRow = 4;
 		for (let rowIndex = 0; rowIndex < 23; ++rowIndex) {
 			// Read half or full lines from the level data.
@@ -122,8 +123,10 @@ export function parsePrg(prg: DataView): Level[] {
 						level.tiles[tileRowStartIndex + tilesPerHalfRow - halfRowIndex - 1];
 				}
 			}
+		}
 
-			// Fill in the sides.
+		// Fill in the sides.
+		for (let rowIndex = 0; rowIndex < 23; ++rowIndex) {
 			// Offset by 32 for the top line.
 			level.tiles[32 + rowIndex * levelWidth] = true;
 			level.tiles[32 + rowIndex * levelWidth + 1] = true;
