@@ -48,20 +48,34 @@ function App() {
 			</p>
 			<canvas ref={levelsCanvasRef} />
 			<br />
-			<input
-				type="button"
-				onClick={() => {
-					if (!levelsCanvasRef.current) {
-						return;
-					}
-					var link = document.createElement("a");
-					link.download = "bubble bobble c64 - all levels.png";
-					link.href = levelsCanvasRef.current.toDataURL();
-					link.click();
-				}}
-				value="Download Image"
+			<CanvasDownloadButton
+				canvasRef={levelsCanvasRef}
+				label="Download Image"
+				fileName="bubble bobble c64 - all levels.png"
 			/>
 		</>
+	);
+}
+
+function CanvasDownloadButton(props: {
+	canvasRef: React.RefObject<HTMLCanvasElement>;
+	label: string;
+	fileName: string;
+}) {
+	return (
+		<input
+			type="button"
+			onClick={() => {
+				if (!props.canvasRef.current) {
+					return;
+				}
+				var link = document.createElement("a");
+				link.download = props.fileName;
+				link.href = props.canvasRef.current.toDataURL();
+				link.click();
+			}}
+			value={props.label}
+		/>
 	);
 }
 
