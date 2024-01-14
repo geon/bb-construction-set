@@ -1,8 +1,4 @@
-export interface Color {
-	readonly r: number;
-	readonly g: number;
-	readonly b: number;
-}
+import { Color, hexToRgb } from "./color";
 
 // https://lospec.com/palette-list/commodore64
 // https://www.c64-wiki.com/wiki/Color
@@ -11,11 +7,3 @@ export const palette: ReadonlyArray<Color> = [
 	0xc9d487, 0xa1683c, 0x6d5412, 0xcb7e75, 0x626262, 0x898989, 0x9ae29b,
 	0x887ecb, 0xadadad,
 ].map(hexToRgb);
-
-function hexToRgb(value: number): Color {
-	return {
-		r: (value & 0xff0000) >> 16,
-		g: (value & 0xff00) >> 8,
-		b: value & 0xff,
-	};
-}

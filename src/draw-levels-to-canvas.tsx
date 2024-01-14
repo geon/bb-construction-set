@@ -1,5 +1,6 @@
 import { Level, levelHeight, levelWidth, numTiles } from "./level";
-import { Color, palette } from "./palette";
+import { palette } from "./palette";
+import { Color, mixColors, black } from "./color";
 
 export function drawLevelsToCanvas(
 	levels: readonly Level[],
@@ -63,24 +64,6 @@ export function drawLevelsToCanvas(
 			ctx.putImageData(image, levelX * levelWidth, levelY * levelHeight);
 		}
 	}
-}
-
-const black = { r: 0, g: 0, b: 0 };
-
-function mixColors(colors: readonly Color[]): Color {
-	const sum = colors.reduce(
-		(soFar, current) => ({
-			r: soFar.r + current.r,
-			g: soFar.g + current.g,
-			b: soFar.b + current.b,
-		}),
-		black
-	);
-	return {
-		r: sum.r / colors.length,
-		g: sum.g / colors.length,
-		b: sum.b / colors.length,
-	};
 }
 
 function drawTiles(
