@@ -23,17 +23,17 @@ function isBitSet(byte: number, bitIndex: number): boolean {
 	return !!(byte & (0b10000000 >> bitIndex));
 }
 
+const platformCharArrayAddress = 0xc26e;
+const sidebarCharArrayAddress = 0xbb0e;
+const bgColorMetadataArrayAddress = 0xff30;
+const holeMetadataArrayAddress = 0xc58e;
+const symmetryMetadataArrayAddress = 0xff94;
+const bitmapArrayAddress = 0xc5f2;
+
 export function parsePrg(prg: DataView): Level[] {
 	const startAddres = getPrgStartAddress(prg);
 	const getByte = (address: number) =>
 		getPrgByteAtAddress(prg, startAddres, address);
-
-	const platformCharArrayAddress = 0xc26e;
-	const sidebarCharArrayAddress = 0xbb0e;
-	const bgColorMetadataArrayAddress = 0xff30;
-	const holeMetadataArrayAddress = 0xc58e;
-	const symmetryMetadataArrayAddress = 0xff94;
-	const bitmapArrayAddress = 0xc5f2;
 
 	// TODO: Check the original data size, and verify.
 	const levels: Array<Level> = [];
