@@ -20,10 +20,9 @@ function App() {
 				return;
 			}
 
-			drawLevelsToCanvas(
-				parsePrg(new DataView(await prg.arrayBuffer())),
-				levelsCanvasRef.current
-			);
+			const levels = parsePrg(new DataView(await prg.arrayBuffer()));
+
+			drawLevelsToCanvas(levels, levelsCanvasRef.current);
 		})();
 	}, [prg, levelsCanvasRef.current]);
 
