@@ -88,42 +88,8 @@ export function parsePrg(prg: DataView): Level[] {
 
 		const isSymmetric = isBitSet(symmetryMetadata, 0);
 
-		const bytesPerRow = 4;
-		for (let rowIndex = 0; rowIndex < 23; ++rowIndex) {
-			// Read half or full lines from the level data.
-			const bytesToRead = isSymmetric ? bytesPerRow / 2 : bytesPerRow;
-			for (
-				let bitmapByteOfRowIndex = 0;
-				bitmapByteOfRowIndex < bytesToRead;
-				++bitmapByteOfRowIndex
-			) {
-				const bitmapByteIndex = rowIndex * bytesPerRow + bitmapByteOfRowIndex;
-				const bitmapByte = getByte(curentBitmapByteAddress);
-				curentBitmapByteAddress += 1;
-				// Convert the bitmap to an array of bools.
-				for (let bitIndex = 0; bitIndex < 8; ++bitIndex) {
-					// Offset by 32 for the top line.
-					level.tiles[32 + bitmapByteIndex * 8 + bitIndex] = isBitSet(
-						bitmapByte,
-						bitIndex
-					);
-				}
-			}
-			if (isSymmetric) {
-				// Mirror the left half to the right half.
-				// Offset by 32 for the top line.
-				const tileRowStartIndex = 32 + rowIndex * bytesPerRow * 8;
-				const tilesPerHalfRow = (bytesPerRow / 2) * 8;
-				for (
-					let halfRowIndex = 0;
-					halfRowIndex < tilesPerHalfRow;
-					++halfRowIndex
-				) {
-					level.tiles[tileRowStartIndex + tilesPerHalfRow + halfRowIndex] =
-						level.tiles[tileRowStartIndex + tilesPerHalfRow - halfRowIndex - 1];
-				}
-			}
-		}
+		readTileBitmap(curentBitmapByteAddress, getByte, level, isSymmetric);
+		curentBitmapByteAddress += (isSymmetric ? 2 : 4) * 23; // 23 lines of 2 or 4 bytes.
 
 		// Fill in the sides.
 		for (let rowIndex = 0; rowIndex < 23; ++rowIndex) {
@@ -138,4 +104,48 @@ export function parsePrg(prg: DataView): Level[] {
 	}
 
 	return levels;
+}
+
+function readTileBitmap(
+	curentBitmapByteAddress: number,
+	getByte: (address: number) => number,
+	level: Level,
+	isSymmetric: boolean
+) {
+	const bytesPerRow = 4;
+	for (let rowIndex = 0; rowIndex < 23; ++rowIndex) {
+		// Read half or full lines from the level data.
+		const bytesToRead = isSymmetric ? bytesPerRow / 2 : bytesPerRow;
+		for (
+			let bitmapByteOfRowIndex = 0;
+			bitmapByteOfRowIndex < bytesToRead;
+			++bitmapByteOfRowIndex
+		) {
+			const bitmapByteIndex = rowIndex * bytesPerRow + bitmapByteOfRowIndex;
+			const bitmapByte = getByte(curentBitmapByteAddress);
+			curentBitmapByteAddress += 1;
+			// Convert the bitmap to an array of bools.
+			for (let bitIndex = 0; bitIndex < 8; ++bitIndex) {
+				// Offset by 32 for the top line.
+				level.tiles[32 + bitmapByteIndex * 8 + bitIndex] = isBitSet(
+					bitmapByte,
+					bitIndex
+				);
+			}
+		}
+		if (isSymmetric) {
+			// Mirror the left half to the right half.
+			// Offset by 32 for the top line.
+			const tileRowStartIndex = 32 + rowIndex * bytesPerRow * 8;
+			const tilesPerHalfRow = (bytesPerRow / 2) * 8;
+			for (
+				let halfRowIndex = 0;
+				halfRowIndex < tilesPerHalfRow;
+				++halfRowIndex
+			) {
+				level.tiles[tileRowStartIndex + tilesPerHalfRow + halfRowIndex] =
+					level.tiles[tileRowStartIndex + tilesPerHalfRow - halfRowIndex - 1];
+			}
+		}
+	}
 }
