@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import { parsePrg } from "./parse-prg";
 import { drawLevelsToCanvas } from "./draw-levels-to-canvas";
+import { clearCanvas } from "./draw-levels-to-canvas";
 
 function App() {
 	const [prg, setPrg] = useState<File | undefined>(undefined);
@@ -15,14 +16,7 @@ function App() {
 			}
 
 			if (!prg) {
-				levelsCanvasRef.current
-					.getContext("2d")
-					?.clearRect(
-						0,
-						0,
-						levelsCanvasRef.current.width,
-						levelsCanvasRef.current.height
-					);
+				clearCanvas(levelsCanvasRef.current);
 				return;
 			}
 
