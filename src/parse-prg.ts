@@ -29,6 +29,7 @@ export function parsePrg(prg: DataView): Level[] {
 		getPrgByteAtAddress(prg, startAddres, address);
 
 	const platformCharArrayAddress = 0xc26e;
+	const sidebarCharArrayAddress = 0xbb0e;
 	const bgColorMetadataArrayAddress = 0xff30;
 	const holeMetadataArrayAddress = 0xc58e;
 	const symmetryMetadataArrayAddress = 0xff94;
@@ -37,6 +38,7 @@ export function parsePrg(prg: DataView): Level[] {
 	// TODO: Check the original data size, and verify.
 	const levels: Array<Level> = [];
 	let curentBitmapByteAddress = bitmapArrayAddress;
+	let currentSidebarAddress = sidebarCharArrayAddress;
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
 		const level = createLevel();
 
@@ -73,6 +75,17 @@ export function parsePrg(prg: DataView): Level[] {
 		}
 
 		const symmetryMetadata = getByte(symmetryMetadataArrayAddress + levelIndex);
+
+		if (!isBitSet(symmetryMetadata, 1)) {
+			level.sidebarChars = [
+				readCharsetChar(getByte, currentSidebarAddress + 0 * 8),
+				readCharsetChar(getByte, currentSidebarAddress + 1 * 8),
+				readCharsetChar(getByte, currentSidebarAddress + 2 * 8),
+				readCharsetChar(getByte, currentSidebarAddress + 3 * 8),
+			];
+			currentSidebarAddress += 4 * 8; // 4 chars of 8 bytes each.
+		}
+
 		const isSymmetric = isBitSet(symmetryMetadata, 0);
 		const bytesPerRow = 4;
 		for (let rowIndex = 0; rowIndex < 23; ++rowIndex) {

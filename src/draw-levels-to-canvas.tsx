@@ -125,7 +125,11 @@ export function drawPlatformCharsToCanvas(
 			];
 			for (let sidebarY = 0; sidebarY < 4; ++sidebarY) {
 				for (let sidebarX = 0; sidebarX < 4; ++sidebarX) {
-					const char = level.platformChar;
+					const char =
+						level.sidebarChars && sidebarX < 2
+							? level.sidebarChars[(sidebarY % 2) * 2 + sidebarX]
+							: level.platformChar;
+
 					drawChar(image, char, charPalette);
 
 					ctx.putImageData(

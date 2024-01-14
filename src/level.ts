@@ -11,6 +11,7 @@ export interface Level {
 	bgColorLight: number;
 	bgColorDark: number;
 	platformChar: CharsetChar;
+	sidebarChars?: [CharsetChar, CharsetChar, CharsetChar, CharsetChar];
 }
 
 export function createLevel(): Level {
