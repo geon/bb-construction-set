@@ -92,18 +92,22 @@ export function parsePrg(prg: DataView): Level[] {
 		curentBitmapByteAddress += (isSymmetric ? 2 : 4) * 23; // 23 lines of 2 or 4 bytes.
 
 		// Fill in the sides.
-		for (let rowIndex = 0; rowIndex < 23; ++rowIndex) {
-			// Offset by 32 for the top line.
-			level.tiles[32 + rowIndex * levelWidth] = true;
-			level.tiles[32 + rowIndex * levelWidth + 1] = true;
-			level.tiles[32 + (rowIndex + 1) * levelWidth - 2] = true;
-			level.tiles[32 + (rowIndex + 1) * levelWidth - 1] = true;
-		}
+		fillInTileBitmapSides(level);
 
 		levels.push(level);
 	}
 
 	return levels;
+}
+
+function fillInTileBitmapSides(level: Level) {
+	for (let rowIndex = 0; rowIndex < 23; ++rowIndex) {
+		// Offset by 32 for the top line.
+		level.tiles[32 + rowIndex * levelWidth] = true;
+		level.tiles[32 + rowIndex * levelWidth + 1] = true;
+		level.tiles[32 + (rowIndex + 1) * levelWidth - 2] = true;
+		level.tiles[32 + (rowIndex + 1) * levelWidth - 1] = true;
+	}
 }
 
 function readTileBitmap(
