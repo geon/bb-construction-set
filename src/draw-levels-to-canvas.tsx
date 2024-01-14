@@ -90,3 +90,51 @@ function drawTiles(
 export function clearCanvas(canvas: HTMLCanvasElement) {
 	canvas.getContext("2d")?.clearRect(0, 0, canvas.width, canvas.height);
 }
+
+export function drawPlatformCharsToCanvas(
+	levels: readonly Level[],
+	canvas: HTMLCanvasElement
+) {
+	const ctx = canvas.getContext("2d");
+	if (!ctx) {
+		return;
+	}
+
+	canvas.width = 8 * 10;
+	canvas.height = 8 * 10;
+
+	const image = new ImageData(8, 8);
+	for (let levelY = 0; levelY < 10; ++levelY) {
+		for (let levelX = 0; levelX < 10; ++levelX) {
+			const levelIndex = levelY * 10 + levelX;
+			const level = levels[levelIndex];
+			if (!level) {
+				throw new Error("Missing level.");
+			}
+
+			const charPalette = [
+				palette[0],
+				palette[level.bgColorLight],
+				palette[level.bgColorDark],
+				{ r: 255, g: 0, b: 255 }, // Invalid color for platforms. They only use the 3 background colors.
+			];
+			for (let charY = 0; charY < 8; ++charY) {
+				for (let charX = 0; charX < 4; ++charX) {
+					const color = charPalette[level.platformChar.lines[charY][charX]];
+					const pixelIndex = charY * 8 + charX * 2;
+					image.data[pixelIndex * 4 + 0] = color.r;
+					image.data[pixelIndex * 4 + 1] = color.g;
+					image.data[pixelIndex * 4 + 2] = color.b;
+					image.data[pixelIndex * 4 + 3] = 255;
+
+					image.data[(pixelIndex + 1) * 4 + 0] = color.r;
+					image.data[(pixelIndex + 1) * 4 + 1] = color.g;
+					image.data[(pixelIndex + 1) * 4 + 2] = color.b;
+					image.data[(pixelIndex + 1) * 4 + 3] = 255;
+				}
+			}
+
+			ctx.putImageData(image, levelX * 8, levelY * 8);
+		}
+	}
+}

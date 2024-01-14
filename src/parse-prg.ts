@@ -1,3 +1,4 @@
+import { readCharsetChar } from "./charset-char";
 import { Level, createLevel, levelHeight, levelWidth } from "./level";
 
 function getPrgStartAddress(prg: DataView): number {
@@ -27,6 +28,7 @@ export function parsePrg(prg: DataView): Level[] {
 	const getByte = (address: number) =>
 		getPrgByteAtAddress(prg, startAddres, address);
 
+	const platformCharArrayAddress = 0xc26e;
 	const bgColorMetadataArrayAddress = 0xff30;
 	const holeMetadataArrayAddress = 0xc58e;
 	const symmetryMetadataArrayAddress = 0xff94;
@@ -37,6 +39,11 @@ export function parsePrg(prg: DataView): Level[] {
 	let curentBitmapByteAddress = bitmapArrayAddress;
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
 		const level = createLevel();
+
+		level.platformChar = readCharsetChar(
+			getByte,
+			platformCharArrayAddress + levelIndex * 8
+		);
 
 		const bgColorMetadata = getByte(bgColorMetadataArrayAddress + levelIndex);
 		level.bgColorLight = bgColorMetadata & 0b1111;

@@ -1,28 +1,34 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import { parsePrg } from "./parse-prg";
-import { drawLevelsToCanvas } from "./draw-levels-to-canvas";
+import {
+	drawLevelsToCanvas,
+	drawPlatformCharsToCanvas,
+} from "./draw-levels-to-canvas";
 import { clearCanvas } from "./draw-levels-to-canvas";
 
 function App() {
 	const [prg, setPrg] = useState<File | undefined>(undefined);
 
 	const levelsCanvasRef = useRef<HTMLCanvasElement>(null);
+	const platformCharsCanvasRef = useRef<HTMLCanvasElement>(null);
 
 	useEffect(() => {
 		(async () => {
-			if (!levelsCanvasRef.current) {
+			if (!(levelsCanvasRef.current && platformCharsCanvasRef.current)) {
 				return;
 			}
 
 			if (!prg) {
 				clearCanvas(levelsCanvasRef.current);
+				clearCanvas(platformCharsCanvasRef.current);
 				return;
 			}
 
 			const levels = parsePrg(new DataView(await prg.arrayBuffer()));
 
 			drawLevelsToCanvas(levels, levelsCanvasRef.current);
+			drawPlatformCharsToCanvas(levels, platformCharsCanvasRef.current);
 		})();
 	}, [prg, levelsCanvasRef.current]);
 
@@ -51,6 +57,15 @@ function App() {
 				canvasRef={levelsCanvasRef}
 				label="Download Image"
 				fileName="bubble bobble c64 - all levels.png"
+			/>
+			<br />
+			<br />
+			<canvas ref={platformCharsCanvasRef} />
+			<br />
+			<CanvasDownloadButton
+				canvasRef={platformCharsCanvasRef}
+				label="Download Image"
+				fileName="bubble bobble c64 - all platform chars.png"
 			/>
 		</>
 	);
