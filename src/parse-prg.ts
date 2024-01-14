@@ -40,51 +40,67 @@ export function parsePrg(prg: DataView): Level[] {
 	let curentBitmapByteAddress = bitmapArrayAddress;
 	let currentSidebarAddress = sidebarCharArrayAddress;
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
-		const level = createLevel();
-
-		level.platformChar = readCharsetChar(
+		let level;
+		({ level, currentSidebarAddress, curentBitmapByteAddress } = readLevel(
 			getByte,
-			platformCharArrayAddress + levelIndex * 8
-		);
-
-		const bgColorMetadata = getByte(bgColorMetadataArrayAddress + levelIndex);
-		level.bgColorLight = bgColorMetadata & 0b1111;
-		level.bgColorDark = (bgColorMetadata & 0b11110000) >> 4;
-
-		const holeMetadata = getByte(holeMetadataArrayAddress + levelIndex);
-
-		// Top and bottom rows with holes.
-		setTileBitmapTopAndBottom(level, {
-			topLeft: isBitSet(holeMetadata, 7),
-			topRight: isBitSet(holeMetadata, 6),
-			bottomLeft: isBitSet(holeMetadata, 5),
-			bottomRight: isBitSet(holeMetadata, 4),
-		});
-
-		const symmetryMetadata = getByte(symmetryMetadataArrayAddress + levelIndex);
-
-		if (!isBitSet(symmetryMetadata, 1)) {
-			level.sidebarChars = [
-				readCharsetChar(getByte, currentSidebarAddress + 0 * 8),
-				readCharsetChar(getByte, currentSidebarAddress + 1 * 8),
-				readCharsetChar(getByte, currentSidebarAddress + 2 * 8),
-				readCharsetChar(getByte, currentSidebarAddress + 3 * 8),
-			];
-			currentSidebarAddress += 4 * 8; // 4 chars of 8 bytes each.
-		}
-
-		const isSymmetric = isBitSet(symmetryMetadata, 0);
-
-		readTileBitmap(curentBitmapByteAddress, getByte, level, isSymmetric);
-		curentBitmapByteAddress += (isSymmetric ? 2 : 4) * 23; // 23 lines of 2 or 4 bytes.
-
-		// Fill in the sides.
-		fillInTileBitmapSides(level);
+			levelIndex,
+			currentSidebarAddress,
+			curentBitmapByteAddress
+		));
 
 		levels.push(level);
 	}
 
 	return levels;
+}
+
+function readLevel(
+	getByte: (address: number) => number,
+	levelIndex: number,
+	currentSidebarAddress: number,
+	curentBitmapByteAddress: number
+) {
+	const level = createLevel();
+
+	level.platformChar = readCharsetChar(
+		getByte,
+		platformCharArrayAddress + levelIndex * 8
+	);
+
+	const bgColorMetadata = getByte(bgColorMetadataArrayAddress + levelIndex);
+	level.bgColorLight = bgColorMetadata & 0b1111;
+	level.bgColorDark = (bgColorMetadata & 0b11110000) >> 4;
+
+	const holeMetadata = getByte(holeMetadataArrayAddress + levelIndex);
+
+	// Top and bottom rows with holes.
+	setTileBitmapTopAndBottom(level, {
+		topLeft: isBitSet(holeMetadata, 7),
+		topRight: isBitSet(holeMetadata, 6),
+		bottomLeft: isBitSet(holeMetadata, 5),
+		bottomRight: isBitSet(holeMetadata, 4),
+	});
+
+	const symmetryMetadata = getByte(symmetryMetadataArrayAddress + levelIndex);
+
+	if (!isBitSet(symmetryMetadata, 1)) {
+		level.sidebarChars = [
+			readCharsetChar(getByte, currentSidebarAddress + 0 * 8),
+			readCharsetChar(getByte, currentSidebarAddress + 1 * 8),
+			readCharsetChar(getByte, currentSidebarAddress + 2 * 8),
+			readCharsetChar(getByte, currentSidebarAddress + 3 * 8),
+		];
+		currentSidebarAddress += 4 * 8; // 4 chars of 8 bytes each.
+	}
+
+	const isSymmetric = isBitSet(symmetryMetadata, 0);
+
+	readTileBitmap(curentBitmapByteAddress, getByte, level, isSymmetric);
+	curentBitmapByteAddress += (isSymmetric ? 2 : 4) * 23; // 23 lines of 2 or 4 bytes.
+
+	// Fill in the sides.
+	fillInTileBitmapSides(level);
+	return { level, currentSidebarAddress, curentBitmapByteAddress };
 }
 
 function setTileBitmapTopAndBottom(
