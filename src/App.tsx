@@ -6,27 +6,32 @@ import { drawLevelsToCanvas } from "./draw-levels-to-canvas";
 function App() {
 	const [prg, setPrg] = useState<File | undefined>(undefined);
 
-	const canvasRef = useRef<HTMLCanvasElement>(null);
+	const levelsCanvasRef = useRef<HTMLCanvasElement>(null);
 
 	useEffect(() => {
 		(async () => {
-			if (!canvasRef.current) {
+			if (!levelsCanvasRef.current) {
 				return;
 			}
 
 			if (!prg) {
-				canvasRef.current
+				levelsCanvasRef.current
 					.getContext("2d")
-					?.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+					?.clearRect(
+						0,
+						0,
+						levelsCanvasRef.current.width,
+						levelsCanvasRef.current.height
+					);
 				return;
 			}
 
 			drawLevelsToCanvas(
 				parsePrg(new DataView(await prg.arrayBuffer())),
-				canvasRef.current
+				levelsCanvasRef.current
 			);
 		})();
-	}, [prg, canvasRef.current]);
+	}, [prg, levelsCanvasRef.current]);
 
 	return (
 		<>
@@ -47,17 +52,17 @@ function App() {
 					? "No prg selected."
 					: `${prg.name}, ${Math.round(prg.size / 1024)} kB`}
 			</p>
-			<canvas ref={canvasRef} />
+			<canvas ref={levelsCanvasRef} />
 			<br />
 			<input
 				type="button"
 				onClick={() => {
-					if (!canvasRef.current) {
+					if (!levelsCanvasRef.current) {
 						return;
 					}
 					var link = document.createElement("a");
 					link.download = "bubble bobble c64 - all levels.png";
-					link.href = canvasRef.current.toDataURL();
+					link.href = levelsCanvasRef.current.toDataURL();
 					link.click();
 				}}
 				value="Download Image"
