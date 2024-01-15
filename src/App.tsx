@@ -6,12 +6,24 @@ import {
 	drawPlatformCharsToCanvas,
 } from "./draw-levels-to-canvas";
 import { clearCanvas } from "./draw-levels-to-canvas";
+import { Level } from "./level";
 
 function App() {
 	const [prg, setPrg] = useState<File | undefined>(undefined);
 
+	const [levels, setLevels] = useState<readonly Level[] | undefined>(undefined);
+
 	const levelsCanvasRef = useRef<HTMLCanvasElement>(null);
 	const platformCharsCanvasRef = useRef<HTMLCanvasElement>(null);
+
+	useEffect(() => {
+		(async () => {
+			if (!prg) {
+				return;
+			}
+			setLevels(parsePrg(new DataView(await prg.arrayBuffer())));
+		})();
+	}, [prg]);
 
 	useEffect(() => {
 		(async () => {
@@ -19,18 +31,16 @@ function App() {
 				return;
 			}
 
-			if (!prg) {
+			if (!levels) {
 				clearCanvas(levelsCanvasRef.current);
 				clearCanvas(platformCharsCanvasRef.current);
 				return;
 			}
 
-			const levels = parsePrg(new DataView(await prg.arrayBuffer()));
-
 			drawLevelsToCanvas(levels, levelsCanvasRef.current);
 			drawPlatformCharsToCanvas(levels, platformCharsCanvasRef.current);
 		})();
-	}, [prg, levelsCanvasRef.current]);
+	}, [levels, levelsCanvasRef.current]);
 
 	return (
 		<>
