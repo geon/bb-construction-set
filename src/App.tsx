@@ -11,7 +11,11 @@ import { Level } from "./level";
 function App() {
 	const [prg, setPrg] = useState<File | undefined>(undefined);
 
-	const [levels, setLevels] = useState<readonly Level[] | undefined>(undefined);
+	const [levels, setLevels] = useState<
+		| { type: "success"; levels: readonly Level[] }
+		| { type: "failed"; error: string }
+		| undefined
+	>(undefined);
 
 	const levelsCanvasRef = useRef<HTMLCanvasElement>(null);
 	const platformCharsCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -21,7 +25,18 @@ function App() {
 			if (!prg) {
 				return;
 			}
-			setLevels(parsePrg(new DataView(await prg.arrayBuffer())));
+
+			try {
+				setLevels({
+					type: "success",
+					levels: parsePrg(new DataView(await prg.arrayBuffer())),
+				});
+			} catch (error: unknown) {
+				if (!(error instanceof Error)) {
+					return;
+				}
+				setLevels({ type: "failed", error: error.message });
+			}
 		})();
 	}, [prg]);
 
@@ -31,15 +46,14 @@ function App() {
 				return;
 			}
 
-			if (!levels) {
-				setLevels(undefined);
+			if (levels?.type !== "success") {
 				clearCanvas(levelsCanvasRef.current);
 				clearCanvas(platformCharsCanvasRef.current);
 				return;
 			}
 
-			drawLevelsToCanvas(levels, levelsCanvasRef.current);
-			drawPlatformCharsToCanvas(levels, platformCharsCanvasRef.current);
+			drawLevelsToCanvas(levels.levels, levelsCanvasRef.current);
+			drawPlatformCharsToCanvas(levels.levels, platformCharsCanvasRef.current);
 		})();
 	}, [levels, levelsCanvasRef.current]);
 
@@ -59,18 +73,18 @@ function App() {
 			/>
 			{!prg ? (
 				<p>No prg selected.</p>
-			) : !levels ? (
-				<p>Could not parse prg.</p>
+			) : levels?.type !== "success" ? (
+				<p>Could not parse prg: {levels?.error ?? "No reason."}</p>
 			) : (
 				<>
 					<p>
 						{`${prg.name}, ${Math.round(prg.size / 1024)} kB`}
 						<br />
-						{levels.filter((level) => level.isSymmetric).length}/100 are
+						{levels.levels.filter((level) => level.isSymmetric).length}/100 are
 						symmetric
 						<br />
-						{levels.filter((level) => level.sidebarChars).length}/100 have side
-						decor
+						{levels.levels.filter((level) => level.sidebarChars).length}/100
+						have side decor
 					</p>
 					<canvas ref={levelsCanvasRef} />
 					<br />
