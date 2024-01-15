@@ -32,6 +32,7 @@ function App() {
 			}
 
 			if (!levels) {
+				setLevels(undefined);
 				clearCanvas(levelsCanvasRef.current);
 				clearCanvas(platformCharsCanvasRef.current);
 				return;
@@ -58,9 +59,19 @@ function App() {
 			/>
 			{!prg ? (
 				<p>No prg selected.</p>
+			) : !levels ? (
+				<p>Could not parse prg.</p>
 			) : (
 				<>
-					<p>{`${prg.name}, ${Math.round(prg.size / 1024)} kB`}</p>
+					<p>
+						{`${prg.name}, ${Math.round(prg.size / 1024)} kB`}
+						<br />
+						{levels.filter((level) => level.isSymmetric).length}/100 are
+						symmetric
+						<br />
+						{levels.filter((level) => level.sidebarChars).length}/100 have side
+						decor
+					</p>
 					<canvas ref={levelsCanvasRef} />
 					<br />
 					<CanvasDownloadButton

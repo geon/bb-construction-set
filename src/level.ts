@@ -7,6 +7,7 @@ export const numTiles = levelWidth * levelHeight;
 export interface Level {
 	// Should be exactly `numTiles` entries.
 	tiles: Array<boolean>;
+	isSymmetric: boolean;
 	fgColor: number;
 	bgColorLight: number;
 	bgColorDark: number;
@@ -17,6 +18,7 @@ export interface Level {
 export function createLevel(): Level {
 	return {
 		tiles: Array(numTiles).fill(false),
+		isSymmetric: true,
 		fgColor: 0,
 		bgColorLight: 0,
 		bgColorDark: 0,
