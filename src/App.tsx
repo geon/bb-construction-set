@@ -46,27 +46,29 @@ function App() {
 				type="file"
 				onChange={(event) => setPrg(event.target.files?.[0])}
 			/>
-			<p>
-				{!prg
-					? "No prg selected."
-					: `${prg.name}, ${Math.round(prg.size / 1024)} kB`}
-			</p>
-			<canvas ref={levelsCanvasRef} />
-			<br />
-			<CanvasDownloadButton
-				canvasRef={levelsCanvasRef}
-				label="Download Image"
-				fileName="bubble bobble c64 - all levels.png"
-			/>
-			<br />
-			<br />
-			<canvas ref={platformCharsCanvasRef} />
-			<br />
-			<CanvasDownloadButton
-				canvasRef={platformCharsCanvasRef}
-				label="Download Image"
-				fileName="bubble bobble c64 - all platform chars.png"
-			/>
+			{!prg ? (
+				<p>No prg selected.</p>
+			) : (
+				<>
+					<p>{`${prg.name}, ${Math.round(prg.size / 1024)} kB`}</p>
+					<canvas ref={levelsCanvasRef} />
+					<br />
+					<CanvasDownloadButton
+						canvasRef={levelsCanvasRef}
+						label="Download Image"
+						fileName="bubble bobble c64 - all levels.png"
+					/>
+					<br />
+					<br />
+					<canvas ref={platformCharsCanvasRef} />
+					<br />
+					<CanvasDownloadButton
+						canvasRef={platformCharsCanvasRef}
+						label="Download Image"
+						fileName="bubble bobble c64 - all platform chars.png"
+					/>
+				</>
+			)}
 		</>
 	);
 }
