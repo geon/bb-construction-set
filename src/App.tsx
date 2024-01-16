@@ -6,7 +6,7 @@ import {
 	drawPlatformCharsToCanvas,
 } from "./draw-levels-to-canvas";
 import { clearCanvas } from "./draw-levels-to-canvas";
-import { Level } from "./level";
+import { Level, maxAsymmetric, maxSidebars } from "./level";
 
 function App() {
 	const [levels, setLevels] = useState<
@@ -86,11 +86,11 @@ function App() {
 					<p>
 						{`${levels.fileName}, ${Math.round(levels.fileSize / 1024)} kB`}
 						<br />
-						{levels.levels.filter((level) => !level.isSymmetric).length}/100 are
-						asymmetric
+						{levels.levels.filter((level) => !level.isSymmetric).length}/
+						{maxAsymmetric} are asymmetric
 						<br />
-						{levels.levels.filter((level) => level.sidebarChars).length}/100
-						have side decor
+						{levels.levels.filter((level) => level.sidebarChars).length}/
+						{maxSidebars} have side decor
 					</p>
 					<canvas ref={levelsCanvasRef} />
 					<br />

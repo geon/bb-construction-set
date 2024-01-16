@@ -4,6 +4,9 @@ export const levelWidth = 32;
 export const levelHeight = 25;
 export const numTiles = levelWidth * levelHeight;
 
+export const maxAsymmetric = 45;
+export const maxSidebars = 59;
+
 export interface Level {
 	// Should be exactly `numTiles` entries.
 	tiles: Array<boolean>;
