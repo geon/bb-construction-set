@@ -9,36 +9,42 @@ import { clearCanvas } from "./draw-levels-to-canvas";
 import { Level } from "./level";
 
 function App() {
-	const [prg, setPrg] = useState<File | undefined>(undefined);
-
 	const [levels, setLevels] = useState<
-		| { type: "success"; levels: readonly Level[] }
-		| { type: "failed"; error: string }
+		| ({ fileName: string; fileSize: number } & (
+				| { type: "success"; levels: readonly Level[] }
+				| { type: "failed"; error: string }
+		  ))
 		| undefined
 	>(undefined);
 
 	const levelsCanvasRef = useRef<HTMLCanvasElement>(null);
 	const platformCharsCanvasRef = useRef<HTMLCanvasElement>(null);
 
-	useEffect(() => {
-		(async () => {
-			if (!prg) {
+	const setPrg = async (prg: File | undefined): Promise<void> => {
+		if (!prg) {
+			setLevels(undefined);
+			return;
+		}
+
+		try {
+			setLevels({
+				type: "success",
+				levels: parsePrg(new DataView(await prg.arrayBuffer())),
+				fileName: prg.name,
+				fileSize: prg.size,
+			});
+		} catch (error: unknown) {
+			if (!(error instanceof Error)) {
 				return;
 			}
-
-			try {
-				setLevels({
-					type: "success",
-					levels: parsePrg(new DataView(await prg.arrayBuffer())),
-				});
-			} catch (error: unknown) {
-				if (!(error instanceof Error)) {
-					return;
-				}
-				setLevels({ type: "failed", error: error.message });
-			}
-		})();
-	}, [prg]);
+			setLevels({
+				type: "failed",
+				error: error.message,
+				fileName: prg.name,
+				fileSize: prg.size,
+			});
+		}
+	};
 
 	useEffect(() => {
 		(async () => {
@@ -71,14 +77,14 @@ function App() {
 				type="file"
 				onChange={(event) => setPrg(event.target.files?.[0])}
 			/>
-			{!prg ? (
+			{!levels ? (
 				<p>No prg selected.</p>
 			) : levels?.type !== "success" ? (
 				<p>Could not parse prg: {levels?.error ?? "No reason."}</p>
 			) : (
 				<>
 					<p>
-						{`${prg.name}, ${Math.round(prg.size / 1024)} kB`}
+						{`${levels.fileName}, ${Math.round(levels.fileSize / 1024)} kB`}
 						<br />
 						{levels.levels.filter((level) => level.isSymmetric).length}/100 are
 						symmetric
