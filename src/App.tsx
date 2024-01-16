@@ -86,8 +86,8 @@ function App() {
 					<p>
 						{`${levels.fileName}, ${Math.round(levels.fileSize / 1024)} kB`}
 						<br />
-						{levels.levels.filter((level) => level.isSymmetric).length}/100 are
-						symmetric
+						{levels.levels.filter((level) => !level.isSymmetric).length}/100 are
+						asymmetric
 						<br />
 						{levels.levels.filter((level) => level.sidebarChars).length}/100
 						have side decor
