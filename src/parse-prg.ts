@@ -1,5 +1,5 @@
 import { readCharsetChar } from "./charset-char";
-import { Level, createLevel, levelHeight, levelWidth } from "./level";
+import { Level, Monster, createLevel, levelHeight, levelWidth } from "./level";
 
 function getPrgStartAddress(prg: DataView): number {
 	// The prg contains a little endian 16 bit header with the start address. The rest is the raw data.
@@ -29,6 +29,7 @@ const bgColorMetadataArrayAddress = 0xff30;
 const holeMetadataArrayAddress = 0xc58e;
 const symmetryMetadataArrayAddress = 0xff94;
 const bitmapArrayAddress = 0xc5f2;
+const monsterArrayAddress = 0xae51;
 
 export function parsePrg(prg: DataView): Level[] {
 	const startAddres = getPrgStartAddress(prg);
@@ -39,13 +40,20 @@ export function parsePrg(prg: DataView): Level[] {
 	const levels: Array<Level> = [];
 	let curentBitmapByteAddress = bitmapArrayAddress;
 	let currentSidebarAddress = sidebarCharArrayAddress;
+	let currentMonsterAddress = monsterArrayAddress;
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
 		let level;
-		({ level, currentSidebarAddress, curentBitmapByteAddress } = readLevel(
+		({
+			level,
+			currentSidebarAddress,
+			curentBitmapByteAddress,
+			currentMonsterAddress,
+		} = readLevel(
 			getByte,
 			levelIndex,
 			currentSidebarAddress,
-			curentBitmapByteAddress
+			curentBitmapByteAddress,
+			currentMonsterAddress
 		));
 
 		levels.push(level);
@@ -58,7 +66,8 @@ function readLevel(
 	getByte: (address: number) => number,
 	levelIndex: number,
 	currentSidebarAddress: number,
-	curentBitmapByteAddress: number
+	curentBitmapByteAddress: number,
+	currentMonsterAddress: number
 ) {
 	const level = createLevel();
 
@@ -100,7 +109,22 @@ function readLevel(
 
 	// Fill in the sides.
 	fillInTileBitmapSides(level);
-	return { level, currentSidebarAddress, curentBitmapByteAddress };
+
+	// Level 100 is the boss level. It has no monsters.
+	if (levelIndex !== 99) {
+		do {
+			level.monsters.push(readMonster(currentMonsterAddress, getByte));
+			currentMonsterAddress += 3;
+		} while (getByte(currentMonsterAddress)); // The monsters of each level are separated with a zero byte.
+		currentMonsterAddress += 1;
+	}
+
+	return {
+		level,
+		currentSidebarAddress,
+		curentBitmapByteAddress,
+		currentMonsterAddress,
+	};
 }
 
 function setTileBitmapTopAndBottom(
@@ -185,4 +209,16 @@ function readTileBitmap(
 			}
 		}
 	}
+}
+
+function readMonster(
+	address: number,
+	getByte: (address: number) => number
+): Monster {
+	return {
+		spawnPoint: {
+			x: (getByte(address) & 0b11111000) + 0,
+			y: getByte(address + 1) - 24,
+		},
+	};
 }

@@ -7,6 +7,13 @@ export const numTiles = levelWidth * levelHeight;
 export const maxAsymmetric = 45;
 export const maxSidebars = 59;
 
+export interface Monster {
+	spawnPoint: {
+		x: number;
+		y: number;
+	};
+}
+
 export interface Level {
 	// Should be exactly `numTiles` entries.
 	tiles: Array<boolean>;
@@ -16,6 +23,7 @@ export interface Level {
 	bgColorDark: number;
 	platformChar: CharsetChar;
 	sidebarChars?: [CharsetChar, CharsetChar, CharsetChar, CharsetChar];
+	monsters: Array<Monster>;
 }
 
 export function createLevel(): Level {
@@ -37,5 +45,6 @@ export function createLevel(): Level {
 				parseCharsetCharLine(0xff),
 			],
 		},
+		monsters: [],
 	};
 }

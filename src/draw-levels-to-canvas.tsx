@@ -67,6 +67,17 @@ export function drawLevelsToCanvas(
 				0
 			);
 
+			for (const monster of level.monsters) {
+				const pixelIndex =
+					Math.floor(monster.spawnPoint.y / 8) * 32 +
+					Math.floor(monster.spawnPoint.x / 8);
+
+				// Monsters are 2x2 chars large.
+				for (const offset of [0, 1, 32, 33]) {
+					plotPixel(image, pixelIndex + offset, { r: 0, g: 255, b: 255 });
+				}
+			}
+
 			ctx.putImageData(image, levelX * levelWidth, levelY * levelHeight);
 		}
 	}
