@@ -1,5 +1,6 @@
 import { readCharsetChar } from "./charset-char";
 import { Level, Monster, createLevel, levelHeight, levelWidth } from "./level";
+import { Sprite, Sprites, numSpriteBytes, spriteCounts } from "./sprite";
 
 function getPrgStartAddress(prg: DataView): number {
 	// The prg contains a little endian 16 bit header with the start address. The rest is the raw data.
@@ -31,7 +32,12 @@ const symmetryMetadataArrayAddress = 0xff94;
 const bitmapArrayAddress = 0xc5f2;
 const monsterArrayAddress = 0xae51;
 
-export function parsePrg(prg: DataView): { levels: Level[] } {
+const spriteBitmapArrayAddress = 0x5800;
+
+export function parsePrg(prg: DataView): {
+	levels: Level[];
+	sprites: Sprites;
+} {
 	const startAddres = getPrgStartAddress(prg);
 	const getByte = (address: number) =>
 		getPrgByteAtAddress(prg, startAddres, address);
@@ -59,7 +65,34 @@ export function parsePrg(prg: DataView): { levels: Level[] } {
 		levels.push(level);
 	}
 
-	return { levels };
+	const sprites: Sprites = {
+		player: [],
+		bubbleBuster: [],
+		incendo: [],
+		colley: [],
+		hullaballoon: [],
+		beluga: [],
+		willyWhistle: [],
+		stoner: [],
+		superSocket: [],
+	};
+	let globalSpriteIndex = 0;
+	for (const [characterName, characterSprites] of Object.entries(sprites) as [
+		keyof Sprites,
+		Sprite[]
+	][]) {
+		for (
+			let spriteIndex = 0;
+			spriteIndex < spriteCounts[characterName];
+			++spriteIndex
+		) {
+			const sprite = readSprite(getByte, globalSpriteIndex);
+			++globalSpriteIndex;
+			characterSprites.push(sprite);
+		}
+	}
+
+	return { levels, sprites };
 }
 
 function readLevel(
@@ -218,7 +251,22 @@ function readMonster(
 	return {
 		spawnPoint: {
 			x: (getByte(address) & 0b11111000) + 0,
-			y: getByte(address + 1) - 24,
+			y: getByte(address + 1) - 20,
 		},
+	};
+}
+
+function readSprite(
+	getByte: (address: number) => number,
+	spriteIndex: number
+): Sprite {
+	const bitmap: Sprite["bitmap"] = [];
+	for (let byteIndex = 0; byteIndex < numSpriteBytes; ++byteIndex) {
+		bitmap.push(
+			getByte(spriteBitmapArrayAddress + spriteIndex * 64 + byteIndex)
+		);
+	}
+	return {
+		bitmap,
 	};
 }

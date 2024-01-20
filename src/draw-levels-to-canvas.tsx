@@ -2,6 +2,12 @@ import { Level, levelHeight, levelWidth, numTiles } from "./level";
 import { palette } from "./palette";
 import { Color, mixColors, black } from "./color";
 import { CharsetChar } from "./charset-char";
+import {
+	Sprites,
+	spriteColors,
+	spriteHeight,
+	spriteWidthBytes,
+} from "./sprite";
 
 export function drawLevelsToCanvas(
 	levels: readonly Level[],
@@ -177,4 +183,67 @@ function drawChar(
 			plotPixel(image, pixelIndex + 1, color);
 		}
 	}
+}
+
+export function drawSpritesToCanvas(
+	sprites: Sprites,
+	canvas: HTMLCanvasElement
+) {
+	const ctx = canvas.getContext("2d");
+	if (!ctx) {
+		return;
+	}
+
+	const characherSpriteGroups = Object.values(sprites);
+	const numCharacters = characherSpriteGroups.length;
+	const spriteWidthPixels = spriteWidthBytes * 8;
+	const maxSpritesForCharacter = characherSpriteGroups.reduce(
+		(soFar, current) => Math.max(soFar, current.length),
+		0
+	);
+
+	canvas.width = spriteWidthPixels * maxSpritesForCharacter;
+	canvas.height = spriteHeight * numCharacters;
+
+	ctx.fillStyle = "black";
+	ctx.rect(0, 0, canvas.width, canvas.height);
+	ctx.fill();
+
+	const image = new ImageData(spriteWidthPixels, spriteHeight);
+	for (const [spriteY, characterSprites] of characherSpriteGroups.entries()) {
+		for (const [spriteX, sprite] of characterSprites.entries()) {
+			const spritePalette = getSpritePalette(
+				Object.values(spriteColors)[spriteY]
+			);
+			for (let pixelY = 0; pixelY < spriteHeight; ++pixelY) {
+				for (let byteX = 0; byteX < spriteWidthBytes; ++byteX) {
+					const byte = sprite.bitmap[pixelY * spriteWidthBytes + byteX];
+					for (let pixelX = 0; pixelX < 4; ++pixelX) {
+						const color = spritePalette[(byte >> ((3 - pixelX) * 2)) & 0b11];
+
+						// Double width pixels.
+						const pixelIndex =
+							pixelY * spriteWidthPixels + byteX * 8 + pixelX * 2;
+						plotPixel(image, pixelIndex, color);
+						plotPixel(image, pixelIndex + 1, color);
+					}
+				}
+			}
+
+			ctx.putImageData(
+				image,
+				spriteX * spriteWidthPixels,
+				spriteY * spriteHeight
+			);
+		}
+	}
+}
+
+function getSpritePalette(color: number): [Color, Color, Color, Color] {
+	return [
+		palette[0], // Transparent (Black)
+		palette[2], // Dark red
+		palette[color],
+		palette[1], // White
+	];
 }

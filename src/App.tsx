@@ -4,14 +4,16 @@ import { parsePrg } from "./parse-prg";
 import {
 	drawLevelsToCanvas,
 	drawPlatformCharsToCanvas,
+	drawSpritesToCanvas,
 } from "./draw-levels-to-canvas";
 import { clearCanvas } from "./draw-levels-to-canvas";
 import { Level, maxAsymmetric, maxSidebars } from "./level";
+import { Sprites } from "./sprite";
 
 function App() {
 	const [parsedData, setParsedData] = useState<
 		| ({ fileName: string; fileSize: number } & (
-				| { type: "success"; levels: readonly Level[] }
+				| { type: "success"; levels: readonly Level[]; sprites: Sprites }
 				| { type: "failed"; error: string }
 		  ))
 		| undefined
@@ -19,6 +21,7 @@ function App() {
 
 	const levelsCanvasRef = useRef<HTMLCanvasElement>(null);
 	const platformCharsCanvasRef = useRef<HTMLCanvasElement>(null);
+	const spriteCanvasRef = useRef<HTMLCanvasElement>(null);
 
 	const setPrg = async (prg: File | undefined): Promise<void> => {
 		if (!prg) {
@@ -49,13 +52,20 @@ function App() {
 
 	useEffect(() => {
 		(async () => {
-			if (!(levelsCanvasRef.current && platformCharsCanvasRef.current)) {
+			if (
+				!(
+					levelsCanvasRef.current &&
+					platformCharsCanvasRef.current &&
+					spriteCanvasRef.current
+				)
+			) {
 				return;
 			}
 
 			if (parsedData?.type !== "success") {
 				clearCanvas(levelsCanvasRef.current);
 				clearCanvas(platformCharsCanvasRef.current);
+				clearCanvas(spriteCanvasRef.current);
 				return;
 			}
 
@@ -64,8 +74,14 @@ function App() {
 				parsedData.levels,
 				platformCharsCanvasRef.current
 			);
+			drawSpritesToCanvas(parsedData.sprites, spriteCanvasRef.current);
 		})();
-	}, [parsedData, levelsCanvasRef.current]);
+	}, [
+		parsedData,
+		levelsCanvasRef.current,
+		platformCharsCanvasRef.current,
+		spriteCanvasRef.current,
+	]);
 
 	return (
 		<>
@@ -113,6 +129,15 @@ function App() {
 						canvasRef={platformCharsCanvasRef}
 						label="Download Image"
 						fileName="bubble bobble c64 - all platform chars.png"
+					/>
+					<br />
+					<br />
+					<canvas ref={spriteCanvasRef} />
+					<br />
+					<CanvasDownloadButton
+						canvasRef={spriteCanvasRef}
+						label="Download Image"
+						fileName="bubble bobble c64 - all sprites.png"
 					/>
 				</>
 			)}
