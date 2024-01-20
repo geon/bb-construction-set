@@ -27,9 +27,10 @@ function App() {
 		}
 
 		try {
+			const { levels } = parsePrg(new DataView(await prg.arrayBuffer()));
 			setLevels({
 				type: "success",
-				levels: parsePrg(new DataView(await prg.arrayBuffer())),
+				levels,
 				fileName: prg.name,
 				fileSize: prg.size,
 			});

@@ -31,7 +31,7 @@ const symmetryMetadataArrayAddress = 0xff94;
 const bitmapArrayAddress = 0xc5f2;
 const monsterArrayAddress = 0xae51;
 
-export function parsePrg(prg: DataView): Level[] {
+export function parsePrg(prg: DataView): { levels: Level[] } {
 	const startAddres = getPrgStartAddress(prg);
 	const getByte = (address: number) =>
 		getPrgByteAtAddress(prg, startAddres, address);
@@ -59,7 +59,7 @@ export function parsePrg(prg: DataView): Level[] {
 		levels.push(level);
 	}
 
-	return levels;
+	return { levels };
 }
 
 function readLevel(
