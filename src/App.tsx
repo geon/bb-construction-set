@@ -9,7 +9,7 @@ import { clearCanvas } from "./draw-levels-to-canvas";
 import { Level, maxAsymmetric, maxSidebars } from "./level";
 
 function App() {
-	const [levels, setLevels] = useState<
+	const [parsedData, setParsedData] = useState<
 		| ({ fileName: string; fileSize: number } & (
 				| { type: "success"; levels: readonly Level[] }
 				| { type: "failed"; error: string }
@@ -22,15 +22,15 @@ function App() {
 
 	const setPrg = async (prg: File | undefined): Promise<void> => {
 		if (!prg) {
-			setLevels(undefined);
+			setParsedData(undefined);
 			return;
 		}
 
 		try {
-			const { levels } = parsePrg(new DataView(await prg.arrayBuffer()));
-			setLevels({
+			const parsed = parsePrg(new DataView(await prg.arrayBuffer()));
+			setParsedData({
 				type: "success",
-				levels,
+				...parsed,
 				fileName: prg.name,
 				fileSize: prg.size,
 			});
@@ -38,7 +38,7 @@ function App() {
 			if (!(error instanceof Error)) {
 				return;
 			}
-			setLevels({
+			setParsedData({
 				type: "failed",
 				error: error.message,
 				fileName: prg.name,
@@ -53,16 +53,19 @@ function App() {
 				return;
 			}
 
-			if (levels?.type !== "success") {
+			if (parsedData?.type !== "success") {
 				clearCanvas(levelsCanvasRef.current);
 				clearCanvas(platformCharsCanvasRef.current);
 				return;
 			}
 
-			drawLevelsToCanvas(levels.levels, levelsCanvasRef.current);
-			drawPlatformCharsToCanvas(levels.levels, platformCharsCanvasRef.current);
+			drawLevelsToCanvas(parsedData.levels, levelsCanvasRef.current);
+			drawPlatformCharsToCanvas(
+				parsedData.levels,
+				platformCharsCanvasRef.current
+			);
 		})();
-	}, [levels, levelsCanvasRef.current]);
+	}, [parsedData, levelsCanvasRef.current]);
 
 	return (
 		<>
@@ -78,19 +81,21 @@ function App() {
 				type="file"
 				onChange={(event) => setPrg(event.target.files?.[0])}
 			/>
-			{!levels ? (
+			{!parsedData ? (
 				<p>No prg selected.</p>
-			) : levels?.type !== "success" ? (
-				<p>Could not parse prg: {levels?.error ?? "No reason."}</p>
+			) : parsedData?.type !== "success" ? (
+				<p>Could not parse prg: {parsedData?.error ?? "No reason."}</p>
 			) : (
 				<>
 					<p>
-						{`${levels.fileName}, ${Math.round(levels.fileSize / 1024)} kB`}
+						{`${parsedData.fileName}, ${Math.round(
+							parsedData.fileSize / 1024
+						)} kB`}
 						<br />
-						{levels.levels.filter((level) => !level.isSymmetric).length}/
+						{parsedData.levels.filter((level) => !level.isSymmetric).length}/
 						{maxAsymmetric} are asymmetric
 						<br />
-						{levels.levels.filter((level) => level.sidebarChars).length}/
+						{parsedData.levels.filter((level) => level.sidebarChars).length}/
 						{maxSidebars} have side decor
 					</p>
 					<canvas ref={levelsCanvasRef} />
