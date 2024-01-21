@@ -13,6 +13,7 @@ export interface Monster {
 		x: number;
 		y: number;
 	};
+	facingLeft: boolean;
 }
 
 export interface Level {

@@ -254,6 +254,7 @@ function readMonster(
 			x: (getByte(address) & 0b11111000) + 0,
 			y: getByte(address + 1) - 20,
 		},
+		facingLeft: isBitSet(getByte(address + 2), 0),
 	};
 }
 
