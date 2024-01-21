@@ -9,6 +9,8 @@ import {
 import { clearCanvas } from "./draw-levels-to-canvas";
 import { Level, maxAsymmetric, maxSidebars } from "./level";
 import { Sprites } from "./sprite";
+import { levelsToPeFileData } from "./level-pe-conversion";
+import { serializePeFileData } from "./pe-file";
 
 function App() {
 	const [parsedData, setParsedData] = useState<
@@ -139,6 +141,18 @@ function App() {
 						label="Download Image"
 						fileName="bubble bobble c64 - all sprites.png"
 					/>
+					<br />
+					<br />
+
+					<BlobDownloadButton
+						getBlob={() =>
+							new Blob([serializePeFileData(levelsToPeFileData(parsedData))], {
+								type: "application/json",
+							})
+						}
+						label="Download PE-file"
+						fileName="bubble bobble c64 - all levels.pe"
+					/>
 				</>
 			)}
 		</>
@@ -160,6 +174,25 @@ function CanvasDownloadButton(props: {
 				var link = document.createElement("a");
 				link.download = props.fileName;
 				link.href = props.canvasRef.current.toDataURL();
+				link.click();
+			}}
+			value={props.label}
+		/>
+	);
+}
+
+function BlobDownloadButton(props: {
+	getBlob: () => Blob;
+	label: string;
+	fileName: string;
+}) {
+	return (
+		<input
+			type="button"
+			onClick={() => {
+				var link = document.createElement("a");
+				link.download = props.fileName;
+				link.href = URL.createObjectURL(props.getBlob());
 				link.click();
 			}}
 			value={props.label}
