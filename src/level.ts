@@ -8,6 +8,7 @@ export const maxAsymmetric = 45;
 export const maxSidebars = 59;
 
 export interface Monster {
+	type: number;
 	spawnPoint: {
 		x: number;
 		y: number;

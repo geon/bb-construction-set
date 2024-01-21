@@ -80,7 +80,11 @@ export function drawLevelsToCanvas(
 
 				// Monsters are 2x2 chars large.
 				for (const offset of [0, 1, 32, 33]) {
-					plotPixel(image, pixelIndex + offset, { r: 0, g: 255, b: 255 });
+					plotPixel(
+						image,
+						pixelIndex + offset,
+						palette[Object.values(spriteColors)[monster.type + 1]]
+					);
 				}
 			}
 
