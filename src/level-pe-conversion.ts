@@ -42,8 +42,8 @@ export function levelsToPeFileData(data: {
 				mode: "multicolor",
 				bgColor: 0,
 				charColor: 0, // Black to not tempt using it.
-				multiColor1: level.bgColorLight,
-				multiColor2: level.bgColorDark,
+				multiColor1: level.bgColorDark,
+				multiColor2: level.bgColorLight,
 				// `bitmaps.length` should be exactly 256.
 				bitmaps: padRight(
 					[level.platformChar, ...(level.sidebarChars ?? [])].map(
@@ -63,8 +63,8 @@ export function levelsToPeFileData(data: {
 				colorBorder: 0,
 				colorBg: 0,
 				colorChar: 13, // Multicolor green for bubbles.
-				multiColor1: level.bgColorLight,
-				multiColor2: level.bgColorDark,
+				multiColor1: level.bgColorDark,
+				multiColor2: level.bgColorLight,
 				extBgColor1: 0,
 				extBgColor2: 0,
 				extBgColor3: 0,
