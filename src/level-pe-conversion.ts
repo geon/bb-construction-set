@@ -1,15 +1,87 @@
 import { Level } from "./level";
 import { CharBitmap, PeFileData } from "./pe-file";
+import { peFileBuiltinCharsets } from "./pe-file-builtin-charsets";
 import { Sprites } from "./sprite";
 import { CharsetChar } from "./charset-char";
+
+const emptyChar: CharBitmap = [0, 0, 0, 0, 0, 0, 0, 0];
+
+const shadowCharIndexByName = {
+	endUnder: 0 + 2,
+	outerCorner: 1 + 2,
+	endRight: 2 + 2,
+	under: 3 + 2,
+	right: 4 + 2,
+	innerCorner: 5 + 2,
+};
+const shadowChars: CharBitmap[] = [
+	[
+		0b00000000, // Comment to prevent formatting.
+		0b01010101, // Comment to prevent formatting.
+		0b00010101, // Comment to prevent formatting.
+		0b00000101, // Comment to prevent formatting.
+		0b00000000, // Comment to prevent formatting.
+		0b00000000, // Comment to prevent formatting.
+		0b00000000, // Comment to prevent formatting.
+		0b00000000, // Comment to prevent formatting.
+	],
+	[
+		0b00010100, // Comment to prevent formatting.
+		0b01010100, // Comment to prevent formatting.
+		0b01010100, // Comment to prevent formatting.
+		0b01010100, // Comment to prevent formatting.
+		0b00000000, // Comment to prevent formatting.
+		0b00000000, // Comment to prevent formatting.
+		0b00000000, // Comment to prevent formatting.
+		0b00000000, // Comment to prevent formatting.
+	],
+	[
+		0b00010000, // Comment to prevent formatting.
+		0b00010000, // Comment to prevent formatting.
+		0b00010100, // Comment to prevent formatting.
+		0b00010100, // Comment to prevent formatting.
+		0b00010100, // Comment to prevent formatting.
+		0b00010100, // Comment to prevent formatting.
+		0b00010100, // Comment to prevent formatting.
+		0b00010100, // Comment to prevent formatting.
+	],
+	[
+		0b00000000, // Comment to prevent formatting.
+		0b01010101, // Comment to prevent formatting.
+		0b01010101, // Comment to prevent formatting.
+		0b01010101, // Comment to prevent formatting.
+		0b00000000, // Comment to prevent formatting.
+		0b00000000, // Comment to prevent formatting.
+		0b00000000, // Comment to prevent formatting.
+		0b00000000, // Comment to prevent formatting.
+	],
+	[
+		0b00010100, // Comment to prevent formatting.
+		0b00010100, // Comment to prevent formatting.
+		0b00010100, // Comment to prevent formatting.
+		0b00010100, // Comment to prevent formatting.
+		0b00010100, // Comment to prevent formatting.
+		0b00010100, // Comment to prevent formatting.
+		0b00010100, // Comment to prevent formatting.
+		0b00010100, // Comment to prevent formatting.
+	],
+	[
+		0b00000000, // Comment to prevent formatting.
+		0b00010101, // Comment to prevent formatting.
+		0b00010101, // Comment to prevent formatting.
+		0b00010101, // Comment to prevent formatting.
+		0b00010100, // Comment to prevent formatting.
+		0b00010100, // Comment to prevent formatting.
+		0b00010100, // Comment to prevent formatting.
+		0b00010100, // Comment to prevent formatting.
+	],
+];
 
 export function levelsToPeFileData(data: {
 	levels: readonly Level[];
 	sprites: Sprites;
 }): PeFileData {
 	const now = new Date().getTime();
-	const emptyChar: CharBitmap = [0, 0, 0, 0, 0, 0, 0, 0];
-
 	return {
 		app: "PETSCII Editor",
 		url: "http://petscii.krissz.hu/",
@@ -36,24 +108,21 @@ export function levelsToPeFileData(data: {
 			cursorFollow: "yes",
 		},
 		clipboards: { screenEditor: [], charsetEditor: false, spriteEditor: false },
-		charsets: data.levels.map(
-			(level, levelIndex): PeFileData["charsets"][number] => ({
-				name: "Level " + (levelIndex + 1),
-				mode: "multicolor",
-				bgColor: 0,
-				charColor: 0, // Black to not tempt using it.
-				multiColor1: level.bgColorDark,
-				multiColor2: level.bgColorLight,
-				// `bitmaps.length` should be exactly 256.
-				bitmaps: padRight(
-					[level.platformChar, ...(level.sidebarChars ?? [])].map(
-						levelCharToPeChar
-					),
-					256,
-					emptyChar
-				),
-			})
-		),
+		charsets: [
+			// The builtin charsets are treated differently by PETSCII Editor.
+			...peFileBuiltinCharsets,
+			...data.levels.map(
+				(level, levelIndex): PeFileData["charsets"][number] => ({
+					name: "Level " + (levelIndex + 1),
+					mode: "multicolor",
+					bgColor: 0,
+					charColor: 0, // Black to not tempt using it.
+					multiColor1: level.bgColorDark,
+					multiColor2: level.bgColorLight,
+					bitmaps: makeCharsetBitmaps(level),
+				})
+			),
+		],
 		screens: data.levels.map(
 			(level, levelIndex): PeFileData["screens"][number] => ({
 				name: "Level " + (levelIndex + 1),
@@ -72,11 +141,9 @@ export function levelsToPeFileData(data: {
 				spriteMultiColor2: 2, // Dark red
 				spritesInBorder: "hidden",
 				spritesVisible: true,
-				characterSet: levelIndex,
+				characterSet: levelIndex + 2, // Take the 2 builtin charsets into account.
 				// `charData.length` should match `sizeY` and `charData[n].length` should match `sizeX`.
-				charData: chunk(level.tiles, 32)
-					.map((row) => padRight(row, 40, false))
-					.map((row) => row.map((tile) => (tile ? 0 : 20))),
+				charData: makeLevelCharData(level),
 				// Same for colorData.
 				// Multicolor green for bubbles.
 				colorData: padRight([], 25, padRight([], 40, 13)),
@@ -87,6 +154,83 @@ export function levelsToPeFileData(data: {
 		),
 		spriteSets: [],
 	};
+}
+
+function makeLevelCharData(level: Level): number[][] {
+	const chars = chunk(
+		level.tiles.map((tile) => (tile ? 1 : 0) as number),
+		32
+	).map((row) => padRight(row, 40, 0));
+
+	for (const [indexY, row] of chars.entries()) {
+		for (const [indexX, char] of row.entries()) {
+			if (indexX >= 32) {
+				continue;
+			}
+
+			if (char === 1) {
+				continue;
+			}
+
+			if (indexX > 0 && chars[indexY][indexX - 1] === 1) {
+				if (indexY > 0 && chars[indexY - 1][indexX] === 1) {
+					chars[indexY][indexX] = shadowCharIndexByName.innerCorner;
+					continue;
+				}
+				if (indexX > 0 && indexY > 0 && chars[indexY - 1][indexX - 1] === 1) {
+					chars[indexY][indexX] = shadowCharIndexByName.right;
+					continue;
+				}
+				chars[indexY][indexX] = shadowCharIndexByName.endRight;
+				continue;
+			}
+
+			if (indexY > 0 && chars[indexY - 1][indexX] === 1) {
+				if (indexX > 0 && indexY > 0 && chars[indexY - 1][indexX - 1] === 1) {
+					chars[indexY][indexX] = shadowCharIndexByName.under;
+					continue;
+				}
+
+				chars[indexY][indexX] = shadowCharIndexByName.endUnder;
+				continue;
+			}
+
+			if (indexX > 0 && indexY > 0 && chars[indexY - 1][indexX - 1] === 1) {
+				chars[indexY][indexX] = shadowCharIndexByName.outerCorner;
+				continue;
+			}
+		}
+	}
+
+	for (let indexY = 0; indexY < 25; ++indexY) {
+		const offset = indexY % 2 ? 16 : 0;
+		chars[indexY][0] = 16 + offset;
+		chars[indexY][1] = 17 + offset;
+		chars[indexY][30] = 16 + offset;
+		chars[indexY][31] = 17 + offset;
+	}
+
+	return chars;
+}
+
+function makeCharsetBitmaps(level: Level): CharBitmap[] {
+	const platformChar = levelCharToPeChar(level.platformChar);
+
+	const charset = padRight(
+		[emptyChar, platformChar, ...shadowChars],
+		// `charset.length` should be exactly 256.
+		256,
+		emptyChar
+	);
+
+	const sidebarChars = (level.sidebarChars ?? []).map(levelCharToPeChar);
+
+	charset[16] = sidebarChars[0] ?? platformChar;
+	charset[17] = sidebarChars[1] ?? platformChar;
+	charset[32] = sidebarChars[2] ?? platformChar;
+	charset[33] = sidebarChars[3] ?? platformChar;
+
+	return charset;
 }
 
 function levelCharToPeChar(char: CharsetChar): CharBitmap {
