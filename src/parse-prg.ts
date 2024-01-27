@@ -251,8 +251,8 @@ function readMonster(
 	return {
 		type: getByte(address) & 0b111,
 		spawnPoint: {
-			x: (getByte(address) & 0b11111000) + 0,
-			y: getByte(address + 1) - 20,
+			x: (getByte(address) & 0b11111000) + 20,
+			y: (getByte(address + 1) & 0b11111110) + 21,
 		},
 		facingLeft: isBitSet(getByte(address + 2), 0),
 	};
