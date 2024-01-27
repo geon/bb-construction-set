@@ -7,7 +7,7 @@ export interface Sprite {
 	bitmap: Array<number>;
 }
 
-type CharacterName =
+export type CharacterName =
 	| "player"
 	| "bubbleBuster"
 	| "incendo"
@@ -30,6 +30,18 @@ export const spriteCounts: Record<CharacterName, number> = {
 	willyWhistle: 8,
 	stoner: 8,
 	superSocket: 6,
+};
+
+export const spriteLeftIndex: Record<CharacterName, number> = {
+	player: 4,
+	bubbleBuster: 4,
+	incendo: 4,
+	colley: 4,
+	hullaballoon: 2,
+	beluga: 4,
+	willyWhistle: 2,
+	stoner: 2,
+	superSocket: 1,
 };
 
 export const spriteColors: Record<CharacterName, number> = {

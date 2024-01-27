@@ -9,8 +9,8 @@ export type CharBitmap = [
 	number
 ];
 
-type Bit = 0 | 1;
-type SpriteBitmapByte = [Bit, Bit, Bit, Bit, Bit, Bit, Bit, Bit];
+export type Bit = 0 | 1;
+export type SpriteBitmapByte = [Bit, Bit, Bit, Bit, Bit, Bit, Bit, Bit];
 
 type ColorMode = "single" | "multicolor";
 
