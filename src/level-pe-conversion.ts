@@ -137,8 +137,8 @@ export function levelsToPeFileData(data: {
 				extBgColor1: 0,
 				extBgColor2: 0,
 				extBgColor3: 0,
-				spriteMultiColor1: 1, // White
-				spriteMultiColor2: 2, // Dark red
+				spriteMultiColor1: 2, // Dark red
+				spriteMultiColor2: 1, // White
 				spritesInBorder: "hidden",
 				spritesVisible: true,
 				characterSet: levelIndex + 2, // Take the 2 builtin charsets into account.
