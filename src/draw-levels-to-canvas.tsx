@@ -75,8 +75,8 @@ export function drawLevelsToCanvas(
 
 			for (const monster of level.monsters) {
 				const pixelIndex =
-					Math.floor(monster.spawnPoint.y / 8) * 32 +
-					Math.floor(monster.spawnPoint.x / 8);
+					Math.floor((monster.spawnPoint.y - 41) / 8) * 32 +
+					Math.floor((monster.spawnPoint.x - 20) / 8);
 
 				// Monsters are 2x2 chars large.
 				for (const offset of [0, 1, 32, 33]) {
