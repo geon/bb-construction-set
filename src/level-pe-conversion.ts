@@ -1,7 +1,12 @@
 import { Level } from "./level";
-import { CharBitmap, PeFileData } from "./pe-file";
+import { Bit, CharBitmap, PeFileData } from "./pe-file";
 import { peFileBuiltinCharsets } from "./pe-file-builtin-charsets";
-import { Sprites } from "./sprite";
+import {
+	CharacterName,
+	Sprites,
+	spriteColors,
+	spriteLeftIndex,
+} from "./sprite";
 import { CharsetChar } from "./charset-char";
 
 const emptyChar: CharBitmap = [0, 0, 0, 0, 0, 0, 0, 0];
@@ -147,13 +152,79 @@ export function levelsToPeFileData(data: {
 				// Same for colorData.
 				// Multicolor green for bubbles.
 				colorData: padRight([], 25, padRight([], 40, 13)),
-				sprites: [],
+				sprites: level.monsters.map(
+					(monster): PeFileData["screens"][number]["sprites"][number] => ({
+						setId: 0,
+						uid: getSpriteUid({
+							monsterName: Object.keys(data.sprites)[monster.type + 1],
+							facingLeft: monster.facingLeft,
+						}),
+						x: monster.spawnPoint.x,
+						y: monster.spawnPoint.y,
+						color: Object.values(spriteColors)[monster.type + 1],
+						// palette[Object.values(spriteColors)[monster.type + 1]]
+						expandX: false,
+						expandY: false,
+						priority: "front",
+					})
+				),
 				undoStack: [],
 				redoStack: [],
 			})
 		),
-		spriteSets: [],
+		spriteSets: [
+			{
+				name: "Characters",
+				sprites: Object.entries(data.sprites).flatMap(
+					([
+						monsterName,
+						sprites,
+					]): PeFileData["spriteSets"][number]["sprites"][number][] =>
+						[false, true].map(
+							(
+								facingLeft
+							): PeFileData["spriteSets"][number]["sprites"][number] => ({
+								uid: getSpriteUid({ monsterName, facingLeft }),
+								mode: "multicolor",
+								colorBg: 0,
+								colorSprite:
+									monsterName === "player" && facingLeft
+										? 3 // Cyan for Bob.
+										: spriteColors[monsterName as CharacterName],
+								multiColor1: 2,
+								multiColor2: 1,
+								expandX: false,
+								expandY: false,
+								bitmapData: sprites[
+									facingLeft ? spriteLeftIndex[monsterName as CharacterName] : 0
+								].bitmap.map((byte) => [
+									isBitSet(byte, 0),
+									isBitSet(byte, 1),
+									isBitSet(byte, 2),
+									isBitSet(byte, 3),
+									isBitSet(byte, 4),
+									isBitSet(byte, 5),
+									isBitSet(byte, 6),
+									isBitSet(byte, 7),
+								]),
+							})
+						)
+				),
+				undoStack: [],
+				redoStack: [],
+			},
+		],
 	};
+}
+
+function getSpriteUid({
+	monsterName,
+	facingLeft,
+}: {
+	monsterName: string;
+	facingLeft: boolean;
+}): string {
+	return monsterName + (facingLeft ? "left" : "right");
 }
 
 function makeLevelCharData(level: Level): number[][] {
@@ -259,4 +330,8 @@ function chunk<T>(array: readonly T[], chunkLength: number): T[][] {
 		start += chunkLength;
 	} while (start < array.length);
 	return chunks;
+}
+
+function isBitSet(byte: number, index: number): Bit {
+	return ((byte >> (7 - index)) & 1) as Bit;
 }
