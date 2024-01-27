@@ -90,10 +90,10 @@ export interface PeFileData {
 		sprites: {
 			uid: string;
 			mode: ColorMode;
-			colorBg: 6;
-			colorSprite: 14;
-			multiColor1: 2;
-			multiColor2: 6;
+			colorBg: number;
+			colorSprite: number;
+			multiColor1: number;
+			multiColor2: number;
 			expandX: false;
 			expandY: false;
 			// `bitmapData.length` should be 3*21 = 63.
