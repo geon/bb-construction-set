@@ -19,7 +19,7 @@ const Card = styled.div`
 `;
 
 function App() {
-	const [parsedData, setParsedData] = useState<
+	const [parsedPrgData, setParsedPrgData] = useState<
 		| ({ fileName: string; fileSize: number } & (
 				| { type: "success"; levels: readonly Level[]; sprites: Sprites }
 				| { type: "failed"; error: string }
@@ -31,13 +31,13 @@ function App() {
 
 	const setPrg = async (prg: File | undefined): Promise<void> => {
 		if (!prg) {
-			setParsedData(undefined);
+			setParsedPrgData(undefined);
 			return;
 		}
 
 		try {
 			const parsed = parsePrg(new DataView(await prg.arrayBuffer()));
-			setParsedData({
+			setParsedPrgData({
 				type: "success",
 				...parsed,
 				fileName: prg.name,
@@ -47,7 +47,7 @@ function App() {
 			if (!(error instanceof Error)) {
 				return;
 			}
-			setParsedData({
+			setParsedPrgData({
 				type: "failed",
 				error: error.message,
 				fileName: prg.name,
@@ -62,14 +62,14 @@ function App() {
 				return;
 			}
 
-			if (parsedData?.type !== "success") {
+			if (parsedPrgData?.type !== "success") {
 				clearCanvas(levelsCanvasRef.current);
 				return;
 			}
 
-			drawLevelsToCanvas(parsedData.levels, levelsCanvasRef.current);
+			drawLevelsToCanvas(parsedPrgData.levels, levelsCanvasRef.current);
 		})();
-	}, [parsedData, levelsCanvasRef.current]);
+	}, [parsedPrgData, levelsCanvasRef.current]);
 
 	return (
 		<>
@@ -87,29 +87,35 @@ function App() {
 					type="file"
 					onChange={(event) => setPrg(event.target.files?.[0])}
 				/>
-				{!parsedData ? (
+				{!parsedPrgData ? (
 					<p>No prg selected.</p>
-				) : parsedData?.type !== "success" ? (
-					<p>Could not parse prg: {parsedData?.error ?? "No reason."}</p>
+				) : parsedPrgData?.type !== "success" ? (
+					<p>Could not parse prg: {parsedPrgData?.error ?? "No reason."}</p>
 				) : (
 					<>
 						<p>
-							{`${parsedData.fileName}, ${Math.round(
-								parsedData.fileSize / 1024
+							{`${parsedPrgData.fileName}, ${Math.round(
+								parsedPrgData.fileSize / 1024
 							)} kB`}
 							<br />
-							{parsedData.levels.filter((level) => !level.isSymmetric).length}/
-							{maxAsymmetric} are asymmetric
+							{
+								parsedPrgData.levels.filter((level) => !level.isSymmetric)
+									.length
+							}
+							/{maxAsymmetric} are asymmetric
 							<br />
-							{parsedData.levels.filter((level) => level.sidebarChars).length}/
-							{maxSidebars} have side decor
+							{
+								parsedPrgData.levels.filter((level) => level.sidebarChars)
+									.length
+							}
+							/{maxSidebars} have side decor
 						</p>
 						<canvas ref={levelsCanvasRef} />
 						<br />
 						<BlobDownloadButton
 							getBlob={() =>
 								new Blob(
-									[serializePeFileData(levelsToPeFileData(parsedData))],
+									[serializePeFileData(levelsToPeFileData(parsedPrgData))],
 									{
 										type: "application/json",
 									}
