@@ -118,32 +118,10 @@ function App() {
 					</p>
 					<canvas ref={levelsCanvasRef} />
 					<br />
-					<CanvasDownloadButton
-						canvasRef={levelsCanvasRef}
-						label="Download Image"
-						fileName="bubble bobble c64 - all levels.png"
-					/>
-					<br />
-					<br />
 					<canvas ref={platformCharsCanvasRef} />
-					<br />
-					<CanvasDownloadButton
-						canvasRef={platformCharsCanvasRef}
-						label="Download Image"
-						fileName="bubble bobble c64 - all platform chars.png"
-					/>
-					<br />
 					<br />
 					<canvas ref={spriteCanvasRef} />
 					<br />
-					<CanvasDownloadButton
-						canvasRef={spriteCanvasRef}
-						label="Download Image"
-						fileName="bubble bobble c64 - all sprites.png"
-					/>
-					<br />
-					<br />
-
 					<BlobDownloadButton
 						getBlob={() =>
 							new Blob([serializePeFileData(levelsToPeFileData(parsedData))], {
@@ -156,28 +134,6 @@ function App() {
 				</>
 			)}
 		</>
-	);
-}
-
-function CanvasDownloadButton(props: {
-	canvasRef: React.RefObject<HTMLCanvasElement>;
-	label: string;
-	fileName: string;
-}) {
-	return (
-		<input
-			type="button"
-			onClick={() => {
-				if (!props.canvasRef.current) {
-					return;
-				}
-				var link = document.createElement("a");
-				link.download = props.fileName;
-				link.href = props.canvasRef.current.toDataURL();
-				link.click();
-			}}
-			value={props.label}
-		/>
 	);
 }
 
