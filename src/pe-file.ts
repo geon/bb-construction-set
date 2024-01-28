@@ -107,3 +107,35 @@ export interface PeFileData {
 export function serializePeFileData(data: PeFileData): string {
 	return JSON.stringify({ app: "PETSCII Editor", data: JSON.stringify(data) });
 }
+
+function unmangle(mangledString: string): string {
+	const mangledCharArray = mangledString.split("");
+
+	const dictionary: Record<number, string> = {};
+	let nextFreeDictionaryEntry = 256;
+
+	let currentMangledChar = mangledCharArray[0];
+	const unmangledCharArray = [currentMangledChar];
+	let lastUnmangledChar = currentMangledChar;
+	for (const char of mangledCharArray.slice(1)) {
+		var charCode = char.charCodeAt(0);
+		const unmangledChar =
+			256 > charCode
+				? char
+				: dictionary[charCode]
+				? dictionary[charCode]
+				: lastUnmangledChar + currentMangledChar;
+		unmangledCharArray.push(unmangledChar);
+		currentMangledChar = unmangledChar.charAt(0);
+		dictionary[nextFreeDictionaryEntry] =
+			lastUnmangledChar + currentMangledChar;
+		nextFreeDictionaryEntry++;
+		lastUnmangledChar = unmangledChar;
+	}
+
+	return unmangledCharArray.join("");
+}
+
+export function deserializePeFileData(data: string): PeFileData {
+	return JSON.parse(unmangle(JSON.parse(data).data));
+}

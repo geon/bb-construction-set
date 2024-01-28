@@ -20,7 +20,6 @@ export interface Level {
 	// Should be exactly `numTiles` entries.
 	tiles: Array<boolean>;
 	isSymmetric: boolean;
-	fgColor: number;
 	bgColorLight: number;
 	bgColorDark: number;
 	platformChar: CharsetChar;
@@ -32,7 +31,6 @@ export function createLevel(): Level {
 	return {
 		tiles: Array(numTiles).fill(false),
 		isSymmetric: true,
-		fgColor: 0,
 		bgColorLight: 0,
 		bgColorDark: 0,
 		platformChar: {

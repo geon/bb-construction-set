@@ -1,6 +1,6 @@
-type CharsetCharColor = 0 | 1 | 2 | 3;
+export type CharsetCharColor = 0 | 1 | 2 | 3;
 
-type CharsetCharLine = [
+export type CharsetCharLine = [
 	CharsetCharColor,
 	CharsetCharColor,
 	CharsetCharColor,
