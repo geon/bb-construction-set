@@ -1,11 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import { parsePrg } from "./parse-prg";
-import {
-	drawLevelsToCanvas,
-	drawPlatformCharsToCanvas,
-	drawSpritesToCanvas,
-} from "./draw-levels-to-canvas";
+import { drawLevelsToCanvas } from "./draw-levels-to-canvas";
 import { clearCanvas } from "./draw-levels-to-canvas";
 import { Level, maxAsymmetric, maxSidebars } from "./level";
 import { Sprites } from "./sprite";
@@ -22,8 +18,6 @@ function App() {
 	>(undefined);
 
 	const levelsCanvasRef = useRef<HTMLCanvasElement>(null);
-	const platformCharsCanvasRef = useRef<HTMLCanvasElement>(null);
-	const spriteCanvasRef = useRef<HTMLCanvasElement>(null);
 
 	const setPrg = async (prg: File | undefined): Promise<void> => {
 		if (!prg) {
@@ -54,36 +48,18 @@ function App() {
 
 	useEffect(() => {
 		(async () => {
-			if (
-				!(
-					levelsCanvasRef.current &&
-					platformCharsCanvasRef.current &&
-					spriteCanvasRef.current
-				)
-			) {
+			if (!levelsCanvasRef.current) {
 				return;
 			}
 
 			if (parsedData?.type !== "success") {
 				clearCanvas(levelsCanvasRef.current);
-				clearCanvas(platformCharsCanvasRef.current);
-				clearCanvas(spriteCanvasRef.current);
 				return;
 			}
 
 			drawLevelsToCanvas(parsedData.levels, levelsCanvasRef.current);
-			drawPlatformCharsToCanvas(
-				parsedData.levels,
-				platformCharsCanvasRef.current
-			);
-			drawSpritesToCanvas(parsedData.sprites, spriteCanvasRef.current);
 		})();
-	}, [
-		parsedData,
-		levelsCanvasRef.current,
-		platformCharsCanvasRef.current,
-		spriteCanvasRef.current,
-	]);
+	}, [parsedData, levelsCanvasRef.current]);
 
 	return (
 		<>
@@ -117,10 +93,6 @@ function App() {
 						{maxSidebars} have side decor
 					</p>
 					<canvas ref={levelsCanvasRef} />
-					<br />
-					<canvas ref={platformCharsCanvasRef} />
-					<br />
-					<canvas ref={spriteCanvasRef} />
 					<br />
 					<BlobDownloadButton
 						getBlob={() =>
