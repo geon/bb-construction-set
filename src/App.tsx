@@ -27,8 +27,6 @@ function App() {
 		| undefined
 	>(undefined);
 
-	const levelsCanvasRef = useRef<HTMLCanvasElement>(null);
-
 	const setPrg = async (prg: File | undefined): Promise<void> => {
 		if (!prg) {
 			setParsedPrgData(undefined);
@@ -55,6 +53,8 @@ function App() {
 			});
 		}
 	};
+
+	const levelsCanvasRef = useRef<HTMLCanvasElement>(null);
 
 	useEffect(() => {
 		(async () => {
