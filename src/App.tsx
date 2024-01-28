@@ -75,6 +75,7 @@ function App() {
 		<>
 			<h1>BB Construction Set</h1>
 			<Card>
+				<h2>Select a prg-file</h2>
 				<p>
 					Select an <i>unpacked</i> c64 .prg-file containing Bubble Bobble. Most
 					.prg files you find will be <i>packed</i> and the c64 unpacks them on
@@ -114,7 +115,7 @@ function App() {
 									}
 								)
 							}
-							label="Download PE-file"
+							label="Download PETSCII Editor file."
 							fileName="bubble bobble c64 - all levels.pe"
 						/>
 					</>
