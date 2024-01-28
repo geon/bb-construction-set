@@ -5,8 +5,8 @@ import { drawLevelsToCanvas } from "./draw-levels-to-canvas";
 import { clearCanvas } from "./draw-levels-to-canvas";
 import { Level, maxAsymmetric, maxSidebars } from "./level";
 import { Sprites } from "./sprite";
-import { levelsToPeFileData } from "./level-pe-conversion";
-import { serializePeFileData } from "./pe-file";
+import { levelsToPeFileData, peFileDataToLevels } from "./level-pe-conversion";
+import { deserializePeFileData, serializePeFileData } from "./pe-file";
 import styled from "styled-components";
 
 const Card = styled.div`
@@ -16,6 +16,8 @@ const Card = styled.div`
 
 	max-width: 600px;
 	padding: 1em;
+
+	margin-top: 2em;
 `;
 
 function App() {
@@ -26,7 +28,6 @@ function App() {
 		  ))
 		| undefined
 	>(undefined);
-
 	const setPrg = async (prg: File | undefined): Promise<void> => {
 		if (!prg) {
 			setParsedPrgData(undefined);
@@ -70,6 +71,62 @@ function App() {
 			drawLevelsToCanvas(parsedPrgData.levels, prgLevelsCanvasRef.current);
 		})();
 	}, [parsedPrgData, prgLevelsCanvasRef.current]);
+
+	const [parsedPeData, setParsedPeData] = useState<
+		| ({ fileName: string; fileSize: number } & (
+				| { type: "success"; levels: readonly Level[] }
+				| { type: "failed"; error: string }
+		  ))
+		| undefined
+	>(undefined);
+
+	const setPe = async (pe: File | undefined): Promise<void> => {
+		if (!pe) {
+			setParsedPeData(undefined);
+			return;
+		}
+
+		try {
+			const levels = peFileDataToLevels(
+				deserializePeFileData(
+					new TextDecoder("utf-8").decode(await pe.arrayBuffer())
+				)
+			);
+			setParsedPeData({
+				type: "success",
+				levels,
+				fileName: pe.name,
+				fileSize: pe.size,
+			});
+		} catch (error: unknown) {
+			if (!(error instanceof Error)) {
+				return;
+			}
+			setParsedPeData({
+				type: "failed",
+				error: error.message,
+				fileName: pe.name,
+				fileSize: pe.size,
+			});
+		}
+	};
+
+	const peLevelsCanvasRef = useRef<HTMLCanvasElement>(null);
+
+	useEffect(() => {
+		(async () => {
+			if (!peLevelsCanvasRef.current) {
+				return;
+			}
+
+			if (parsedPeData?.type !== "success") {
+				clearCanvas(peLevelsCanvasRef.current);
+				return;
+			}
+
+			drawLevelsToCanvas(parsedPeData.levels, peLevelsCanvasRef.current);
+		})();
+	}, [parsedPeData, peLevelsCanvasRef.current]);
 
 	return (
 		<>
@@ -121,9 +178,41 @@ function App() {
 									}
 								)
 							}
-							label="Download PETSCII Editor file."
+							label="Download PETSCII Editor file"
 							fileName="bubble bobble c64 - all levels.pe"
 						/>
+					</>
+				)}
+			</Card>
+			<Card>
+				<h2>Select a PETSCII Editor-file</h2>
+				<p>
+					Save the file generated above, then edit it in the{" "}
+					<a href="https://petscii.krissz.hu">PETSCII Editor web app</a>, save
+					it and select it here.
+				</p>
+				<input
+					type="file"
+					onChange={(event) => setPe(event.target.files?.[0])}
+				/>
+				{!parsedPeData ? (
+					<p>No pe selected.</p>
+				) : parsedPeData?.type !== "success" ? (
+					<p>Could not parse pe: {parsedPeData?.error ?? "No reason."}</p>
+				) : (
+					<>
+						<p>
+							{`${parsedPeData.fileName}, ${Math.round(
+								parsedPeData.fileSize / 1024
+							)} kB`}
+							<br />
+							{parsedPeData.levels.filter((level) => !level.isSymmetric).length}
+							/{maxAsymmetric} are asymmetric
+							<br />
+							{parsedPeData.levels.filter((level) => level.sidebarChars).length}
+							/{maxSidebars} have side decor
+						</p>
+						<canvas ref={peLevelsCanvasRef} />
 					</>
 				)}
 			</Card>

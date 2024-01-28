@@ -1,13 +1,14 @@
-import { Level } from "./level";
+import { Level, Monster, levelWidth } from "./level";
 import { Bit, CharBitmap, PeFileData } from "./pe-file";
 import { peFileBuiltinCharsets } from "./pe-file-builtin-charsets";
 import {
 	CharacterName,
 	Sprites,
 	spriteColors,
+	spriteCounts,
 	spriteLeftIndex,
 } from "./sprite";
-import { CharsetChar } from "./charset-char";
+import { CharsetChar, CharsetCharLine } from "./charset-char";
 
 const emptyChar: CharBitmap = [0, 0, 0, 0, 0, 0, 0, 0];
 
@@ -224,7 +225,15 @@ function getSpriteUid({
 	monsterName: string;
 	facingLeft: boolean;
 }): string {
-	return monsterName + (facingLeft ? "left" : "right");
+	return monsterName + ":" + (facingLeft ? "left" : "right");
+}
+
+function parseSpriteUid(uid: string): {
+	monsterName: string;
+	facingLeft: boolean;
+} {
+	const parts = uid.split(":");
+	return { monsterName: parts[0], facingLeft: parts[1] === "true" };
 }
 
 function makeLevelCharData(level: Level): number[][] {
@@ -334,4 +343,71 @@ function chunk<T>(array: readonly T[], chunkLength: number): T[][] {
 
 function isBitSet(byte: number, index: number): Bit {
 	return ((byte >> (7 - index)) & 1) as Bit;
+}
+
+function rowIsSymmetric(row: boolean[]): boolean {
+	for (let index = 0; index < 16; ++index) {
+		if (row[index] !== row[31 - index]) {
+			return false;
+		}
+	}
+	return true;
+}
+
+export function peFileDataToLevels(peFileData: PeFileData): Level[] {
+	const charsets = peFileData.charsets.map((peCharset) =>
+		peCharset.bitmaps.map(
+			(bitmap) =>
+				({
+					lines: bitmap.map(
+						(line) =>
+							[
+								(line >> 6) & 0b11,
+								(line >> 4) & 0b11,
+								(line >> 2) & 0b11,
+								(line >> 0) & 0b11,
+							] as CharsetCharLine
+					),
+				} as CharsetChar)
+		)
+	);
+
+	const solidTiles = new Set([1, 16, 17, 32, 33]);
+	return peFileData.screens.map((screen): Level => {
+		const rows = screen.charData.map((row) =>
+			row.slice(0, 32).map((char) => solidTiles.has(char))
+		);
+		const tiles = rows.flat();
+		const isSymmetric = rows.every(rowIsSymmetric);
+
+		const charset = charsets[screen.characterSet];
+		const platformChar = charset[1];
+		const sidebarChars: Level["sidebarChars"] = [
+			charset[16],
+			charset[17],
+			charset[32],
+			charset[33],
+		];
+
+		const monsters = screen.sprites
+			.map((sprite): Monster => {
+				const { monsterName, facingLeft } = parseSpriteUid(sprite.uid);
+				return {
+					type: Object.keys(spriteCounts).indexOf(monsterName) - 1,
+					spawnPoint: { x: sprite.x, y: sprite.y },
+					facingLeft,
+				};
+			})
+			.filter((monster) => monster.type !== -1);
+
+		return {
+			tiles,
+			isSymmetric,
+			bgColorLight: screen.multiColor2,
+			bgColorDark: screen.multiColor1,
+			platformChar,
+			sidebarChars,
+			monsters,
+		};
+	});
 }
