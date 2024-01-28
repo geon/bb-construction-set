@@ -54,22 +54,22 @@ function App() {
 		}
 	};
 
-	const levelsCanvasRef = useRef<HTMLCanvasElement>(null);
+	const prgLevelsCanvasRef = useRef<HTMLCanvasElement>(null);
 
 	useEffect(() => {
 		(async () => {
-			if (!levelsCanvasRef.current) {
+			if (!prgLevelsCanvasRef.current) {
 				return;
 			}
 
 			if (parsedPrgData?.type !== "success") {
-				clearCanvas(levelsCanvasRef.current);
+				clearCanvas(prgLevelsCanvasRef.current);
 				return;
 			}
 
-			drawLevelsToCanvas(parsedPrgData.levels, levelsCanvasRef.current);
+			drawLevelsToCanvas(parsedPrgData.levels, prgLevelsCanvasRef.current);
 		})();
-	}, [parsedPrgData, levelsCanvasRef.current]);
+	}, [parsedPrgData, prgLevelsCanvasRef.current]);
 
 	return (
 		<>
@@ -110,7 +110,7 @@ function App() {
 							}
 							/{maxSidebars} have side decor
 						</p>
-						<canvas ref={levelsCanvasRef} />
+						<canvas ref={prgLevelsCanvasRef} />
 						<br />
 						<BlobDownloadButton
 							getBlob={() =>
