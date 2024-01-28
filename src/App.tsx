@@ -7,6 +7,16 @@ import { Level, maxAsymmetric, maxSidebars } from "./level";
 import { Sprites } from "./sprite";
 import { levelsToPeFileData } from "./level-pe-conversion";
 import { serializePeFileData } from "./pe-file";
+import styled from "styled-components";
+
+const Card = styled.div`
+	background: white;
+	box-shadow: 0px 2px 5px #00000066;
+	border-radius: 5px;
+
+	max-width: 600px;
+	padding: 1em;
+`;
 
 function App() {
 	const [parsedData, setParsedData] = useState<
@@ -64,47 +74,52 @@ function App() {
 	return (
 		<>
 			<h1>BB Construction Set</h1>
-			<p>
-				Select an <i>unpacked</i> c64 .prg-file containing Bubble Bobble. Most
-				.prg files you find will be <i>packed</i> and the c64 unpacks them on
-				startup. You can use{" "}
-				<a href="https://csdb.dk/release/?id=235681">Unp64</a> to unpack some of
-				them.
-			</p>
-			<input
-				type="file"
-				onChange={(event) => setPrg(event.target.files?.[0])}
-			/>
-			{!parsedData ? (
-				<p>No prg selected.</p>
-			) : parsedData?.type !== "success" ? (
-				<p>Could not parse prg: {parsedData?.error ?? "No reason."}</p>
-			) : (
-				<>
-					<p>
-						{`${parsedData.fileName}, ${Math.round(
-							parsedData.fileSize / 1024
-						)} kB`}
+			<Card>
+				<p>
+					Select an <i>unpacked</i> c64 .prg-file containing Bubble Bobble. Most
+					.prg files you find will be <i>packed</i> and the c64 unpacks them on
+					startup. You can use{" "}
+					<a href="https://csdb.dk/release/?id=235681">Unp64</a> to unpack some
+					of them.
+				</p>
+				<input
+					type="file"
+					onChange={(event) => setPrg(event.target.files?.[0])}
+				/>
+				{!parsedData ? (
+					<p>No prg selected.</p>
+				) : parsedData?.type !== "success" ? (
+					<p>Could not parse prg: {parsedData?.error ?? "No reason."}</p>
+				) : (
+					<>
+						<p>
+							{`${parsedData.fileName}, ${Math.round(
+								parsedData.fileSize / 1024
+							)} kB`}
+							<br />
+							{parsedData.levels.filter((level) => !level.isSymmetric).length}/
+							{maxAsymmetric} are asymmetric
+							<br />
+							{parsedData.levels.filter((level) => level.sidebarChars).length}/
+							{maxSidebars} have side decor
+						</p>
+						<canvas ref={levelsCanvasRef} />
 						<br />
-						{parsedData.levels.filter((level) => !level.isSymmetric).length}/
-						{maxAsymmetric} are asymmetric
-						<br />
-						{parsedData.levels.filter((level) => level.sidebarChars).length}/
-						{maxSidebars} have side decor
-					</p>
-					<canvas ref={levelsCanvasRef} />
-					<br />
-					<BlobDownloadButton
-						getBlob={() =>
-							new Blob([serializePeFileData(levelsToPeFileData(parsedData))], {
-								type: "application/json",
-							})
-						}
-						label="Download PE-file"
-						fileName="bubble bobble c64 - all levels.pe"
-					/>
-				</>
-			)}
+						<BlobDownloadButton
+							getBlob={() =>
+								new Blob(
+									[serializePeFileData(levelsToPeFileData(parsedData))],
+									{
+										type: "application/json",
+									}
+								)
+							}
+							label="Download PE-file"
+							fileName="bubble bobble c64 - all levels.pe"
+						/>
+					</>
+				)}
+			</Card>
 		</>
 	);
 }
