@@ -1,4 +1,4 @@
-import { Level, Monster, levelWidth } from "./level";
+import { Level, Monster, levelIsSymmetric } from "./level";
 import { Bit, CharBitmap, PeFileData } from "./pe-file";
 import { peFileBuiltinCharsets } from "./pe-file-builtin-charsets";
 import {
@@ -343,24 +343,6 @@ function chunk<T>(array: readonly T[], chunkLength: number): T[][] {
 
 function isBitSet(byte: number, index: number): Bit {
 	return ((byte >> (7 - index)) & 1) as Bit;
-}
-
-function rowIsSymmetric(row: boolean[]): boolean {
-	for (let index = 0; index < 16; ++index) {
-		if (row[index] !== row[31 - index]) {
-			return false;
-		}
-	}
-	return true;
-}
-
-function levelIsSymmetric(tiles: boolean[]) {
-	for (let rowIndex = 1; rowIndex < 24; ++rowIndex) {
-		if (!rowIsSymmetric(tiles.slice(rowIndex * 32, (rowIndex + 1) * 32))) {
-			return false;
-		}
-	}
-	return true;
 }
 
 export function peFileDataToLevels(peFileData: PeFileData): Level[] {

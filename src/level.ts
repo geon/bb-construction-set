@@ -48,3 +48,21 @@ export function createLevel(): Level {
 		monsters: [],
 	};
 }
+
+function rowIsSymmetric(row: boolean[]): boolean {
+	for (let index = 0; index < 16; ++index) {
+		if (row[index] !== row[31 - index]) {
+			return false;
+		}
+	}
+	return true;
+}
+
+export function levelIsSymmetric(tiles: boolean[]) {
+	for (let rowIndex = 1; rowIndex < 24; ++rowIndex) {
+		if (!rowIsSymmetric(tiles.slice(rowIndex * 32, (rowIndex + 1) * 32))) {
+			return false;
+		}
+	}
+	return true;
+}
