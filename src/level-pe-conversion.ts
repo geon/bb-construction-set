@@ -1,4 +1,4 @@
-import { Level, Monster, levelIsSymmetric } from "./level";
+import { Level, Monster } from "./level";
 import { Bit, CharBitmap, PeFileData } from "./pe-file";
 import { peFileBuiltinCharsets } from "./pe-file-builtin-charsets";
 import {
@@ -369,7 +369,6 @@ export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 			row.slice(0, 32).map((char) => solidTiles.has(char))
 		);
 		const tiles = rows.flat();
-		const isSymmetric = levelIsSymmetric(tiles);
 
 		const charset = charsets[screen.characterSet];
 		const platformChar = charset[1];
@@ -393,7 +392,6 @@ export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 
 		return {
 			tiles,
-			isSymmetric,
 			bgColorLight: screen.multiColor2,
 			bgColorDark: screen.multiColor1,
 			platformChar,

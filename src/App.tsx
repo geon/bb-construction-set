@@ -3,7 +3,7 @@ import "./App.css";
 import { parsePrg } from "./parse-prg";
 import { drawLevelsToCanvas } from "./draw-levels-to-canvas";
 import { clearCanvas } from "./draw-levels-to-canvas";
-import { Level, maxAsymmetric, maxSidebars } from "./level";
+import { Level, levelIsSymmetric, maxAsymmetric, maxSidebars } from "./level";
 import { Sprites } from "./sprite";
 import { levelsToPeFileData, peFileDataToLevels } from "./level-pe-conversion";
 import { deserializePeFileData, serializePeFileData } from "./pe-file";
@@ -156,8 +156,9 @@ function App() {
 							)} kB`}
 							<br />
 							{
-								parsedPrgData.levels.filter((level) => !level.isSymmetric)
-									.length
+								parsedPrgData.levels.filter(
+									(level) => !levelIsSymmetric(level.tiles)
+								).length
 							}
 							/{maxAsymmetric} are asymmetric
 							<br />
@@ -206,7 +207,11 @@ function App() {
 								parsedPeData.fileSize / 1024
 							)} kB`}
 							<br />
-							{parsedPeData.levels.filter((level) => !level.isSymmetric).length}
+							{
+								parsedPeData.levels.filter(
+									(level) => !levelIsSymmetric(level.tiles)
+								).length
+							}
 							/{maxAsymmetric} are asymmetric
 							<br />
 							{parsedPeData.levels.filter((level) => level.sidebarChars).length}
