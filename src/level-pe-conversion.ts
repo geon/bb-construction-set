@@ -354,6 +354,15 @@ function rowIsSymmetric(row: boolean[]): boolean {
 	return true;
 }
 
+function levelIsSymmetric(tiles: boolean[]) {
+	for (let rowIndex = 1; rowIndex < 24; ++rowIndex) {
+		if (!rowIsSymmetric(tiles.slice(rowIndex * 32, (rowIndex + 1) * 32))) {
+			return false;
+		}
+	}
+	return true;
+}
+
 export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 	const charsets = peFileData.charsets.map((peCharset) =>
 		peCharset.bitmaps.map(
@@ -378,7 +387,7 @@ export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 			row.slice(0, 32).map((char) => solidTiles.has(char))
 		);
 		const tiles = rows.flat();
-		const isSymmetric = rows.every(rowIsSymmetric);
+		const isSymmetric = levelIsSymmetric(tiles);
 
 		const charset = charsets[screen.characterSet];
 		const platformChar = charset[1];
