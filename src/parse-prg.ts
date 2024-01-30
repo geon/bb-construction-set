@@ -135,10 +135,10 @@ function readLevel(
 		currentSidebarAddress += 4 * 8; // 4 chars of 8 bytes each.
 	}
 
-	level.isSymmetric = isBitSet(symmetryMetadata, 0);
+	const isSymmetric = isBitSet(symmetryMetadata, 0);
 
-	readTileBitmap(curentBitmapByteAddress, getByte, level, level.isSymmetric);
-	curentBitmapByteAddress += (level.isSymmetric ? 2 : 4) * 23; // 23 lines of 2 or 4 bytes.
+	readTileBitmap(curentBitmapByteAddress, getByte, level, isSymmetric);
+	curentBitmapByteAddress += (isSymmetric ? 2 : 4) * 23; // 23 lines of 2 or 4 bytes.
 
 	// Fill in the sides.
 	fillInTileBitmapSides(level);
