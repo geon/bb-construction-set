@@ -1,5 +1,14 @@
 import { readCharsetChar } from "./charset-char";
-import { Level, Monster, createLevel, levelHeight, levelWidth } from "./level";
+import {
+	Level,
+	Monster,
+	createLevel,
+	levelHeight,
+	levelIsSymmetric,
+	levelWidth,
+	maxAsymmetric,
+	maxSidebars,
+} from "./level";
 import { Sprite, Sprites, numSpriteBytes, spriteCounts } from "./sprite";
 
 function getPrgStartAddress(prg: DataView): number {
@@ -18,6 +27,19 @@ function getPrgByteAtAddress(
 		throw new Error("File is too short.");
 	}
 	return prg.getUint8(offset);
+}
+
+function setPrgByteAtAddress(
+	prg: Uint8Array,
+	startAddres: number,
+	address: number,
+	value: number
+): number {
+	const offset = 2 - startAddres + address;
+	if (offset >= prg.byteLength) {
+		throw new Error("File is too short.");
+	}
+	return (prg[offset] = value);
 }
 
 function isBitSet(byte: number, bitIndex: number): boolean {
@@ -271,4 +293,149 @@ function readSprite(
 	return {
 		bitmap,
 	};
+}
+
+export function patchPrg(prg: Uint8Array, levels: readonly Level[]) {
+	if (levels.length !== 100) {
+		throw new Error(`Wrong number of levels: ${levels.length}. Should be 100.`);
+	}
+	const asymmetricLevels = levels.filter(
+		(level) => !levelIsSymmetric(level.tiles)
+	);
+	if (asymmetricLevels.length > maxAsymmetric) {
+		throw new Error(
+			`Too many asymmetric levels: ${asymmetricLevels.length}. Should be max ${maxAsymmetric}.`
+		);
+	}
+	const sidebarLevels = levels.filter((level) => !!level.sidebarChars);
+	if (sidebarLevels.length > maxSidebars) {
+		throw new Error(
+			`Too many levels with sidebar graphics: ${sidebarLevels.length}. Should be max ${maxSidebars}.`
+		);
+	}
+
+	const startAddres = getPrgStartAddress(new DataView(prg.buffer));
+	const setByte = (address: number, value: number) =>
+		setPrgByteAtAddress(prg, startAddres, address, value);
+	const setBytes = (address: number, bytes: number[]) => {
+		let currentAddress = address;
+		for (const byte of bytes) {
+			setByte(currentAddress, byte);
+			++currentAddress;
+		}
+	};
+
+	// Write platform chars.
+	setBytes(
+		platformCharArrayAddress,
+		levels.flatMap((level) =>
+			level.platformChar.lines.map(
+				(line) =>
+					(line[0] << 6) + (line[1] << 4) + (line[2] << 2) + (line[3] << 0)
+			)
+		)
+	);
+
+	// Write sidebar chars.
+	setBytes(
+		sidebarCharArrayAddress,
+		levels.flatMap(
+			(level) =>
+				level.sidebarChars?.flatMap((char) =>
+					char.lines.map(
+						(line) =>
+							(line[0] << 6) + (line[1] << 4) + (line[2] << 2) + (line[3] << 0)
+					)
+				) ?? []
+		)
+	);
+
+	// Write level colors.
+	setBytes(
+		bgColorMetadataArrayAddress,
+		levels.map((level) => level.bgColorLight + (level.bgColorDark << 4))
+	);
+
+	// Buggy. Levels turn black.
+	// // Write holes.
+	// for (const [levelIndex, level] of levels.entries()) {
+	// 	const topLeft = !level.tiles[10];
+	// 	const topRight = !level.tiles[20];
+	// 	const bottomLeft = !level.tiles[10 + 32 * 24];
+	// 	const bottomRight = !level.tiles[20 + 32 * 24];
+	// 	setByte(
+	// 		bgColorMetadataArrayAddress + levelIndex,
+	// 		(topLeft ? 1 << 0 : 0) +
+	// 			(topRight ? 1 << 1 : 0) +
+	// 			(bottomLeft ? 1 << 2 : 0) +
+	// 			(bottomRight ? 1 << 3 : 0)
+	// 	);
+	// }
+
+	// Write symmetry.
+	setBytes(
+		symmetryMetadataArrayAddress,
+		levels.map(
+			(level) =>
+				((levelIsSymmetric(level.tiles) ? 1 : 0) << 7) +
+				((level.sidebarChars ? 1 : 0) << 6)
+		)
+	);
+
+	// Write platforms bitmap
+	const levelBitmapBytes = levels.flatMap((level) => {
+		const isSymmetric = levelIsSymmetric(level.tiles);
+
+		const rows = [];
+		for (let rowIndex = 1; rowIndex < 24; ++rowIndex) {
+			rows.push(
+				level.tiles.slice(
+					rowIndex * 32,
+					rowIndex * 32 + (isSymmetric ? 16 : 32)
+				)
+			);
+		}
+		const tiles = rows.flat();
+
+		const byteBits = [];
+		for (let tileIndex = 0; tileIndex < tiles.length; tileIndex += 8) {
+			byteBits.push(tiles.slice(tileIndex, tileIndex + 8));
+		}
+
+		const bytes = byteBits.map(
+			(bits) =>
+				((bits[0] ? 1 : 0) << 7) +
+				((bits[1] ? 1 : 0) << 6) +
+				((bits[2] ? 1 : 0) << 5) +
+				((bits[3] ? 1 : 0) << 4) +
+				((bits[4] ? 1 : 0) << 3) +
+				((bits[5] ? 1 : 0) << 2) +
+				((bits[6] ? 1 : 0) << 1) +
+				((bits[7] ? 1 : 0) << 0)
+		);
+
+		return bytes;
+	});
+	const maxLevelBytes = 46 * 100 + 46 * maxAsymmetric;
+	if (levelBitmapBytes.length > maxLevelBytes) {
+		throw new Error("Too many level bytes.");
+	}
+	setBytes(bitmapArrayAddress, levelBitmapBytes);
+
+	// // Buggy. Only one monster.
+	// // Write monsters.
+	// const monsterBytes = levels
+	// 	.flatMap((level) =>
+	// 		level.monsters
+	// 			.map((monster) => {
+	// 				return [
+	// 					((monster.spawnPoint.x - 20) & 0b11111000) + monster.type,
+	// 					(monster.spawnPoint.y - 21) & 0b11111110,
+	// 					(monster.facingLeft ? 1 : 0) << 7,
+	// 				];
+	// 			})
+	// 			.map((monsterBytes) => [...monsterBytes, 0])
+	// 	)
+	// 	.flat();
+	// setBytes(monsterArrayAddress, monsterBytes);
 }

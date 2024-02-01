@@ -395,7 +395,16 @@ export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 			bgColorLight: screen.multiColor2,
 			bgColorDark: screen.multiColor1,
 			platformChar,
-			sidebarChars,
+			sidebarChars: sidebarChars.some((char) =>
+				char.lines.some((line, lineIndex) =>
+					line.some(
+						(pixel, pixelIndex) =>
+							pixel !== platformChar.lines[lineIndex][pixelIndex]
+					)
+				)
+			)
+				? sidebarChars
+				: undefined,
 			monsters,
 		};
 	});

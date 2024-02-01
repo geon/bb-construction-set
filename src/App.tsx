@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
-import { parsePrg } from "./parse-prg";
+import { parsePrg, patchPrg } from "./parse-prg";
 import { drawLevelsToCanvas } from "./draw-levels-to-canvas";
 import { clearCanvas } from "./draw-levels-to-canvas";
 import { Level, levelIsSymmetric, maxAsymmetric, maxSidebars } from "./level";
@@ -23,7 +23,12 @@ const Card = styled.div`
 function App() {
 	const [parsedPrgData, setParsedPrgData] = useState<
 		| ({ fileName: string; fileSize: number } & (
-				| { type: "success"; levels: readonly Level[]; sprites: Sprites }
+				| {
+						type: "success";
+						prg: DataView;
+						levels: readonly Level[];
+						sprites: Sprites;
+				  }
 				| { type: "failed"; error: string }
 		  ))
 		| undefined
@@ -35,9 +40,11 @@ function App() {
 		}
 
 		try {
-			const parsed = parsePrg(new DataView(await prg.arrayBuffer()));
+			const dataView = new DataView(await prg.arrayBuffer());
+			const parsed = parsePrg(dataView);
 			setParsedPrgData({
 				type: "success",
+				prg: dataView,
 				...parsed,
 				fileName: prg.name,
 				fileSize: prg.size,
@@ -218,6 +225,35 @@ function App() {
 							/{maxSidebars} have side decor
 						</p>
 						<canvas ref={peLevelsCanvasRef} />
+					</>
+				)}
+			</Card>
+			<Card>
+				<h2>Patch</h2>
+				{!(parsedPrgData && parsedPeData) ? (
+					<p>Select both a prg and a pe file.</p>
+				) : !(
+						parsedPrgData?.type == "success" && parsedPeData?.type == "success"
+				  ) ? (
+					<p>Select valid files.</p>
+				) : (
+					<>
+						<BlobDownloadButton
+							getBlob={() => {
+								const prg = new Uint8Array(parsedPrgData.prg.buffer.slice(0));
+								try {
+									patchPrg(prg, parsedPeData.levels);
+									return new Blob([prg], {
+										type: "application/octet-stream",
+									});
+								} catch (error) {
+									// setPatchError(error.message);
+									throw error;
+								}
+							}}
+							label="Download patched prg"
+							fileName="custom bubble bobble.prg"
+						/>
 					</>
 				)}
 			</Card>
