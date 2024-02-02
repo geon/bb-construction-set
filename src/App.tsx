@@ -234,8 +234,6 @@ function Levels(props: {
 	return (
 		<>
 			<p>
-				{`${props.fileName}, ${Math.round(props.fileSize / 1024)} kB`}
-				<br />
 				{props.levels.filter((level) => !levelIsSymmetric(level.tiles)).length}/
 				{maxAsymmetric} are asymmetric
 				<br />
