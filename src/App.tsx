@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import { parsePrg, patchPrg } from "./parse-prg";
 import { drawLevelsToCanvas } from "./draw-levels-to-canvas";
-import { clearCanvas } from "./draw-levels-to-canvas";
 import { Level, levelIsSymmetric, maxAsymmetric, maxSidebars } from "./level";
 import { Sprites } from "./sprite";
 import { levelsToPeFileData, peFileDataToLevels } from "./level-pe-conversion";
@@ -62,23 +61,6 @@ function App() {
 		}
 	};
 
-	const prgLevelsCanvasRef = useRef<HTMLCanvasElement>(null);
-
-	useEffect(() => {
-		(async () => {
-			if (!prgLevelsCanvasRef.current) {
-				return;
-			}
-
-			if (parsedPrgData?.type !== "success") {
-				clearCanvas(prgLevelsCanvasRef.current);
-				return;
-			}
-
-			drawLevelsToCanvas(parsedPrgData.levels, prgLevelsCanvasRef.current);
-		})();
-	}, [parsedPrgData, prgLevelsCanvasRef.current]);
-
 	const [parsedPeData, setParsedPeData] = useState<
 		| ({ fileName: string; fileSize: number } & (
 				| { type: "success"; levels: readonly Level[] }
@@ -118,23 +100,6 @@ function App() {
 		}
 	};
 
-	const peLevelsCanvasRef = useRef<HTMLCanvasElement>(null);
-
-	useEffect(() => {
-		(async () => {
-			if (!peLevelsCanvasRef.current) {
-				return;
-			}
-
-			if (parsedPeData?.type !== "success") {
-				clearCanvas(peLevelsCanvasRef.current);
-				return;
-			}
-
-			drawLevelsToCanvas(parsedPeData.levels, peLevelsCanvasRef.current);
-		})();
-	}, [parsedPeData, peLevelsCanvasRef.current]);
-
 	return (
 		<>
 			<h1>BB Construction Set</h1>
@@ -157,25 +122,7 @@ function App() {
 					<p>Could not parse prg: {parsedPrgData?.error ?? "No reason."}</p>
 				) : (
 					<>
-						<p>
-							{`${parsedPrgData.fileName}, ${Math.round(
-								parsedPrgData.fileSize / 1024
-							)} kB`}
-							<br />
-							{
-								parsedPrgData.levels.filter(
-									(level) => !levelIsSymmetric(level.tiles)
-								).length
-							}
-							/{maxAsymmetric} are asymmetric
-							<br />
-							{
-								parsedPrgData.levels.filter((level) => level.sidebarChars)
-									.length
-							}
-							/{maxSidebars} have side decor
-						</p>
-						<canvas ref={prgLevelsCanvasRef} />
+						<Levels {...parsedPrgData} />
 						<br />
 						<BlobDownloadButton
 							getBlob={() =>
@@ -209,22 +156,7 @@ function App() {
 					<p>Could not parse pe: {parsedPeData?.error ?? "No reason."}</p>
 				) : (
 					<>
-						<p>
-							{`${parsedPeData.fileName}, ${Math.round(
-								parsedPeData.fileSize / 1024
-							)} kB`}
-							<br />
-							{
-								parsedPeData.levels.filter(
-									(level) => !levelIsSymmetric(level.tiles)
-								).length
-							}
-							/{maxAsymmetric} are asymmetric
-							<br />
-							{parsedPeData.levels.filter((level) => level.sidebarChars).length}
-							/{maxSidebars} have side decor
-						</p>
-						<canvas ref={peLevelsCanvasRef} />
+						<Levels {...parsedPeData} />
 					</>
 				)}
 			</Card>
@@ -281,3 +213,36 @@ function BlobDownloadButton(props: {
 }
 
 export default App;
+
+function Levels(props: {
+	readonly fileName: string;
+	readonly fileSize: number;
+	readonly levels: readonly Level[];
+}): React.ReactNode {
+	const levelsCanvasRef = useRef<HTMLCanvasElement>(null);
+
+	useEffect(() => {
+		(async () => {
+			if (!levelsCanvasRef.current) {
+				return;
+			}
+
+			drawLevelsToCanvas(props.levels, levelsCanvasRef.current);
+		})();
+	}, [props.levels, levelsCanvasRef.current]);
+
+	return (
+		<>
+			<p>
+				{`${props.fileName}, ${Math.round(props.fileSize / 1024)} kB`}
+				<br />
+				{props.levels.filter((level) => !levelIsSymmetric(level.tiles)).length}/
+				{maxAsymmetric} are asymmetric
+				<br />
+				{props.levels.filter((level) => level.sidebarChars).length}/
+				{maxSidebars} have side decor
+			</p>
+			<canvas ref={levelsCanvasRef} />
+		</>
+	);
+}
