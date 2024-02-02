@@ -356,9 +356,9 @@ export function patchPrg(prg: Uint8Array, levels: readonly Level[]) {
 		levels.map((level) => level.bgColorLight + (level.bgColorDark << 4))
 	);
 
-	// Buggy. Levels turn black.
+	// // Buggy. Levels turn black.
 	// // Write holes.
-	// for (const [levelIndex, level] of levels.entries()) {
+	// for (const [levelIndex, level] of levels.slice(1).entries()) {
 	// 	const topLeft = !level.tiles[10];
 	// 	const topRight = !level.tiles[20];
 	// 	const bottomLeft = !level.tiles[10 + 32 * 24];
