@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import { parsePrg, patchPrg } from "./parse-prg";
-import { drawLevelsToCanvas } from "./draw-levels-to-canvas";
+import {
+	drawLevelsToCanvas,
+	drawPlatformCharsToCanvas,
+} from "./draw-levels-to-canvas";
 import { Level, levelIsSymmetric, maxAsymmetric, maxSidebars } from "./level";
 import { Sprites } from "./sprite";
 import { levelsToPeFileData, peFileDataToLevels } from "./level-pe-conversion";
@@ -32,6 +35,7 @@ function App() {
 		  ))
 		| undefined
 	>(undefined);
+
 	const setPrg = async (prg: File | undefined): Promise<void> => {
 		if (!prg) {
 			setParsedPrgData(undefined);
@@ -220,16 +224,18 @@ function Levels(props: {
 	readonly levels: readonly Level[];
 }): React.ReactNode {
 	const levelsCanvasRef = useRef<HTMLCanvasElement>(null);
+	const platformCharsCanvasRef = useRef<HTMLCanvasElement>(null);
 
 	useEffect(() => {
 		(async () => {
-			if (!levelsCanvasRef.current) {
+			if (!(levelsCanvasRef.current && platformCharsCanvasRef.current)) {
 				return;
 			}
 
 			drawLevelsToCanvas(props.levels, levelsCanvasRef.current);
+			drawPlatformCharsToCanvas(props.levels, platformCharsCanvasRef.current);
 		})();
-	}, [props.levels, levelsCanvasRef.current]);
+	}, [props.levels, levelsCanvasRef.current, platformCharsCanvasRef.current]);
 
 	return (
 		<>
@@ -241,6 +247,8 @@ function Levels(props: {
 				{maxSidebars} have side decor
 			</p>
 			<canvas ref={levelsCanvasRef} />
+			<br />
+			<canvas ref={platformCharsCanvasRef} />
 		</>
 	);
 }
