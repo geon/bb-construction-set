@@ -378,7 +378,7 @@ export function patchPrg(prg: Uint8Array, levels: readonly Level[]) {
 		levels.map(
 			(level) =>
 				((levelIsSymmetric(level.tiles) ? 1 : 0) << 7) +
-				((level.sidebarChars ? 1 : 0) << 6)
+				((!level.sidebarChars ? 1 : 0) << 6)
 		)
 	);
 
