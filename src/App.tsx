@@ -5,7 +5,13 @@ import {
 	drawLevelsToCanvas,
 	drawPlatformCharsToCanvas,
 } from "./draw-levels-to-canvas";
-import { Level, levelIsSymmetric, maxAsymmetric, maxSidebars } from "./level";
+import {
+	Level,
+	levelIsSymmetric,
+	maxAsymmetric,
+	maxMonsters,
+	maxSidebars,
+} from "./level";
 import { Sprites } from "./sprite";
 import { levelsToPeFileData, peFileDataToLevels } from "./level-pe-conversion";
 import { deserializePeFileData, serializePeFileData } from "./pe-file";
@@ -245,6 +251,9 @@ function Levels(props: {
 				<br />
 				{props.levels.filter((level) => level.sidebarChars).length}/
 				{maxSidebars} have side decor
+				<br />
+				{props.levels.flatMap((level) => level.monsters).length}/{maxMonsters}{" "}
+				monsters
 			</p>
 			<canvas ref={levelsCanvasRef} />
 			<br />
