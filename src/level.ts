@@ -6,6 +6,7 @@ export const numTiles = levelWidth * levelHeight;
 
 export const maxAsymmetric = 45;
 export const maxSidebars = 59;
+export const maxMonsters = 572;
 
 export interface Monster {
 	type: number;
