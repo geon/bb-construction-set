@@ -1,4 +1,4 @@
-import { readCharsetChar } from "./charset-char";
+import { CharBlock, readCharBlock, readCharsetChar } from "./charset-char";
 import {
 	Level,
 	Monster,
@@ -148,12 +148,7 @@ function readLevel(
 	const symmetryMetadata = getByte(symmetryMetadataArrayAddress + levelIndex);
 
 	if (!isBitSet(symmetryMetadata, 1)) {
-		level.sidebarChars = [
-			readCharsetChar(getByte, currentSidebarAddress + 0 * 8),
-			readCharsetChar(getByte, currentSidebarAddress + 1 * 8),
-			readCharsetChar(getByte, currentSidebarAddress + 2 * 8),
-			readCharsetChar(getByte, currentSidebarAddress + 3 * 8),
-		];
+		level.sidebarChars = readCharBlock(getByte, currentSidebarAddress);
 		currentSidebarAddress += 4 * 8; // 4 chars of 8 bytes each.
 	}
 

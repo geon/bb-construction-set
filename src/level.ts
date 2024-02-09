@@ -1,3 +1,4 @@
+import { CharBlock } from "./charset-char";
 import { CharsetChar, parseCharsetCharLine } from "./charset-char";
 
 export const levelWidth = 32;
@@ -23,7 +24,7 @@ export interface Level {
 	bgColorLight: number;
 	bgColorDark: number;
 	platformChar: CharsetChar;
-	sidebarChars?: [CharsetChar, CharsetChar, CharsetChar, CharsetChar];
+	sidebarChars?: CharBlock;
 	monsters: Array<Monster>;
 }
 
