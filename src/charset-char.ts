@@ -20,6 +20,8 @@ export interface CharsetChar {
 	];
 }
 
+export type CharBlock = [CharsetChar, CharsetChar, CharsetChar, CharsetChar];
+
 export function readCharsetChar(
 	getByte: (address: number) => number,
 	address: number
@@ -39,4 +41,16 @@ export function parseCharsetCharLine(byte: number): CharsetCharLine {
 		(byte >> 2) & 0b11,
 		(byte >> 0) & 0b11,
 	] as CharsetCharLine;
+}
+
+export function readCharBlock(
+	getByte: (address: number) => number,
+	currentSidebarAddress: number
+): CharBlock {
+	return [
+		readCharsetChar(getByte, currentSidebarAddress + 0 * 8),
+		readCharsetChar(getByte, currentSidebarAddress + 1 * 8),
+		readCharsetChar(getByte, currentSidebarAddress + 2 * 8),
+		readCharsetChar(getByte, currentSidebarAddress + 3 * 8),
+	];
 }
