@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import { parsePrg, patchPrg } from "./parse-prg";
 import {
+	drawItemsToCanvas,
 	drawLevelsToCanvas,
 	drawPlatformCharsToCanvas,
 } from "./draw-levels-to-canvas";
@@ -16,6 +17,7 @@ import { Sprites } from "./sprite";
 import { levelsToPeFileData, peFileDataToLevels } from "./level-pe-conversion";
 import { deserializePeFileData, serializePeFileData } from "./pe-file";
 import styled from "styled-components";
+import { CharBlock } from "./charset-char";
 
 const Card = styled.div`
 	background: white;
@@ -36,6 +38,7 @@ function App() {
 						prg: DataView;
 						levels: readonly Level[];
 						sprites: Sprites;
+						items: CharBlock[];
 				  }
 				| { type: "failed"; error: string }
 		  ))
@@ -110,6 +113,8 @@ function App() {
 		}
 	};
 
+	const inputRef = useRef<HTMLInputElement>(null);
+
 	return (
 		<>
 			<h1>BB Construction Set</h1>
@@ -125,6 +130,14 @@ function App() {
 				<input
 					type="file"
 					onChange={(event) => setPrg(event.target.files?.[0])}
+					ref={inputRef}
+				/>
+				<input
+					type="button"
+					value="Reload"
+					onClick={() =>
+						inputRef.current && setPrg(inputRef.current.files?.[0])
+					}
 				/>
 				{!parsedPrgData ? (
 					<p>No prg selected.</p>
@@ -132,7 +145,10 @@ function App() {
 					<p>Could not parse prg: {parsedPrgData?.error ?? "No reason."}</p>
 				) : (
 					<>
-						<Levels {...parsedPrgData} />
+						{/* <Levels {...parsedPrgData} />
+						<br /> */}
+						<br />
+						<Items items={parsedPrgData.items} />
 						<br />
 						<BlobDownloadButton
 							getBlob={() =>
@@ -260,4 +276,22 @@ function Levels(props: {
 			<canvas ref={platformCharsCanvasRef} />
 		</>
 	);
+}
+
+function Items(props: {
+	readonly items: readonly CharBlock[];
+}): React.ReactNode {
+	const canvasRef = useRef<HTMLCanvasElement>(null);
+
+	useEffect(() => {
+		(async () => {
+			if (!canvasRef.current) {
+				return;
+			}
+
+			drawItemsToCanvas(props.items, canvasRef.current);
+		})();
+	}, [props.items, canvasRef.current]);
+
+	return <canvas ref={canvasRef} />;
 }
