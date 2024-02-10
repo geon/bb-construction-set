@@ -1,7 +1,7 @@
 import { Level, levelHeight, levelWidth, numTiles } from "./level";
 import { palette } from "./palette";
 import { Color, mixColors, black } from "./color";
-import { CharsetChar } from "./charset-char";
+import { CharBlock, CharsetChar } from "./charset-char";
 import {
 	Sprites,
 	spriteColors,
@@ -177,7 +177,7 @@ function getCharPalette(level: Level): [Color, Color, Color, Color] {
 function drawChar(
 	image: ImageData,
 	char: CharsetChar,
-	charPalette: [Color, Color, Color, Color]
+	charPalette: readonly [Color, Color, Color, Color]
 ) {
 	for (let charY = 0; charY < 8; ++charY) {
 		for (let charX = 0; charX < 4; ++charX) {
@@ -251,4 +251,56 @@ function getSpritePalette(color: number): [Color, Color, Color, Color] {
 		palette[color],
 		palette[1], // White
 	];
+}
+
+export function drawItemsToCanvas(
+	items: readonly CharBlock[],
+	canvas: HTMLCanvasElement
+) {
+	const ctx = canvas.getContext("2d");
+	if (!ctx) {
+		return;
+	}
+
+	const numItemsX = 16;
+	const numItemsY = Math.ceil(items.length / numItemsX);
+
+	canvas.width = 3 * 8 * numItemsX;
+	canvas.height = 3 * 8 * numItemsY;
+
+	const image = new ImageData(8, 8);
+	outerLoop: for (let itemY = 0; itemY < numItemsY; ++itemY) {
+		for (let levelX = 0; levelX < numItemsX; ++levelX) {
+			const itemIndex = itemY * numItemsX + levelX;
+			const item = items[itemIndex];
+			if (!item) {
+				break outerLoop;
+			}
+
+			for (let charBlockY = 0; charBlockY < 2; ++charBlockY) {
+				for (let charBlockX = 0; charBlockX < 2; ++charBlockX) {
+					const backgroundColor =
+						charBlockX % 2 ^ charBlockY % 2
+							? palette[0]
+							: { r: 20, g: 30, b: 30 }; // Alternating black and dark gray.
+
+					const charPalette = [
+						backgroundColor,
+						palette[9], // Brown
+						palette[1], // White
+						palette[5], // Green
+					] as const;
+
+					const char = item[charBlockY * 2 + charBlockX];
+					drawChar(image, char, charPalette);
+
+					ctx.putImageData(
+						image,
+						levelX * (2 * 8) + charBlockX * 8,
+						itemY * (2 * 8) + charBlockY * 8
+					);
+				}
+			}
+		}
+	}
 }

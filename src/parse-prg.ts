@@ -55,10 +55,85 @@ const bitmapArrayAddress = 0xc5f2;
 const monsterArrayAddress = 0xae51;
 
 const spriteBitmapArrayAddress = 0x5800;
+const itemCharsArrays = [
+	// Blow bubble animation.
+	{
+		address: 0x8000,
+		numItems: 144 / 4,
+		withMask: true,
+	},
+	// Bubble pop.2 frames + position.
+	{
+		address: 0x8980,
+		numItems: 12,
+		withMask: true,
+	},
+	// Baron von Blubba.
+	{
+		address: 0x8f00,
+		numItems: 12,
+	},
+	// Special bubbles: Water, fire, lightning.
+	{
+		address: 0x8f00 + 4 * 8 * 12,
+		numItems: 18,
+	},
+	// Lightning
+	{
+		address: 0x8f00 + 4 * 8 * (12 + 18),
+		numItems: 2,
+		withMask: true,
+	},
+	// Fire
+	{
+		address: 0x8f00 + 4 * 8 * (12 + 18 + 2),
+		numItems: 12,
+		withMask: true,
+	},
+	// E-X-T-N-D bubbles.
+	{
+		address: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12),
+		numItems: 30,
+	},
+	// Stoner weapon.
+	{
+		address: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30),
+		numItems: 3,
+	},
+	// Willy Whistle/Drunk weapon + Super Socket/Invader weapon.
+	{
+		address: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3),
+		numItems: 10,
+		withMask: true,
+	},
+	// Incendo weapon.
+	{
+		address: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3 + 10),
+		numItems: 8,
+		withMask: true,
+	},
+	// Items
+	{
+		address: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3 + 10 + 9),
+		numItems: 57,
+	},
+	// Large lightning. (3 chars tall?)
+	{
+		address: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3 + 10 + 9 + 57),
+		numItems: 6,
+		withMask: true,
+	},
+	// Bonus round circles.
+	{
+		address: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3 + 10 + 9 + 57 + 6),
+		numItems: 2,
+	},
+];
 
 export function parsePrg(prg: DataView): {
 	levels: Level[];
 	sprites: Sprites;
+	items: CharBlock[];
 } {
 	const startAddres = getPrgStartAddress(prg);
 	const getByte = (address: number) =>
@@ -114,7 +189,20 @@ export function parsePrg(prg: DataView): {
 		}
 	}
 
-	return { levels, sprites };
+	const items: CharBlock[] = [];
+	for (const { address, numItems } of itemCharsArrays) {
+		for (let itemIndex = 0; itemIndex < numItems; ++itemIndex) {
+			items.push(
+				unshuffleCharBlock(readCharBlock(getByte, address + itemIndex * 4 * 8))
+			);
+		}
+	}
+
+	return { levels, sprites, items };
+}
+
+function unshuffleCharBlock(block: CharBlock): CharBlock {
+	return [block[0], block[2], block[1], block[3]];
 }
 
 function readLevel(
