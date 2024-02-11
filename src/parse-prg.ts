@@ -114,10 +114,10 @@ const itemCharsArrays = [
 	},
 	// Items
 	{
-		address: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3 + 10 + 9),
-		numItems: 57,
+		address: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3 + 10 + 8),
+		numItems: 58,
 	},
-	// Large lightning. (3 chars tall?)
+	// Large lightning. (4x4 chars, but only 12 chars are stored.)
 	{
 		address: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3 + 10 + 9 + 57),
 		numItems: 6,
