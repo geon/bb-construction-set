@@ -225,15 +225,16 @@ function getSpriteUid({
 	monsterName: string;
 	facingLeft: boolean;
 }): string {
-	return monsterName + ":" + (facingLeft ? "left" : "right");
+	return monsterName + (facingLeft ? "left" : "right");
 }
 
 function parseSpriteUid(uid: string): {
 	monsterName: string;
 	facingLeft: boolean;
 } {
-	const parts = uid.split(":");
-	return { monsterName: parts[0], facingLeft: parts[1] === "true" };
+	const facingLeft = uid.endsWith("left");
+	const monsterName = uid.substring(0, uid.length - (facingLeft ? 4 : 5));
+	return { monsterName, facingLeft };
 }
 
 function makeLevelCharData(level: Level): number[][] {
