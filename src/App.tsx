@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import { parsePrg, patchPrg } from "./parse-prg";
 import {
-	drawItemsToCanvas,
 	drawLevelsToCanvas,
 	drawPlatformCharsToCanvas,
 } from "./draw-levels-to-canvas";
@@ -145,10 +144,7 @@ function App() {
 					<p>Could not parse prg: {parsedPrgData?.error ?? "No reason."}</p>
 				) : (
 					<>
-						{/* <Levels {...parsedPrgData} />
-						<br /> */}
-						<br />
-						<Items items={parsedPrgData.items} />
+						<Levels {...parsedPrgData} />
 						<br />
 						<BlobDownloadButton
 							getBlob={() =>
@@ -276,22 +272,4 @@ function Levels(props: {
 			<canvas ref={platformCharsCanvasRef} />
 		</>
 	);
-}
-
-function Items(props: {
-	readonly items: readonly CharBlock[];
-}): React.ReactNode {
-	const canvasRef = useRef<HTMLCanvasElement>(null);
-
-	useEffect(() => {
-		(async () => {
-			if (!canvasRef.current) {
-				return;
-			}
-
-			drawItemsToCanvas(props.items, canvasRef.current);
-		})();
-	}, [props.items, canvasRef.current]);
-
-	return <canvas ref={canvasRef} />;
 }
