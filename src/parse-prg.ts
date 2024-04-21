@@ -247,7 +247,7 @@ function readLevel(
 }
 
 function setTileBitmapTopAndBottom(
-	level: Level,
+	tiles: Array<boolean>,
 	{
 		topLeft,
 		topRight,
@@ -256,22 +256,22 @@ function setTileBitmapTopAndBottom(
 	}: Record<"topLeft" | "topRight" | "bottomLeft" | "bottomRight", boolean>
 ) {
 	for (let x = 0; x < levelWidth; ++x) {
-		level.tiles[x] = true;
-		level.tiles[(levelHeight - 1) * levelWidth + x] = true;
+		tiles[x] = true;
+		tiles[(levelHeight - 1) * levelWidth + x] = true;
 	}
 	// Cut out the holes.
 	for (let x = 0; x < 4; ++x) {
 		if (topLeft) {
-			level.tiles[9 + x] = false;
+			tiles[9 + x] = false;
 		}
 		if (topRight) {
-			level.tiles[19 + x] = false;
+			tiles[19 + x] = false;
 		}
 		if (bottomLeft) {
-			level.tiles[768 + 9 + x] = false;
+			tiles[768 + 9 + x] = false;
 		}
 		if (bottomRight) {
-			level.tiles[768 + 19 + x] = false;
+			tiles[768 + 19 + x] = false;
 		}
 	}
 }
@@ -294,7 +294,7 @@ function readTileBitmap(
 	holeMetadata: number
 ) {
 	// Top and bottom rows with holes.
-	setTileBitmapTopAndBottom(level, {
+	setTileBitmapTopAndBottom(level.tiles, {
 		topLeft: isBitSet(holeMetadata, 7),
 		topRight: isBitSet(holeMetadata, 6),
 		bottomLeft: isBitSet(holeMetadata, 5),
