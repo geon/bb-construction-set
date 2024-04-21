@@ -1,5 +1,7 @@
 import { CharBlock, readCharBlock, readCharsetChar } from "./charset-char";
+import { chunk } from "./functions";
 import {
+	BubbleCurrentDirection,
 	Level,
 	Monster,
 	createLevel,
@@ -225,6 +227,8 @@ function readLevel(
 	);
 	curentBitmapByteAddress += (isSymmetric ? 2 : 4) * 23; // 23 lines of 2 or 4 bytes.
 
+	level.bubbleCurrentLineDefault = extractbubbleCurrentLineDefault(level.tiles);
+
 	// Fill in the sides.
 	fillInTileBitmapSides(level);
 
@@ -276,6 +280,8 @@ function setTileBitmapTopAndBottom(
 }
 
 function fillInTileBitmapSides(level: Level) {
+	// The 2 tile wide left and right borders are used to store part of the bubbleCurrent.
+	// It needs to be set to true to be solid.
 	for (let rowIndex = 0; rowIndex < 23; ++rowIndex) {
 		// Offset by 32 for the top line.
 		level.tiles[32 + rowIndex * levelWidth] = true;
@@ -339,6 +345,22 @@ function readTileBitmap(
 	}
 
 	return tiles;
+}
+
+function extractbubbleCurrentLineDefault(
+	tiles: boolean[]
+): Array<BubbleCurrentDirection> {
+	return chunk(tiles, levelWidth).map((row) =>
+		bitsToBubbleCurrentDirection(
+			row.slice(levelWidth - 2) as [boolean, boolean]
+		)
+	);
+}
+
+function bitsToBubbleCurrentDirection(
+	bits: [boolean, boolean]
+): BubbleCurrentDirection {
+	return ((bits[1] ? 1 : 0) + (bits[0] ? 1 : 0) * 2) as BubbleCurrentDirection;
 }
 
 function readMonster(
