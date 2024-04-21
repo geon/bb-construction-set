@@ -217,10 +217,9 @@ function readLevel(
 
 	const isSymmetric = isBitSet(symmetryMetadata, 0);
 
-	readTileBitmap(
+	level.tiles = readTileBitmap(
 		curentBitmapByteAddress,
 		getByte,
-		level,
 		isSymmetric,
 		holeMetadata
 	);
@@ -289,12 +288,13 @@ function fillInTileBitmapSides(level: Level) {
 function readTileBitmap(
 	curentBitmapByteAddress: number,
 	getByte: (address: number) => number,
-	level: Level,
 	isSymmetric: boolean,
 	holeMetadata: number
-) {
+): Array<boolean> {
+	const tiles: Array<boolean> = [];
+
 	// Top and bottom rows with holes.
-	setTileBitmapTopAndBottom(level.tiles, {
+	setTileBitmapTopAndBottom(tiles, {
 		topLeft: isBitSet(holeMetadata, 7),
 		topRight: isBitSet(holeMetadata, 6),
 		bottomLeft: isBitSet(holeMetadata, 5),
@@ -316,7 +316,7 @@ function readTileBitmap(
 			// Convert the bitmap to an array of bools.
 			for (let bitIndex = 0; bitIndex < 8; ++bitIndex) {
 				// Offset by 32 for the top line.
-				level.tiles[32 + bitmapByteIndex * 8 + bitIndex] = isBitSet(
+				tiles[32 + bitmapByteIndex * 8 + bitIndex] = isBitSet(
 					bitmapByte,
 					bitIndex
 				);
@@ -332,11 +332,13 @@ function readTileBitmap(
 				halfRowIndex < tilesPerHalfRow;
 				++halfRowIndex
 			) {
-				level.tiles[tileRowStartIndex + tilesPerHalfRow + halfRowIndex] =
-					level.tiles[tileRowStartIndex + tilesPerHalfRow - halfRowIndex - 1];
+				tiles[tileRowStartIndex + tilesPerHalfRow + halfRowIndex] =
+					tiles[tileRowStartIndex + tilesPerHalfRow - halfRowIndex - 1];
 			}
 		}
 	}
+
+	return tiles;
 }
 
 function readMonster(
