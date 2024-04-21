@@ -390,6 +390,8 @@ export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 				? sidebarChars
 				: undefined,
 			monsters,
+			// Bubble currents not yet stored in .pe file. Perhaps add as JSON in the name field?
+			bubbleCurrentLineDefault: [],
 		};
 	});
 }

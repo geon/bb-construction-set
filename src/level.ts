@@ -18,6 +18,9 @@ export interface Monster {
 	facingLeft: boolean;
 }
 
+// up, right, down, left
+export type BubbleCurrentDirection = 0 | 1 | 2 | 3;
+
 export interface Level {
 	// Should be exactly `numTiles` entries.
 	tiles: Array<boolean>;
@@ -26,6 +29,8 @@ export interface Level {
 	platformChar: CharsetChar;
 	sidebarChars?: CharBlock;
 	monsters: Array<Monster>;
+	// The default bubble current direction for each tile row, so lenght = levelHeight.
+	bubbleCurrentLineDefault: Array<BubbleCurrentDirection>;
 }
 
 export function createLevel(): Level {
@@ -46,6 +51,7 @@ export function createLevel(): Level {
 			],
 		},
 		monsters: [],
+		bubbleCurrentLineDefault: Array(levelHeight).fill(0),
 	};
 }
 
