@@ -209,14 +209,6 @@ function readLevel(
 
 	const holeMetadata = getByte(holeMetadataArrayAddress + levelIndex);
 
-	// Top and bottom rows with holes.
-	setTileBitmapTopAndBottom(level, {
-		topLeft: isBitSet(holeMetadata, 7),
-		topRight: isBitSet(holeMetadata, 6),
-		bottomLeft: isBitSet(holeMetadata, 5),
-		bottomRight: isBitSet(holeMetadata, 4),
-	});
-
 	const symmetryMetadata = getByte(symmetryMetadataArrayAddress + levelIndex);
 
 	if (!isBitSet(symmetryMetadata, 1)) {
@@ -226,7 +218,13 @@ function readLevel(
 
 	const isSymmetric = isBitSet(symmetryMetadata, 0);
 
-	readTileBitmap(curentBitmapByteAddress, getByte, level, isSymmetric);
+	readTileBitmap(
+		curentBitmapByteAddress,
+		getByte,
+		level,
+		isSymmetric,
+		holeMetadata
+	);
 	curentBitmapByteAddress += (isSymmetric ? 2 : 4) * 23; // 23 lines of 2 or 4 bytes.
 
 	// Fill in the sides.
@@ -293,8 +291,17 @@ function readTileBitmap(
 	curentBitmapByteAddress: number,
 	getByte: (address: number) => number,
 	level: Level,
-	isSymmetric: boolean
+	isSymmetric: boolean,
+	holeMetadata: number
 ) {
+	// Top and bottom rows with holes.
+	setTileBitmapTopAndBottom(level, {
+		topLeft: isBitSet(holeMetadata, 7),
+		topRight: isBitSet(holeMetadata, 6),
+		bottomLeft: isBitSet(holeMetadata, 5),
+		bottomRight: isBitSet(holeMetadata, 4),
+	});
+
 	const bytesPerRow = 4;
 	for (let rowIndex = 0; rowIndex < 23; ++rowIndex) {
 		// Read half or full lines from the level data.
