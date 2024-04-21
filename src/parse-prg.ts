@@ -139,7 +139,32 @@ export function parsePrg(prg: DataView): {
 	const getByte = (address: number) =>
 		getPrgByteAtAddress(prg, startAddres, address);
 
+	const levels = readLevels(getByte);
+	const sprites = readSprites(getByte);
+	const items = readItems(getByte);
+
+	return { levels, sprites, items };
+}
+
+function readItems(getByte: (address: number) => number): CharBlock[] {
+	const items: CharBlock[] = [];
+	for (const { address, numItems } of itemCharsArrays) {
+		for (let itemIndex = 0; itemIndex < numItems; ++itemIndex) {
+			items.push(
+				unshuffleCharBlock(readCharBlock(getByte, address + itemIndex * 4 * 8))
+			);
+		}
+	}
+	return items;
+}
+
+function unshuffleCharBlock(block: CharBlock): CharBlock {
+	return [block[0], block[2], block[1], block[3]];
+}
+
+function readLevels(getByte: (address: number) => number): Array<Level> {
 	// TODO: Check the original data size, and verify.
+
 	const levels: Array<Level> = [];
 	let curentBitmapByteAddress = bitmapArrayAddress;
 	let currentSidebarAddress = sidebarCharArrayAddress;
@@ -161,48 +186,7 @@ export function parsePrg(prg: DataView): {
 
 		levels.push(level);
 	}
-
-	const sprites: Sprites = {
-		player: [],
-		bubbleBuster: [],
-		incendo: [],
-		colley: [],
-		hullaballoon: [],
-		beluga: [],
-		willyWhistle: [],
-		stoner: [],
-		superSocket: [],
-	};
-	let globalSpriteIndex = 0;
-	for (const [characterName, characterSprites] of Object.entries(sprites) as [
-		keyof Sprites,
-		Sprite[]
-	][]) {
-		for (
-			let spriteIndex = 0;
-			spriteIndex < spriteCounts[characterName];
-			++spriteIndex
-		) {
-			const sprite = readSprite(getByte, globalSpriteIndex);
-			++globalSpriteIndex;
-			characterSprites.push(sprite);
-		}
-	}
-
-	const items: CharBlock[] = [];
-	for (const { address, numItems } of itemCharsArrays) {
-		for (let itemIndex = 0; itemIndex < numItems; ++itemIndex) {
-			items.push(
-				unshuffleCharBlock(readCharBlock(getByte, address + itemIndex * 4 * 8))
-			);
-		}
-	}
-
-	return { levels, sprites, items };
-}
-
-function unshuffleCharBlock(block: CharBlock): CharBlock {
-	return [block[0], block[2], block[1], block[3]];
+	return levels;
 }
 
 function readLevel(
@@ -361,6 +345,36 @@ function readMonster(
 		},
 		facingLeft: isBitSet(getByte(address + 2), 0),
 	};
+}
+
+function readSprites(getByte: (address: number) => number): Sprites {
+	const sprites: Sprites = {
+		player: [],
+		bubbleBuster: [],
+		incendo: [],
+		colley: [],
+		hullaballoon: [],
+		beluga: [],
+		willyWhistle: [],
+		stoner: [],
+		superSocket: [],
+	};
+	let globalSpriteIndex = 0;
+	for (const [characterName, characterSprites] of Object.entries(sprites) as [
+		keyof Sprites,
+		Sprite[]
+	][]) {
+		for (
+			let spriteIndex = 0;
+			spriteIndex < spriteCounts[characterName];
+			++spriteIndex
+		) {
+			const sprite = readSprite(getByte, globalSpriteIndex);
+			++globalSpriteIndex;
+			characterSprites.push(sprite);
+		}
+	}
+	return sprites;
 }
 
 function readSprite(
