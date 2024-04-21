@@ -1,3 +1,4 @@
+import { padRight, chunk } from "./functions";
 import { Level, Monster } from "./level";
 import { Bit, CharBitmap, PeFileData } from "./pe-file";
 import { peFileBuiltinCharsets } from "./pe-file-builtin-charsets";
@@ -322,24 +323,6 @@ function levelCharToPeChar(char: CharsetChar): CharBitmap {
 			0
 		)
 	) as CharBitmap;
-}
-
-function padRight<T>(array: readonly T[], length: number, padding: T): T[] {
-	const result = array.slice();
-	while (result.length < length) {
-		result.push(padding);
-	}
-	return result;
-}
-
-function chunk<T>(array: readonly T[], chunkLength: number): T[][] {
-	const chunks: T[][] = [];
-	let start = 0;
-	do {
-		chunks.push(array.slice(start, start + chunkLength));
-		start += chunkLength;
-	} while (start < array.length);
-	return chunks;
 }
 
 function isBitSet(byte: number, index: number): Bit {
