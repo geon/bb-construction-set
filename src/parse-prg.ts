@@ -198,18 +198,17 @@ function readLevel(
 ) {
 	const level = createLevel();
 
+	const bgColorMetadata = getByte(bgColorMetadataArrayAddress + levelIndex);
+	const holeMetadata = getByte(holeMetadataArrayAddress + levelIndex);
+	const symmetryMetadata = getByte(symmetryMetadataArrayAddress + levelIndex);
+
 	level.platformChar = readCharsetChar(
 		getByte,
 		platformCharArrayAddress + levelIndex * 8
 	);
 
-	const bgColorMetadata = getByte(bgColorMetadataArrayAddress + levelIndex);
 	level.bgColorLight = bgColorMetadata & 0b1111;
 	level.bgColorDark = (bgColorMetadata & 0b11110000) >> 4;
-
-	const holeMetadata = getByte(holeMetadataArrayAddress + levelIndex);
-
-	const symmetryMetadata = getByte(symmetryMetadataArrayAddress + levelIndex);
 
 	if (!isBitSet(symmetryMetadata, 1)) {
 		level.sidebarChars = readCharBlock(getByte, currentSidebarAddress);
