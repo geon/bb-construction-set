@@ -24,63 +24,63 @@ const shadowCharIndexByName = {
 const shadowChars: CharBitmap[] = [
 	[
 		0b00000000, // Comment to prevent formatting.
-		0b01010101, // Comment to prevent formatting.
-		0b00010101, // Comment to prevent formatting.
-		0b00000101, // Comment to prevent formatting.
-		0b00000000, // Comment to prevent formatting.
-		0b00000000, // Comment to prevent formatting.
-		0b00000000, // Comment to prevent formatting.
-		0b00000000, // Comment to prevent formatting.
+		0b01010101,
+		0b00010101,
+		0b00000101,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
 	],
 	[
-		0b00010100, // Comment to prevent formatting.
-		0b01010100, // Comment to prevent formatting.
-		0b01010100, // Comment to prevent formatting.
-		0b01010100, // Comment to prevent formatting.
-		0b00000000, // Comment to prevent formatting.
-		0b00000000, // Comment to prevent formatting.
-		0b00000000, // Comment to prevent formatting.
-		0b00000000, // Comment to prevent formatting.
+		0b00010100, //
+		0b01010100,
+		0b01010100,
+		0b01010100,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
 	],
 	[
-		0b00010000, // Comment to prevent formatting.
-		0b00010000, // Comment to prevent formatting.
-		0b00010100, // Comment to prevent formatting.
-		0b00010100, // Comment to prevent formatting.
-		0b00010100, // Comment to prevent formatting.
-		0b00010100, // Comment to prevent formatting.
-		0b00010100, // Comment to prevent formatting.
-		0b00010100, // Comment to prevent formatting.
+		0b00010000, //
+		0b00010000,
+		0b00010100,
+		0b00010100,
+		0b00010100,
+		0b00010100,
+		0b00010100,
+		0b00010100,
 	],
 	[
-		0b00000000, // Comment to prevent formatting.
-		0b01010101, // Comment to prevent formatting.
-		0b01010101, // Comment to prevent formatting.
-		0b01010101, // Comment to prevent formatting.
-		0b00000000, // Comment to prevent formatting.
-		0b00000000, // Comment to prevent formatting.
-		0b00000000, // Comment to prevent formatting.
-		0b00000000, // Comment to prevent formatting.
+		0b00000000, //
+		0b01010101,
+		0b01010101,
+		0b01010101,
+		0b00000000,
+		0b00000000,
+		0b00000000,
+		0b00000000,
 	],
 	[
-		0b00010100, // Comment to prevent formatting.
-		0b00010100, // Comment to prevent formatting.
-		0b00010100, // Comment to prevent formatting.
-		0b00010100, // Comment to prevent formatting.
-		0b00010100, // Comment to prevent formatting.
-		0b00010100, // Comment to prevent formatting.
-		0b00010100, // Comment to prevent formatting.
-		0b00010100, // Comment to prevent formatting.
+		0b00010100, //
+		0b00010100,
+		0b00010100,
+		0b00010100,
+		0b00010100,
+		0b00010100,
+		0b00010100,
+		0b00010100,
 	],
 	[
-		0b00000000, // Comment to prevent formatting.
-		0b00010101, // Comment to prevent formatting.
-		0b00010101, // Comment to prevent formatting.
-		0b00010101, // Comment to prevent formatting.
-		0b00010100, // Comment to prevent formatting.
-		0b00010100, // Comment to prevent formatting.
-		0b00010100, // Comment to prevent formatting.
-		0b00010100, // Comment to prevent formatting.
+		0b00000000, //
+		0b00010101,
+		0b00010101,
+		0b00010101,
+		0b00010100,
+		0b00010100,
+		0b00010100,
+		0b00010100,
 	],
 ];
 
