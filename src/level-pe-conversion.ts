@@ -1,7 +1,6 @@
 import { padRight, chunk } from "./functions";
 import { Level, Monster } from "./level";
 import { Bit, CharBitmap, PeFileData } from "./pe-file";
-import { peFileBuiltinCharsets } from "./pe-file-builtin-charsets";
 import {
 	CharacterName,
 	Sprites,
@@ -10,6 +9,7 @@ import {
 	spriteLeftIndex,
 } from "./sprite";
 import { CharsetChar, CharsetCharLine } from "./charset-char";
+import { c64BuiltinCharsets } from "./c64-builtin-charsets";
 
 const emptyChar: CharBitmap = [0, 0, 0, 0, 0, 0, 0, 0];
 
@@ -117,7 +117,24 @@ export function levelsToPeFileData(data: {
 		clipboards: { screenEditor: [], charsetEditor: false, spriteEditor: false },
 		charsets: [
 			// The builtin charsets are treated differently by PETSCII Editor.
-			...peFileBuiltinCharsets,
+			{
+				name: "C64 uppercase",
+				mode: "single",
+				bgColor: 6,
+				charColor: 14,
+				multiColor1: 1,
+				multiColor2: 2,
+				bitmaps: c64BuiltinCharsets.uppercase,
+			},
+			{
+				name: "C64 lowercase",
+				mode: "single",
+				bgColor: 6,
+				charColor: 14,
+				multiColor1: 1,
+				multiColor2: 2,
+				bitmaps: c64BuiltinCharsets.lowercase,
+			},
 			...data.levels.map(
 				(level, levelIndex): PeFileData["charsets"][number] => ({
 					name: "Level " + (levelIndex + 1),
