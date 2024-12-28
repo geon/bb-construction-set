@@ -22,3 +22,15 @@ test("serializePeFileData", () => {
 		serializePeFileData({ foo: 123 } as unknown as PeFileData)
 	).toStrictEqual('{"app":"PETSCII Editor","data":"{\\"foo\\":123}"}');
 });
+
+test("deserializePeFileData unmangled", () => {
+	const peFileDataFromUnmangledPeFile = deserializePeFileData(
+		readFileSync(__dirname + "/c64-start-screen.unmangled.pe", "utf8")
+	);
+
+	const peFileDataFromPeFile = deserializePeFileData(
+		readFileSync(__dirname + "/c64-start-screen.pe", "utf8")
+	);
+
+	expect(peFileDataFromUnmangledPeFile).toStrictEqual(peFileDataFromPeFile);
+});
