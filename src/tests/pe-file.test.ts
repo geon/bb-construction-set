@@ -1,6 +1,10 @@
 import { expect, test } from "vitest";
 import { readFileSync } from "fs";
-import { deserializePeFileData } from "../pe-file";
+import {
+	deserializePeFileData,
+	PeFileData,
+	serializePeFileData,
+} from "../pe-file";
 
 test("deserializePeFileData", () => {
 	const peFileDataFromPeFile = deserializePeFileData(
@@ -11,4 +15,10 @@ test("deserializePeFileData", () => {
 	);
 
 	expect(peFileDataFromPeFile).toStrictEqual(peFileDataFromJson);
+});
+
+test("serializePeFileData", () => {
+	expect(
+		serializePeFileData({ foo: 123 } as unknown as PeFileData)
+	).toStrictEqual('{"app":"PETSCII Editor","data":"{\\"foo\\":123}"}');
 });
