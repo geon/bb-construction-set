@@ -171,22 +171,50 @@ export function levelsToPeFileData(data: {
 				// Same for colorData.
 				// Multicolor green for bubbles.
 				colorData: padRight([], 25, padRight([], 40, 13)),
-				sprites: level.monsters.map(
-					(monster): PeFileData["screens"][number]["sprites"][number] => ({
+				sprites: [
+					{
 						setId: 0,
 						uid: getSpriteUid({
-							monsterName: Object.keys(data.sprites)[monster.type + 1],
-							facingLeft: monster.facingLeft,
+							monsterName: "player",
+							facingLeft: false,
 						}),
-						x: monster.spawnPoint.x,
-						y: monster.spawnPoint.y,
-						color: Object.values(spriteColors)[monster.type + 1],
-						// palette[Object.values(spriteColors)[monster.type + 1]]
+						x: 44, // The tail is 6 pixels from the edge.
+						y: 221,
+						color: 5, // Dark green
 						expandX: false,
 						expandY: false,
 						priority: "front",
-					})
-				),
+					},
+					{
+						setId: 0,
+						uid: getSpriteUid({
+							monsterName: "player",
+							facingLeft: true,
+						}),
+						x: 236, // Only 4 pixels from the edge. Not same as pl1.
+						y: 221,
+						color: 3, // Cyan
+						expandX: false,
+						expandY: false,
+						priority: "front",
+					},
+					...level.monsters.map(
+						(monster): PeFileData["screens"][number]["sprites"][number] => ({
+							setId: 0,
+							uid: getSpriteUid({
+								monsterName: Object.keys(data.sprites)[monster.type + 1],
+								facingLeft: monster.facingLeft,
+							}),
+							x: monster.spawnPoint.x,
+							y: monster.spawnPoint.y,
+							color: Object.values(spriteColors)[monster.type + 1],
+							// palette[Object.values(spriteColors)[monster.type + 1]]
+							expandX: false,
+							expandY: false,
+							priority: "front",
+						})
+					),
+				],
 				undoStack: [],
 				redoStack: [],
 			})
