@@ -181,7 +181,8 @@ function drawChar(
 ) {
 	for (let charY = 0; charY < 8; ++charY) {
 		for (let charX = 0; charX < 4; ++charX) {
-			const color = charPalette[char.lines[charY][charX]];
+			const colorIndex = char.lines[charY][charX];
+			const color = charPalette[colorIndex];
 			// Double width pixels.
 			const pixelIndex = charY * 8 + charX * 2;
 			plotPixel(image, pixelIndex, color);
