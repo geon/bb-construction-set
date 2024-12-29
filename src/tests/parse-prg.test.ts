@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 import { readFileSync } from "fs";
-import { parsePrg } from "../parse-prg";
+import { parsePrg, patchPrg } from "../parse-prg";
 import { deserializePeFileData } from "../pe-file";
 import { peFileDataToLevels } from "../level-pe-conversion";
 
@@ -18,4 +18,15 @@ test("parsePrg", () => {
 	levelFromPe.bubbleCurrentLineDefault = [];
 
 	expect(levelFromPrg).toStrictEqual(levelFromPe);
+});
+
+test("patchPrg", () => {
+	const prgFileContent = readFileSync(__dirname + "/decompressed-bb.prg");
+
+	const patched = Buffer.from(prgFileContent.buffer.slice());
+
+	const { levels } = parsePrg(new DataView(prgFileContent.buffer));
+	patchPrg(patched, levels);
+
+	expect(patched).toStrictEqual(prgFileContent);
 });
