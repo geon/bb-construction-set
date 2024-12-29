@@ -1,4 +1,4 @@
-import { Level, levelHeight, levelWidth, numTiles } from "./level";
+import { Level, levelHeight, levelWidth, numTiles, Tiles } from "./level";
 import { palette, PaletteIndex } from "./palette";
 import { Color, mixColors, black } from "./color";
 import { CharBlock, CharBlockIndex, CharsetChar } from "./charset-char";
@@ -96,14 +96,13 @@ export function drawLevelsToCanvas(
 
 function drawTiles(
 	image: ImageData,
-	tiles: boolean[],
+	tiles: Tiles,
 	color: Color,
 	offset: number
 ) {
-	for (let tileY = 0; tileY < levelHeight; ++tileY) {
-		for (let tileX = 0; tileX < levelWidth; ++tileX) {
+	for (const [tileY, row] of tiles.entries()) {
+		for (const [tileX, tileIsSet] of row.entries()) {
 			const tileIndex = tileY * levelWidth + tileX;
-			const tileIsSet = tiles[tileIndex];
 			const pixelIndex = tileIndex + offset;
 			if (tileIsSet && pixelIndex < numTiles) {
 				plotPixel(image, pixelIndex, color);

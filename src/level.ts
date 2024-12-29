@@ -22,9 +22,78 @@ export interface Monster {
 // up, right, down, left
 export type BubbleCurrentDirection = 0 | 1 | 2 | 3;
 
+type TileRow = [
+	boolean,
+	boolean,
+	boolean,
+	boolean,
+	boolean,
+	boolean,
+	boolean,
+	boolean,
+	boolean,
+	boolean,
+	boolean,
+	boolean,
+	boolean,
+	boolean,
+	boolean,
+	boolean,
+	boolean,
+	boolean,
+	boolean,
+	boolean,
+	boolean,
+	boolean,
+	boolean,
+	boolean,
+	boolean,
+	boolean,
+	boolean,
+	boolean,
+	boolean,
+	boolean,
+	boolean,
+	boolean
+];
+
+export type Tiles = [
+	TileRow,
+	TileRow,
+	TileRow,
+	TileRow,
+	TileRow,
+	TileRow,
+	TileRow,
+	TileRow,
+	TileRow,
+	TileRow,
+	TileRow,
+	TileRow,
+	TileRow,
+	TileRow,
+	TileRow,
+	TileRow,
+	TileRow,
+	TileRow,
+	TileRow,
+	TileRow,
+	TileRow,
+	TileRow,
+	TileRow,
+	TileRow,
+	TileRow
+];
+
+export function createTiles(): Tiles {
+	return Array(levelHeight)
+		.fill(0)
+		.map((_) => Array(levelWidth).fill(false)) as Tiles;
+}
+
 export interface Level {
-	// Should be exactly `numTiles` entries.
-	tiles: Array<boolean>;
+	// Should be exactly `levelHeight` rows of `levelWidth` tiles each .
+	tiles: Tiles;
 	bgColorLight: PaletteIndex;
 	bgColorDark: PaletteIndex;
 	platformChar: CharsetChar;
@@ -43,9 +112,9 @@ function rowIsSymmetric(row: boolean[]): boolean {
 	return true;
 }
 
-export function levelIsSymmetric(tiles: boolean[]) {
+export function levelIsSymmetric(tiles: Tiles) {
 	for (let rowIndex = 1; rowIndex < 24; ++rowIndex) {
-		if (!rowIsSymmetric(tiles.slice(rowIndex * 32, (rowIndex + 1) * 32))) {
+		if (!rowIsSymmetric(tiles[rowIndex])) {
 			return false;
 		}
 	}

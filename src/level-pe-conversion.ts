@@ -1,5 +1,5 @@
-import { padRight, chunk } from "./functions";
-import { Level, Monster } from "./level";
+import { padRight } from "./functions";
+import { createTiles, Level, Monster } from "./level";
 import { Bit, CharBitmap, PeFileData } from "./pe-file";
 import {
 	Sprites,
@@ -288,10 +288,13 @@ function parseSpriteUid(uid: string): {
 }
 
 function makeLevelCharData(level: Level): number[][] {
-	const chars = chunk(
-		level.tiles.map((tile) => (tile ? 1 : 0) as number),
-		32
-	).map((row) => padRight(row, 40, 0));
+	const chars = level.tiles.map((row) =>
+		padRight(
+			row.map((tile) => (tile ? 1 : 0) as number),
+			40,
+			0
+		)
+	);
 
 	for (const [indexY, row] of chars.entries()) {
 		for (const [indexX, char] of row.entries()) {
@@ -398,10 +401,12 @@ export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 
 	const solidTiles = new Set([1, 16, 17, 32, 33]);
 	return peFileData.screens.map((screen): Level => {
-		const rows = screen.charData.map((row) =>
-			row.slice(0, 32).map((char) => solidTiles.has(char))
-		);
-		const tiles = rows.flat();
+		const tiles = createTiles();
+		for (const [tileY, row] of tiles.entries()) {
+			for (const tileX of row.keys()) {
+				tiles[tileY][tileX] = solidTiles.has(screen.charData[tileY][tileX]);
+			}
+		}
 
 		const charset = charsets[screen.characterSet];
 		const platformChar = charset[1];
