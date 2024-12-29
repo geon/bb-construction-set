@@ -531,21 +531,23 @@ export function patchPrg(prg: Uint8Array, levels: readonly Level[]) {
 		levels.map((level) => level.bgColorLight + (level.bgColorDark << 4))
 	);
 
-	// // Buggy. Levels turn black.
-	// // Write holes.
-	// for (const [levelIndex, level] of levels.slice(1).entries()) {
-	// 	const topLeft = !level.tiles[10];
-	// 	const topRight = !level.tiles[20];
-	// 	const bottomLeft = !level.tiles[10 + 32 * 24];
-	// 	const bottomRight = !level.tiles[20 + 32 * 24];
-	// 	setByte(
-	// 		bgColorMetadataArrayAddress + levelIndex,
-	// 		(topLeft ? 1 << 0 : 0) +
-	// 			(topRight ? 1 << 1 : 0) +
-	// 			(bottomLeft ? 1 << 2 : 0) +
-	// 			(bottomRight ? 1 << 3 : 0)
-	// 	);
-	// }
+	// Write holes.
+	for (const [levelIndex, level] of levels.entries()) {
+		const topLeft = !level.tiles[10];
+		const topRight = !level.tiles[20];
+		const bottomLeft = !level.tiles[10 + 32 * 24];
+		const bottomRight = !level.tiles[20 + 32 * 24];
+
+		setByte(
+			holeMetadataArrayAddress + levelIndex,
+			((topLeft ? 1 : 0) << 0) +
+				((topRight ? 1 : 0) << 1) +
+				((bottomLeft ? 1 : 0) << 2) +
+				((bottomRight ? 1 : 0) << 3) +
+				// TODO: No idea what the rest of the bits are.
+				(getByte(holeMetadataArrayAddress + levelIndex) & 0b11110000)
+		);
+	}
 
 	// Write symmetry.
 	setBytes(
@@ -554,7 +556,7 @@ export function patchPrg(prg: Uint8Array, levels: readonly Level[]) {
 			(level, index) =>
 				((levelIsSymmetric(level.tiles) ? 1 : 0) << 7) +
 				((!level.sidebarChars ? 1 : 0) << 6) +
-				// TODO: No idea what  the rest of the bits are.
+				// TODO: No idea what the rest of the bits are.
 				(getByte(symmetryMetadataArrayAddress + index) & 0b00111111)
 		)
 	);
