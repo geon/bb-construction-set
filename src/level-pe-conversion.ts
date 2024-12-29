@@ -200,20 +200,22 @@ export function levelsToPeFileData(data: {
 						priority: "front",
 					},
 					...level.monsters.map(
-						(monster): PeFileData["screens"][number]["sprites"][number] => ({
-							setId: 0,
-							uid: getSpriteUid({
-								monsterName: characterNames[monster.type + 1],
-								facingLeft: monster.facingLeft,
-							}),
-							x: monster.spawnPoint.x,
-							y: monster.spawnPoint.y,
-							color: Object.values(spriteColors)[monster.type + 1],
-							// palette[Object.values(spriteColors)[monster.type + 1]]
-							expandX: false,
-							expandY: false,
-							priority: "front",
-						})
+						(monster): PeFileData["screens"][number]["sprites"][number] => {
+							return {
+								setId: 0,
+								uid: getSpriteUid({
+									monsterName: characterNames[monster.type + 1],
+									facingLeft: monster.facingLeft,
+								}),
+								x: monster.spawnPoint.x,
+								y: monster.spawnPoint.y,
+								color: Object.values(spriteColors)[monster.type + 1],
+								// palette[Object.values(spriteColors)[monster.type + 1]]
+								expandX: false,
+								expandY: false,
+								priority: "front",
+							};
+						}
 					),
 				],
 				undoStack: [],
