@@ -201,10 +201,11 @@ export function levelsToPeFileData(data: {
 					},
 					...level.monsters.map(
 						(monster): PeFileData["screens"][number]["sprites"][number] => {
+							const monsterName = characterNames[monster.type + 1];
 							return {
 								setId: 0,
 								uid: getSpriteUid({
-									monsterName: characterNames[monster.type + 1],
+									monsterName,
 									facingLeft: monster.facingLeft,
 								}),
 								x: monster.spawnPoint.x,
