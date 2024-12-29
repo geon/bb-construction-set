@@ -1,7 +1,7 @@
 import { Level, levelHeight, levelWidth, numTiles } from "./level";
 import { palette } from "./palette";
 import { Color, mixColors, black } from "./color";
-import { CharBlock, CharsetChar } from "./charset-char";
+import { CharBlock, CharBlockIndex, CharsetChar } from "./charset-char";
 import {
 	Sprites,
 	spriteColors,
@@ -149,7 +149,9 @@ export function drawPlatformCharsToCanvas(
 				for (let sidebarX = 0; sidebarX < 4; ++sidebarX) {
 					const char =
 						level.sidebarChars && sidebarX < 2
-							? level.sidebarChars[(sidebarY % 2) * 2 + sidebarX]
+							? level.sidebarChars[
+									((sidebarY % 2) * 2 + sidebarX) as CharBlockIndex
+							  ]
 							: level.platformChar;
 
 					drawChar(image, char, charPalette);
@@ -291,7 +293,7 @@ export function drawItemsToCanvas(
 						palette[5], // Green
 					] as const;
 
-					const char = item[charBlockY * 2 + charBlockX];
+					const char = item[(charBlockY * 2 + charBlockX) as CharBlockIndex];
 					drawChar(image, char, charPalette);
 
 					ctx.putImageData(

@@ -21,6 +21,7 @@ export interface CharsetChar {
 }
 
 export type CharBlock = [CharsetChar, CharsetChar, CharsetChar, CharsetChar];
+export type CharBlockIndex = 0 | 1 | 2 | 3;
 
 export function parseCharsetCharLine(byte: number): CharsetCharLine {
 	return [
