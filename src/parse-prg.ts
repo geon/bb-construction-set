@@ -219,12 +219,6 @@ function readLevel(
 		currentMonsterAddress: number;
 	}
 ) {
-	let {
-		currentSidebarAddress,
-		currentBitmapByteAddress,
-		currentMonsterAddress,
-	} = addresses;
-
 	const bgColorMetadata = getByte(bgColorMetadataArrayAddress + levelIndex);
 	const holeMetadata = getByte(holeMetadataArrayAddress + levelIndex);
 	const symmetryMetadata = getByte(symmetryMetadataArrayAddress + levelIndex);
@@ -237,6 +231,7 @@ function readLevel(
 	const bgColorLight = bgColorMetadata & 0b1111;
 	const bgColorDark = (bgColorMetadata & 0b11110000) >> 4;
 
+	let currentSidebarAddress = addresses.currentSidebarAddress;
 	let sidebarChars: Level["sidebarChars"] = undefined;
 	if (!isBitSet(symmetryMetadata, 1)) {
 		sidebarChars = readCharBlock(getByte, currentSidebarAddress);
@@ -245,6 +240,7 @@ function readLevel(
 
 	const isSymmetric = isBitSet(symmetryMetadata, 0);
 
+	let currentBitmapByteAddress = addresses.currentBitmapByteAddress;
 	const tiles = readTileBitmap(
 		currentBitmapByteAddress,
 		getByte,
@@ -258,6 +254,7 @@ function readLevel(
 	// Fill in the sides.
 	fillInTileBitmapSides(tiles);
 
+	let currentMonsterAddress = addresses.currentMonsterAddress;
 	// Level 100 is the boss level. It has no monsters.
 	const monsters: Monster[] = [];
 	if (levelIndex !== 99) {
