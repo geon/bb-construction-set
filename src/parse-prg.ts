@@ -196,23 +196,14 @@ function readLevels(getByte: (address: number) => number): Array<Level> {
 	// TODO: Check the original data size, and verify.
 
 	const levels: Array<Level> = [];
-	let curentBitmapByteAddress = bitmapArrayAddress;
-	let currentSidebarAddress = sidebarCharArrayAddress;
-	let currentMonsterAddress = monsterArrayAddress;
+	let addresses = {
+		curentBitmapByteAddress: bitmapArrayAddress,
+		currentSidebarAddress: sidebarCharArrayAddress,
+		currentMonsterAddress: monsterArrayAddress,
+	};
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
 		let level;
-		({
-			level,
-			currentSidebarAddress,
-			curentBitmapByteAddress,
-			currentMonsterAddress,
-		} = readLevel(
-			getByte,
-			levelIndex,
-			currentSidebarAddress,
-			curentBitmapByteAddress,
-			currentMonsterAddress
-		));
+		({ level, addresses } = readLevel(getByte, levelIndex, addresses));
 
 		levels.push(level);
 	}
@@ -222,10 +213,18 @@ function readLevels(getByte: (address: number) => number): Array<Level> {
 function readLevel(
 	getByte: (address: number) => number,
 	levelIndex: number,
-	currentSidebarAddress: number,
-	curentBitmapByteAddress: number,
-	currentMonsterAddress: number
+	addresses: {
+		currentSidebarAddress: number;
+		curentBitmapByteAddress: number;
+		currentMonsterAddress: number;
+	}
 ) {
+	let {
+		currentSidebarAddress,
+		curentBitmapByteAddress,
+		currentMonsterAddress,
+	} = addresses;
+
 	const bgColorMetadata = getByte(bgColorMetadataArrayAddress + levelIndex);
 	const holeMetadata = getByte(holeMetadataArrayAddress + levelIndex);
 	const symmetryMetadata = getByte(symmetryMetadataArrayAddress + levelIndex);
@@ -281,9 +280,11 @@ function readLevel(
 
 	return {
 		level,
-		currentSidebarAddress,
-		curentBitmapByteAddress,
-		currentMonsterAddress,
+		addresses: {
+			currentSidebarAddress,
+			curentBitmapByteAddress,
+			currentMonsterAddress,
+		},
 	};
 }
 
