@@ -1,5 +1,5 @@
 import { Level, levelHeight, levelWidth, numTiles } from "./level";
-import { palette } from "./palette";
+import { palette, PaletteIndex } from "./palette";
 import { Color, mixColors, black } from "./color";
 import { CharBlock, CharBlockIndex, CharsetChar } from "./charset-char";
 import {
@@ -246,7 +246,7 @@ export function drawSpritesToCanvas(
 	}
 }
 
-function getSpritePalette(color: number): [Color, Color, Color, Color] {
+function getSpritePalette(color: PaletteIndex): [Color, Color, Color, Color] {
 	return [
 		palette[0], // Transparent (Black)
 		palette[2], // Dark red

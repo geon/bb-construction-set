@@ -10,6 +10,7 @@ import {
 } from "./sprite";
 import { CharsetChar, CharsetCharLine } from "./charset-char";
 import { c64BuiltinCharsets } from "./c64-builtin-charsets";
+import { PaletteIndex } from "./palette";
 
 const emptyChar: CharBitmap = [0, 0, 0, 0, 0, 0, 0, 0];
 
@@ -424,8 +425,8 @@ export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 
 		return {
 			tiles,
-			bgColorLight: screen.multiColor2,
-			bgColorDark: screen.multiColor1,
+			bgColorLight: screen.multiColor2 as PaletteIndex,
+			bgColorDark: screen.multiColor1 as PaletteIndex,
 			platformChar,
 			sidebarChars: sidebarChars.some((char) =>
 				char.lines.some((line, lineIndex) =>

@@ -15,6 +15,7 @@ import {
 	maxAsymmetric,
 	maxSidebars,
 } from "./level";
+import { PaletteIndex } from "./palette";
 import {
 	CharacterName,
 	Sprite,
@@ -235,8 +236,8 @@ function readLevel(
 		platformCharArrayAddress + levelIndex * 8
 	);
 
-	const bgColorLight = bgColorMetadata & 0b1111;
-	const bgColorDark = (bgColorMetadata & 0b11110000) >> 4;
+	const bgColorLight = (bgColorMetadata & 0b1111) as PaletteIndex;
+	const bgColorDark = ((bgColorMetadata & 0b11110000) >> 4) as PaletteIndex;
 
 	const { sidebarChars, currentSidebarAddress } = readSidebarChars(
 		addresses.currentSidebarAddress,

@@ -1,3 +1,5 @@
+import { PaletteIndex } from "./palette";
+
 export const spriteWidthBytes = 3;
 export const spriteHeight = 21;
 export const numSpriteBytes = spriteWidthBytes * spriteHeight;
@@ -47,7 +49,7 @@ export const spriteLeftIndex: Record<CharacterName, number> = {
 	superSocket: 1,
 };
 
-export const spriteColors: Record<CharacterName, number> = {
+export const spriteColors: Record<CharacterName, PaletteIndex> = {
 	player: 5,
 	bubbleBuster: 12,
 	incendo: 15,

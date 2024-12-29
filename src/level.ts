@@ -1,5 +1,6 @@
 import { CharBlock } from "./charset-char";
 import { CharsetChar } from "./charset-char";
+import { PaletteIndex } from "./palette";
 
 export const levelWidth = 32;
 export const levelHeight = 25;
@@ -24,8 +25,8 @@ export type BubbleCurrentDirection = 0 | 1 | 2 | 3;
 export interface Level {
 	// Should be exactly `numTiles` entries.
 	tiles: Array<boolean>;
-	bgColorLight: number;
-	bgColorDark: number;
+	bgColorLight: PaletteIndex;
+	bgColorDark: PaletteIndex;
 	platformChar: CharsetChar;
 	sidebarChars: CharBlock | undefined;
 	monsters: Array<Monster>;
