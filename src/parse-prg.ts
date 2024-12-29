@@ -378,14 +378,17 @@ function readMonstersForLevel(
 	getByte: (address: number) => number
 ) {
 	// Level 100 is the boss level. It has no monsters.
-	const monsters: Monster[] = [];
-	if (levelIndex !== 99) {
-		do {
-			monsters.push(readMonster(currentMonsterAddress, getByte));
-			currentMonsterAddress += 3;
-		} while (getByte(currentMonsterAddress)); // The monsters of each level are separated with a zero byte.
-		currentMonsterAddress += 1;
+	if (levelIndex === 99) {
+		return { monsters: [], currentMonsterAddress };
 	}
+
+	const monsters: Monster[] = [];
+	do {
+		monsters.push(readMonster(currentMonsterAddress, getByte));
+		currentMonsterAddress += 3;
+	} while (getByte(currentMonsterAddress)); // The monsters of each level are separated with a zero byte.
+	currentMonsterAddress += 1;
+
 	return { monsters, currentMonsterAddress };
 }
 
