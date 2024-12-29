@@ -15,7 +15,13 @@ import {
 	maxAsymmetric,
 	maxSidebars,
 } from "./level";
-import { Sprite, Sprites, numSpriteBytes, spriteCounts } from "./sprite";
+import {
+	Sprite,
+	Sprites,
+	characterNames,
+	numSpriteBytes,
+	spriteCounts,
+} from "./sprite";
 
 function getPrgStartAddress(prg: DataView): number {
 	// The prg contains a little endian 16 bit header with the start address. The rest is the raw data.
@@ -435,10 +441,7 @@ function readSprites(getByte: (address: number) => number): Sprites {
 		superSocket: [],
 	};
 	let globalSpriteIndex = 0;
-	for (const [characterName, characterSprites] of Object.entries(sprites) as [
-		keyof Sprites,
-		Sprite[]
-	][]) {
+	for (const characterName of characterNames) {
 		for (
 			let spriteIndex = 0;
 			spriteIndex < spriteCounts[characterName];
@@ -446,7 +449,7 @@ function readSprites(getByte: (address: number) => number): Sprites {
 		) {
 			const sprite = readSprite(getByte, globalSpriteIndex);
 			++globalSpriteIndex;
-			characterSprites.push(sprite);
+			sprites[characterName].push(sprite);
 		}
 	}
 	return sprites;

@@ -7,16 +7,19 @@ export interface Sprite {
 	bitmap: Array<number>;
 }
 
-export type CharacterName =
-	| "player"
-	| "bubbleBuster"
-	| "incendo"
-	| "colley"
-	| "hullaballoon"
-	| "beluga"
-	| "willyWhistle"
-	| "stoner"
-	| "superSocket";
+export const characterNames = [
+	"player",
+	"bubbleBuster",
+	"incendo",
+	"colley",
+	"hullaballoon",
+	"beluga",
+	"willyWhistle",
+	"stoner",
+	"superSocket",
+] as const;
+
+export type CharacterName = (typeof characterNames)[number];
 
 export type Sprites = Record<CharacterName, Sprite[]>;
 
