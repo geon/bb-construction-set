@@ -1,4 +1,9 @@
-import { CharBlock, readCharBlock, readCharsetChar } from "./charset-char";
+import {
+	CharBlock,
+	CharsetChar,
+	CharsetCharLine,
+	parseCharsetCharLine,
+} from "./charset-char";
 import { chunk } from "./functions";
 import {
 	BubbleCurrentDirection,
@@ -146,6 +151,30 @@ export function parsePrg(prg: DataView): {
 	const items = readItems(getByte);
 
 	return { levels, sprites, items };
+}
+
+function readCharsetChar(
+	getByte: (address: number) => number,
+	address: number
+): CharsetChar {
+	const lines: CharsetCharLine[] = [];
+	for (let i = 0; i < 8; ++i) {
+		const line = parseCharsetCharLine(getByte(address + i));
+		lines.push(line);
+	}
+	return { lines: lines as CharsetChar["lines"] };
+}
+
+function readCharBlock(
+	getByte: (address: number) => number,
+	currentSidebarAddress: number
+): CharBlock {
+	return [
+		readCharsetChar(getByte, currentSidebarAddress + 0 * 8),
+		readCharsetChar(getByte, currentSidebarAddress + 1 * 8),
+		readCharsetChar(getByte, currentSidebarAddress + 2 * 8),
+		readCharsetChar(getByte, currentSidebarAddress + 3 * 8),
+	];
 }
 
 function readItems(getByte: (address: number) => number): CharBlock[] {
