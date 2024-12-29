@@ -197,7 +197,7 @@ function readLevels(getByte: (address: number) => number): Array<Level> {
 
 	const levels: Array<Level> = [];
 	let addresses = {
-		curentBitmapByteAddress: bitmapArrayAddress,
+		currentBitmapByteAddress: bitmapArrayAddress,
 		currentSidebarAddress: sidebarCharArrayAddress,
 		currentMonsterAddress: monsterArrayAddress,
 	};
@@ -215,13 +215,13 @@ function readLevel(
 	levelIndex: number,
 	addresses: {
 		currentSidebarAddress: number;
-		curentBitmapByteAddress: number;
+		currentBitmapByteAddress: number;
 		currentMonsterAddress: number;
 	}
 ) {
 	let {
 		currentSidebarAddress,
-		curentBitmapByteAddress,
+		currentBitmapByteAddress,
 		currentMonsterAddress,
 	} = addresses;
 
@@ -246,12 +246,12 @@ function readLevel(
 	const isSymmetric = isBitSet(symmetryMetadata, 0);
 
 	const tiles = readTileBitmap(
-		curentBitmapByteAddress,
+		currentBitmapByteAddress,
 		getByte,
 		isSymmetric,
 		holeMetadata
 	);
-	curentBitmapByteAddress += (isSymmetric ? 2 : 4) * 23; // 23 lines of 2 or 4 bytes.
+	currentBitmapByteAddress += (isSymmetric ? 2 : 4) * 23; // 23 lines of 2 or 4 bytes.
 
 	const bubbleCurrentLineDefault = extractbubbleCurrentLineDefault(tiles);
 
@@ -282,7 +282,7 @@ function readLevel(
 		level,
 		addresses: {
 			currentSidebarAddress,
-			curentBitmapByteAddress,
+			currentBitmapByteAddress,
 			currentMonsterAddress,
 		},
 	};
@@ -331,7 +331,7 @@ function fillInTileBitmapSides(tiles: Level["tiles"]) {
 }
 
 function readTileBitmap(
-	curentBitmapByteAddress: number,
+	currentBitmapByteAddress: number,
 	getByte: (address: number) => number,
 	isSymmetric: boolean,
 	holeMetadata: number
@@ -356,8 +356,8 @@ function readTileBitmap(
 			++bitmapByteOfRowIndex
 		) {
 			const bitmapByteIndex = rowIndex * bytesPerRow + bitmapByteOfRowIndex;
-			const bitmapByte = getByte(curentBitmapByteAddress);
-			curentBitmapByteAddress += 1;
+			const bitmapByte = getByte(currentBitmapByteAddress);
+			currentBitmapByteAddress += 1;
 			// Convert the bitmap to an array of bools.
 			for (let bitIndex = 0; bitIndex < 8; ++bitIndex) {
 				// Offset by 32 for the top line.
