@@ -231,12 +231,11 @@ function readLevel(
 	const bgColorLight = bgColorMetadata & 0b1111;
 	const bgColorDark = (bgColorMetadata & 0b11110000) >> 4;
 
-	let currentSidebarAddress = addresses.currentSidebarAddress;
-	let sidebarChars: Level["sidebarChars"] = undefined;
-	if (!isBitSet(symmetryMetadata, 1)) {
-		sidebarChars = readCharBlock(getByte, currentSidebarAddress);
-		currentSidebarAddress += 4 * 8; // 4 chars of 8 bytes each.
-	}
+	const { sidebarChars, currentSidebarAddress } = readSidebarChars(
+		addresses.currentSidebarAddress,
+		symmetryMetadata,
+		getByte
+	);
 
 	const isSymmetric = isBitSet(symmetryMetadata, 0);
 
@@ -272,6 +271,19 @@ function readLevel(
 			currentMonsterAddress,
 		},
 	};
+}
+
+function readSidebarChars(
+	currentSidebarAddress: number,
+	symmetryMetadata: number,
+	getByte: (address: number) => number
+) {
+	let sidebarChars: Level["sidebarChars"] = undefined;
+	if (!isBitSet(symmetryMetadata, 1)) {
+		sidebarChars = readCharBlock(getByte, currentSidebarAddress);
+		currentSidebarAddress += 4 * 8; // 4 chars of 8 bytes each.
+	}
+	return { sidebarChars, currentSidebarAddress };
 }
 
 function readTilesAndBubbleCurrentLineDefault(
