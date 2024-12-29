@@ -362,12 +362,11 @@ function readTilesAndBubbleCurrentLineDefault(
 	// Fill in the sides.
 	// The 2 tile wide left and right borders are used to store part of the bubbleCurrent.
 	// It needs to be set to true to be solid.
-	for (let rowIndex = 0; rowIndex < 23; ++rowIndex) {
-		// Offset by 32 for the top line.
-		tiles[32 + rowIndex * levelWidth] = true;
-		tiles[32 + rowIndex * levelWidth + 1] = true;
-		tiles[32 + (rowIndex + 1) * levelWidth - 2] = true;
-		tiles[32 + (rowIndex + 1) * levelWidth - 1] = true;
+	for (let rowIndex = 0; rowIndex < 25; ++rowIndex) {
+		tiles[rowIndex * levelWidth] = true;
+		tiles[rowIndex * levelWidth + 1] = true;
+		tiles[(rowIndex + 1) * levelWidth - 2] = true;
+		tiles[(rowIndex + 1) * levelWidth - 1] = true;
 	}
 
 	return { tiles, bubbleCurrentLineDefault, currentBitmapByteAddress };
