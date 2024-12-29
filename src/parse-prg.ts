@@ -241,10 +241,12 @@ function readLevel(
 	level.bgColorLight = bgColorMetadata & 0b1111;
 	level.bgColorDark = (bgColorMetadata & 0b11110000) >> 4;
 
+	let sidebarChars: Level["sidebarChars"] = undefined;
 	if (!isBitSet(symmetryMetadata, 1)) {
-		level.sidebarChars = readCharBlock(getByte, currentSidebarAddress);
+		sidebarChars = readCharBlock(getByte, currentSidebarAddress);
 		currentSidebarAddress += 4 * 8; // 4 chars of 8 bytes each.
 	}
+	level.sidebarChars = sidebarChars;
 
 	const isSymmetric = isBitSet(symmetryMetadata, 0);
 
