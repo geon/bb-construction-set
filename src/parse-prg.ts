@@ -294,13 +294,30 @@ function readTilesAndBubbleCurrentLineDefault(
 ) {
 	const tiles: Array<boolean> = [];
 
-	// Top and bottom rows with holes.
-	setTileBitmapTopAndBottom(tiles, {
-		topLeft: isBitSet(holeMetadata, 7),
-		topRight: isBitSet(holeMetadata, 6),
-		bottomLeft: isBitSet(holeMetadata, 5),
-		bottomRight: isBitSet(holeMetadata, 4),
-	});
+	// Fill in top and bottom row.
+	for (let x = 0; x < levelWidth; ++x) {
+		tiles[x] = true;
+		tiles[(levelHeight - 1) * levelWidth + x] = true;
+	}
+	// Cut out the holes.
+	const topLeft = isBitSet(holeMetadata, 7);
+	const topRight = isBitSet(holeMetadata, 6);
+	const bottomLeft = isBitSet(holeMetadata, 5);
+	const bottomRight = isBitSet(holeMetadata, 4);
+	for (let x = 0; x < 4; ++x) {
+		if (topLeft) {
+			tiles[9 + x] = false;
+		}
+		if (topRight) {
+			tiles[19 + x] = false;
+		}
+		if (bottomLeft) {
+			tiles[768 + 9 + x] = false;
+		}
+		if (bottomRight) {
+			tiles[768 + 19 + x] = false;
+		}
+	}
 
 	// Read tile bitmap.
 	const bytesPerRow = 4;
@@ -371,36 +388,6 @@ function readMonstersForLevel(
 		currentMonsterAddress += 1;
 	}
 	return { monsters, currentMonsterAddress };
-}
-
-function setTileBitmapTopAndBottom(
-	tiles: Array<boolean>,
-	{
-		topLeft,
-		topRight,
-		bottomLeft,
-		bottomRight,
-	}: Record<"topLeft" | "topRight" | "bottomLeft" | "bottomRight", boolean>
-) {
-	for (let x = 0; x < levelWidth; ++x) {
-		tiles[x] = true;
-		tiles[(levelHeight - 1) * levelWidth + x] = true;
-	}
-	// Cut out the holes.
-	for (let x = 0; x < 4; ++x) {
-		if (topLeft) {
-			tiles[9 + x] = false;
-		}
-		if (topRight) {
-			tiles[19 + x] = false;
-		}
-		if (bottomLeft) {
-			tiles[768 + 9 + x] = false;
-		}
-		if (bottomRight) {
-			tiles[768 + 19 + x] = false;
-		}
-	}
 }
 
 function extractbubbleCurrentLineDefault(
