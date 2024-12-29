@@ -4,6 +4,7 @@ import { Bit, CharBitmap, PeFileData } from "./pe-file";
 import {
 	CharacterName,
 	Sprites,
+	characterNames,
 	spriteColors,
 	spriteCounts,
 	spriteLeftIndex,
@@ -202,7 +203,7 @@ export function levelsToPeFileData(data: {
 						(monster): PeFileData["screens"][number]["sprites"][number] => ({
 							setId: 0,
 							uid: getSpriteUid({
-								monsterName: Object.keys(data.sprites)[monster.type + 1],
+								monsterName: characterNames[monster.type + 1],
 								facingLeft: monster.facingLeft,
 							}),
 							x: monster.spawnPoint.x,
