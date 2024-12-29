@@ -9,7 +9,6 @@ import {
 	BubbleCurrentDirection,
 	Level,
 	Monster,
-	createLevel,
 	levelHeight,
 	levelIsSymmetric,
 	levelWidth,
@@ -227,30 +226,27 @@ function readLevel(
 	curentBitmapByteAddress: number,
 	currentMonsterAddress: number
 ) {
-	const level = createLevel();
-
 	const bgColorMetadata = getByte(bgColorMetadataArrayAddress + levelIndex);
 	const holeMetadata = getByte(holeMetadataArrayAddress + levelIndex);
 	const symmetryMetadata = getByte(symmetryMetadataArrayAddress + levelIndex);
 
-	level.platformChar = readCharsetChar(
+	const platformChar = readCharsetChar(
 		getByte,
 		platformCharArrayAddress + levelIndex * 8
 	);
 
-	level.bgColorLight = bgColorMetadata & 0b1111;
-	level.bgColorDark = (bgColorMetadata & 0b11110000) >> 4;
+	const bgColorLight = bgColorMetadata & 0b1111;
+	const bgColorDark = (bgColorMetadata & 0b11110000) >> 4;
 
 	let sidebarChars: Level["sidebarChars"] = undefined;
 	if (!isBitSet(symmetryMetadata, 1)) {
 		sidebarChars = readCharBlock(getByte, currentSidebarAddress);
 		currentSidebarAddress += 4 * 8; // 4 chars of 8 bytes each.
 	}
-	level.sidebarChars = sidebarChars;
 
 	const isSymmetric = isBitSet(symmetryMetadata, 0);
 
-	level.tiles = readTileBitmap(
+	const tiles = readTileBitmap(
 		curentBitmapByteAddress,
 		getByte,
 		isSymmetric,
@@ -258,10 +254,10 @@ function readLevel(
 	);
 	curentBitmapByteAddress += (isSymmetric ? 2 : 4) * 23; // 23 lines of 2 or 4 bytes.
 
-	level.bubbleCurrentLineDefault = extractbubbleCurrentLineDefault(level.tiles);
+	const bubbleCurrentLineDefault = extractbubbleCurrentLineDefault(tiles);
 
 	// Fill in the sides.
-	fillInTileBitmapSides(level.tiles);
+	fillInTileBitmapSides(tiles);
 
 	// Level 100 is the boss level. It has no monsters.
 	const monsters: Monster[] = [];
@@ -272,7 +268,16 @@ function readLevel(
 		} while (getByte(currentMonsterAddress)); // The monsters of each level are separated with a zero byte.
 		currentMonsterAddress += 1;
 	}
-	level.monsters = monsters;
+
+	const level: Level = {
+		platformChar,
+		bgColorLight,
+		bgColorDark,
+		sidebarChars,
+		tiles,
+		bubbleCurrentLineDefault,
+		monsters,
+	};
 
 	return {
 		level,

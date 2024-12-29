@@ -1,5 +1,5 @@
 import { CharBlock } from "./charset-char";
-import { CharsetChar, parseCharsetCharLine } from "./charset-char";
+import { CharsetChar } from "./charset-char";
 
 export const levelWidth = 32;
 export const levelHeight = 25;
@@ -31,29 +31,6 @@ export interface Level {
 	monsters: Array<Monster>;
 	// The default bubble current direction for each tile row, so lenght = levelHeight.
 	bubbleCurrentLineDefault: Array<BubbleCurrentDirection>;
-}
-
-export function createLevel(): Level {
-	return {
-		tiles: Array(numTiles).fill(false),
-		bgColorLight: 0,
-		bgColorDark: 0,
-		platformChar: {
-			lines: [
-				parseCharsetCharLine(0xff),
-				parseCharsetCharLine(0xff),
-				parseCharsetCharLine(0xff),
-				parseCharsetCharLine(0xff),
-				parseCharsetCharLine(0xff),
-				parseCharsetCharLine(0xff),
-				parseCharsetCharLine(0xff),
-				parseCharsetCharLine(0xff),
-			],
-		},
-		sidebarChars: undefined,
-		monsters: [],
-		bubbleCurrentLineDefault: Array(levelHeight).fill(0),
-	};
 }
 
 function rowIsSymmetric(row: boolean[]): boolean {
