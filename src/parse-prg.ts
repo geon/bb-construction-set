@@ -499,55 +499,55 @@ export function patchPrg(prg: Uint8Array, levels: readonly Level[]) {
 	// 	);
 	// }
 
-	// Write symmetry.
-	setBytes(
-		symmetryMetadataArrayAddress,
-		levels.map(
-			(level) =>
-				((levelIsSymmetric(level.tiles) ? 1 : 0) << 7) +
-				((!level.sidebarChars ? 1 : 0) << 6)
-		)
-	);
+	// // Write symmetry.
+	// setBytes(
+	// 	symmetryMetadataArrayAddress,
+	// 	levels.map(
+	// 		(level) =>
+	// 			((levelIsSymmetric(level.tiles) ? 1 : 0) << 7) +
+	// 			((!level.sidebarChars ? 1 : 0) << 6)
+	// 	)
+	// );
 
-	// Write platforms bitmap
-	const levelBitmapBytes = levels.flatMap((level) => {
-		const isSymmetric = levelIsSymmetric(level.tiles);
+	// // Write platforms bitmap
+	// const levelBitmapBytes = levels.flatMap((level) => {
+	// 	const isSymmetric = levelIsSymmetric(level.tiles);
 
-		const rows = [];
-		for (let rowIndex = 1; rowIndex < 24; ++rowIndex) {
-			rows.push(
-				level.tiles.slice(
-					rowIndex * 32,
-					rowIndex * 32 + (isSymmetric ? 16 : 32)
-				)
-			);
-		}
-		const tiles = rows.flat();
+	// 	const rows = [];
+	// 	for (let rowIndex = 1; rowIndex < 24; ++rowIndex) {
+	// 		rows.push(
+	// 			level.tiles.slice(
+	// 				rowIndex * 32,
+	// 				rowIndex * 32 + (isSymmetric ? 16 : 32)
+	// 			)
+	// 		);
+	// 	}
+	// 	const tiles = rows.flat();
 
-		const byteBits = [];
-		for (let tileIndex = 0; tileIndex < tiles.length; tileIndex += 8) {
-			byteBits.push(tiles.slice(tileIndex, tileIndex + 8));
-		}
+	// 	const byteBits = [];
+	// 	for (let tileIndex = 0; tileIndex < tiles.length; tileIndex += 8) {
+	// 		byteBits.push(tiles.slice(tileIndex, tileIndex + 8));
+	// 	}
 
-		const bytes = byteBits.map(
-			(bits) =>
-				((bits[0] ? 1 : 0) << 7) +
-				((bits[1] ? 1 : 0) << 6) +
-				((bits[2] ? 1 : 0) << 5) +
-				((bits[3] ? 1 : 0) << 4) +
-				((bits[4] ? 1 : 0) << 3) +
-				((bits[5] ? 1 : 0) << 2) +
-				((bits[6] ? 1 : 0) << 1) +
-				((bits[7] ? 1 : 0) << 0)
-		);
+	// 	const bytes = byteBits.map(
+	// 		(bits) =>
+	// 			((bits[0] ? 1 : 0) << 7) +
+	// 			((bits[1] ? 1 : 0) << 6) +
+	// 			((bits[2] ? 1 : 0) << 5) +
+	// 			((bits[3] ? 1 : 0) << 4) +
+	// 			((bits[4] ? 1 : 0) << 3) +
+	// 			((bits[5] ? 1 : 0) << 2) +
+	// 			((bits[6] ? 1 : 0) << 1) +
+	// 			((bits[7] ? 1 : 0) << 0)
+	// 	);
 
-		return bytes;
-	});
-	const maxLevelBytes = 46 * 100 + 46 * maxAsymmetric;
-	if (levelBitmapBytes.length > maxLevelBytes) {
-		throw new Error("Too many level bytes.");
-	}
-	setBytes(bitmapArrayAddress, levelBitmapBytes);
+	// 	return bytes;
+	// });
+	// const maxLevelBytes = 46 * 100 + 46 * maxAsymmetric;
+	// if (levelBitmapBytes.length > maxLevelBytes) {
+	// 	throw new Error("Too many level bytes.");
+	// }
+	// setBytes(bitmapArrayAddress, levelBitmapBytes);
 
 	// // Buggy. Only one monster.
 	// // Write monsters.
