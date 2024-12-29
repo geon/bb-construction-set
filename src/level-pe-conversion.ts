@@ -2,7 +2,6 @@ import { padRight, chunk } from "./functions";
 import { Level, Monster } from "./level";
 import { Bit, CharBitmap, PeFileData } from "./pe-file";
 import {
-	CharacterName,
 	Sprites,
 	characterNames,
 	spriteColors,
@@ -225,11 +224,11 @@ export function levelsToPeFileData(data: {
 		spriteSets: [
 			{
 				name: "Characters",
-				sprites: Object.entries(data.sprites).flatMap(
-					([
-						monsterName,
-						sprites,
-					]): PeFileData["spriteSets"][number]["sprites"][number][] => {
+				sprites: characterNames.flatMap(
+					(
+						monsterName
+					): PeFileData["spriteSets"][number]["sprites"][number][] => {
+						const sprites = data.sprites[monsterName];
 						return [false, true].map(
 							(
 								facingLeft
@@ -240,13 +239,13 @@ export function levelsToPeFileData(data: {
 								colorSprite:
 									monsterName === "player" && facingLeft
 										? 3 // Cyan for Bob.
-										: spriteColors[monsterName as CharacterName],
+										: spriteColors[monsterName],
 								multiColor1: 2,
 								multiColor2: 1,
 								expandX: false,
 								expandY: false,
 								bitmapData: sprites[
-									facingLeft ? spriteLeftIndex[monsterName as CharacterName] : 0
+									facingLeft ? spriteLeftIndex[monsterName] : 0
 								].bitmap.map((byte) => [
 									isBitSet(byte, 0),
 									isBitSet(byte, 1),
