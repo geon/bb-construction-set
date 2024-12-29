@@ -497,6 +497,8 @@ export function patchPrg(prg: Uint8Array, levels: readonly Level[]) {
 			++currentAddress;
 		}
 	};
+	const getByte = (address: number) =>
+		getPrgByteAtAddress(new DataView(prg.buffer), startAddres, address);
 
 	// Write platform chars.
 	setBytes(
@@ -545,15 +547,17 @@ export function patchPrg(prg: Uint8Array, levels: readonly Level[]) {
 	// 	);
 	// }
 
-	// // Write symmetry.
-	// setBytes(
-	// 	symmetryMetadataArrayAddress,
-	// 	levels.map(
-	// 		(level) =>
-	// 			((levelIsSymmetric(level.tiles) ? 1 : 0) << 7) +
-	// 			((!level.sidebarChars ? 1 : 0) << 6)
-	// 	)
-	// );
+	// Write symmetry.
+	setBytes(
+		symmetryMetadataArrayAddress,
+		levels.map(
+			(level, index) =>
+				((levelIsSymmetric(level.tiles) ? 1 : 0) << 7) +
+				((!level.sidebarChars ? 1 : 0) << 6) +
+				// TODO: No idea what  the rest of the bits are.
+				(getByte(symmetryMetadataArrayAddress + index) & 0b00111111)
+		)
+	);
 
 	// // Write platforms bitmap
 	// const levelBitmapBytes = levels.flatMap((level) => {
