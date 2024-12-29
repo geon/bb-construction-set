@@ -179,9 +179,8 @@ function drawChar(
 	char: CharsetChar,
 	charPalette: readonly [Color, Color, Color, Color]
 ) {
-	for (let charY = 0; charY < 8; ++charY) {
-		for (let charX = 0; charX < 4; ++charX) {
-			const colorIndex = char.lines[charY][charX];
+	for (const [charY, line] of char.lines.entries()) {
+		for (const [charX, colorIndex] of line.entries()) {
 			const color = charPalette[colorIndex];
 			// Double width pixels.
 			const pixelIndex = charY * 8 + charX * 2;
