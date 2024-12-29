@@ -210,7 +210,7 @@ export function levelsToPeFileData(data: {
 								}),
 								x: monster.spawnPoint.x,
 								y: monster.spawnPoint.y,
-								color: Object.values(spriteColors)[monster.type + 1],
+								color: spriteColors[monsterName],
 								// palette[Object.values(spriteColors)[monster.type + 1]]
 								expandX: false,
 								expandY: false,
