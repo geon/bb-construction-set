@@ -16,6 +16,7 @@ import {
 	maxSidebars,
 } from "./level";
 import {
+	CharacterName,
 	Sprite,
 	Sprites,
 	characterNames,
@@ -440,17 +441,14 @@ function readSprites(getByte: (address: number) => number): Sprites {
 		stoner: [],
 		superSocket: [],
 	};
-	let globalSpriteIndex = 0;
-	for (const characterName of characterNames) {
-		for (
-			let spriteIndex = 0;
-			spriteIndex < spriteCounts[characterName];
-			++spriteIndex
-		) {
-			const sprite = readSprite(getByte, globalSpriteIndex);
-			++globalSpriteIndex;
-			sprites[characterName].push(sprite);
-		}
+
+	const nameByIndex = characterNames.flatMap((name) =>
+		Array<CharacterName>(spriteCounts[name]).fill(name as CharacterName)
+	);
+
+	for (const [globalSpriteIndex, characterName] of nameByIndex.entries()) {
+		const sprite = readSprite(getByte, globalSpriteIndex);
+		sprites[characterName].push(sprite);
 	}
 	return sprites;
 }
