@@ -240,19 +240,13 @@ function readLevel(
 
 	const isSymmetric = isBitSet(symmetryMetadata, 0);
 
-	let currentBitmapByteAddress = addresses.currentBitmapByteAddress;
-	const tiles = readTileBitmap(
-		currentBitmapByteAddress,
-		getByte,
-		isSymmetric,
-		holeMetadata
-	);
-	currentBitmapByteAddress += (isSymmetric ? 2 : 4) * 23; // 23 lines of 2 or 4 bytes.
-
-	const bubbleCurrentLineDefault = extractbubbleCurrentLineDefault(tiles);
-
-	// Fill in the sides.
-	fillInTileBitmapSides(tiles);
+	const { tiles, bubbleCurrentLineDefault, currentBitmapByteAddress } =
+		readTilesAndBubbleCurrentLineDefault(
+			addresses.currentBitmapByteAddress,
+			getByte,
+			isSymmetric,
+			holeMetadata
+		);
 
 	const { monsters, currentMonsterAddress } = readMonstersForLevel(
 		addresses.currentMonsterAddress,
@@ -278,6 +272,28 @@ function readLevel(
 			currentMonsterAddress,
 		},
 	};
+}
+
+function readTilesAndBubbleCurrentLineDefault(
+	currentBitmapByteAddress: number,
+	getByte: (address: number) => number,
+	isSymmetric: boolean,
+	holeMetadata: number
+) {
+	const tiles = readTileBitmap(
+		currentBitmapByteAddress,
+		getByte,
+		isSymmetric,
+		holeMetadata
+	);
+	currentBitmapByteAddress += (isSymmetric ? 2 : 4) * 23; // 23 lines of 2 or 4 bytes.
+
+	const bubbleCurrentLineDefault = extractbubbleCurrentLineDefault(tiles);
+
+	// Fill in the sides.
+	fillInTileBitmapSides(tiles);
+
+	return { tiles, bubbleCurrentLineDefault, currentBitmapByteAddress };
 }
 
 function readMonstersForLevel(
