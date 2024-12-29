@@ -229,8 +229,8 @@ export function levelsToPeFileData(data: {
 					([
 						monsterName,
 						sprites,
-					]): PeFileData["spriteSets"][number]["sprites"][number][] =>
-						[false, true].map(
+					]): PeFileData["spriteSets"][number]["sprites"][number][] => {
+						return [false, true].map(
 							(
 								facingLeft
 							): PeFileData["spriteSets"][number]["sprites"][number] => ({
@@ -258,7 +258,8 @@ export function levelsToPeFileData(data: {
 									isBitSet(byte, 7),
 								]),
 							})
-						)
+						);
+					}
 				),
 				undoStack: [],
 				redoStack: [],
