@@ -254,16 +254,11 @@ function readLevel(
 	// Fill in the sides.
 	fillInTileBitmapSides(tiles);
 
-	let currentMonsterAddress = addresses.currentMonsterAddress;
-	// Level 100 is the boss level. It has no monsters.
-	const monsters: Monster[] = [];
-	if (levelIndex !== 99) {
-		do {
-			monsters.push(readMonster(currentMonsterAddress, getByte));
-			currentMonsterAddress += 3;
-		} while (getByte(currentMonsterAddress)); // The monsters of each level are separated with a zero byte.
-		currentMonsterAddress += 1;
-	}
+	const { monsters, currentMonsterAddress } = readMonstersForLevel(
+		addresses.currentMonsterAddress,
+		levelIndex,
+		getByte
+	);
 
 	const level: Level = {
 		platformChar,
@@ -283,6 +278,23 @@ function readLevel(
 			currentMonsterAddress,
 		},
 	};
+}
+
+function readMonstersForLevel(
+	currentMonsterAddress: number,
+	levelIndex: number,
+	getByte: (address: number) => number
+) {
+	// Level 100 is the boss level. It has no monsters.
+	const monsters: Monster[] = [];
+	if (levelIndex !== 99) {
+		do {
+			monsters.push(readMonster(currentMonsterAddress, getByte));
+			currentMonsterAddress += 3;
+		} while (getByte(currentMonsterAddress)); // The monsters of each level are separated with a zero byte.
+		currentMonsterAddress += 1;
+	}
+	return { monsters, currentMonsterAddress };
 }
 
 function setTileBitmapTopAndBottom(
