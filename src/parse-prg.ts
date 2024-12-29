@@ -262,13 +262,15 @@ function readLevel(
 	fillInTileBitmapSides(level.tiles);
 
 	// Level 100 is the boss level. It has no monsters.
+	const monsters: Monster[] = [];
 	if (levelIndex !== 99) {
 		do {
-			level.monsters.push(readMonster(currentMonsterAddress, getByte));
+			monsters.push(readMonster(currentMonsterAddress, getByte));
 			currentMonsterAddress += 3;
 		} while (getByte(currentMonsterAddress)); // The monsters of each level are separated with a zero byte.
 		currentMonsterAddress += 1;
 	}
+	level.monsters = monsters;
 
 	return {
 		level,
