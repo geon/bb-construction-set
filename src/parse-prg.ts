@@ -600,20 +600,24 @@ export function patchPrg(prg: Uint8Array, levels: readonly Level[]) {
 	// }
 	// setBytes(bitmapArrayAddress, levelBitmapBytes);
 
-	// // Buggy. Only one monster.
-	// // Write monsters.
-	// const monsterBytes = levels
-	// 	.flatMap((level) =>
-	// 		level.monsters
-	// 			.map((monster) => {
-	// 				return [
-	// 					((monster.spawnPoint.x - 20) & 0b11111000) + monster.type,
-	// 					(monster.spawnPoint.y - 21) & 0b11111110,
-	// 					(monster.facingLeft ? 1 : 0) << 7,
-	// 				];
-	// 			})
-	// 			.map((monsterBytes) => [...monsterBytes, 0])
-	// 	)
-	// 	.flat();
-	// setBytes(monsterArrayAddress, monsterBytes);
+	// Write monsters.
+	let monsterStartByte = monsterArrayAddress;
+	for (const level of levels) {
+		for (const monster of level.monsters) {
+			const currentMonsterStartByte = monsterStartByte;
+			setBytes(currentMonsterStartByte, [
+				((monster.spawnPoint.x - 20) & 0b11111000) + monster.type,
+				((monster.spawnPoint.y - 21) & 0b11111110) +
+					// TODO: No idea what the rest of the bits are.
+					(getByte(currentMonsterStartByte + 1) & 0b00000001),
+				((monster.facingLeft ? 1 : 0) << 7) +
+					// TODO: No idea what the rest of the bits are.
+					(getByte(currentMonsterStartByte + 2) & 0b01111111),
+			]);
+			monsterStartByte += 3;
+		}
+		// Terminate each level with a zero.
+		setByte(monsterStartByte, 0);
+		monsterStartByte += 1;
+	}
 }
