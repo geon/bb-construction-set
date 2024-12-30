@@ -14,6 +14,7 @@ import {
 	levelIsSymmetric,
 	levelWidth,
 	maxAsymmetric,
+	maxMonsters,
 	maxSidebars,
 } from "./level";
 import { PaletteIndex } from "./palette";
@@ -601,6 +602,12 @@ export function patchPrg(prg: Uint8Array, levels: readonly Level[]) {
 	// setBytes(bitmapArrayAddress, levelBitmapBytes);
 
 	// Write monsters.
+	const numMonsters = levels.flatMap((level) => level.monsters).length;
+	if (numMonsters > maxMonsters) {
+		throw new Error(
+			`Too many monsters: ${numMonsters}. Should be max ${maxMonsters}.`
+		);
+	}
 	let monsterStartByte = monsterArrayAddress;
 	for (const level of levels) {
 		for (const monster of level.monsters) {
