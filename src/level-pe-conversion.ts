@@ -172,7 +172,7 @@ export function levelsToPeFileData(data: {
 					characterSet: levelIndex + 2, // Take the 2 builtin charsets into account.
 
 					// `charData.length` should match `sizeY` and `charData[n].length` should match `sizeX`.
-					charData: makeLevelCharData(level),
+					charData: makeLevelCharData(level, sizeX, sizeY),
 					// Same for colorData.
 					// Multicolor green for bubbles.
 					colorData: padRight([], sizeY, padRight([], sizeX, 13)),
@@ -292,11 +292,15 @@ function parseSpriteUid(uid: string): {
 	return { monsterName, facingLeft };
 }
 
-function makeLevelCharData(level: Level): number[][] {
-	const chars = level.tiles.map((row) =>
+function makeLevelCharData(
+	level: Level,
+	sizeX: number,
+	sizeY: number
+): number[][] {
+	const chars = padRight<boolean[]>(level.tiles, sizeY, []).map((row) =>
 		padRight(
 			row.map((tile) => (tile ? 1 : 0) as number),
-			40,
+			sizeX,
 			0
 		)
 	);

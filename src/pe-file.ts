@@ -53,8 +53,8 @@ export interface PeFileData {
 	screens: {
 		name: string;
 		mode: ColorMode;
-		sizeX: 40;
-		sizeY: 25;
+		sizeX: number;
+		sizeY: number;
 		colorBorder: number;
 		colorBg: number;
 		colorChar: number;
