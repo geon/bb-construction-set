@@ -150,11 +150,13 @@ export function levelsToPeFileData(data: {
 		],
 		screens: data.levels.map(
 			(level, levelIndex): PeFileData["screens"][number] => {
+				const sizeX = 40;
+				const sizeY = 25;
 				return {
 					name: "Level " + (levelIndex + 1),
 					mode: "multicolor",
-					sizeX: 40,
-					sizeY: 25,
+					sizeX,
+					sizeY,
 					colorBorder: 0,
 					colorBg: 0,
 					colorChar: 13, // Multicolor green for bubbles.
@@ -173,7 +175,7 @@ export function levelsToPeFileData(data: {
 					charData: makeLevelCharData(level),
 					// Same for colorData.
 					// Multicolor green for bubbles.
-					colorData: padRight([], 25, padRight([], 40, 13)),
+					colorData: padRight([], sizeY, padRight([], sizeX, 13)),
 					sprites: [
 						{
 							setId: 0,
