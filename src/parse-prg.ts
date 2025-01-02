@@ -316,53 +316,6 @@ function readTilesAndBubbleCurrentLineDefault(
 	return { tiles, bubbleCurrentLineDefault, currentBitmapByteAddress };
 }
 
-function readMonstersForLevel(
-	currentMonsterAddress: number,
-	levelIndex: number,
-	getByte: (address: number) => number
-) {
-	// Level 100 is the boss level. It has no monsters.
-	const monsters: Monster[] = [];
-	if (levelIndex !== 99) {
-		do {
-			monsters.push(readMonster(currentMonsterAddress, getByte));
-			currentMonsterAddress += 3;
-		} while (getByte(currentMonsterAddress)); // The monsters of each level are separated with a zero byte.
-		currentMonsterAddress += 1;
-	}
-	return { monsters, currentMonsterAddress };
-}
-
-function setTileBitmapTopAndBottom(
-	tiles: Array<boolean>,
-	{
-		topLeft,
-		topRight,
-		bottomLeft,
-		bottomRight,
-	}: Record<"topLeft" | "topRight" | "bottomLeft" | "bottomRight", boolean>
-) {
-	for (let x = 0; x < levelWidth; ++x) {
-		tiles[x] = true;
-		tiles[(levelHeight - 1) * levelWidth + x] = true;
-	}
-	// Cut out the holes.
-	for (let x = 0; x < 4; ++x) {
-		if (topLeft) {
-			tiles[9 + x] = false;
-		}
-		if (topRight) {
-			tiles[19 + x] = false;
-		}
-		if (bottomLeft) {
-			tiles[768 + 9 + x] = false;
-		}
-		if (bottomRight) {
-			tiles[768 + 19 + x] = false;
-		}
-	}
-}
-
 function readTileBitmap(
 	currentBitmapByteAddress: number,
 	getByte: (address: number) => number,
@@ -417,6 +370,53 @@ function readTileBitmap(
 	}
 
 	return tiles;
+}
+
+function readMonstersForLevel(
+	currentMonsterAddress: number,
+	levelIndex: number,
+	getByte: (address: number) => number
+) {
+	// Level 100 is the boss level. It has no monsters.
+	const monsters: Monster[] = [];
+	if (levelIndex !== 99) {
+		do {
+			monsters.push(readMonster(currentMonsterAddress, getByte));
+			currentMonsterAddress += 3;
+		} while (getByte(currentMonsterAddress)); // The monsters of each level are separated with a zero byte.
+		currentMonsterAddress += 1;
+	}
+	return { monsters, currentMonsterAddress };
+}
+
+function setTileBitmapTopAndBottom(
+	tiles: Array<boolean>,
+	{
+		topLeft,
+		topRight,
+		bottomLeft,
+		bottomRight,
+	}: Record<"topLeft" | "topRight" | "bottomLeft" | "bottomRight", boolean>
+) {
+	for (let x = 0; x < levelWidth; ++x) {
+		tiles[x] = true;
+		tiles[(levelHeight - 1) * levelWidth + x] = true;
+	}
+	// Cut out the holes.
+	for (let x = 0; x < 4; ++x) {
+		if (topLeft) {
+			tiles[9 + x] = false;
+		}
+		if (topRight) {
+			tiles[19 + x] = false;
+		}
+		if (bottomLeft) {
+			tiles[768 + 9 + x] = false;
+		}
+		if (bottomRight) {
+			tiles[768 + 19 + x] = false;
+		}
+	}
 }
 
 function extractbubbleCurrentLineDefault(
