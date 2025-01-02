@@ -297,14 +297,17 @@ function makeLevelCharData(
 	sizeX: number,
 	sizeY: number
 ): number[][] {
+	// Create canvas.
+	const chars: number[][] = Array(sizeY)
+		.fill(0)
+		.map((_) => padRight([], sizeX, 0));
+
 	// Draw the platforms.
-	const chars = padRight<boolean[]>(level.tiles, sizeY, []).map((row) =>
-		padRight(
-			row.map((tile) => (tile ? 1 : 0) as number),
-			sizeX,
-			0
-		)
-	);
+	for (const [tileY, row] of level.tiles.entries()) {
+		for (const [tileX, tile] of row.entries()) {
+			chars[tileY][tileX] = tile ? 1 : 0;
+		}
+	}
 
 	// Draw the shadows.
 	for (const [indexY, row] of chars.entries()) {
