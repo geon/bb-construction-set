@@ -149,78 +149,81 @@ export function levelsToPeFileData(data: {
 			),
 		],
 		screens: data.levels.map(
-			(level, levelIndex): PeFileData["screens"][number] => ({
-				name: "Level " + (levelIndex + 1),
-				mode: "multicolor",
-				sizeX: 40,
-				sizeY: 25,
-				colorBorder: 0,
-				colorBg: 0,
-				colorChar: 13, // Multicolor green for bubbles.
-				multiColor1: level.bgColorDark,
-				multiColor2: level.bgColorLight,
-				extBgColor1: 0,
-				extBgColor2: 0,
-				extBgColor3: 0,
-				spriteMultiColor1: 2, // Dark red
-				spriteMultiColor2: 1, // White
-				spritesInBorder: "hidden",
-				spritesVisible: true,
-				characterSet: levelIndex + 2, // Take the 2 builtin charsets into account.
-				// `charData.length` should match `sizeY` and `charData[n].length` should match `sizeX`.
-				charData: makeLevelCharData(level),
-				// Same for colorData.
-				// Multicolor green for bubbles.
-				colorData: padRight([], 25, padRight([], 40, 13)),
-				sprites: [
-					{
-						setId: 0,
-						uid: getSpriteUid({
-							monsterName: "player",
-							facingLeft: false,
-						}),
-						x: 44, // The tail is 6 pixels from the edge.
-						y: 221,
-						color: 5, // Dark green
-						expandX: false,
-						expandY: false,
-						priority: "front",
-					},
-					{
-						setId: 0,
-						uid: getSpriteUid({
-							monsterName: "player",
-							facingLeft: true,
-						}),
-						x: 236, // Only 4 pixels from the edge. Not same as pl1.
-						y: 221,
-						color: 3, // Cyan
-						expandX: false,
-						expandY: false,
-						priority: "front",
-					},
-					...level.monsters.map(
-						(monster): PeFileData["screens"][number]["sprites"][number] => {
-							const monsterName = characterNames[monster.type + 1];
-							return {
-								setId: 0,
-								uid: getSpriteUid({
-									monsterName,
-									facingLeft: monster.facingLeft,
-								}),
-								x: monster.spawnPoint.x,
-								y: monster.spawnPoint.y,
-								color: spriteColors[monsterName],
-								expandX: false,
-								expandY: false,
-								priority: "front",
-							};
-						}
-					),
-				],
-				undoStack: [],
-				redoStack: [],
-			})
+			(level, levelIndex): PeFileData["screens"][number] => {
+				return {
+					name: "Level " + (levelIndex + 1),
+					mode: "multicolor",
+					sizeX: 40,
+					sizeY: 25,
+					colorBorder: 0,
+					colorBg: 0,
+					colorChar: 13, // Multicolor green for bubbles.
+					multiColor1: level.bgColorDark,
+					multiColor2: level.bgColorLight,
+					extBgColor1: 0,
+					extBgColor2: 0,
+					extBgColor3: 0,
+					spriteMultiColor1: 2, // Dark red
+					spriteMultiColor2: 1, // White
+					spritesInBorder: "hidden",
+					spritesVisible: true,
+					characterSet: levelIndex + 2, // Take the 2 builtin charsets into account.
+
+					// `charData.length` should match `sizeY` and `charData[n].length` should match `sizeX`.
+					charData: makeLevelCharData(level),
+					// Same for colorData.
+					// Multicolor green for bubbles.
+					colorData: padRight([], 25, padRight([], 40, 13)),
+					sprites: [
+						{
+							setId: 0,
+							uid: getSpriteUid({
+								monsterName: "player",
+								facingLeft: false,
+							}),
+							x: 44, // The tail is 6 pixels from the edge.
+							y: 221,
+							color: 5, // Dark green
+							expandX: false,
+							expandY: false,
+							priority: "front",
+						},
+						{
+							setId: 0,
+							uid: getSpriteUid({
+								monsterName: "player",
+								facingLeft: true,
+							}),
+							x: 236, // Only 4 pixels from the edge. Not same as pl1.
+							y: 221,
+							color: 3, // Cyan
+							expandX: false,
+							expandY: false,
+							priority: "front",
+						},
+						...level.monsters.map(
+							(monster): PeFileData["screens"][number]["sprites"][number] => {
+								const monsterName = characterNames[monster.type + 1];
+								return {
+									setId: 0,
+									uid: getSpriteUid({
+										monsterName,
+										facingLeft: monster.facingLeft,
+									}),
+									x: monster.spawnPoint.x,
+									y: monster.spawnPoint.y,
+									color: spriteColors[monsterName],
+									expandX: false,
+									expandY: false,
+									priority: "front",
+								};
+							}
+						),
+					],
+					undoStack: [],
+					redoStack: [],
+				};
+			}
 		),
 		spriteSets: [
 			{
