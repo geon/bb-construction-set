@@ -1,5 +1,5 @@
 import { padRight } from "./functions";
-import { createTiles, Level, Monster } from "./level";
+import { BubbleCurrentDirection, createTiles, Level, Monster } from "./level";
 import { Bit, CharBitmap, PeFileData } from "./pe-file";
 import {
 	Sprites,
@@ -84,6 +84,51 @@ const shadowChars: CharBitmap[] = [
 		0b00010100,
 	],
 ];
+
+// Single color, high res.
+// up, right, down, left
+const bubbleCurrentChars: Record<BubbleCurrentDirection, CharBitmap> = {
+	0: [
+		0b00010000, // Comment to prevent formatting.
+		0b00111000,
+		0b01111100,
+		0b111111110,
+		0b00111000,
+		0b00111000,
+		0b00111000,
+		0b00000000,
+	],
+	1: [
+		0b00010000, //
+		0b00011000,
+		0b11111100,
+		0b11111110,
+		0b11111100,
+		0b00011000,
+		0b00010000,
+		0b00000000,
+	],
+	2: [
+		0b00111000, //
+		0b00111000,
+		0b00111000,
+		0b111111110,
+		0b01111100,
+		0b00111000,
+		0b00010000,
+		0b00000000,
+	],
+	3: [
+		0b00010000, //
+		0b00110000,
+		0b01111110,
+		0b11111110,
+		0b01111110,
+		0b00110000,
+		0b00010000,
+		0b00000000,
+	],
+};
 
 export function levelsToPeFileData(data: {
 	levels: readonly Level[];
@@ -175,7 +220,9 @@ export function levelsToPeFileData(data: {
 					charData: makeLevelCharData(level, sizeX, sizeY),
 					// Same for colorData.
 					// Multicolor green for bubbles.
-					colorData: padRight([], sizeY, padRight([], sizeX, 13)),
+					colorData: Array(sizeY)
+						.fill(0)
+						.map((_) => Array<number>(sizeX).fill(13)),
 					sprites: [
 						{
 							setId: 0,
@@ -271,6 +318,20 @@ export function levelsToPeFileData(data: {
 			},
 		],
 	};
+
+	// Fix the color for the bubble current arrows,
+	const arrowChars = new Set([12, 13, 14, 15]);
+	for (const screen of peFileData.screens) {
+		for (const [charY, row] of screen.charData.entries()) {
+			for (const [charX, char] of row.entries()) {
+				if (arrowChars.has(char)) {
+					// Cyan, single color.
+					screen.colorData[charY][charX] = 3;
+				}
+			}
+		}
+	}
+
 	return peFileData;
 }
 
@@ -360,6 +421,14 @@ function makeLevelCharData(
 		chars[indexY][31] = 17 + offset;
 	}
 
+	// Draw the bubble currents.
+	for (const [tileY, _row] of level.tiles.entries()) {
+		// Per-line default current.
+		if (tileY > 0 && tileY < 24) {
+			chars[tileY][33] = level.bubbleCurrentLineDefault[tileY] + 12;
+		}
+	}
+
 	return chars;
 }
 
@@ -367,7 +436,13 @@ function makeCharsetBitmaps(level: Level): CharBitmap[] {
 	const platformChar = levelCharToPeChar(level.platformChar);
 
 	const charset = padRight(
-		[emptyChar, platformChar, ...shadowChars],
+		[
+			emptyChar,
+			platformChar,
+			...shadowChars,
+			...Array<CharBitmap>(4).fill(emptyChar),
+			...Object.values(bubbleCurrentChars),
+		],
 		// `charset.length` should be exactly 256.
 		256,
 		emptyChar
@@ -444,6 +519,7 @@ export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 			})
 			.filter((monster) => monster.type !== -1);
 
+		const arrowChars = new Set([12, 13, 14, 15]);
 		return {
 			tiles,
 			bgColorLight: screen.multiColor2 as PaletteIndex,
@@ -460,8 +536,9 @@ export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 				? sidebarChars
 				: undefined,
 			monsters,
-			// Bubble currents not yet stored in .pe file. Perhaps add as JSON in the name field?
-			bubbleCurrentLineDefault: [],
+			bubbleCurrentLineDefault: screen.charData.map((row) =>
+				arrowChars.has(row[33]) ? ((row[33] - 12) as BubbleCurrentDirection) : 0
+			),
 		};
 	});
 }
