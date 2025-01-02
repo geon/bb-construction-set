@@ -297,6 +297,7 @@ function makeLevelCharData(
 	sizeX: number,
 	sizeY: number
 ): number[][] {
+	// Draw the platforms.
 	const chars = padRight<boolean[]>(level.tiles, sizeY, []).map((row) =>
 		padRight(
 			row.map((tile) => (tile ? 1 : 0) as number),
@@ -305,6 +306,7 @@ function makeLevelCharData(
 		)
 	);
 
+	// Draw the shadows.
 	for (const [indexY, row] of chars.entries()) {
 		for (const [indexX, char] of row.entries()) {
 			if (indexX >= 32) {
@@ -345,6 +347,7 @@ function makeLevelCharData(
 		}
 	}
 
+	// Draw the 2x2 char sidebar tiles.
 	for (let indexY = 0; indexY < 25; ++indexY) {
 		const offset = indexY % 2 ? 16 : 0;
 		chars[indexY][0] = 16 + offset;
