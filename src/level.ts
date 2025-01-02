@@ -27,7 +27,7 @@ export interface Level {
 	bgColorLight: number;
 	bgColorDark: number;
 	platformChar: CharsetChar;
-	sidebarChars?: CharBlock;
+	sidebarChars: CharBlock | undefined;
 	monsters: Array<Monster>;
 	// The default bubble current direction for each tile row, so lenght = levelHeight.
 	bubbleCurrentLineDefault: Array<BubbleCurrentDirection>;
@@ -50,6 +50,7 @@ export function createLevel(): Level {
 				parseCharsetCharLine(0xff),
 			],
 		},
+		sidebarChars: undefined,
 		monsters: [],
 		bubbleCurrentLineDefault: Array(levelHeight).fill(0),
 	};
