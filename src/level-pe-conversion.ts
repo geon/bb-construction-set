@@ -90,7 +90,7 @@ export function levelsToPeFileData(data: {
 	sprites: Sprites;
 }): PeFileData {
 	const now = new Date().getTime();
-	return {
+	const peFileData: PeFileData = {
 		app: "PETSCII Editor",
 		url: "http://petscii.krissz.hu/",
 		meta: {
@@ -271,6 +271,7 @@ export function levelsToPeFileData(data: {
 			},
 		],
 	};
+	return peFileData;
 }
 
 function getSpriteUid({
