@@ -100,6 +100,7 @@ export interface Level {
 	sidebarChars: CharBlock | undefined;
 	monsters: Array<Monster>;
 	// The default bubble current direction for each tile row, so lenght = levelHeight.
+	// Stores all 25 rows.
 	bubbleCurrentLineDefault: Array<BubbleCurrentDirection>;
 }
 

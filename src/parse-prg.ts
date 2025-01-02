@@ -4,6 +4,7 @@ import {
 	CharsetCharLine,
 	parseCharsetCharLine,
 } from "./charset-char";
+import { chunk } from "./functions";
 import {
 	BubbleCurrentDirection,
 	Level,
@@ -561,45 +562,59 @@ export function patchPrg(prg: Uint8Array, levels: readonly Level[]) {
 		)
 	);
 
-	// // Write platforms bitmap
-	// const levelBitmapBytes = levels.flatMap((level) => {
-	// 	const isSymmetric = levelIsSymmetric(level.tiles);
+	// Write platforms bitmap
+	let foo = bitmapArrayAddress;
+	const levelBitmapBytes = levels.flatMap((level) => {
+		const isSymmetric = levelIsSymmetric(level.tiles);
 
-	// 	const rows = [];
-	// 	for (let rowIndex = 1; rowIndex < 24; ++rowIndex) {
-	// 		rows.push(
-	// 			level.tiles.slice(
-	// 				rowIndex * 32,
-	// 				rowIndex * 32 + (isSymmetric ? 16 : 32)
-	// 			)
-	// 		);
-	// 	}
-	// 	const tiles = rows.flat();
+		const bitRows = [];
+		for (let rowIndex = 1; rowIndex < 24; ++rowIndex) {
+			const row = level.tiles[rowIndex].slice(0, isSymmetric ? 16 : 32);
 
-	// 	const byteBits = [];
-	// 	for (let tileIndex = 0; tileIndex < tiles.length; tileIndex += 8) {
-	// 		byteBits.push(tiles.slice(tileIndex, tileIndex + 8));
-	// 	}
+			// So stupid.
+			const bitPositions = (
+				{
+					symmetric: [0, 1],
+					notSymmetric: [31, 30],
+				} as const
+			)[isSymmetric ? "symmetric" : "notSymmetric"];
 
-	// 	const bytes = byteBits.map(
-	// 		(bits) =>
-	// 			((bits[0] ? 1 : 0) << 7) +
-	// 			((bits[1] ? 1 : 0) << 6) +
-	// 			((bits[2] ? 1 : 0) << 5) +
-	// 			((bits[3] ? 1 : 0) << 4) +
-	// 			((bits[4] ? 1 : 0) << 3) +
-	// 			((bits[5] ? 1 : 0) << 2) +
-	// 			((bits[6] ? 1 : 0) << 1) +
-	// 			((bits[7] ? 1 : 0) << 0)
-	// 	);
+			// Encode the per-line bubble current into the edge of the platforms bitmap.
+			row[bitPositions[0]] = !!(
+				level.bubbleCurrentLineDefault[rowIndex] & 0b01
+			);
+			row[bitPositions[1]] = !!(
+				level.bubbleCurrentLineDefault[rowIndex] & 0b10
+			);
 
-	// 	return bytes;
-	// });
-	// const maxLevelBytes = 46 * 100 + 46 * maxAsymmetric;
-	// if (levelBitmapBytes.length > maxLevelBytes) {
-	// 	throw new Error("Too many level bytes.");
-	// }
-	// setBytes(bitmapArrayAddress, levelBitmapBytes);
+			bitRows.push(row);
+		}
+
+		const byteRows = bitRows
+			.map((row) => chunk(row, 8))
+			.map((row) =>
+				row.map(
+					(bits) =>
+						((bits[0] ? 1 : 0) << 7) +
+						((bits[1] ? 1 : 0) << 6) +
+						((bits[2] ? 1 : 0) << 5) +
+						((bits[3] ? 1 : 0) << 4) +
+						((bits[4] ? 1 : 0) << 3) +
+						((bits[5] ? 1 : 0) << 2) +
+						((bits[6] ? 1 : 0) << 1) +
+						((bits[7] ? 1 : 0) << 0)
+				)
+			);
+
+		foo += isSymmetric ? 46 : 2 * 46;
+
+		return byteRows.flat();
+	});
+	const maxLevelBytes = 46 * 100 + 46 * maxAsymmetric;
+	if (levelBitmapBytes.length > maxLevelBytes) {
+		throw new Error("Too many level bytes.");
+	}
+	setBytes(bitmapArrayAddress, levelBitmapBytes);
 
 	// Write monsters.
 	const numMonsters = levels.flatMap((level) => level.monsters).length;
