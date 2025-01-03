@@ -424,9 +424,7 @@ function makeLevelCharData(
 	// Draw the bubble currents.
 	for (const [tileY, _row] of level.tiles.entries()) {
 		// Per-line default current.
-		if (tileY > 0 && tileY < 24) {
-			chars[tileY][33] = level.bubbleCurrentLineDefault[tileY] + 12;
-		}
+		chars[tileY][33] = level.bubbleCurrentLineDefault[tileY] + 12;
 	}
 
 	return chars;

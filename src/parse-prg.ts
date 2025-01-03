@@ -365,7 +365,10 @@ function readTilesAndBubbleCurrentLineDefault(
 		}
 	}
 
-	const bubbleCurrentLineDefault = extractbubbleCurrentLineDefault(tiles);
+	const bubbleCurrentLineDefault = extractbubbleCurrentLineDefault(
+		tiles,
+		holeMetadata
+	);
 
 	// Fill in the sides.
 	// The 2 tile wide left and right borders are used to store part of the bubbleCurrent.
@@ -401,13 +404,20 @@ function readMonstersForLevel(
 }
 
 function extractbubbleCurrentLineDefault(
-	tiles: Tiles
+	tiles: Tiles,
+	holeMetadata: number
 ): Array<BubbleCurrentDirection> {
-	return tiles.map((row) =>
-		bitsToBubbleCurrentDirection(
-			row.slice(levelWidth - 2) as [boolean, boolean]
-		)
-	);
+	return [
+		((holeMetadata & 0b00110000) >> 4) as BubbleCurrentDirection,
+		...tiles
+			.slice(1, 24)
+			.map((row) =>
+				bitsToBubbleCurrentDirection(
+					row.slice(levelWidth - 2) as [boolean, boolean]
+				)
+			),
+		((holeMetadata & 0b11000000) >> 6) as BubbleCurrentDirection,
+	];
 }
 
 function bitsToBubbleCurrentDirection(
@@ -545,8 +555,11 @@ export function patchPrg(prg: Uint8Array, levels: readonly Level[]) {
 				((topRight ? 1 : 0) << 1) +
 				((bottomLeft ? 1 : 0) << 2) +
 				((bottomRight ? 1 : 0) << 3) +
-				// TODO: No idea what the rest of the bits are.
-				(getByte(holeMetadataArrayAddress + levelIndex) & 0b11110000)
+				// The most significant bits are the bubble current of the top and bottom rows.
+				((level.bubbleCurrentLineDefault[0] & 0b01 ? 1 : 0) << 4) +
+				((level.bubbleCurrentLineDefault[0] & 0b10 ? 1 : 0) << 5) +
+				((level.bubbleCurrentLineDefault[24] & 0b01 ? 1 : 0) << 6) +
+				((level.bubbleCurrentLineDefault[24] & 0b10 ? 1 : 0) << 7)
 		);
 	}
 
