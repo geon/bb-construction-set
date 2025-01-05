@@ -198,6 +198,10 @@ export function levelsToPeFileData(data: {
 				const sizeX = 40;
 				const sizeY = 25;
 				const charData = makeLevelCharData(level, sizeX, sizeY);
+				const colorData = Array(sizeY)
+					.fill(0)
+					// Multicolor green for bubbles.
+					.map((_) => Array<number>(sizeX).fill(13));
 				return {
 					name: "Level " + (levelIndex + 1),
 					mode: "multicolor",
@@ -217,11 +221,7 @@ export function levelsToPeFileData(data: {
 					spritesVisible: true,
 					characterSet: levelIndex + 2, // Take the 2 builtin charsets into account.
 					charData,
-					// Same for colorData.
-					// Multicolor green for bubbles.
-					colorData: Array(sizeY)
-						.fill(0)
-						.map((_) => Array<number>(sizeX).fill(13)),
+					colorData,
 					sprites: [
 						{
 							setId: 0,
