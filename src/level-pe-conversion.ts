@@ -427,17 +427,8 @@ function makeLevelCharAndColorData(
 	for (const [tileY, _row] of level.tiles.entries()) {
 		// Per-line default current.
 		charData[tileY][33] = level.bubbleCurrentLineDefault[tileY] + 12;
-	}
-
-	// Fix the color for the bubble current arrows,
-	const arrowChars = new Set([12, 13, 14, 15]);
-	for (const [charY, row] of charData.entries()) {
-		for (const [charX, char] of row.entries()) {
-			if (arrowChars.has(char)) {
-				// Cyan, single color.
-				colorData[charY][charX] = 3;
-			}
-		}
+		// Cyan, single color.
+		colorData[tileY][33] = 3;
 	}
 
 	return { charData, colorData };
