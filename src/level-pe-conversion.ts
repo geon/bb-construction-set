@@ -197,11 +197,12 @@ export function levelsToPeFileData(data: {
 			(level, levelIndex): PeFileData["screens"][number] => {
 				const sizeX = 40;
 				const sizeY = 25;
-				const charData = makeLevelCharData(level, sizeX, sizeY);
-				const colorData = Array(sizeY)
-					.fill(0)
-					// Multicolor green for bubbles.
-					.map((_) => Array<number>(sizeX).fill(13));
+				const { charData, colorData } = makeLevelCharAndColorData(
+					level,
+					sizeX,
+					sizeY
+				);
+
 				return {
 					name: "Level " + (levelIndex + 1),
 					mode: "multicolor",
@@ -318,19 +319,6 @@ export function levelsToPeFileData(data: {
 		],
 	};
 
-	// Fix the color for the bubble current arrows,
-	const arrowChars = new Set([12, 13, 14, 15]);
-	for (const screen of peFileData.screens) {
-		for (const [charY, row] of screen.charData.entries()) {
-			for (const [charX, char] of row.entries()) {
-				if (arrowChars.has(char)) {
-					// Cyan, single color.
-					screen.colorData[charY][charX] = 3;
-				}
-			}
-		}
-	}
-
 	return peFileData;
 }
 
@@ -353,15 +341,22 @@ function parseSpriteUid(uid: string): {
 	return { monsterName, facingLeft };
 }
 
-function makeLevelCharData(
+function makeLevelCharAndColorData(
 	level: Level,
 	sizeX: number,
 	sizeY: number
-): number[][] {
+): {
+	readonly charData: number[][];
+	readonly colorData: number[][];
+} {
 	// Create canvas.
 	const chars: number[][] = Array(sizeY)
 		.fill(0)
 		.map((_) => padRight([], sizeX, 0));
+	const colorData = Array(sizeY)
+		.fill(0)
+		// Multicolor green for bubbles.
+		.map((_) => Array<number>(sizeX).fill(13));
 
 	// Draw the platforms.
 	for (const [tileY, row] of level.tiles.entries()) {
@@ -426,7 +421,18 @@ function makeLevelCharData(
 		chars[tileY][33] = level.bubbleCurrentLineDefault[tileY] + 12;
 	}
 
-	return chars;
+	// Fix the color for the bubble current arrows,
+	const arrowChars = new Set([12, 13, 14, 15]);
+	for (const [charY, row] of chars.entries()) {
+		for (const [charX, char] of row.entries()) {
+			if (arrowChars.has(char)) {
+				// Cyan, single color.
+				colorData[charY][charX] = 3;
+			}
+		}
+	}
+
+	return { charData: chars, colorData };
 }
 
 function makeCharsetBitmaps(level: Level): CharBitmap[] {
