@@ -350,7 +350,7 @@ function makeLevelCharAndColorData(
 	readonly colorData: number[][];
 } {
 	// Create canvas.
-	const chars: number[][] = Array(sizeY)
+	const charData: number[][] = Array(sizeY)
 		.fill(0)
 		.map((_) => padRight([], sizeX, 0));
 	const colorData = Array(sizeY)
@@ -361,12 +361,12 @@ function makeLevelCharAndColorData(
 	// Draw the platforms.
 	for (const [tileY, row] of level.tiles.entries()) {
 		for (const [tileX, tile] of row.entries()) {
-			chars[tileY][tileX] = tile ? 1 : 0;
+			charData[tileY][tileX] = tile ? 1 : 0;
 		}
 	}
 
 	// Draw the shadows.
-	for (const [indexY, row] of chars.entries()) {
+	for (const [indexY, row] of charData.entries()) {
 		for (const [indexX, char] of row.entries()) {
 			if (indexX >= 32) {
 				continue;
@@ -376,31 +376,39 @@ function makeLevelCharAndColorData(
 				continue;
 			}
 
-			if (indexX > 0 && chars[indexY][indexX - 1] === 1) {
-				if (indexY > 0 && chars[indexY - 1][indexX] === 1) {
-					chars[indexY][indexX] = shadowCharIndexByName.innerCorner;
+			if (indexX > 0 && charData[indexY][indexX - 1] === 1) {
+				if (indexY > 0 && charData[indexY - 1][indexX] === 1) {
+					charData[indexY][indexX] = shadowCharIndexByName.innerCorner;
 					continue;
 				}
-				if (indexX > 0 && indexY > 0 && chars[indexY - 1][indexX - 1] === 1) {
-					chars[indexY][indexX] = shadowCharIndexByName.right;
+				if (
+					indexX > 0 &&
+					indexY > 0 &&
+					charData[indexY - 1][indexX - 1] === 1
+				) {
+					charData[indexY][indexX] = shadowCharIndexByName.right;
 					continue;
 				}
-				chars[indexY][indexX] = shadowCharIndexByName.endRight;
+				charData[indexY][indexX] = shadowCharIndexByName.endRight;
 				continue;
 			}
 
-			if (indexY > 0 && chars[indexY - 1][indexX] === 1) {
-				if (indexX > 0 && indexY > 0 && chars[indexY - 1][indexX - 1] === 1) {
-					chars[indexY][indexX] = shadowCharIndexByName.under;
+			if (indexY > 0 && charData[indexY - 1][indexX] === 1) {
+				if (
+					indexX > 0 &&
+					indexY > 0 &&
+					charData[indexY - 1][indexX - 1] === 1
+				) {
+					charData[indexY][indexX] = shadowCharIndexByName.under;
 					continue;
 				}
 
-				chars[indexY][indexX] = shadowCharIndexByName.endUnder;
+				charData[indexY][indexX] = shadowCharIndexByName.endUnder;
 				continue;
 			}
 
-			if (indexX > 0 && indexY > 0 && chars[indexY - 1][indexX - 1] === 1) {
-				chars[indexY][indexX] = shadowCharIndexByName.outerCorner;
+			if (indexX > 0 && indexY > 0 && charData[indexY - 1][indexX - 1] === 1) {
+				charData[indexY][indexX] = shadowCharIndexByName.outerCorner;
 				continue;
 			}
 		}
@@ -409,21 +417,21 @@ function makeLevelCharAndColorData(
 	// Draw the 2x2 char sidebar tiles.
 	for (let indexY = 0; indexY < 25; ++indexY) {
 		const offset = indexY % 2 ? 16 : 0;
-		chars[indexY][0] = 16 + offset;
-		chars[indexY][1] = 17 + offset;
-		chars[indexY][30] = 16 + offset;
-		chars[indexY][31] = 17 + offset;
+		charData[indexY][0] = 16 + offset;
+		charData[indexY][1] = 17 + offset;
+		charData[indexY][30] = 16 + offset;
+		charData[indexY][31] = 17 + offset;
 	}
 
 	// Draw the bubble currents.
 	for (const [tileY, _row] of level.tiles.entries()) {
 		// Per-line default current.
-		chars[tileY][33] = level.bubbleCurrentLineDefault[tileY] + 12;
+		charData[tileY][33] = level.bubbleCurrentLineDefault[tileY] + 12;
 	}
 
 	// Fix the color for the bubble current arrows,
 	const arrowChars = new Set([12, 13, 14, 15]);
-	for (const [charY, row] of chars.entries()) {
+	for (const [charY, row] of charData.entries()) {
 		for (const [charX, char] of row.entries()) {
 			if (arrowChars.has(char)) {
 				// Cyan, single color.
@@ -432,7 +440,7 @@ function makeLevelCharAndColorData(
 		}
 	}
 
-	return { charData: chars, colorData };
+	return { charData, colorData };
 }
 
 function makeCharsetBitmaps(level: Level): CharBitmap[] {
