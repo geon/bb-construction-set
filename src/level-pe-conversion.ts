@@ -426,8 +426,7 @@ function makeLevelCharAndColorData(
 	// Draw the bubble currents.
 	for (const [tileY, _row] of level.tiles.entries()) {
 		// Per-line default current.
-		charData[tileY][33] =
-			level.bubbleCurrents.bubbleCurrentLineDefault[tileY] + 12;
+		charData[tileY][33] = level.bubbleCurrents.perLineDefaults[tileY] + 12;
 		// Cyan, single color.
 		colorData[tileY][33] = 3;
 	}
@@ -540,7 +539,7 @@ export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 				: undefined,
 			monsters,
 			bubbleCurrents: {
-				bubbleCurrentLineDefault: screen.charData.map((row) =>
+				perLineDefaults: screen.charData.map((row) =>
 					arrowChars.has(row[33])
 						? ((row[33] - 12) as BubbleCurrentDirection)
 						: 0

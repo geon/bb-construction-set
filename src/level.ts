@@ -102,7 +102,7 @@ export interface Level {
 	bubbleCurrents: {
 		// The default bubble current direction for each tile row, so lenght = levelHeight.
 		// Stores all 25 rows.
-		bubbleCurrentLineDefault: Array<BubbleCurrentDirection>;
+		perLineDefaults: Array<BubbleCurrentDirection>;
 	};
 }
 
