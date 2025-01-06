@@ -14,8 +14,8 @@ test("parsePrg", () => {
 	)[0];
 
 	// Not tested.
-	levelFromPrg.bubbleCurrentLineDefault = [];
-	levelFromPe.bubbleCurrentLineDefault = [];
+	levelFromPrg.bubbleCurrents.bubbleCurrentLineDefault = [];
+	levelFromPe.bubbleCurrents.bubbleCurrentLineDefault = [];
 
 	expect(levelFromPrg).toStrictEqual(levelFromPe);
 });

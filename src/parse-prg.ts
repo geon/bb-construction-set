@@ -270,8 +270,10 @@ function readLevel(
 		bgColorDark,
 		sidebarChars,
 		tiles,
-		bubbleCurrentLineDefault,
 		monsters,
+		bubbleCurrents: {
+			bubbleCurrentLineDefault,
+		},
 	};
 
 	return {
@@ -556,10 +558,14 @@ export function patchPrg(prg: Uint8Array, levels: readonly Level[]) {
 				((bottomLeft ? 1 : 0) << 2) +
 				((bottomRight ? 1 : 0) << 3) +
 				// The most significant bits are the bubble current of the top and bottom rows.
-				((level.bubbleCurrentLineDefault[0] & 0b01 ? 1 : 0) << 4) +
-				((level.bubbleCurrentLineDefault[0] & 0b10 ? 1 : 0) << 5) +
-				((level.bubbleCurrentLineDefault[24] & 0b01 ? 1 : 0) << 6) +
-				((level.bubbleCurrentLineDefault[24] & 0b10 ? 1 : 0) << 7)
+				((level.bubbleCurrents.bubbleCurrentLineDefault[0] & 0b01 ? 1 : 0) <<
+					4) +
+				((level.bubbleCurrents.bubbleCurrentLineDefault[0] & 0b10 ? 1 : 0) <<
+					5) +
+				((level.bubbleCurrents.bubbleCurrentLineDefault[24] & 0b01 ? 1 : 0) <<
+					6) +
+				((level.bubbleCurrents.bubbleCurrentLineDefault[24] & 0b10 ? 1 : 0) <<
+					7)
 		);
 	}
 
@@ -594,10 +600,10 @@ export function patchPrg(prg: Uint8Array, levels: readonly Level[]) {
 
 			// Encode the per-line bubble current into the edge of the platforms bitmap.
 			row[bitPositions[0]] = !!(
-				level.bubbleCurrentLineDefault[rowIndex] & 0b01
+				level.bubbleCurrents.bubbleCurrentLineDefault[rowIndex] & 0b01
 			);
 			row[bitPositions[1]] = !!(
-				level.bubbleCurrentLineDefault[rowIndex] & 0b10
+				level.bubbleCurrents.bubbleCurrentLineDefault[rowIndex] & 0b10
 			);
 
 			bitRows.push(row);
