@@ -539,11 +539,15 @@ export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 				: undefined,
 			monsters,
 			bubbleCurrents: {
+				type: "rectangles",
 				perLineDefaults: screen.charData.map((row) =>
 					arrowChars.has(row[33])
 						? ((row[33] - 12) as BubbleCurrentDirection)
 						: 0
 				),
+				rectangles: [
+					// TODO: Find rectangles in charData.
+				],
 			},
 		};
 	});

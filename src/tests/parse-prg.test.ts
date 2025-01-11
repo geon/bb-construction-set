@@ -1,8 +1,29 @@
 import { expect, test } from "vitest";
 import { readFileSync } from "fs";
-import { parsePrg, patchPrg } from "../parse-prg";
+import {
+	bubbleCurrentRectangleToBytes,
+	parsePrg,
+	patchPrg,
+	bytesToBubbleCurrentRectangle,
+} from "../parse-prg";
 import { deserializePeFileData } from "../pe-file";
 import { peFileDataToLevels } from "../level-pe-conversion";
+import { knownGoodBubbleCurrentRectsForLevels } from "./knownGoodBubbleCurrentRectsForLevels";
+
+test("readBubbleCurrentRectangles", () => {
+	const rectanglesOnly = knownGoodBubbleCurrentRectsForLevels
+		.filter((rects) => rects.type === "rectangles")
+		.flatMap((foo) =>
+			foo.rectangles
+				.filter((rect) => rect.type === "rectangle")
+				.map(({ type, ...rect }) => rect)
+		);
+	const backAndForth = rectanglesOnly
+		.map(bubbleCurrentRectangleToBytes)
+		.map(bytesToBubbleCurrentRectangle);
+
+	expect(backAndForth).toStrictEqual(rectanglesOnly);
+});
 
 test("parsePrg", () => {
 	const levelFromPrg = parsePrg(
@@ -14,10 +35,24 @@ test("parsePrg", () => {
 	)[0];
 
 	// Not tested.
-	levelFromPrg.bubbleCurrents.perLineDefaults = [];
-	levelFromPe.bubbleCurrents.perLineDefaults = [];
+	levelFromPrg.bubbleCurrents = undefined!;
+	levelFromPe.bubbleCurrents = undefined!;
 
 	expect(levelFromPrg).toStrictEqual(levelFromPe);
+});
+
+test("First few levels bubble current rectangles.", () => {
+	const prgDataView = new DataView(
+		readFileSync(__dirname + "/decompressed-bb.prg").buffer
+	);
+
+	const levelFromPrg = parsePrg(prgDataView).levels;
+
+	const rectsFromPrg = levelFromPrg
+		.slice(0, knownGoodBubbleCurrentRectsForLevels.length)
+		.map((level) => level.bubbleCurrents);
+
+	expect(rectsFromPrg).toStrictEqual(knownGoodBubbleCurrentRectsForLevels);
 });
 
 test("patchPrg", () => {
