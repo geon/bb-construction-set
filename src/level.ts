@@ -93,6 +93,12 @@ export function createTiles(): Tiles {
 
 export type PerLineBubbleCurrentDefaults = Array<BubbleCurrentDirection>;
 
+export type BubbleCurrents = {
+	// The default bubble current direction for each tile row, so lenght = levelHeight.
+	// Stores all 25 rows.
+	perLineDefaults: PerLineBubbleCurrentDefaults;
+};
+
 export interface Level {
 	// Should be exactly `levelHeight` rows of `levelWidth` tiles each .
 	tiles: Tiles;
@@ -101,11 +107,7 @@ export interface Level {
 	platformChar: CharsetChar;
 	sidebarChars: CharBlock | undefined;
 	monsters: Array<Monster>;
-	bubbleCurrents: {
-		// The default bubble current direction for each tile row, so lenght = levelHeight.
-		// Stores all 25 rows.
-		perLineDefaults: PerLineBubbleCurrentDefaults;
-	};
+	bubbleCurrents: BubbleCurrents;
 }
 
 function rowIsSymmetric(row: boolean[]): boolean {
