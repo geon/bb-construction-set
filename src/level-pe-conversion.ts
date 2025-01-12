@@ -130,6 +130,21 @@ const bubbleCurrentChars: Record<BubbleCurrentDirection, CharBitmap> = {
 	],
 };
 
+const bubbleCurrentRectangleCharsetIndices = {
+	"0": 48,
+	"1": 49,
+	"2": 50,
+	"3": 51,
+	"4": 52,
+	"5": 53,
+	"6": 54,
+	"7": 55,
+	"8": 56,
+	"9": 57,
+	C: 58,
+	S: 59,
+};
+
 export function levelsToPeFileData(data: {
 	levels: readonly Level[];
 	sprites: Sprites;
@@ -195,7 +210,7 @@ export function levelsToPeFileData(data: {
 		],
 		screens: data.levels.map(
 			(level, levelIndex): PeFileData["screens"][number] => {
-				const sizeX = 40;
+				const sizeX = 81;
 				const sizeY = 25;
 				const { charData, colorData } = makeLevelCharAndColorData(
 					level,
@@ -424,11 +439,114 @@ function makeLevelCharAndColorData(
 	}
 
 	// Draw the bubble currents.
-	for (const [tileY, _row] of level.tiles.entries()) {
-		// Per-line default current.
-		charData[tileY][33] = level.bubbleCurrents.perLineDefaults[tileY] + 12;
-		// Cyan, single color.
-		colorData[tileY][33] = 3;
+	// Wind colors. All single-color/hight-res.
+	const windColors = {
+		explicit: 3, // Cyan
+		explicitPlatform: 1, // White
+		implicit: 6, // Dark blue
+		implicitPlatform: 4, // Purple
+		reflected: 2, // Red
+		reflectedPlatform: 7, // Yellow
+	};
+	const bubblePlatformsOffset = 33;
+	for (const [tileY, row] of level.tiles.entries()) {
+		const perLineDefaultCurrent =
+			level.bubbleCurrents.perLineDefaults[tileY] + 12;
+		charData[tileY][66] = perLineDefaultCurrent;
+		colorData[tileY][66] = windColors.explicit;
+
+		// Copy of platforms for easier orientation.
+		for (const [tileX, tile] of row.entries()) {
+			charData[tileY][tileX + bubblePlatformsOffset] = perLineDefaultCurrent;
+			colorData[tileY][tileX + bubblePlatformsOffset] = tile
+				? windColors.implicitPlatform
+				: windColors.implicit;
+		}
+	}
+	// Draw bubble current rectangles.
+	const platformAndSidebarChars = new Set([1, 16, 17, 32, 33]);
+	if (level.bubbleCurrents.type === "rectangles") {
+		for (const rectangle of level.bubbleCurrents.rectangles) {
+			if (rectangle.type === "rectangle") {
+				for (let y = rectangle.top; y < rectangle.top + rectangle.height; ++y) {
+					for (
+						let x = rectangle.left;
+						x < rectangle.left + rectangle.width;
+						++x
+					) {
+						charData[y][x + bubblePlatformsOffset] = rectangle.direction + 12;
+						const hasPlatform = platformAndSidebarChars.has(charData[y][x]);
+						colorData[y][x + bubblePlatformsOffset] = hasPlatform
+							? windColors.explicitPlatform
+							: windColors.explicit;
+					}
+				}
+			} else {
+				const reflectedArrows = {
+					12: 12,
+					13: 15,
+					14: 14,
+					15: 13,
+				};
+				for (let y = 0; y < 25; ++y) {
+					for (let x = 0; x < 16; ++x) {
+						charData[y][31 - x + bubblePlatformsOffset] =
+							reflectedArrows[
+								charData[y][x + bubblePlatformsOffset] as 12 | 13 | 14 | 15
+							];
+						const hasPlatform = platformAndSidebarChars.has(
+							charData[y][31 - x]
+						);
+						colorData[y][31 - x + bubblePlatformsOffset] = hasPlatform
+							? windColors.reflectedPlatform
+							: windColors.reflected;
+					}
+				}
+			}
+		}
+	}
+
+	// Encode the rectangles in plaintext.
+	const cursor = { row: 0, col: 0 };
+	function print(charsetIndices: readonly number[]): void {
+		const white = 1;
+		for (const charsetIndex of charsetIndices) {
+			charData[cursor.row][68 + cursor.col] = charsetIndex;
+			colorData[cursor.row][68 + cursor.col] = white;
+			cursor.col++;
+		}
+		++cursor.row;
+		cursor.col = 0;
+	}
+	function charToCharsetIndex(char: string) {
+		return (
+			bubbleCurrentRectangleCharsetIndices[
+				char as keyof typeof bubbleCurrentRectangleCharsetIndices
+			] ?? 0
+		);
+	}
+	if (level.bubbleCurrents.type === "copy") {
+		print(
+			Array.from("C " + level.bubbleCurrents.levelIndex.toString()).map(
+				charToCharsetIndex
+			)
+		);
+	} else {
+		for (const rectangle of level.bubbleCurrents.rectangles) {
+			if (rectangle.type === "symmetry") {
+				print([charToCharsetIndex("S")]);
+			} else {
+				print([
+					rectangle.direction + 12,
+					charToCharsetIndex(" "),
+					...Array.from(
+						[rectangle.left, rectangle.top, rectangle.width, rectangle.height]
+							.map((num) => num.toString())
+							.join(" ")
+					).map(charToCharsetIndex),
+				]);
+			}
+		}
 	}
 
 	return { charData, colorData };
@@ -456,6 +574,15 @@ function makeCharsetBitmaps(level: Level): CharBitmap[] {
 	charset[17] = sidebarChars[1] ?? platformChar;
 	charset[32] = sidebarChars[2] ?? platformChar;
 	charset[33] = sidebarChars[3] ?? platformChar;
+
+	const currentIndices = Object.values(bubbleCurrentRectangleCharsetIndices);
+	for (const index of currentIndices.slice(0, -2)) {
+		charset[index] = c64BuiltinCharsets.uppercase[index];
+	}
+	for (const [index, value] of [3, 19].entries()) {
+		charset[currentIndices[currentIndices.length - 2] + index] =
+			c64BuiltinCharsets.uppercase[value];
+	}
 
 	return charset;
 }
