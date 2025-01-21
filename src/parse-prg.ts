@@ -14,7 +14,7 @@ import { maxAsymmetric, maxMonsters, maxSidebars } from "./prg/data-locations";
 import { GetByte } from "./prg/types";
 import { readBgColorsForLevel } from "./prg/bg-colors";
 import { Sprites } from "./sprite";
-import { readCharsetChar } from "./prg/charset-char";
+import { readPlatformChars } from "./prg/charset-char";
 import {
 	getPrgStartAddress,
 	getPrgByteAtAddress,
@@ -46,7 +46,6 @@ export function parsePrg(prg: DataView): {
 function readLevels(getByte: GetByte): Array<Level> {
 	// TODO: Check the original data size, and verify.
 
-	const allLevels_platformChar: Level["platformChar"][] = [];
 	const allLevels_bgColorLight: Level["bgColorLight"][] = [];
 	const allLevels_bgColorDark: Level["bgColorDark"][] = [];
 	const allLevels_bubbleCurrents: Level["bubbleCurrents"][] = [];
@@ -62,10 +61,6 @@ function readLevels(getByte: GetByte): Array<Level> {
 		allLevels_bgColorLight.push(bgColorLight);
 		allLevels_bgColorDark.push(bgColorDark);
 
-		allLevels_platformChar.push(
-			readCharsetChar(getByte, platformCharArrayAddress + levelIndex * 8)
-		);
-
 		const bubbleCurrents = readBubbleCurrentRectangles(
 			levelIndex,
 			getByte,
@@ -74,6 +69,7 @@ function readLevels(getByte: GetByte): Array<Level> {
 		allLevels_bubbleCurrents.push(bubbleCurrents);
 	}
 
+	const allLevels_platformChar = readPlatformChars(getByte);
 	const allLevels_sidebarChars = readSidebarChars(getByte);
 	const allLevels_monsters = readMonsters(getByte);
 
