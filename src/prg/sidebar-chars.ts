@@ -14,8 +14,9 @@ export function readSidebarChars(
 
 	let sidebarChars: Level["sidebarChars"] = undefined;
 	if (!isBitSet(symmetryMetadata[levelIndex], 1)) {
+		const bytesPerCharBlock = 4 * 8; // 4 chars of 8 bytes each.
 		sidebarChars = readCharBlock(getByte, currentSidebarAddress);
-		currentSidebarAddress += 4 * 8; // 4 chars of 8 bytes each.
+		currentSidebarAddress += bytesPerCharBlock;
 	}
 	return { sidebarChars, currentSidebarAddress };
 }
