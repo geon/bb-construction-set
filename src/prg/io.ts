@@ -1,3 +1,5 @@
+import { GetByte } from "./types";
+
 export function getPrgStartAddress(prg: DataView): number {
 	// The prg contains a little endian 16 bit header with the start address. The rest is the raw data.
 	return prg.getUint16(0, true);
@@ -27,4 +29,16 @@ export function setPrgByteAtAddress(
 		throw new Error("File is too short.");
 	}
 	return (prg[offset] = value);
+}
+
+export function getBytes(
+	getByte: GetByte,
+	address: number,
+	length: number
+): readonly number[] {
+	const bytes = Array<number>(length);
+	for (let index = 0; index < length; ++index) {
+		bytes[index] = getByte(address + index);
+	}
+	return bytes;
 }
