@@ -13,7 +13,6 @@ import {
 } from "./prg/data-locations";
 import {
 	Level,
-	Monster,
 	levelIsSymmetric,
 	maxAsymmetric,
 	maxMonsters,
@@ -30,7 +29,6 @@ import {
 	spriteCounts,
 } from "./sprite";
 import { readCharsetChar } from "./prg/charset-char";
-import { isBitSet } from "./prg/bit-twiddling";
 import {
 	getPrgStartAddress,
 	getPrgByteAtAddress,
@@ -40,6 +38,7 @@ import { readItems } from "./prg/items";
 import { readBubbleCurrentRectangles } from "./prg/bubble-current-rectangles";
 import { readSidebarChars } from "./prg/sidebar-chars";
 import { readTilesAndBubbleCurrentLineDefault } from "./prg/tiles";
+import { readMonstersForLevel } from "./prg/monsters";
 
 export function parsePrg(prg: DataView): {
 	levels: Level[];
@@ -140,37 +139,6 @@ function readLevel(
 			currentMonsterAddress,
 			currentWindCurrentsAddress,
 		},
-	};
-}
-
-function readMonstersForLevel(
-	currentMonsterAddress: number,
-	levelIndex: number,
-	getByte: GetByte
-) {
-	// Level 100 is the boss level. It has no monsters.
-	if (levelIndex === 99) {
-		return { monsters: [], currentMonsterAddress };
-	}
-
-	const monsters: Monster[] = [];
-	do {
-		monsters.push(readMonster(currentMonsterAddress, getByte));
-		currentMonsterAddress += 3;
-	} while (getByte(currentMonsterAddress)); // The monsters of each level are separated with a zero byte.
-	currentMonsterAddress += 1;
-
-	return { monsters, currentMonsterAddress };
-}
-
-function readMonster(address: number, getByte: GetByte): Monster {
-	return {
-		type: getByte(address) & 0b111,
-		spawnPoint: {
-			x: (getByte(address) & 0b11111000) + 20,
-			y: (getByte(address + 1) & 0b11111110) + 21,
-		},
-		facingLeft: isBitSet(getByte(address + 2), 0),
 	};
 }
 
