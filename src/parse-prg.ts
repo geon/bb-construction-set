@@ -1,9 +1,4 @@
-import {
-	CharBlock,
-	CharsetChar,
-	CharsetCharLine,
-	parseCharsetCharLine,
-} from "./charset-char";
+import { CharBlock } from "./charset-char";
 import { chunk } from "./functions";
 import {
 	itemCharsArrays,
@@ -44,6 +39,7 @@ import {
 	numSpriteBytes,
 	spriteCounts,
 } from "./sprite";
+import { readCharBlock, readCharsetChar } from "./prg/charset-char";
 
 function getPrgStartAddress(prg: DataView): number {
 	// The prg contains a little endian 16 bit header with the start address. The rest is the raw data.
@@ -94,27 +90,6 @@ export function parsePrg(prg: DataView): {
 	const items = readItems(getByte);
 
 	return { levels, sprites, items };
-}
-
-function readCharsetChar(getByte: GetByte, address: number): CharsetChar {
-	const lines: CharsetCharLine[] = [];
-	for (let i = 0; i < 8; ++i) {
-		const line = parseCharsetCharLine(getByte(address + i));
-		lines.push(line);
-	}
-	return { lines: lines as CharsetChar["lines"] };
-}
-
-function readCharBlock(
-	getByte: GetByte,
-	currentSidebarAddress: number
-): CharBlock {
-	return [
-		readCharsetChar(getByte, currentSidebarAddress + 0 * 8),
-		readCharsetChar(getByte, currentSidebarAddress + 1 * 8),
-		readCharsetChar(getByte, currentSidebarAddress + 2 * 8),
-		readCharsetChar(getByte, currentSidebarAddress + 3 * 8),
-	];
 }
 
 function readItems(getByte: GetByte): CharBlock[] {
