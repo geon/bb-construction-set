@@ -34,7 +34,7 @@ import {
 	numSpriteBytes,
 	spriteCounts,
 } from "./sprite";
-import { readCharBlock, readCharsetChar } from "./prg/charset-char";
+import { readCharsetChar } from "./prg/charset-char";
 import { isBitSet } from "./prg/bit-twiddling";
 import {
 	getPrgStartAddress,
@@ -43,6 +43,7 @@ import {
 } from "./prg/io";
 import { readItems } from "./prg/items";
 import { readBubbleCurrentRectangles } from "./prg/bubble-current-rectangles";
+import { readSidebarChars } from "./prg/sidebar-chars";
 
 export function parsePrg(prg: DataView): {
 	levels: Level[];
@@ -144,21 +145,6 @@ function readLevel(
 			currentWindCurrentsAddress,
 		},
 	};
-}
-
-function readSidebarChars(
-	levelIndex: number,
-	currentSidebarAddress: number,
-	getByte: GetByte
-) {
-	const symmetryMetadata = getByte(symmetryMetadataArrayAddress + levelIndex);
-
-	let sidebarChars: Level["sidebarChars"] = undefined;
-	if (!isBitSet(symmetryMetadata, 1)) {
-		sidebarChars = readCharBlock(getByte, currentSidebarAddress);
-		currentSidebarAddress += 4 * 8; // 4 chars of 8 bytes each.
-	}
-	return { sidebarChars, currentSidebarAddress };
 }
 
 function readTilesAndBubbleCurrentLineDefault(
