@@ -1,11 +1,10 @@
 import { expect, test } from "vitest";
 import { readFileSync } from "fs";
+import { parsePrg, patchPrg } from "../parse-prg";
 import {
 	bubbleCurrentRectangleToBytes,
-	parsePrg,
-	patchPrg,
 	bytesToBubbleCurrentRectangle,
-} from "../parse-prg";
+} from "../prg/bubble-current-rectangles";
 import { deserializePeFileData } from "../pe-file";
 import { peFileDataToLevels } from "../level-pe-conversion";
 import { knownGoodBubbleCurrentRectsForLevels } from "./knownGoodBubbleCurrentRectsForLevels";
