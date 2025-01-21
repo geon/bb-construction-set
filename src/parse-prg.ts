@@ -167,8 +167,6 @@ function readLevel(
 		levelIndex
 	);
 
-	const holeMetadata = getByte(holeMetadataArrayAddress + levelIndex);
-
 	const platformChar = readCharsetChar(
 		getByte,
 		platformCharArrayAddress + levelIndex * 8
@@ -184,8 +182,7 @@ function readLevel(
 		readTilesAndBubbleCurrentLineDefault(
 			levelIndex,
 			addresses.currentBitmapByteAddress,
-			getByte,
-			holeMetadata
+			getByte
 		);
 
 	const { monsters, currentMonsterAddress } = readMonstersForLevel(
@@ -359,8 +356,7 @@ function readSidebarChars(
 function readTilesAndBubbleCurrentLineDefault(
 	levelIndex: number,
 	currentBitmapByteAddress: number,
-	getByte: GetByte,
-	holeMetadata: number
+	getByte: GetByte
 ) {
 	const tiles = createTiles();
 
@@ -370,6 +366,7 @@ function readTilesAndBubbleCurrentLineDefault(
 		tiles[levelHeight - 1][x] = true;
 	}
 	// Cut out the holes.
+	const holeMetadata = getByte(holeMetadataArrayAddress + levelIndex);
 	const topLeft = isBitSet(holeMetadata, 7);
 	const topRight = isBitSet(holeMetadata, 6);
 	const bottomLeft = isBitSet(holeMetadata, 5);
