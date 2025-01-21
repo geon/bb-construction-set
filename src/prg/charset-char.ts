@@ -1,21 +1,16 @@
-import {
-	CharsetChar,
-	CharsetCharLine,
-	parseCharsetCharLine,
-	CharBlock,
-} from "../charset-char";
+import { CharsetChar, parseCharsetCharLine, CharBlock } from "../charset-char";
+import { getBytes } from "./io";
 import { GetByte } from "./types";
 
 export function readCharsetChar(
 	getByte: GetByte,
 	address: number
 ): CharsetChar {
-	const lines: CharsetCharLine[] = [];
-	for (let i = 0; i < 8; ++i) {
-		const line = parseCharsetCharLine(getByte(address + i));
-		lines.push(line);
-	}
-	return { lines: lines as CharsetChar["lines"] };
+	return {
+		lines: getBytes(getByte, address, 8).map((byte) =>
+			parseCharsetCharLine(byte)
+		),
+	} as CharsetChar;
 }
 
 export function readCharBlock(
