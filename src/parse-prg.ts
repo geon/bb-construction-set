@@ -168,7 +168,6 @@ function readLevel(
 	);
 
 	const holeMetadata = getByte(holeMetadataArrayAddress + levelIndex);
-	const symmetryMetadata = getByte(symmetryMetadataArrayAddress + levelIndex);
 
 	const platformChar = readCharsetChar(
 		getByte,
@@ -176,18 +175,16 @@ function readLevel(
 	);
 
 	const { sidebarChars, currentSidebarAddress } = readSidebarChars(
+		levelIndex,
 		addresses.currentSidebarAddress,
-		symmetryMetadata,
 		getByte
 	);
 
-	const isSymmetric = isBitSet(symmetryMetadata, 0);
-
 	const { tiles, bubbleCurrentLineDefault, currentBitmapByteAddress } =
 		readTilesAndBubbleCurrentLineDefault(
+			levelIndex,
 			addresses.currentBitmapByteAddress,
 			getByte,
-			isSymmetric,
 			holeMetadata
 		);
 
@@ -345,10 +342,12 @@ export function bubbleCurrentRectangleToBytes(
 }
 
 function readSidebarChars(
+	levelIndex: number,
 	currentSidebarAddress: number,
-	symmetryMetadata: number,
 	getByte: GetByte
 ) {
+	const symmetryMetadata = getByte(symmetryMetadataArrayAddress + levelIndex);
+
 	let sidebarChars: Level["sidebarChars"] = undefined;
 	if (!isBitSet(symmetryMetadata, 1)) {
 		sidebarChars = readCharBlock(getByte, currentSidebarAddress);
@@ -358,9 +357,9 @@ function readSidebarChars(
 }
 
 function readTilesAndBubbleCurrentLineDefault(
+	levelIndex: number,
 	currentBitmapByteAddress: number,
 	getByte: GetByte,
-	isSymmetric: boolean,
 	holeMetadata: number
 ) {
 	const tiles = createTiles();
@@ -389,6 +388,9 @@ function readTilesAndBubbleCurrentLineDefault(
 			tiles[24][19 + x] = false;
 		}
 	}
+
+	const symmetryMetadata = getByte(symmetryMetadataArrayAddress + levelIndex);
+	const isSymmetric = isBitSet(symmetryMetadata, 0);
 
 	// Read tile bitmap.
 	const bytesPerRow = 4;
