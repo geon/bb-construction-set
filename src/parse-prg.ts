@@ -34,8 +34,8 @@ import {
 	maxMonsters,
 	maxSidebars,
 } from "./level";
-import { PaletteIndex } from "./palette";
 import { GetByte } from "./prg/types";
+import { readBgColorsForLevel } from "./prg/bg-colors";
 import {
 	CharacterName,
 	Sprite,
@@ -162,7 +162,11 @@ function readLevel(
 		currentWindCurrentsAddress: number;
 	}
 ) {
-	const bgColorMetadata = getByte(bgColorMetadataArrayAddress + levelIndex);
+	const { bgColorLight, bgColorDark } = readBgColorsForLevel(
+		getByte,
+		levelIndex
+	);
+
 	const holeMetadata = getByte(holeMetadataArrayAddress + levelIndex);
 	const symmetryMetadata = getByte(symmetryMetadataArrayAddress + levelIndex);
 
@@ -170,9 +174,6 @@ function readLevel(
 		getByte,
 		platformCharArrayAddress + levelIndex * 8
 	);
-
-	const bgColorLight = (bgColorMetadata & 0b1111) as PaletteIndex;
-	const bgColorDark = ((bgColorMetadata & 0b11110000) >> 4) as PaletteIndex;
 
 	const { sidebarChars, currentSidebarAddress } = readSidebarChars(
 		addresses.currentSidebarAddress,
