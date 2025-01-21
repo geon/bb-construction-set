@@ -1,4 +1,5 @@
 import { CharsetChar, parseCharsetCharLine, CharBlock } from "../charset-char";
+import { chunk } from "../functions";
 import { getBytes } from "./io";
 import { GetByte } from "./types";
 
@@ -17,10 +18,7 @@ export function readCharBlock(
 	getByte: GetByte,
 	currentSidebarAddress: number
 ): CharBlock {
-	return [
-		readCharsetChar(getByte, currentSidebarAddress + 0 * 8),
-		readCharsetChar(getByte, currentSidebarAddress + 1 * 8),
-		readCharsetChar(getByte, currentSidebarAddress + 2 * 8),
-		readCharsetChar(getByte, currentSidebarAddress + 3 * 8),
-	];
+	return chunk(getBytes(getByte, currentSidebarAddress, 4 * 8), 8).map(
+		(char) => ({ lines: char.map(parseCharsetCharLine) })
+	) as CharBlock;
 }
