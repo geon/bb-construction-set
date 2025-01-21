@@ -1,7 +1,6 @@
 import { CharBlock } from "./charset-char";
 import { chunk } from "./functions";
 import {
-	itemCharsArrays,
 	bitmapArrayAddress,
 	sidebarCharArrayAddress,
 	monsterArrayAddress,
@@ -46,6 +45,7 @@ import {
 	getPrgByteAtAddress,
 	setPrgByteAtAddress,
 } from "./prg/io";
+import { readItems } from "./prg/items";
 
 export function parsePrg(prg: DataView): {
 	levels: Level[];
@@ -61,22 +61,6 @@ export function parsePrg(prg: DataView): {
 	const items = readItems(getByte);
 
 	return { levels, sprites, items };
-}
-
-function readItems(getByte: GetByte): CharBlock[] {
-	const items: CharBlock[] = [];
-	for (const { address, numItems } of itemCharsArrays) {
-		for (let itemIndex = 0; itemIndex < numItems; ++itemIndex) {
-			items.push(
-				unshuffleCharBlock(readCharBlock(getByte, address + itemIndex * 4 * 8))
-			);
-		}
-	}
-	return items;
-}
-
-function unshuffleCharBlock(block: CharBlock): CharBlock {
-	return [block[0], block[2], block[1], block[3]];
 }
 
 function readLevels(getByte: GetByte): Array<Level> {
