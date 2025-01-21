@@ -152,6 +152,8 @@ const itemCharsArrays = [
 	},
 ];
 
+type GetByte = (address: number) => number;
+
 export function parsePrg(prg: DataView): {
 	levels: Level[];
 	sprites: Sprites;
@@ -168,10 +170,7 @@ export function parsePrg(prg: DataView): {
 	return { levels, sprites, items };
 }
 
-function readCharsetChar(
-	getByte: (address: number) => number,
-	address: number
-): CharsetChar {
+function readCharsetChar(getByte: GetByte, address: number): CharsetChar {
 	const lines: CharsetCharLine[] = [];
 	for (let i = 0; i < 8; ++i) {
 		const line = parseCharsetCharLine(getByte(address + i));
@@ -181,7 +180,7 @@ function readCharsetChar(
 }
 
 function readCharBlock(
-	getByte: (address: number) => number,
+	getByte: GetByte,
 	currentSidebarAddress: number
 ): CharBlock {
 	return [
@@ -192,7 +191,7 @@ function readCharBlock(
 	];
 }
 
-function readItems(getByte: (address: number) => number): CharBlock[] {
+function readItems(getByte: GetByte): CharBlock[] {
 	const items: CharBlock[] = [];
 	for (const { address, numItems } of itemCharsArrays) {
 		for (let itemIndex = 0; itemIndex < numItems; ++itemIndex) {
@@ -208,7 +207,7 @@ function unshuffleCharBlock(block: CharBlock): CharBlock {
 	return [block[0], block[2], block[1], block[3]];
 }
 
-function readLevels(getByte: (address: number) => number): Array<Level> {
+function readLevels(getByte: GetByte): Array<Level> {
 	// TODO: Check the original data size, and verify.
 
 	const levels: Array<Level> = [];
@@ -228,7 +227,7 @@ function readLevels(getByte: (address: number) => number): Array<Level> {
 }
 
 function readLevel(
-	getByte: (address: number) => number,
+	getByte: GetByte,
 	levelIndex: number,
 	addresses: {
 		currentSidebarAddress: number;
@@ -308,7 +307,7 @@ function readLevel(
 // [a bbbbbbb]
 export function readBubbleCurrentRectangles(
 	startingWindCurrentsAddress: number,
-	getByte: (address: number) => number,
+	getByte: GetByte,
 	perLineDefaults: PerLineBubbleCurrentDefaults
 ): {
 	readonly bubbleCurrents: BubbleCurrents;
@@ -421,7 +420,7 @@ export function bubbleCurrentRectangleToBytes(
 function readSidebarChars(
 	currentSidebarAddress: number,
 	symmetryMetadata: number,
-	getByte: (address: number) => number
+	getByte: GetByte
 ) {
 	let sidebarChars: Level["sidebarChars"] = undefined;
 	if (!isBitSet(symmetryMetadata, 1)) {
@@ -433,7 +432,7 @@ function readSidebarChars(
 
 function readTilesAndBubbleCurrentLineDefault(
 	currentBitmapByteAddress: number,
-	getByte: (address: number) => number,
+	getByte: GetByte,
 	isSymmetric: boolean,
 	holeMetadata: number
 ) {
@@ -520,7 +519,7 @@ function readTilesAndBubbleCurrentLineDefault(
 function readMonstersForLevel(
 	currentMonsterAddress: number,
 	levelIndex: number,
-	getByte: (address: number) => number
+	getByte: GetByte
 ) {
 	// Level 100 is the boss level. It has no monsters.
 	if (levelIndex === 99) {
@@ -560,10 +559,7 @@ function bitsToBubbleCurrentDirection(
 	return ((bits[1] ? 1 : 0) + (bits[0] ? 1 : 0) * 2) as BubbleCurrentDirection;
 }
 
-function readMonster(
-	address: number,
-	getByte: (address: number) => number
-): Monster {
+function readMonster(address: number, getByte: GetByte): Monster {
 	return {
 		type: getByte(address) & 0b111,
 		spawnPoint: {
@@ -574,7 +570,7 @@ function readMonster(
 	};
 }
 
-function readSprites(getByte: (address: number) => number): Sprites {
+function readSprites(getByte: GetByte): Sprites {
 	const sprites: Sprites = {
 		player: [],
 		bubbleBuster: [],
@@ -598,10 +594,7 @@ function readSprites(getByte: (address: number) => number): Sprites {
 	return sprites;
 }
 
-function readSprite(
-	getByte: (address: number) => number,
-	spriteIndex: number
-): Sprite {
+function readSprite(getByte: GetByte, spriteIndex: number): Sprite {
 	const bitmap: Sprite["bitmap"] = [];
 	for (let byteIndex = 0; byteIndex < numSpriteBytes; ++byteIndex) {
 		bitmap.push(
