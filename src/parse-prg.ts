@@ -40,6 +40,7 @@ import {
 	spriteCounts,
 } from "./sprite";
 import { readCharBlock, readCharsetChar } from "./prg/charset-char";
+import { isBitSet } from "./prg/bit-twiddling";
 
 function getPrgStartAddress(prg: DataView): number {
 	// The prg contains a little endian 16 bit header with the start address. The rest is the raw data.
@@ -70,10 +71,6 @@ function setPrgByteAtAddress(
 		throw new Error("File is too short.");
 	}
 	return (prg[offset] = value);
-}
-
-function isBitSet(byte: number, bitIndex: number): boolean {
-	return !!(byte & (0b10000000 >> bitIndex));
 }
 
 export function parsePrg(prg: DataView): {
