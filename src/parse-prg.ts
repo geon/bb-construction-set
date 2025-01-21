@@ -23,6 +23,7 @@ import {
 	maxSidebars,
 } from "./level";
 import { PaletteIndex } from "./palette";
+import { GetByte } from "./prg/types";
 import {
 	CharacterName,
 	Sprite,
@@ -151,8 +152,6 @@ const itemCharsArrays = [
 		numItems: 2,
 	},
 ];
-
-type GetByte = (address: number) => number;
 
 export function parsePrg(prg: DataView): {
 	levels: Level[];
