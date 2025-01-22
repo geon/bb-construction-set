@@ -10,13 +10,8 @@ import {
 	symmetryMetadataArrayAddress,
 	platformCharArrayAddress,
 } from "./prg/data-locations";
-import {
-	Level,
-	levelIsSymmetric,
-	maxAsymmetric,
-	maxMonsters,
-	maxSidebars,
-} from "./level";
+import { Level, levelIsSymmetric } from "./level";
+import { maxAsymmetric, maxMonsters, maxSidebars } from "./prg/data-locations";
 import { GetByte } from "./prg/types";
 import { readBgColorsForLevel } from "./prg/bg-colors";
 import { Sprites } from "./sprite";

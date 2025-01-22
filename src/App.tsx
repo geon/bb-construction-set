@@ -5,13 +5,8 @@ import {
 	drawLevelsToCanvas,
 	drawPlatformCharsToCanvas,
 } from "./draw-levels-to-canvas";
-import {
-	Level,
-	levelIsSymmetric,
-	maxAsymmetric,
-	maxMonsters,
-	maxSidebars,
-} from "./level";
+import { Level, levelIsSymmetric } from "./level";
+import { maxAsymmetric, maxMonsters, maxSidebars } from "./prg/data-locations";
 import { Sprites } from "./sprite";
 import { levelsToPeFileData, peFileDataToLevels } from "./level-pe-conversion";
 import { deserializePeFileData, serializePeFileData } from "./pe-file";
