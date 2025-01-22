@@ -49,7 +49,6 @@ function readLevels(getByte: GetByte): Array<Level> {
 	const allLevels_platformChar: Level["platformChar"][] = [];
 	const allLevels_bgColorLight: Level["bgColorLight"][] = [];
 	const allLevels_bgColorDark: Level["bgColorDark"][] = [];
-	const allLevels_sidebarChars: Level["sidebarChars"][] = [];
 	const allLevels_bubbleCurrents: Level["bubbleCurrents"][] = [];
 
 	const { tiles: allLevels_tiles, bubbleCurrentLineDefault } =
@@ -67,9 +66,6 @@ function readLevels(getByte: GetByte): Array<Level> {
 			readCharsetChar(getByte, platformCharArrayAddress + levelIndex * 8)
 		);
 
-		const sidebarChars = readSidebarChars(levelIndex, getByte);
-		allLevels_sidebarChars.push(sidebarChars);
-
 		const bubbleCurrents = readBubbleCurrentRectangles(
 			levelIndex,
 			getByte,
@@ -78,6 +74,7 @@ function readLevels(getByte: GetByte): Array<Level> {
 		allLevels_bubbleCurrents.push(bubbleCurrents);
 	}
 
+	const allLevels_sidebarChars = readSidebarChars(getByte);
 	const allLevels_monsters = readMonsters(getByte);
 
 	const levels: Array<Level> = [];
