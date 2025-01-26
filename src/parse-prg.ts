@@ -4,7 +4,6 @@ import {
 	bitmapArrayAddress,
 	sidebarCharArrayAddress,
 	monsterArrayAddress,
-	windCurrentsArrayAddress,
 	bgColorMetadataArrayAddress,
 	holeMetadataArrayAddress,
 	symmetryMetadataArrayAddress,
@@ -49,7 +48,6 @@ function readLevels(getByte: GetByte): Array<Level> {
 
 	let _currentBitmapByteAddress = bitmapArrayAddress;
 	let _currentSidebarAddress = sidebarCharArrayAddress;
-	let _currentWindCurrentsAddress = windCurrentsArrayAddress;
 
 	const allLevels_platformChar: Level["platformChar"][] = [];
 	const allLevels_bgColorLight: Level["bgColorLight"][] = [];
@@ -88,17 +86,15 @@ function readLevels(getByte: GetByte): Array<Level> {
 
 		allLevels_monsters.push(readMonstersForLevel(levelIndex, getByte));
 
-		const { bubbleCurrents, currentWindCurrentsAddress } =
-			readBubbleCurrentRectangles(
-				_currentWindCurrentsAddress,
-				getByte,
-				bubbleCurrentLineDefault
-			);
+		const bubbleCurrents = readBubbleCurrentRectangles(
+			levelIndex,
+			getByte,
+			bubbleCurrentLineDefault
+		);
 		allLevels_bubbleCurrents.push(bubbleCurrents);
 
 		_currentSidebarAddress = currentSidebarAddress;
 		_currentBitmapByteAddress = currentBitmapByteAddress;
-		_currentWindCurrentsAddress = currentWindCurrentsAddress;
 	}
 
 	const levels: Array<Level> = [];

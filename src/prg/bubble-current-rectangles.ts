@@ -6,6 +6,7 @@ import {
 	BubbleCurrentDirection,
 } from "../level";
 import { isBitSet } from "./bit-twiddling";
+import { windCurrentsArrayAddress } from "./data-locations";
 import { GetByte } from "./types";
 
 // Bytes are within [square brackets].
@@ -17,14 +18,19 @@ import { GetByte } from "./types";
 // [a bbbbbbb]
 
 export function readBubbleCurrentRectangles(
-	startingWindCurrentsAddress: number,
+	levelIndex: number,
 	getByte: GetByte,
 	perLineDefaults: PerLineBubbleCurrentDefaults
-): {
-	readonly bubbleCurrents: BubbleCurrents;
-	readonly currentWindCurrentsAddress: number;
-} {
-	let currentWindCurrentsAddress = startingWindCurrentsAddress;
+): BubbleCurrents {
+	let currentWindCurrentsAddress = windCurrentsArrayAddress;
+	for (let index = 0; index < levelIndex; ++index) {
+		const firstByte = getByte(currentWindCurrentsAddress);
+		const firstByteWithoutCopyFlag = firstByte & 0b01111111;
+		const byteCount = Math.max(1, firstByteWithoutCopyFlag);
+		currentWindCurrentsAddress += byteCount;
+	}
+
+	const startingWindCurrentsAddress = currentWindCurrentsAddress;
 
 	const firstByte = getByte(currentWindCurrentsAddress++);
 	const copy = isBitSet(firstByte, 0);
@@ -32,12 +38,9 @@ export function readBubbleCurrentRectangles(
 
 	if (copy) {
 		return {
-			bubbleCurrents: {
-				type: "copy",
-				levelIndex: firstByteWithoutCopyFlag,
-				perLineDefaults,
-			},
-			currentWindCurrentsAddress,
+			type: "copy",
+			levelIndex: firstByteWithoutCopyFlag,
+			perLineDefaults,
 		};
 	}
 
@@ -45,12 +48,9 @@ export function readBubbleCurrentRectangles(
 
 	if (!byteCount) {
 		return {
-			bubbleCurrents: {
-				type: "rectangles",
-				rectangles: [],
-				perLineDefaults,
-			},
-			currentWindCurrentsAddress,
+			type: "rectangles",
+			rectangles: [],
+			perLineDefaults,
 		};
 	}
 
@@ -77,12 +77,9 @@ export function readBubbleCurrentRectangles(
 	}
 
 	return {
-		bubbleCurrents: {
-			type: "rectangles",
-			rectangles,
-			perLineDefaults,
-		},
-		currentWindCurrentsAddress,
+		type: "rectangles",
+		rectangles,
+		perLineDefaults,
 	};
 }
 
