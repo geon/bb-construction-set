@@ -47,12 +47,11 @@ export function parsePrg(prg: DataView): {
 function readLevels(getByte: GetByte): Array<Level> {
 	// TODO: Check the original data size, and verify.
 
-	let addresses = {
-		currentBitmapByteAddress: bitmapArrayAddress,
-		currentSidebarAddress: sidebarCharArrayAddress,
-		currentMonsterAddress: monsterArrayAddress,
-		currentWindCurrentsAddress: windCurrentsArrayAddress,
-	};
+	let _currentBitmapByteAddress = bitmapArrayAddress;
+	let _currentSidebarAddress = sidebarCharArrayAddress;
+	let _currentMonsterAddress = monsterArrayAddress;
+	let _currentWindCurrentsAddress = windCurrentsArrayAddress;
+
 	const allLevels_platformChar: Level["platformChar"][] = [];
 	const allLevels_bgColorLight: Level["bgColorLight"][] = [];
 	const allLevels_bgColorDark: Level["bgColorDark"][] = [];
@@ -75,7 +74,7 @@ function readLevels(getByte: GetByte): Array<Level> {
 
 		const { sidebarChars, currentSidebarAddress } = readSidebarChars(
 			levelIndex,
-			addresses.currentSidebarAddress,
+			_currentSidebarAddress,
 			getByte
 		);
 		allLevels_sidebarChars.push(sidebarChars);
@@ -83,13 +82,13 @@ function readLevels(getByte: GetByte): Array<Level> {
 		const { tiles, bubbleCurrentLineDefault, currentBitmapByteAddress } =
 			readTilesAndBubbleCurrentLineDefault(
 				levelIndex,
-				addresses.currentBitmapByteAddress,
+				_currentBitmapByteAddress,
 				getByte
 			);
 		allLevels_tiles.push(tiles);
 
 		const { monsters, currentMonsterAddress } = readMonstersForLevel(
-			addresses.currentMonsterAddress,
+			_currentMonsterAddress,
 			levelIndex,
 			getByte
 		);
@@ -97,18 +96,16 @@ function readLevels(getByte: GetByte): Array<Level> {
 
 		const { bubbleCurrents, currentWindCurrentsAddress } =
 			readBubbleCurrentRectangles(
-				addresses.currentWindCurrentsAddress,
+				_currentWindCurrentsAddress,
 				getByte,
 				bubbleCurrentLineDefault
 			);
 		allLevels_bubbleCurrents.push(bubbleCurrents);
 
-		addresses = {
-			currentSidebarAddress,
-			currentBitmapByteAddress,
-			currentMonsterAddress,
-			currentWindCurrentsAddress,
-		};
+		_currentSidebarAddress = currentSidebarAddress;
+		_currentBitmapByteAddress = currentBitmapByteAddress;
+		_currentMonsterAddress = currentMonsterAddress;
+		_currentWindCurrentsAddress = currentWindCurrentsAddress;
 	}
 
 	const levels: Array<Level> = [];
