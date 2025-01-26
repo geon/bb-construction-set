@@ -47,7 +47,6 @@ function readLevels(getByte: GetByte): Array<Level> {
 	// TODO: Check the original data size, and verify.
 
 	let _currentBitmapByteAddress = bitmapArrayAddress;
-	let _currentSidebarAddress = sidebarCharArrayAddress;
 
 	const allLevels_platformChar: Level["platformChar"][] = [];
 	const allLevels_bgColorLight: Level["bgColorLight"][] = [];
@@ -69,11 +68,7 @@ function readLevels(getByte: GetByte): Array<Level> {
 			readCharsetChar(getByte, platformCharArrayAddress + levelIndex * 8)
 		);
 
-		const { sidebarChars, currentSidebarAddress } = readSidebarChars(
-			levelIndex,
-			_currentSidebarAddress,
-			getByte
-		);
+		const sidebarChars = readSidebarChars(levelIndex, getByte);
 		allLevels_sidebarChars.push(sidebarChars);
 
 		const { tiles, bubbleCurrentLineDefault, currentBitmapByteAddress } =
@@ -93,7 +88,6 @@ function readLevels(getByte: GetByte): Array<Level> {
 		);
 		allLevels_bubbleCurrents.push(bubbleCurrents);
 
-		_currentSidebarAddress = currentSidebarAddress;
 		_currentBitmapByteAddress = currentBitmapByteAddress;
 	}
 
