@@ -50,8 +50,10 @@ function readLevels(getByte: GetByte): Array<Level> {
 	const allLevels_bgColorLight: Level["bgColorLight"][] = [];
 	const allLevels_bgColorDark: Level["bgColorDark"][] = [];
 	const allLevels_sidebarChars: Level["sidebarChars"][] = [];
-	const allLevels_tiles: Level["tiles"][] = [];
 	const allLevels_bubbleCurrents: Level["bubbleCurrents"][] = [];
+
+	const { tiles: allLevels_tiles, bubbleCurrentLineDefault } =
+		readTilesAndBubbleCurrentLineDefault(getByte);
 
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
 		const { bgColorLight, bgColorDark } = readBgColorsForLevel(
@@ -68,14 +70,10 @@ function readLevels(getByte: GetByte): Array<Level> {
 		const sidebarChars = readSidebarChars(levelIndex, getByte);
 		allLevels_sidebarChars.push(sidebarChars);
 
-		const { tiles, bubbleCurrentLineDefault } =
-			readTilesAndBubbleCurrentLineDefault(levelIndex, getByte);
-		allLevels_tiles.push(tiles);
-
 		const bubbleCurrents = readBubbleCurrentRectangles(
 			levelIndex,
 			getByte,
-			bubbleCurrentLineDefault
+			bubbleCurrentLineDefault[levelIndex]
 		);
 		allLevels_bubbleCurrents.push(bubbleCurrents);
 	}
