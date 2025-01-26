@@ -24,7 +24,7 @@ import { readItems } from "./prg/items";
 import { readBubbleCurrentRectangles } from "./prg/bubble-current-rectangles";
 import { readSidebarChars } from "./prg/sidebar-chars";
 import { readTilesAndBubbleCurrentLineDefault } from "./prg/tiles";
-import { readMonstersForLevel } from "./prg/monsters";
+import { readMonsters } from "./prg/monsters";
 import { readSprites } from "./prg/sprites";
 
 export function parsePrg(prg: DataView): {
@@ -51,7 +51,6 @@ function readLevels(getByte: GetByte): Array<Level> {
 	const allLevels_bgColorDark: Level["bgColorDark"][] = [];
 	const allLevels_sidebarChars: Level["sidebarChars"][] = [];
 	const allLevels_tiles: Level["tiles"][] = [];
-	const allLevels_monsters: Level["monsters"][] = [];
 	const allLevels_bubbleCurrents: Level["bubbleCurrents"][] = [];
 
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
@@ -73,8 +72,6 @@ function readLevels(getByte: GetByte): Array<Level> {
 			readTilesAndBubbleCurrentLineDefault(levelIndex, getByte);
 		allLevels_tiles.push(tiles);
 
-		allLevels_monsters.push(readMonstersForLevel(levelIndex, getByte));
-
 		const bubbleCurrents = readBubbleCurrentRectangles(
 			levelIndex,
 			getByte,
@@ -82,6 +79,8 @@ function readLevels(getByte: GetByte): Array<Level> {
 		);
 		allLevels_bubbleCurrents.push(bubbleCurrents);
 	}
+
+	const allLevels_monsters = readMonsters(getByte);
 
 	const levels: Array<Level> = [];
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {

@@ -3,27 +3,34 @@ import { isBitSet } from "./bit-twiddling";
 import { monsterArrayAddress } from "./data-locations";
 import { GetByte } from "./types";
 
-export function readMonstersForLevel(levelIndex: number, getByte: GetByte) {
-	// Level 100 is the boss level. It has no monsters.
-	if (levelIndex === 99) {
-		return [];
-	}
+export function readMonsters(getByte: GetByte) {
+	const monstersForAllLevels: Monster[][] = [];
 
-	let currentMonsterAddress = monsterArrayAddress;
-	for (let index = 0; index < levelIndex; ++index) {
+	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
+		// Level 100 is the boss level. It has no monsters.
+		if (levelIndex === 99) {
+			monstersForAllLevels.push([]);
+			continue;
+		}
+
+		let currentMonsterAddress = monsterArrayAddress;
+		for (let index = 0; index < levelIndex; ++index) {
+			do {
+				currentMonsterAddress += 3;
+			} while (getByte(currentMonsterAddress));
+			currentMonsterAddress += 1; // The monsters of each level are separated with a zero byte.
+		}
+
+		const monsters: Monster[] = [];
 		do {
+			monsters.push(readMonster(currentMonsterAddress, getByte));
 			currentMonsterAddress += 3;
 		} while (getByte(currentMonsterAddress));
-		currentMonsterAddress += 1; // The monsters of each level are separated with a zero byte.
+
+		monstersForAllLevels.push(monsters);
 	}
 
-	const monsters: Monster[] = [];
-	do {
-		monsters.push(readMonster(currentMonsterAddress, getByte));
-		currentMonsterAddress += 3;
-	} while (getByte(currentMonsterAddress));
-
-	return monsters;
+	return monstersForAllLevels;
 }
 
 function readMonster(address: number, getByte: GetByte): Monster {
