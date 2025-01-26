@@ -49,7 +49,6 @@ function readLevels(getByte: GetByte): Array<Level> {
 
 	let _currentBitmapByteAddress = bitmapArrayAddress;
 	let _currentSidebarAddress = sidebarCharArrayAddress;
-	let _currentMonsterAddress = monsterArrayAddress;
 	let _currentWindCurrentsAddress = windCurrentsArrayAddress;
 
 	const allLevels_platformChar: Level["platformChar"][] = [];
@@ -87,12 +86,7 @@ function readLevels(getByte: GetByte): Array<Level> {
 			);
 		allLevels_tiles.push(tiles);
 
-		const { monsters, currentMonsterAddress } = readMonstersForLevel(
-			_currentMonsterAddress,
-			levelIndex,
-			getByte
-		);
-		allLevels_monsters.push(monsters);
+		allLevels_monsters.push(readMonstersForLevel(levelIndex, getByte));
 
 		const { bubbleCurrents, currentWindCurrentsAddress } =
 			readBubbleCurrentRectangles(
@@ -104,7 +98,6 @@ function readLevels(getByte: GetByte): Array<Level> {
 
 		_currentSidebarAddress = currentSidebarAddress;
 		_currentBitmapByteAddress = currentBitmapByteAddress;
-		_currentMonsterAddress = currentMonsterAddress;
 		_currentWindCurrentsAddress = currentWindCurrentsAddress;
 	}
 
