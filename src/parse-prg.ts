@@ -46,25 +46,21 @@ export function parsePrg(prg: DataView): {
 function readLevels(getByte: GetByte): Array<Level> {
 	// TODO: Check the original data size, and verify.
 
-	const allLevels_bubbleCurrents: Level["bubbleCurrents"][] = [];
-
+	// TODO: Refactor out a common function that reads the raw bitmap, then use that
+	// inside readTilesAndBubbleCurrentLineDefault & readBubbleCurrentRectangles.
 	const { tiles: allLevels_tiles, bubbleCurrentLineDefault } =
 		readTilesAndBubbleCurrentLineDefault(getByte);
-
-	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
-		const bubbleCurrents = readBubbleCurrentRectangles(
-			levelIndex,
-			getByte,
-			bubbleCurrentLineDefault[levelIndex]
-		);
-		allLevels_bubbleCurrents.push(bubbleCurrents);
-	}
+	const allLevels_bubbleCurrents = readBubbleCurrentRectangles(
+		getByte,
+		bubbleCurrentLineDefault
+	);
 
 	const allLevels_platformChar = readPlatformChars(getByte);
 	const bgColors = readBgColors(getByte);
 	const allLevels_sidebarChars = readSidebarChars(getByte);
 	const allLevels_monsters = readMonsters(getByte);
 
+	// TODO: use zipWith
 	const levels: Array<Level> = [];
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
 		const level: Level = {

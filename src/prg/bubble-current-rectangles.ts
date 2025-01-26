@@ -9,6 +9,25 @@ import { isBitSet } from "./bit-twiddling";
 import { windCurrentsArrayAddress } from "./data-locations";
 import { GetByte } from "./types";
 
+export function readBubbleCurrentRectangles(
+	getByte: GetByte,
+	perLineDefaults: PerLineBubbleCurrentDefaults[]
+): BubbleCurrents[] {
+	const monstersForAllLevels = [];
+
+	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
+		monstersForAllLevels.push(
+			readBubbleCurrentRectanglesForLevel(
+				levelIndex,
+				getByte,
+				perLineDefaults[levelIndex]
+			)
+		);
+	}
+
+	return monstersForAllLevels;
+}
+
 // Bytes are within [square brackets].
 // Values are separated | with | pipes.
 //
@@ -17,7 +36,7 @@ import { GetByte } from "./types";
 // [NotSure | Count]
 // [a bbbbbbb]
 
-export function readBubbleCurrentRectangles(
+function readBubbleCurrentRectanglesForLevel(
 	levelIndex: number,
 	getByte: GetByte,
 	perLineDefaults: PerLineBubbleCurrentDefaults
