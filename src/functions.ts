@@ -19,3 +19,7 @@ export function chunk<T>(array: readonly T[], chunkLength: number): T[][] {
 	} while (start < array.length);
 	return chunks;
 }
+
+export function sum(array: readonly number[]): number {
+	return array.reduce((a, b) => a + b, 0);
+}

@@ -1,3 +1,4 @@
+import { sum } from "../functions";
 import {
 	createTiles,
 	levelWidth,
@@ -7,14 +8,15 @@ import {
 } from "../level";
 import { isBitSet } from "./bit-twiddling";
 import {
+	bitmapArrayAddress,
 	holeMetadataArrayAddress,
 	symmetryMetadataArrayAddress,
 } from "./data-locations";
+import { getBytes } from "./io";
 import { GetByte } from "./types";
 
 export function readTilesAndBubbleCurrentLineDefault(
 	levelIndex: number,
-	currentBitmapByteAddress: number,
 	getByte: GetByte
 ) {
 	const tiles = createTiles();
@@ -45,8 +47,17 @@ export function readTilesAndBubbleCurrentLineDefault(
 		}
 	}
 
-	const symmetryMetadata = getByte(symmetryMetadataArrayAddress + levelIndex);
-	const isSymmetric = isBitSet(symmetryMetadata, 0);
+	const symmetryMetadata = getBytes(getByte, symmetryMetadataArrayAddress, 100);
+	const isSymmetric = isBitSet(symmetryMetadata[levelIndex], 0);
+
+	const offset = sum(
+		symmetryMetadata
+			.slice(0, levelIndex)
+			// Skip 46 or 92 bytes per level depending on if it is symmetric or not.
+			.map((byte) => (isBitSet(byte, 0) ? 46 : 92))
+	);
+
+	let currentBitmapByteAddress = bitmapArrayAddress + offset;
 
 	// Read tile bitmap.
 	const bytesPerRow = 4;
@@ -98,7 +109,7 @@ export function readTilesAndBubbleCurrentLineDefault(
 		tiles[rowIndex][levelWidth - 1] = true;
 	}
 
-	return { tiles, bubbleCurrentLineDefault, currentBitmapByteAddress };
+	return { tiles, bubbleCurrentLineDefault };
 }
 
 function extractbubbleCurrentLineDefault(

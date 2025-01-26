@@ -46,8 +46,6 @@ export function parsePrg(prg: DataView): {
 function readLevels(getByte: GetByte): Array<Level> {
 	// TODO: Check the original data size, and verify.
 
-	let _currentBitmapByteAddress = bitmapArrayAddress;
-
 	const allLevels_platformChar: Level["platformChar"][] = [];
 	const allLevels_bgColorLight: Level["bgColorLight"][] = [];
 	const allLevels_bgColorDark: Level["bgColorDark"][] = [];
@@ -71,12 +69,8 @@ function readLevels(getByte: GetByte): Array<Level> {
 		const sidebarChars = readSidebarChars(levelIndex, getByte);
 		allLevels_sidebarChars.push(sidebarChars);
 
-		const { tiles, bubbleCurrentLineDefault, currentBitmapByteAddress } =
-			readTilesAndBubbleCurrentLineDefault(
-				levelIndex,
-				_currentBitmapByteAddress,
-				getByte
-			);
+		const { tiles, bubbleCurrentLineDefault } =
+			readTilesAndBubbleCurrentLineDefault(levelIndex, getByte);
 		allLevels_tiles.push(tiles);
 
 		allLevels_monsters.push(readMonstersForLevel(levelIndex, getByte));
@@ -87,8 +81,6 @@ function readLevels(getByte: GetByte): Array<Level> {
 			bubbleCurrentLineDefault
 		);
 		allLevels_bubbleCurrents.push(bubbleCurrents);
-
-		_currentBitmapByteAddress = currentBitmapByteAddress;
 	}
 
 	const levels: Array<Level> = [];
