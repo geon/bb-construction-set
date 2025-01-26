@@ -54,80 +54,62 @@ function readLevels(getByte: GetByte): Array<Level> {
 		currentMonsterAddress: monsterArrayAddress,
 		currentWindCurrentsAddress: windCurrentsArrayAddress,
 	};
+
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
-		let level;
-		({ level, addresses } = readLevel(getByte, levelIndex, addresses));
+		const { bgColorLight, bgColorDark } = readBgColorsForLevel(
+			getByte,
+			levelIndex
+		);
 
-		levels.push(level);
-	}
-	return levels;
-}
+		const platformChar = readCharsetChar(
+			getByte,
+			platformCharArrayAddress + levelIndex * 8
+		);
 
-function readLevel(
-	getByte: GetByte,
-	levelIndex: number,
-	addresses: {
-		currentSidebarAddress: number;
-		currentBitmapByteAddress: number;
-		currentMonsterAddress: number;
-		currentWindCurrentsAddress: number;
-	}
-) {
-	const { bgColorLight, bgColorDark } = readBgColorsForLevel(
-		getByte,
-		levelIndex
-	);
-
-	const platformChar = readCharsetChar(
-		getByte,
-		platformCharArrayAddress + levelIndex * 8
-	);
-
-	const { sidebarChars, currentSidebarAddress } = readSidebarChars(
-		levelIndex,
-		addresses.currentSidebarAddress,
-		getByte
-	);
-
-	const { tiles, bubbleCurrentLineDefault, currentBitmapByteAddress } =
-		readTilesAndBubbleCurrentLineDefault(
+		const { sidebarChars, currentSidebarAddress } = readSidebarChars(
 			levelIndex,
-			addresses.currentBitmapByteAddress,
+			addresses.currentSidebarAddress,
 			getByte
 		);
 
-	const { monsters, currentMonsterAddress } = readMonstersForLevel(
-		addresses.currentMonsterAddress,
-		levelIndex,
-		getByte
-	);
+		const { tiles, bubbleCurrentLineDefault, currentBitmapByteAddress } =
+			readTilesAndBubbleCurrentLineDefault(
+				levelIndex,
+				addresses.currentBitmapByteAddress,
+				getByte
+			);
 
-	const { bubbleCurrents, currentWindCurrentsAddress } =
-		readBubbleCurrentRectangles(
-			addresses.currentWindCurrentsAddress,
-			getByte,
-			bubbleCurrentLineDefault
+		const { monsters, currentMonsterAddress } = readMonstersForLevel(
+			addresses.currentMonsterAddress,
+			levelIndex,
+			getByte
 		);
 
-	const level: Level = {
-		platformChar,
-		bgColorLight,
-		bgColorDark,
-		sidebarChars,
-		tiles,
-		monsters,
-		bubbleCurrents,
-	};
+		const { bubbleCurrents, currentWindCurrentsAddress } =
+			readBubbleCurrentRectangles(
+				addresses.currentWindCurrentsAddress,
+				getByte,
+				bubbleCurrentLineDefault
+			);
 
-	return {
-		level,
-		addresses: {
+		levels.push({
+			platformChar,
+			bgColorLight,
+			bgColorDark,
+			sidebarChars,
+			tiles,
+			monsters,
+			bubbleCurrents,
+		});
+
+		addresses = {
 			currentSidebarAddress,
 			currentBitmapByteAddress,
 			currentMonsterAddress,
 			currentWindCurrentsAddress,
-		},
-	};
+		};
+	}
+	return levels;
 }
 
 export function patchPrg(prg: Uint8Array, levels: readonly Level[]) {
