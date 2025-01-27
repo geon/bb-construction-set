@@ -6,7 +6,7 @@ import {
 	Tiles,
 	BubbleCurrentDirection,
 } from "../level";
-import { isBitSet } from "./bit-twiddling";
+import { byteToBits, isBitSet } from "./bit-twiddling";
 import {
 	bitmapArrayAddress,
 	holeMetadataArrayAddress,
@@ -77,10 +77,7 @@ export function readTilesAndBubbleCurrentLineDefault(getByte: GetByte) {
 				const bitmapByte = getByte(currentBitmapByteAddress);
 				currentBitmapByteAddress += 1;
 				// Convert the bitmap to an array of bools.
-				const bits = [];
-				for (let bitIndex = 0; bitIndex < 8; ++bitIndex) {
-					bits[bitIndex] = isBitSet(bitmapByte, bitIndex);
-				}
+				const bits = byteToBits(bitmapByte);
 				for (let bitIndex = 0; bitIndex < 8; ++bitIndex) {
 					// Offset by 32 for the top line.
 					tiles[rowIndex + 1][bitmapByteOfRowIndex * 8 + bitIndex] =
