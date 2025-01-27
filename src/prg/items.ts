@@ -1,6 +1,7 @@
 import { CharBlock } from "../charset-char";
 import { readItemCharBlock } from "./charset-char";
 import { itemCharsArrays } from "./data-locations";
+import { makeGetBoundedByte } from "./io";
 import { GetByte } from "./types";
 
 export function readItems(getByte: GetByte): CharBlock[] {
@@ -9,7 +10,14 @@ export function readItems(getByte: GetByte): CharBlock[] {
 		for (let itemIndex = 0; itemIndex < numItems; ++itemIndex) {
 			items.push(
 				unshuffleCharBlock(
-					readItemCharBlock(getByte, address + itemIndex * 4 * 8)
+					readItemCharBlock(
+						makeGetBoundedByte(
+							getByte,
+							address + itemIndex * 4 * 8,
+							4 * 8,
+							"itemCharBlock"
+						)
+					)
 				)
 			);
 		}

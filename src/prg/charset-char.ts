@@ -12,12 +12,8 @@ export function readPlatformChars(getPlatformCharsByte: GetBoundedByte) {
 	).map((char) => ({ lines: char.map(parseCharsetCharLine) } as CharsetChar));
 }
 
-export function readItemCharBlock(
-	getByte: GetByte,
-	currentSidebarAddress: number
-): CharBlock {
-	return chunk(
-		getBytes(getByte, currentSidebarAddress, 4 * linesPerChar),
-		linesPerChar
-	).map((char) => ({ lines: char.map(parseCharsetCharLine) })) as CharBlock;
+export function readItemCharBlock(getByte: GetByte): CharBlock {
+	return chunk(getBytes(getByte, 0, 4 * linesPerChar), linesPerChar).map(
+		(char) => ({ lines: char.map(parseCharsetCharLine) })
+	) as CharBlock;
 }
