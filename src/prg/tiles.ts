@@ -43,7 +43,7 @@ export function readTilesAndBubbleCurrentLineDefault(getByte: GetByte) {
 			}
 		}
 
-		const bitmapBytesRows = readTileBitmap(levelIndex, getByte);
+		const tileBitmap = readTileBitmap(levelIndex, getByte);
 
 		const bytesPerRow = 4;
 		for (let rowIndex = 0; rowIndex < 23; ++rowIndex) {
@@ -53,7 +53,7 @@ export function readTilesAndBubbleCurrentLineDefault(getByte: GetByte) {
 				bitmapByteOfRowIndex < bytesPerRow;
 				++bitmapByteOfRowIndex
 			) {
-				const bitmapByte = bitmapBytesRows[rowIndex][bitmapByteOfRowIndex];
+				const bitmapByte = tileBitmap[rowIndex][bitmapByteOfRowIndex];
 				// Convert the bitmap to an array of bools.
 				const bits = byteToBits(bitmapByte);
 				for (let bitIndex = 0; bitIndex < 8; ++bitIndex) {
