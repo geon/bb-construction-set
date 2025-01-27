@@ -87,7 +87,15 @@ function readLevels(getByte: GetByte): ReadonlyArray<Level> {
 			),
 			getSymmetryMetadataByte
 		),
-		tiles: readTiles(getByte, tileBitmaps),
+		tiles: readTiles(
+			makeGetBoundedByte(
+				getByte,
+				holeMetadataArrayAddress,
+				100,
+				"holeMetadata"
+			),
+			tileBitmaps
+		),
 		monsters: readMonsters(getByte),
 		bubbleCurrents: readBubbleCurrentRectangles(getByte, tileBitmaps),
 	});

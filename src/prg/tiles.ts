@@ -1,9 +1,11 @@
 import { createTiles, levelWidth, levelHeight, Tiles } from "../level";
 import { byteToBits, isBitSet } from "./bit-twiddling";
-import { holeMetadataArrayAddress } from "./data-locations";
-import { GetByte } from "./types";
+import { GetBoundedByte } from "./io";
 
-export function readTiles(getByte: GetByte, tileBitmaps: number[][][]) {
+export function readTiles(
+	getHoleMetadataByte: GetBoundedByte,
+	tileBitmaps: number[][][]
+) {
 	const tilesForAllLevels: Tiles[] = [];
 
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
@@ -15,7 +17,7 @@ export function readTiles(getByte: GetByte, tileBitmaps: number[][][]) {
 			tiles[levelHeight - 1][x] = true;
 		}
 		// Cut out the holes.
-		const holeMetadata = getByte(holeMetadataArrayAddress + levelIndex);
+		const holeMetadata = getHoleMetadataByte(levelIndex);
 		const topLeft = isBitSet(holeMetadata, 7);
 		const topRight = isBitSet(holeMetadata, 6);
 		const bottomLeft = isBitSet(holeMetadata, 5);
