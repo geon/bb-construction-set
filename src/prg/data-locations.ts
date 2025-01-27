@@ -1,3 +1,4 @@
+import { mapRecord } from "../functions";
 import { GetBoundedByte, makeGetBoundedByte } from "./io";
 import { GetByte } from "./types";
 
@@ -16,6 +17,7 @@ export const bitmapArrayByteLength = 46 * (100 + maxAsymmetric);
 
 export const monsterArrayAddress = 0xae51;
 export const windCurrentsArrayAddress = 0xb695;
+
 export const spriteBitmapArrayAddress = 0x5800;
 export const itemCharsArrays = [
 	// Blow bubble animation.
@@ -92,67 +94,52 @@ export const itemCharsArrays = [
 	},
 ];
 
-type DataSegmentName =
-	| "symmetryMetadata"
-	| "bitmaps"
-	| "platformChars"
-	| "bgColors"
-	| "sidebarChars"
-	| "holeMetadata"
-	| "monsters"
-	| "windCurrents";
+interface SegmentLocation {
+	readonly startAddress: number;
+	readonly length: number;
+}
+
+const segmentLocations = {
+	symmetryMetadata: {
+		startAddress: symmetryMetadataArrayAddress,
+		length: 100,
+	},
+	bitmaps: {
+		startAddress: bitmapArrayAddress,
+		length: bitmapArrayByteLength,
+	},
+	platformChars: {
+		startAddress: platformCharArrayAddress,
+		length: 800,
+	},
+	bgColors: {
+		startAddress: bgColorMetadataArrayAddress,
+		length: 100,
+	},
+	sidebarChars: {
+		startAddress: sidebarCharArrayAddress,
+		length: 4 * 8 * maxSidebars,
+	},
+	holeMetadata: {
+		startAddress: holeMetadataArrayAddress,
+		length: 100,
+	},
+	monsters: {
+		startAddress: monsterArrayAddress,
+		length: maxMonsters * 3 + 99, // 3 bytes per monster plus a stop-byte for each level. Boss level has no stored monsters.
+	},
+	windCurrents: {
+		startAddress: windCurrentsArrayAddress,
+		length: 1487, // TODO: Move to constant.
+	},
+} satisfies Readonly<Record<string, SegmentLocation>>;
+
+type DataSegmentName = keyof typeof segmentLocations;
 
 export type DataSegments = Record<DataSegmentName, GetBoundedByte>;
 
 export function getDataSegments(getByte: GetByte): DataSegments {
-	return {
-		symmetryMetadata: makeGetBoundedByte({
-			getByte,
-			startAddress: symmetryMetadataArrayAddress,
-			length: 100,
-			segmentName: "symmetryMetadata",
-		}),
-		bitmaps: makeGetBoundedByte({
-			getByte,
-			startAddress: bitmapArrayAddress,
-			length: bitmapArrayByteLength,
-			segmentName: "bitmaps",
-		}),
-		platformChars: makeGetBoundedByte({
-			getByte,
-			startAddress: platformCharArrayAddress,
-			length: 800,
-			segmentName: "platformChars",
-		}),
-		bgColors: makeGetBoundedByte({
-			getByte,
-			startAddress: bgColorMetadataArrayAddress,
-			length: 100,
-			segmentName: "bgColors",
-		}),
-		sidebarChars: makeGetBoundedByte({
-			getByte,
-			startAddress: sidebarCharArrayAddress,
-			length: 4 * 8 * maxSidebars,
-			segmentName: "sidebarChars",
-		}),
-		holeMetadata: makeGetBoundedByte({
-			getByte,
-			startAddress: holeMetadataArrayAddress,
-			length: 100,
-			segmentName: "holeMetadata",
-		}),
-		monsters: makeGetBoundedByte({
-			getByte,
-			startAddress: monsterArrayAddress,
-			length: maxMonsters * 3 + 99, // 3 bytes per monster plus a stop-byte for each level. Boss level has no stored monsters.
-			segmentName: "monsters",
-		}),
-		windCurrents: makeGetBoundedByte({
-			getByte,
-			startAddress: windCurrentsArrayAddress,
-			length: 1487, // TODO: Move to constant.
-			segmentName: "windCurrents",
-		}),
-	};
+	return mapRecord(segmentLocations, (segmentLocation, segmentName) =>
+		makeGetBoundedByte({ getByte, ...segmentLocation, segmentName })
+	);
 }
