@@ -96,7 +96,15 @@ function readLevels(getByte: GetByte): ReadonlyArray<Level> {
 			),
 			tileBitmaps
 		),
-		monsters: readMonsters(getByte),
+		monsters: readMonsters(
+			makeGetBoundedByte(
+				getByte,
+				monsterArrayAddress,
+				// 3 bytes per monster plus a stop-byte for each level. Boss level has no stored monsters.
+				maxMonsters * 3 + 99,
+				"monsters"
+			)
+		),
 		bubbleCurrents: readBubbleCurrentRectangles(getByte, tileBitmaps),
 	});
 }

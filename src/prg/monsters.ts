@@ -1,9 +1,9 @@
 import { Monster } from "../level";
 import { isBitSet } from "./bit-twiddling";
-import { monsterArrayAddress } from "./data-locations";
+import { GetBoundedByte } from "./io";
 import { GetByte } from "./types";
 
-export function readMonsters(getByte: GetByte) {
+export function readMonsters(getMonsterByte: GetBoundedByte) {
 	const monstersForAllLevels: Monster[][] = [];
 
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
@@ -13,19 +13,20 @@ export function readMonsters(getByte: GetByte) {
 			continue;
 		}
 
-		let currentMonsterAddress = monsterArrayAddress;
+		// TODO: Remove.
+		let currentMonsterByteIndex = 0;
 		for (let index = 0; index < levelIndex; ++index) {
 			do {
-				currentMonsterAddress += 3;
-			} while (getByte(currentMonsterAddress));
-			currentMonsterAddress += 1; // The monsters of each level are separated with a zero byte.
+				currentMonsterByteIndex += 3;
+			} while (getMonsterByte(currentMonsterByteIndex));
+			currentMonsterByteIndex += 1; // The monsters of each level are separated with a zero byte.
 		}
 
 		const monsters: Monster[] = [];
 		do {
-			monsters.push(readMonster(currentMonsterAddress, getByte));
-			currentMonsterAddress += 3;
-		} while (getByte(currentMonsterAddress));
+			monsters.push(readMonster(currentMonsterByteIndex, getMonsterByte));
+			currentMonsterByteIndex += 3;
+		} while (getMonsterByte(currentMonsterByteIndex));
 
 		monstersForAllLevels.push(monsters);
 	}
