@@ -39,21 +39,21 @@ function App() {
 		| undefined
 	>(undefined);
 
-	const setPrg = async (prg: File | undefined): Promise<void> => {
-		if (!prg) {
+	const setPrg = async (file: File | undefined): Promise<void> => {
+		if (!file) {
 			setParsedPrgData(undefined);
 			return;
 		}
 
 		try {
-			const dataView = new DataView(await prg.arrayBuffer());
+			const dataView = new DataView(await file.arrayBuffer());
 			const parsed = parsePrg(dataView);
 			setParsedPrgData({
 				type: "success",
 				prg: dataView,
 				...parsed,
-				fileName: prg.name,
-				fileSize: prg.size,
+				fileName: file.name,
+				fileSize: file.size,
 			});
 		} catch (error: unknown) {
 			if (!(error instanceof Error)) {
@@ -62,8 +62,8 @@ function App() {
 			setParsedPrgData({
 				type: "failed",
 				error: error.message,
-				fileName: prg.name,
-				fileSize: prg.size,
+				fileName: file.name,
+				fileSize: file.size,
 			});
 		}
 	};
