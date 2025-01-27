@@ -1,5 +1,5 @@
 import { CharBlock } from "./charset-char";
-import { chunk } from "./functions";
+import { chunk, zipObject } from "./functions";
 import {
 	bitmapArrayAddress,
 	sidebarCharArrayAddress,
@@ -29,7 +29,7 @@ import { readSprites } from "./prg/sprites";
 import { readTileBitmaps } from "./prg/tile-bitmap";
 
 export function parsePrg(prg: DataView): {
-	levels: Level[];
+	levels: readonly Level[];
 	sprites: Sprites;
 	items: CharBlock[];
 } {
@@ -44,7 +44,7 @@ export function parsePrg(prg: DataView): {
 	return { levels, sprites, items };
 }
 
-function readLevels(getByte: GetByte): Array<Level> {
+function readLevels(getByte: GetByte): ReadonlyArray<Level> {
 	// TODO: Check the original data size, and verify.
 
 	const tileBitmaps = readTileBitmaps(getByte);
@@ -54,25 +54,21 @@ function readLevels(getByte: GetByte): Array<Level> {
 		getByte,
 		tileBitmaps
 	);
-
 	const allLevels_platformChar = readPlatformChars(getByte);
 	const bgColors = readBgColors(getByte);
 	const allLevels_sidebarChars = readSidebarChars(getByte);
 	const allLevels_monsters = readMonsters(getByte);
 
-	// TODO: use zipWith
-	const levels: Array<Level> = [];
-	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
-		const level: Level = {
-			platformChar: allLevels_platformChar[levelIndex],
-			...bgColors[levelIndex],
-			sidebarChars: allLevels_sidebarChars[levelIndex],
-			tiles: allLevels_tiles[levelIndex],
-			monsters: allLevels_monsters[levelIndex],
-			bubbleCurrents: allLevels_bubbleCurrents[levelIndex],
-		};
-		levels.push(level);
-	}
+	const levels = zipObject({
+		platformChar: allLevels_platformChar,
+		bgColorLight: bgColors.map((x) => x.bgColorLight),
+		bgColorDark: bgColors.map((x) => x.bgColorDark),
+		sidebarChars: allLevels_sidebarChars,
+		tiles: allLevels_tiles,
+		monsters: allLevels_monsters,
+		bubbleCurrents: allLevels_bubbleCurrents,
+	});
+
 	return levels;
 }
 

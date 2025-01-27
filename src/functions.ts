@@ -23,3 +23,37 @@ export function chunk<T>(array: readonly T[], chunkLength: number): T[][] {
 export function sum(array: readonly number[]): number {
 	return array.reduce((a, b) => a + b, 0);
 }
+
+export function zipObject<TResult extends object>(arrays: {
+	readonly [TKey in keyof TResult]: ReadonlyArray<TResult[TKey]>;
+}): ReadonlyArray<TResult> {
+	// TODO: Why the cast?
+	const arraysEntries = Object.entries(arrays) as [
+		string,
+		ReadonlyArray<unknown>
+	][];
+
+	const lengths = new Set(arraysEntries.map(([, array]) => array.length));
+	const [length] = lengths;
+	if (length === undefined) {
+		throw new Error("Must have arrays to zip.");
+	}
+	if (lengths.size !== 1) {
+		throw new Error(
+			"Can't zip different length arrays. " +
+				arraysEntries
+					.map(([name, array]) => `${name}: ${array.length}`)
+					.join(", ")
+		);
+	}
+
+	const results: Array<TResult> = [];
+	for (let index = 0; index < length; ++index) {
+		results.push(
+			Object.fromEntries(
+				arraysEntries.map(([name, array]) => [name, array[index]] as const)
+			) as TResult
+		);
+	}
+	return results;
+}
