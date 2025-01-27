@@ -85,7 +85,7 @@ function readLevels(getByte: GetByte): ReadonlyArray<Level> {
 				4 * 8 * maxSidebars,
 				"sidebarChars"
 			),
-			getByte
+			getSymmetryMetadataByte
 		),
 		tiles: readTiles(getByte, tileBitmaps),
 		monsters: readMonsters(getByte),
