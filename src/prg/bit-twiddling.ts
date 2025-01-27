@@ -1,3 +1,5 @@
+import { sum } from "../functions";
+
 export function isBitSet(byte: number, bitIndex: number): boolean {
 	return !!(byte & (0b10000000 >> bitIndex));
 }
@@ -28,4 +30,13 @@ export function byteToBits(
 		boolean,
 		boolean
 	];
+}
+
+export function mirrorBits(byte: number): number {
+	return sum(
+		byteToBits(byte)
+			.slice()
+			.reverse()
+			.map((bit, index) => (bit ? 1 : 0) << (7 - index))
+	);
 }

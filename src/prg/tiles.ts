@@ -6,7 +6,7 @@ import {
 	Tiles,
 	BubbleCurrentDirection,
 } from "../level";
-import { byteToBits, isBitSet } from "./bit-twiddling";
+import { byteToBits, isBitSet, mirrorBits } from "./bit-twiddling";
 import {
 	bitmapArrayAddress,
 	holeMetadataArrayAddress,
@@ -62,9 +62,10 @@ export function readTilesAndBubbleCurrentLineDefault(getByte: GetByte) {
 				.map((byte) => (isBitSet(byte, 0) ? 46 : 92))
 		);
 
+		const bytesPerRow = 4;
+
 		// Read tile bitmap.
 		let currentBitmapByteAddress = bitmapArrayAddress + offset;
-		const bytesPerRow = 4;
 		const bitmapBytesRows = [];
 		for (let rowIndex = 0; rowIndex < 23; ++rowIndex) {
 			// Read half or full lines from the level data.
@@ -78,15 +79,28 @@ export function readTilesAndBubbleCurrentLineDefault(getByte: GetByte) {
 				bitmapBytes.push(getByte(currentBitmapByteAddress));
 				currentBitmapByteAddress += 1;
 			}
+
+			if (isSymmetric) {
+				// Mirror the left half to the right half.
+				for (
+					let halfRowIndex = 0;
+					halfRowIndex < bytesPerRow / 2;
+					++halfRowIndex
+				) {
+					bitmapBytes[bytesPerRow / 2 + halfRowIndex] = mirrorBits(
+						bitmapBytes[bytesPerRow / 2 - halfRowIndex - 1]
+					);
+				}
+			}
+
 			bitmapBytesRows.push(bitmapBytes);
 		}
 
 		for (let rowIndex = 0; rowIndex < 23; ++rowIndex) {
 			// Read half or full lines from the level data.
-			const bytesToRead = isSymmetric ? bytesPerRow / 2 : bytesPerRow;
 			for (
 				let bitmapByteOfRowIndex = 0;
-				bitmapByteOfRowIndex < bytesToRead;
+				bitmapByteOfRowIndex < bytesPerRow;
 				++bitmapByteOfRowIndex
 			) {
 				const bitmapByte = bitmapBytesRows[rowIndex][bitmapByteOfRowIndex];
@@ -96,21 +110,6 @@ export function readTilesAndBubbleCurrentLineDefault(getByte: GetByte) {
 					// Offset by 32 for the top line.
 					tiles[rowIndex + 1][bitmapByteOfRowIndex * 8 + bitIndex] =
 						bits[bitIndex];
-				}
-			}
-		}
-
-		for (let rowIndex = 0; rowIndex < 23; ++rowIndex) {
-			if (isSymmetric) {
-				// Mirror the left half to the right half.
-				const tilesPerHalfRow = (bytesPerRow / 2) * 8;
-				for (
-					let halfRowIndex = 0;
-					halfRowIndex < tilesPerHalfRow;
-					++halfRowIndex
-				) {
-					tiles[rowIndex + 1][tilesPerHalfRow + halfRowIndex] =
-						tiles[rowIndex + 1][tilesPerHalfRow - halfRowIndex - 1];
 				}
 			}
 		}
