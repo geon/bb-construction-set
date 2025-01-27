@@ -49,7 +49,7 @@ function readLevels(getByte: GetByte): ReadonlyArray<Level> {
 
 	const tileBitmaps = readTileBitmaps(getByte);
 
-	const levels = zipObject({
+	return zipObject({
 		platformChar: readPlatformChars(getByte),
 		...readBgColors(getByte),
 		sidebarChars: readSidebarChars(getByte),
@@ -57,8 +57,6 @@ function readLevels(getByte: GetByte): ReadonlyArray<Level> {
 		monsters: readMonsters(getByte),
 		bubbleCurrents: readBubbleCurrentRectangles(getByte, tileBitmaps),
 	});
-
-	return levels;
 }
 
 export function patchPrg(prg: Uint8Array, levels: readonly Level[]) {
