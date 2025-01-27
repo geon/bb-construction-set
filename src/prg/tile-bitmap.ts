@@ -13,8 +13,9 @@ export function readTileBitmaps(
 	const symmetryMetadata = getBytes(getByte, symmetryMetadataArrayAddress, 100);
 
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
+		const isSymmetric = isBitSet(symmetryMetadata[levelIndex], 0);
 		tileBitmaps.push(
-			readTileBitmap(levelIndex, symmetryMetadata, getBitmapByte)
+			readTileBitmap(levelIndex, isSymmetric, symmetryMetadata, getBitmapByte)
 		);
 	}
 
@@ -23,11 +24,10 @@ export function readTileBitmaps(
 
 function readTileBitmap(
 	levelIndex: number,
+	isSymmetric: boolean,
 	symmetryMetadata: readonly number[],
 	getBitmapByte: GetBoundedByte
 ) {
-	const isSymmetric = isBitSet(symmetryMetadata[levelIndex], 0);
-
 	const offset = sum(
 		symmetryMetadata
 			.slice(0, levelIndex)
