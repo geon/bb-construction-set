@@ -61,8 +61,8 @@ function readLevels(getByte: GetByte): ReadonlyArray<Level> {
 
 	const levels = zipObject({
 		platformChar: allLevels_platformChar,
-		bgColorLight: bgColors.map((x) => x.bgColorLight),
-		bgColorDark: bgColors.map((x) => x.bgColorDark),
+		bgColorLight: bgColors.bgColorLight,
+		bgColorDark: bgColors.bgColorDark,
 		sidebarChars: allLevels_sidebarChars,
 		tiles: allLevels_tiles,
 		monsters: allLevels_monsters,
