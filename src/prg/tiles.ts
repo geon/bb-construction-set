@@ -7,14 +7,14 @@ import {
 } from "../level";
 import { byteToBits, isBitSet } from "./bit-twiddling";
 import { holeMetadataArrayAddress } from "./data-locations";
-import { readTileBitmaps } from "./tile-bitmap";
 import { GetByte } from "./types";
 
-export function readTilesAndBubbleCurrentLineDefault(getByte: GetByte) {
+export function readTilesAndBubbleCurrentLineDefault(
+	getByte: GetByte,
+	tileBitmaps: number[][][]
+) {
 	const tilesForAllLevels: Tiles[] = [];
 	const bubbleCurrentLineDefaultForAllLevels: BubbleCurrentDirection[][] = [];
-
-	const tileBitmaps = readTileBitmaps(getByte);
 
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
 		const tiles = createTiles();
