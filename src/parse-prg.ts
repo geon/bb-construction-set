@@ -13,7 +13,6 @@ import {
 } from "./prg/data-locations";
 import { Level, levelIsSymmetric } from "./level";
 import { maxAsymmetric, maxMonsters, maxSidebars } from "./prg/data-locations";
-import { GetByte } from "./prg/types";
 import { readBgColors } from "./prg/bg-colors";
 import { Sprites } from "./sprite";
 import { readPlatformChars } from "./prg/charset-char";
@@ -30,6 +29,7 @@ import { readTiles } from "./prg/tiles";
 import { readMonsters } from "./prg/monsters";
 import { readSprites } from "./prg/sprites";
 import { readTileBitmaps } from "./prg/tile-bitmap";
+import { GetByte } from "./prg/types";
 
 export function parsePrg(prg: DataView): {
 	levels: readonly Level[];
@@ -113,7 +113,7 @@ function readLevels(getByte: GetByte): ReadonlyArray<Level> {
 				1487,
 				"windCurrents"
 			),
-			getByte,
+			getHoleMetadataByte,
 			tileBitmaps
 		),
 	});
