@@ -49,24 +49,13 @@ function readLevels(getByte: GetByte): ReadonlyArray<Level> {
 
 	const tileBitmaps = readTileBitmaps(getByte);
 
-	const allLevels_tiles = readTiles(getByte, tileBitmaps);
-	const allLevels_bubbleCurrents = readBubbleCurrentRectangles(
-		getByte,
-		tileBitmaps
-	);
-	const allLevels_platformChar = readPlatformChars(getByte);
-	const bgColors = readBgColors(getByte);
-	const allLevels_sidebarChars = readSidebarChars(getByte);
-	const allLevels_monsters = readMonsters(getByte);
-
 	const levels = zipObject({
-		platformChar: allLevels_platformChar,
-		bgColorLight: bgColors.bgColorLight,
-		bgColorDark: bgColors.bgColorDark,
-		sidebarChars: allLevels_sidebarChars,
-		tiles: allLevels_tiles,
-		monsters: allLevels_monsters,
-		bubbleCurrents: allLevels_bubbleCurrents,
+		platformChar: readPlatformChars(getByte),
+		...readBgColors(getByte),
+		sidebarChars: readSidebarChars(getByte),
+		tiles: readTiles(getByte, tileBitmaps),
+		monsters: readMonsters(getByte),
+		bubbleCurrents: readBubbleCurrentRectangles(getByte, tileBitmaps),
 	});
 
 	return levels;
