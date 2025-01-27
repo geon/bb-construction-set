@@ -1,4 +1,3 @@
-import { sum } from "../functions";
 import { isBitSet, mirrorBits } from "./bit-twiddling";
 import { symmetryMetadataArrayAddress } from "./data-locations";
 import { GetBoundedByte, getBytes } from "./io";
@@ -12,29 +11,21 @@ export function readTileBitmaps(
 
 	const symmetryMetadata = getBytes(getByte, symmetryMetadataArrayAddress, 100);
 
+	let offset = 0;
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
 		const isSymmetric = isBitSet(symmetryMetadata[levelIndex], 0);
-		tileBitmaps.push(
-			readTileBitmap(levelIndex, isSymmetric, symmetryMetadata, getBitmapByte)
-		);
+		tileBitmaps.push(readTileBitmap(offset, isSymmetric, getBitmapByte));
+		offset += isSymmetric ? 46 : 92;
 	}
 
 	return tileBitmaps;
 }
 
 function readTileBitmap(
-	levelIndex: number,
+	offset: number,
 	isSymmetric: boolean,
-	symmetryMetadata: readonly number[],
 	getBitmapByte: GetBoundedByte
 ) {
-	const offset = sum(
-		symmetryMetadata
-			.slice(0, levelIndex)
-			// Skip 46 or 92 bytes per level depending on if it is symmetric or not.
-			.map((byte) => (isBitSet(byte, 0) ? 46 : 92))
-	);
-
 	const bytesPerRow = 4;
 
 	// Read tile bitmap.
