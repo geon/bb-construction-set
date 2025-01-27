@@ -1,14 +1,13 @@
 import { CharsetChar, parseCharsetCharLine, CharBlock } from "../charset-char";
 import { chunk } from "../functions";
-import { platformCharArrayAddress } from "./data-locations";
-import { getBytes } from "./io";
+import { GetBoundedByte, getBytes } from "./io";
 import { GetByte } from "./types";
 
 const linesPerChar = 8;
 
-export function readPlatformChars(getByte: GetByte) {
+export function readPlatformChars(getPlatformCharsByte: GetBoundedByte) {
 	return chunk(
-		getBytes(getByte, platformCharArrayAddress, 100 * linesPerChar),
+		getBytes(getPlatformCharsByte, 0, 100 * linesPerChar),
 		linesPerChar
 	).map((char) => ({ lines: char.map(parseCharsetCharLine) } as CharsetChar));
 }

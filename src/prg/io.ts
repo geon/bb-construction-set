@@ -52,7 +52,9 @@ export function makeGetBoundedByte(
 ): GetBoundedByte {
 	return (index: number) => {
 		if (index >= length) {
-			throw new Error(`Reading out of bounds on segment "${segmentName}".`);
+			throw new Error(
+				`Reading out of bounds on segment "${segmentName}". Lenght: ${length}, Index: ${index}`
+			);
 		}
 		return getByte(startAddress + index);
 	};

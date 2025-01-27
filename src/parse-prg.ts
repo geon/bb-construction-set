@@ -67,7 +67,14 @@ function readLevels(getByte: GetByte): ReadonlyArray<Level> {
 	);
 
 	return zipObject({
-		platformChar: readPlatformChars(getByte),
+		platformChar: readPlatformChars(
+			makeGetBoundedByte(
+				getByte,
+				platformCharArrayAddress,
+				800,
+				"platformChars"
+			)
+		),
 		...readBgColors(getByte),
 		sidebarChars: readSidebarChars(getByte),
 		tiles: readTiles(getByte, tileBitmaps),
