@@ -1,17 +1,19 @@
 import {
-	PerLineBubbleCurrentDefaults,
 	BubbleCurrents,
 	BubbleCurrentRectangleOrSymmetry,
 	BubbleCurrentRectangle,
 	BubbleCurrentDirection,
 } from "../level";
 import { isBitSet } from "./bit-twiddling";
-import { windCurrentsArrayAddress } from "./data-locations";
+import {
+	holeMetadataArrayAddress,
+	windCurrentsArrayAddress,
+} from "./data-locations";
 import { GetByte } from "./types";
 
 export function readBubbleCurrentRectangles(
 	getByte: GetByte,
-	perLineDefaults: PerLineBubbleCurrentDefaults[]
+	tileBitmaps: number[][][]
 ): BubbleCurrents[] {
 	const monstersForAllLevels = [];
 
@@ -19,8 +21,8 @@ export function readBubbleCurrentRectangles(
 		monstersForAllLevels.push(
 			readBubbleCurrentRectanglesForLevel(
 				levelIndex,
-				getByte,
-				perLineDefaults[levelIndex]
+				tileBitmaps[levelIndex],
+				getByte
 			)
 		);
 	}
@@ -38,9 +40,15 @@ export function readBubbleCurrentRectangles(
 
 function readBubbleCurrentRectanglesForLevel(
 	levelIndex: number,
-	getByte: GetByte,
-	perLineDefaults: PerLineBubbleCurrentDefaults
+	tileBitmap: number[][],
+	getByte: GetByte
 ): BubbleCurrents {
+	const holeMetadata = getByte(holeMetadataArrayAddress + levelIndex);
+	const perLineDefaults = extractbubbleCurrentLineDefault(
+		tileBitmap,
+		holeMetadata
+	);
+
 	let currentWindCurrentsAddress = windCurrentsArrayAddress;
 	for (let index = 0; index < levelIndex; ++index) {
 		const firstByte = getByte(currentWindCurrentsAddress);
@@ -140,4 +148,22 @@ export function bubbleCurrentRectangleToBytes(
 	bytes[2] =
 		(((rectangle.width - 1) << 6) & 0b11000000) | (rectangle.height - 1);
 	return bytes;
+}
+
+function extractbubbleCurrentLineDefault(
+	tileBitmap: number[][],
+	holeMetadata: number
+): Array<BubbleCurrentDirection> {
+	return [
+		((holeMetadata & 0b00110000) >> 4) as BubbleCurrentDirection,
+		...tileBitmap.map((row) =>
+			bitsToBubbleCurrentDirection([isBitSet(row[3], 6), isBitSet(row[3], 7)])
+		),
+		((holeMetadata & 0b11000000) >> 6) as BubbleCurrentDirection,
+	];
+}
+function bitsToBubbleCurrentDirection(
+	bits: [boolean, boolean]
+): BubbleCurrentDirection {
+	return ((bits[1] ? 1 : 0) + (bits[0] ? 1 : 0) * 2) as BubbleCurrentDirection;
 }

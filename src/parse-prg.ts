@@ -23,7 +23,7 @@ import {
 import { readItems } from "./prg/items";
 import { readBubbleCurrentRectangles } from "./prg/bubble-current-rectangles";
 import { readSidebarChars } from "./prg/sidebar-chars";
-import { readTilesAndBubbleCurrentLineDefault } from "./prg/tiles";
+import { readTiles } from "./prg/tiles";
 import { readMonsters } from "./prg/monsters";
 import { readSprites } from "./prg/sprites";
 import { readTileBitmaps } from "./prg/tile-bitmap";
@@ -47,15 +47,12 @@ export function parsePrg(prg: DataView): {
 function readLevels(getByte: GetByte): Array<Level> {
 	// TODO: Check the original data size, and verify.
 
-	// TODO: Refactor out a common function that reads the raw bitmap, then use that
-	// inside readTilesAndBubbleCurrentLineDefault & readBubbleCurrentRectangles.
 	const tileBitmaps = readTileBitmaps(getByte);
 
-	const { tiles: allLevels_tiles, bubbleCurrentLineDefault } =
-		readTilesAndBubbleCurrentLineDefault(getByte, tileBitmaps);
+	const allLevels_tiles = readTiles(getByte, tileBitmaps);
 	const allLevels_bubbleCurrents = readBubbleCurrentRectangles(
 		getByte,
-		bubbleCurrentLineDefault
+		tileBitmaps
 	);
 
 	const allLevels_platformChar = readPlatformChars(getByte);

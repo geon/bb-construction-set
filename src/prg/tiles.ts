@@ -1,20 +1,10 @@
-import {
-	createTiles,
-	levelWidth,
-	levelHeight,
-	Tiles,
-	BubbleCurrentDirection,
-} from "../level";
+import { createTiles, levelWidth, levelHeight, Tiles } from "../level";
 import { byteToBits, isBitSet } from "./bit-twiddling";
 import { holeMetadataArrayAddress } from "./data-locations";
 import { GetByte } from "./types";
 
-export function readTilesAndBubbleCurrentLineDefault(
-	getByte: GetByte,
-	tileBitmaps: number[][][]
-) {
+export function readTiles(getByte: GetByte, tileBitmaps: number[][][]) {
 	const tilesForAllLevels: Tiles[] = [];
-	const bubbleCurrentLineDefaultForAllLevels: BubbleCurrentDirection[][] = [];
 
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
 		const tiles = createTiles();
@@ -66,13 +56,6 @@ export function readTilesAndBubbleCurrentLineDefault(
 			}
 		}
 
-		const bubbleCurrentLineDefault = extractbubbleCurrentLineDefault(
-			tiles,
-			holeMetadata
-		);
-
-		bubbleCurrentLineDefaultForAllLevels.push(bubbleCurrentLineDefault);
-
 		// Fill in the sides.
 		// The 2 tile wide left and right borders are used to store part of the bubbleCurrent.
 		// It needs to be set to true to be solid.
@@ -86,31 +69,5 @@ export function readTilesAndBubbleCurrentLineDefault(
 		tilesForAllLevels.push(tiles);
 	}
 
-	return {
-		tiles: tilesForAllLevels,
-		bubbleCurrentLineDefault: bubbleCurrentLineDefaultForAllLevels,
-	};
-}
-
-function extractbubbleCurrentLineDefault(
-	tiles: Tiles,
-	holeMetadata: number
-): Array<BubbleCurrentDirection> {
-	return [
-		((holeMetadata & 0b00110000) >> 4) as BubbleCurrentDirection,
-		...tiles
-			.slice(1, 24)
-			.map((row) =>
-				bitsToBubbleCurrentDirection(
-					row.slice(levelWidth - 2) as [boolean, boolean]
-				)
-			),
-		((holeMetadata & 0b11000000) >> 6) as BubbleCurrentDirection,
-	];
-}
-
-function bitsToBubbleCurrentDirection(
-	bits: [boolean, boolean]
-): BubbleCurrentDirection {
-	return ((bits[1] ? 1 : 0) + (bits[0] ? 1 : 0) * 2) as BubbleCurrentDirection;
+	return tilesForAllLevels;
 }
