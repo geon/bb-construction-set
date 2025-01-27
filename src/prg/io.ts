@@ -31,14 +31,10 @@ export function setPrgByteAtAddress(
 	return (prg[offset] = value);
 }
 
-export function getBytes(
-	getByte: GetByte,
-	address: number,
-	length: number
-): readonly number[] {
+export function getBytes(getByte: GetByte, length: number): readonly number[] {
 	const bytes = Array<number>(length);
 	for (let index = 0; index < length; ++index) {
-		bytes[index] = getByte(address + index);
+		bytes[index] = getByte(index);
 	}
 	return bytes;
 }

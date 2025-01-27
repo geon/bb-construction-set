@@ -7,13 +7,13 @@ const linesPerChar = 8;
 
 export function readPlatformChars(getPlatformCharsByte: GetBoundedByte) {
 	return chunk(
-		getBytes(getPlatformCharsByte, 0, 100 * linesPerChar),
+		getBytes(getPlatformCharsByte, 100 * linesPerChar),
 		linesPerChar
 	).map((char) => ({ lines: char.map(parseCharsetCharLine) } as CharsetChar));
 }
 
 export function readItemCharBlock(getByte: GetByte): CharBlock {
-	return chunk(getBytes(getByte, 0, 4 * linesPerChar), linesPerChar).map(
+	return chunk(getBytes(getByte, 4 * linesPerChar), linesPerChar).map(
 		(char) => ({ lines: char.map(parseCharsetCharLine) })
 	) as CharBlock;
 }

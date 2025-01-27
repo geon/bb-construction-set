@@ -12,14 +12,14 @@ export function readSidebarChars(
 	const bytesPerCharBlock = 4 * linesPerChar; // 4 chars of 8 bytes each.
 	const allSidebarCharBlocks = chunk(
 		chunk(
-			getBytes(getSidebarCharsByte, 0, bytesPerCharBlock * maxSidebars),
+			getBytes(getSidebarCharsByte, bytesPerCharBlock * maxSidebars),
 			linesPerChar
 		).map((char) => ({ lines: char.map(parseCharsetCharLine) })),
 		4
 	) as CharBlock[];
 
 	let sidebarCharsIndex = 0;
-	const symmetryMetadata = getBytes(getSymmetryMetadataByte, 0, 100);
+	const symmetryMetadata = getBytes(getSymmetryMetadataByte, 100);
 	const sidebarChars = symmetryMetadata.map((byte) => {
 		const hasSidebarChars = !isBitSet(byte, 1);
 		return hasSidebarChars
