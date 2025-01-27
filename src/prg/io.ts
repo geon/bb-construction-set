@@ -1,8 +1,8 @@
 import { GetByte } from "./types";
 
-export function getPrgStartAddress(prg: DataView): number {
+export function getPrgStartAddress(prg: ArrayBuffer): number {
 	// The prg contains a little endian 16 bit header with the start address. The rest is the raw data.
-	return prg.getUint16(0, true);
+	return new DataView(prg).getUint16(0, true);
 }
 
 export function getPrgByteAtAddress(

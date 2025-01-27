@@ -36,7 +36,7 @@ export function parsePrg(prg: DataView): {
 	sprites: Sprites;
 	items: CharBlock[];
 } {
-	const startAddres = getPrgStartAddress(prg);
+	const startAddres = getPrgStartAddress(prg.buffer);
 	const getByte = (address: number) =>
 		getPrgByteAtAddress(prg, startAddres, address);
 
@@ -138,7 +138,7 @@ export function patchPrg(prg: Uint8Array, levels: readonly Level[]) {
 		);
 	}
 
-	const startAddres = getPrgStartAddress(new DataView(prg.buffer));
+	const startAddres = getPrgStartAddress(prg.buffer);
 	const setByte = (address: number, value: number) =>
 		setPrgByteAtAddress(prg, startAddres, address, value);
 	const setBytes = (address: number, bytes: number[]) => {
