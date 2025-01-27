@@ -49,14 +49,21 @@ export function parsePrg(prg: DataView): {
 function readLevels(getByte: GetByte): ReadonlyArray<Level> {
 	// TODO: Check the original data size, and verify.
 
+	const getSymmetryMetadataByte = makeGetBoundedByte(
+		getByte,
+		symmetryMetadataArrayAddress,
+		100,
+		"symmetryMetadata"
+	);
+
 	const tileBitmaps = readTileBitmaps(
 		makeGetBoundedByte(
 			getByte,
 			bitmapArrayAddress,
 			bitmapArrayByteLength,
-			"levelBitmaps"
+			"bitmaps"
 		),
-		getByte
+		getSymmetryMetadataByte
 	);
 
 	return zipObject({

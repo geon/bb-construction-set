@@ -1,19 +1,15 @@
 import { isBitSet, mirrorBits } from "./bit-twiddling";
-import { symmetryMetadataArrayAddress } from "./data-locations";
-import { GetBoundedByte, getBytes } from "./io";
-import { GetByte } from "./types";
+import { GetBoundedByte } from "./io";
 
 export function readTileBitmaps(
 	getBitmapByte: GetBoundedByte,
-	getByte: GetByte
+	getSymmetryMetadataByte: GetBoundedByte
 ): number[][][] {
 	const tileBitmaps = [];
 
-	const symmetryMetadata = getBytes(getByte, symmetryMetadataArrayAddress, 100);
-
 	let offset = 0;
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
-		const isSymmetric = isBitSet(symmetryMetadata[levelIndex], 0);
+		const isSymmetric = isBitSet(getSymmetryMetadataByte(levelIndex), 0);
 		tileBitmaps.push(readTileBitmap(offset, isSymmetric, getBitmapByte));
 		offset += isSymmetric ? 46 : 92;
 	}
