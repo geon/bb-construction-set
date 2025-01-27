@@ -12,7 +12,7 @@ export function readPlatformChars(getPlatformCharsByte: GetBoundedByte) {
 	).map((char) => ({ lines: char.map(parseCharsetCharLine) } as CharsetChar));
 }
 
-export function readCharBlock(
+export function readItemCharBlock(
 	getByte: GetByte,
 	currentSidebarAddress: number
 ): CharBlock {

@@ -1,5 +1,5 @@
 import { CharBlock } from "../charset-char";
-import { readCharBlock } from "./charset-char";
+import { readItemCharBlock } from "./charset-char";
 import { itemCharsArrays } from "./data-locations";
 import { GetByte } from "./types";
 
@@ -8,7 +8,9 @@ export function readItems(getByte: GetByte): CharBlock[] {
 	for (const { address, numItems } of itemCharsArrays) {
 		for (let itemIndex = 0; itemIndex < numItems; ++itemIndex) {
 			items.push(
-				unshuffleCharBlock(readCharBlock(getByte, address + itemIndex * 4 * 8))
+				unshuffleCharBlock(
+					readItemCharBlock(getByte, address + itemIndex * 4 * 8)
+				)
 			);
 		}
 	}
