@@ -1,9 +1,16 @@
+export const maxAsymmetric = 45;
+export const maxSidebars = 59;
+export const maxMonsters = 572;
+
 export const platformCharArrayAddress = 0xc26e;
 export const sidebarCharArrayAddress = 0xbb0e;
 export const bgColorMetadataArrayAddress = 0xff30;
 export const holeMetadataArrayAddress = 0xc58e;
 export const symmetryMetadataArrayAddress = 0xff94;
+
 export const bitmapArrayAddress = 0xc5f2;
+export const bitmapArrayByteLength = 46 * (100 + maxAsymmetric);
+
 export const monsterArrayAddress = 0xae51;
 export const windCurrentsArrayAddress = 0xb695;
 export const spriteBitmapArrayAddress = 0x5800;
@@ -81,7 +88,3 @@ export const itemCharsArrays = [
 		numItems: 2,
 	},
 ];
-
-export const maxAsymmetric = 45;
-export const maxSidebars = 59;
-export const maxMonsters = 572;

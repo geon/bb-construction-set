@@ -1,23 +1,27 @@
 import { sum } from "../functions";
 import { isBitSet, mirrorBits } from "./bit-twiddling";
-import {
-	symmetryMetadataArrayAddress,
-	bitmapArrayAddress,
-} from "./data-locations";
-import { getBytes } from "./io";
+import { symmetryMetadataArrayAddress } from "./data-locations";
+import { GetBoundedByte, getBytes } from "./io";
 import { GetByte } from "./types";
 
-export function readTileBitmaps(getByte: GetByte): number[][][] {
+export function readTileBitmaps(
+	getBitmapByte: GetBoundedByte,
+	getByte: GetByte
+): number[][][] {
 	const tileBitmaps = [];
 
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
-		tileBitmaps.push(readTileBitmap(levelIndex, getByte));
+		tileBitmaps.push(readTileBitmap(levelIndex, getBitmapByte, getByte));
 	}
 
 	return tileBitmaps;
 }
 
-function readTileBitmap(levelIndex: number, getByte: GetByte) {
+function readTileBitmap(
+	levelIndex: number,
+	getBitmapByte: GetBoundedByte,
+	getByte: GetByte
+) {
 	const symmetryMetadata = getBytes(getByte, symmetryMetadataArrayAddress, 100);
 	const isSymmetric = isBitSet(symmetryMetadata[levelIndex], 0);
 
@@ -31,7 +35,7 @@ function readTileBitmap(levelIndex: number, getByte: GetByte) {
 	const bytesPerRow = 4;
 
 	// Read tile bitmap.
-	let currentBitmapByteAddress = bitmapArrayAddress + offset;
+	let currentBitmapByteIndex = offset;
 	const bitmapBytesRows = [];
 	for (let rowIndex = 0; rowIndex < 23; ++rowIndex) {
 		// Read half or full lines from the level data.
@@ -42,8 +46,8 @@ function readTileBitmap(levelIndex: number, getByte: GetByte) {
 			bitmapByteOfRowIndex < bytesToRead;
 			++bitmapByteOfRowIndex
 		) {
-			bitmapBytes.push(getByte(currentBitmapByteAddress));
-			currentBitmapByteAddress += 1;
+			bitmapBytes.push(getBitmapByte(currentBitmapByteIndex));
+			currentBitmapByteIndex += 1;
 		}
 
 		if (isSymmetric) {

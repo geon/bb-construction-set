@@ -42,3 +42,18 @@ export function getBytes(
 	}
 	return bytes;
 }
+
+export type GetBoundedByte = (index: number) => number;
+export function makeGetBoundedByte(
+	getByte: GetByte,
+	startAddress: number,
+	length: number,
+	segmentName: string
+): GetBoundedByte {
+	return (index: number) => {
+		if (index >= length) {
+			throw new Error(`Reading out of bounds on segment "${segmentName}".`);
+		}
+		return getByte(startAddress + index);
+	};
+}

@@ -8,6 +8,7 @@ import {
 	holeMetadataArrayAddress,
 	symmetryMetadataArrayAddress,
 	platformCharArrayAddress,
+	bitmapArrayByteLength,
 } from "./prg/data-locations";
 import { Level, levelIsSymmetric } from "./level";
 import { maxAsymmetric, maxMonsters, maxSidebars } from "./prg/data-locations";
@@ -19,6 +20,7 @@ import {
 	getPrgStartAddress,
 	getPrgByteAtAddress,
 	setPrgByteAtAddress,
+	makeGetBoundedByte,
 } from "./prg/io";
 import { readItems } from "./prg/items";
 import { readBubbleCurrentRectangles } from "./prg/bubble-current-rectangles";
@@ -47,7 +49,15 @@ export function parsePrg(prg: DataView): {
 function readLevels(getByte: GetByte): ReadonlyArray<Level> {
 	// TODO: Check the original data size, and verify.
 
-	const tileBitmaps = readTileBitmaps(getByte);
+	const tileBitmaps = readTileBitmaps(
+		makeGetBoundedByte(
+			getByte,
+			bitmapArrayAddress,
+			bitmapArrayByteLength,
+			"levelBitmaps"
+		),
+		getByte
+	);
 
 	return zipObject({
 		platformChar: readPlatformChars(getByte),
