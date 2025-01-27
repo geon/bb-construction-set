@@ -78,7 +78,15 @@ function readLevels(getByte: GetByte): ReadonlyArray<Level> {
 		...readBgColors(
 			makeGetBoundedByte(getByte, bgColorMetadataArrayAddress, 100, "bgColors")
 		),
-		sidebarChars: readSidebarChars(getByte),
+		sidebarChars: readSidebarChars(
+			makeGetBoundedByte(
+				getByte,
+				sidebarCharArrayAddress,
+				4 * 8 * maxSidebars,
+				"sidebarChars"
+			),
+			getByte
+		),
 		tiles: readTiles(getByte, tileBitmaps),
 		monsters: readMonsters(getByte),
 		bubbleCurrents: readBubbleCurrentRectangles(getByte, tileBitmaps),

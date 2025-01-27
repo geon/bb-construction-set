@@ -1,24 +1,19 @@
 import { CharBlock, parseCharsetCharLine } from "../charset-char";
 import { chunk } from "../functions";
 import { isBitSet } from "./bit-twiddling";
-import {
-	maxSidebars,
-	sidebarCharArrayAddress,
-	symmetryMetadataArrayAddress,
-} from "./data-locations";
-import { getBytes } from "./io";
+import { maxSidebars, symmetryMetadataArrayAddress } from "./data-locations";
+import { GetBoundedByte, getBytes } from "./io";
 import { GetByte } from "./types";
 
-export function readSidebarChars(getByte: GetByte) {
+export function readSidebarChars(
+	getSidebarCharsByte: GetBoundedByte,
+	getByte: GetByte
+) {
 	const linesPerChar = 8;
 	const bytesPerCharBlock = 4 * linesPerChar; // 4 chars of 8 bytes each.
 	const allSidebarCharBlocks = chunk(
 		chunk(
-			getBytes(
-				getByte,
-				sidebarCharArrayAddress,
-				bytesPerCharBlock * maxSidebars
-			),
+			getBytes(getSidebarCharsByte, 0, bytesPerCharBlock * maxSidebars),
 			linesPerChar
 		).map((char) => ({ lines: char.map(parseCharsetCharLine) })),
 		4
