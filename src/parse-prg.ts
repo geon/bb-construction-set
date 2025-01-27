@@ -9,6 +9,7 @@ import {
 	symmetryMetadataArrayAddress,
 	platformCharArrayAddress,
 	bitmapArrayByteLength,
+	windCurrentsArrayAddress,
 } from "./prg/data-locations";
 import { Level, levelIsSymmetric } from "./level";
 import { maxAsymmetric, maxMonsters, maxSidebars } from "./prg/data-locations";
@@ -105,7 +106,17 @@ function readLevels(getByte: GetByte): ReadonlyArray<Level> {
 				"monsters"
 			)
 		),
-		bubbleCurrents: readBubbleCurrentRectangles(getByte, tileBitmaps),
+		bubbleCurrents: readBubbleCurrentRectangles(
+			makeGetBoundedByte(
+				getByte,
+				windCurrentsArrayAddress,
+				// TODO: Move to constant.
+				1487,
+				"windCurrents"
+			),
+			getByte,
+			tileBitmaps
+		),
 	});
 }
 
