@@ -11,12 +11,12 @@ export function readItems(getByte: GetByte): CharBlock[] {
 			items.push(
 				unshuffleCharBlock(
 					readItemCharBlock(
-						makeGetBoundedByte(
+						makeGetBoundedByte({
 							getByte,
-							address + itemIndex * 4 * 8,
-							4 * 8,
-							"itemCharBlock"
-						)
+							startAddress: address + itemIndex * 4 * 8,
+							length: 4 * 8,
+							segmentName: "itemCharBlock",
+						})
 					)
 				)
 			);

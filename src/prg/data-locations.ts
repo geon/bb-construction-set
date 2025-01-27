@@ -106,55 +106,53 @@ export type DataSegments = Record<DataSegmentName, GetBoundedByte>;
 
 export function getDataSegments(getByte: GetByte): DataSegments {
 	return {
-		symmetryMetadata: makeGetBoundedByte(
+		symmetryMetadata: makeGetBoundedByte({
 			getByte,
-			symmetryMetadataArrayAddress,
-			100,
-			"symmetryMetadata"
-		),
-		bitmaps: makeGetBoundedByte(
+			startAddress: symmetryMetadataArrayAddress,
+			length: 100,
+			segmentName: "symmetryMetadata",
+		}),
+		bitmaps: makeGetBoundedByte({
 			getByte,
-			bitmapArrayAddress,
-			bitmapArrayByteLength,
-			"bitmaps"
-		),
-		platformChars: makeGetBoundedByte(
+			startAddress: bitmapArrayAddress,
+			length: bitmapArrayByteLength,
+			segmentName: "bitmaps",
+		}),
+		platformChars: makeGetBoundedByte({
 			getByte,
-			platformCharArrayAddress,
-			800,
-			"platformChars"
-		),
-		bgColors: makeGetBoundedByte(
+			startAddress: platformCharArrayAddress,
+			length: 800,
+			segmentName: "platformChars",
+		}),
+		bgColors: makeGetBoundedByte({
 			getByte,
-			bgColorMetadataArrayAddress,
-			100,
-			"bgColors"
-		),
-		sidebarChars: makeGetBoundedByte(
+			startAddress: bgColorMetadataArrayAddress,
+			length: 100,
+			segmentName: "bgColors",
+		}),
+		sidebarChars: makeGetBoundedByte({
 			getByte,
-			sidebarCharArrayAddress,
-			4 * 8 * maxSidebars,
-			"sidebarChars"
-		),
-		holeMetadata: makeGetBoundedByte(
+			startAddress: sidebarCharArrayAddress,
+			length: 4 * 8 * maxSidebars,
+			segmentName: "sidebarChars",
+		}),
+		holeMetadata: makeGetBoundedByte({
 			getByte,
-			holeMetadataArrayAddress,
-			100,
-			"holeMetadata"
-		),
-		monsters: makeGetBoundedByte(
+			startAddress: holeMetadataArrayAddress,
+			length: 100,
+			segmentName: "holeMetadata",
+		}),
+		monsters: makeGetBoundedByte({
 			getByte,
-			monsterArrayAddress,
-			// 3 bytes per monster plus a stop-byte for each level. Boss level has no stored monsters.
-			maxMonsters * 3 + 99,
-			"monsters"
-		),
-		windCurrents: makeGetBoundedByte(
+			startAddress: monsterArrayAddress,
+			length: maxMonsters * 3 + 99, // 3 bytes per monster plus a stop-byte for each level. Boss level has no stored monsters.
+			segmentName: "monsters",
+		}),
+		windCurrents: makeGetBoundedByte({
 			getByte,
-			windCurrentsArrayAddress,
-			// TODO: Move to constant.
-			1487,
-			"windCurrents"
-		),
+			startAddress: windCurrentsArrayAddress,
+			length: 1487, // TODO: Move to constant.
+			segmentName: "windCurrents",
+		}),
 	};
 }

@@ -40,12 +40,17 @@ export function getBytes(getByte: GetByte, length: number): readonly number[] {
 }
 
 export type GetBoundedByte = (index: number) => number;
-export function makeGetBoundedByte(
-	getByte: GetByte,
-	startAddress: number,
-	length: number,
-	segmentName: string
-): GetBoundedByte {
+export function makeGetBoundedByte({
+	getByte,
+	startAddress,
+	length,
+	segmentName,
+}: {
+	readonly getByte: GetByte;
+	readonly startAddress: number;
+	readonly length: number;
+	readonly segmentName: string;
+}): GetBoundedByte {
 	return (index: number) => {
 		if (index >= length) {
 			throw new Error(
