@@ -80,6 +80,8 @@ export function readTilesAndBubbleCurrentLineDefault(getByte: GetByte) {
 				const bits = [];
 				for (let bitIndex = 0; bitIndex < 8; ++bitIndex) {
 					bits[bitIndex] = isBitSet(bitmapByte, bitIndex);
+				}
+				for (let bitIndex = 0; bitIndex < 8; ++bitIndex) {
 					// Offset by 32 for the top line.
 					tiles[rowIndex + 1][bitmapByteOfRowIndex * 8 + bitIndex] =
 						bits[bitIndex];
