@@ -1,4 +1,3 @@
-import { sum } from "../functions";
 import {
 	createTiles,
 	levelWidth,
@@ -6,13 +5,9 @@ import {
 	Tiles,
 	BubbleCurrentDirection,
 } from "../level";
-import { byteToBits, isBitSet, mirrorBits } from "./bit-twiddling";
-import {
-	bitmapArrayAddress,
-	holeMetadataArrayAddress,
-	symmetryMetadataArrayAddress,
-} from "./data-locations";
-import { getBytes } from "./io";
+import { byteToBits, isBitSet } from "./bit-twiddling";
+import { holeMetadataArrayAddress } from "./data-locations";
+import { readTileBitmap } from "./tile-bitmap";
 import { GetByte } from "./types";
 
 export function readTilesAndBubbleCurrentLineDefault(getByte: GetByte) {
@@ -48,54 +43,9 @@ export function readTilesAndBubbleCurrentLineDefault(getByte: GetByte) {
 			}
 		}
 
-		const symmetryMetadata = getBytes(
-			getByte,
-			symmetryMetadataArrayAddress,
-			100
-		);
-		const isSymmetric = isBitSet(symmetryMetadata[levelIndex], 0);
-
-		const offset = sum(
-			symmetryMetadata
-				.slice(0, levelIndex)
-				// Skip 46 or 92 bytes per level depending on if it is symmetric or not.
-				.map((byte) => (isBitSet(byte, 0) ? 46 : 92))
-		);
+		const bitmapBytesRows = readTileBitmap(levelIndex, getByte);
 
 		const bytesPerRow = 4;
-
-		// Read tile bitmap.
-		let currentBitmapByteAddress = bitmapArrayAddress + offset;
-		const bitmapBytesRows = [];
-		for (let rowIndex = 0; rowIndex < 23; ++rowIndex) {
-			// Read half or full lines from the level data.
-			const bytesToRead = isSymmetric ? bytesPerRow / 2 : bytesPerRow;
-			const bitmapBytes = [];
-			for (
-				let bitmapByteOfRowIndex = 0;
-				bitmapByteOfRowIndex < bytesToRead;
-				++bitmapByteOfRowIndex
-			) {
-				bitmapBytes.push(getByte(currentBitmapByteAddress));
-				currentBitmapByteAddress += 1;
-			}
-
-			if (isSymmetric) {
-				// Mirror the left half to the right half.
-				for (
-					let halfRowIndex = 0;
-					halfRowIndex < bytesPerRow / 2;
-					++halfRowIndex
-				) {
-					bitmapBytes[bytesPerRow / 2 + halfRowIndex] = mirrorBits(
-						bitmapBytes[bytesPerRow / 2 - halfRowIndex - 1]
-					);
-				}
-			}
-
-			bitmapBytesRows.push(bitmapBytes);
-		}
-
 		for (let rowIndex = 0; rowIndex < 23; ++rowIndex) {
 			// Read half or full lines from the level data.
 			for (
