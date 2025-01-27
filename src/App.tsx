@@ -46,7 +46,8 @@ function App() {
 		}
 
 		try {
-			const dataView = new DataView(await file.arrayBuffer());
+			const buffer = await file.arrayBuffer();
+			const dataView = new DataView(buffer);
 			const parsed = parsePrg(dataView);
 			setParsedPrgData({
 				type: "success",
