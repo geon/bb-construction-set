@@ -7,7 +7,17 @@ import {
 import { getBytes } from "./io";
 import { GetByte } from "./types";
 
-export function readTileBitmap(levelIndex: number, getByte: GetByte) {
+export function readTileBitmaps(getByte: GetByte): number[][][] {
+	const tileBitmaps = [];
+
+	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
+		tileBitmaps.push(readTileBitmap(levelIndex, getByte));
+	}
+
+	return tileBitmaps;
+}
+
+function readTileBitmap(levelIndex: number, getByte: GetByte) {
 	const symmetryMetadata = getBytes(getByte, symmetryMetadataArrayAddress, 100);
 	const isSymmetric = isBitSet(symmetryMetadata[levelIndex], 0);
 
