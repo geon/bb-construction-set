@@ -47,11 +47,10 @@ function App() {
 
 		try {
 			const buffer = await file.arrayBuffer();
-			const dataView = new DataView(buffer);
-			const parsed = parsePrg(dataView);
+			const parsed = parsePrg(buffer);
 			setParsedPrgData({
 				type: "success",
-				prg: dataView,
+				prg: new DataView(buffer),
 				...parsed,
 				fileName: file.name,
 				fileSize: file.size,

@@ -26,7 +26,7 @@ test("readBubbleCurrentRectangles", () => {
 
 test("parsePrg", () => {
 	const levelFromPrg = parsePrg(
-		new DataView(readFileSync(__dirname + "/decompressed-bb.prg").buffer)
+		readFileSync(__dirname + "/decompressed-bb.prg").buffer
 	).levels[0];
 
 	const levelFromPe = peFileDataToLevels(
@@ -41,9 +41,7 @@ test("parsePrg", () => {
 });
 
 test("First few levels bubble current rectangles.", () => {
-	const prgDataView = new DataView(
-		readFileSync(__dirname + "/decompressed-bb.prg").buffer
-	);
+	const prgDataView = readFileSync(__dirname + "/decompressed-bb.prg").buffer;
 
 	const levelFromPrg = parsePrg(prgDataView).levels;
 
@@ -59,7 +57,7 @@ test("patchPrg", () => {
 
 	const patched = Buffer.from(prgFileContent.buffer.slice());
 
-	const { levels } = parsePrg(new DataView(prgFileContent.buffer));
+	const { levels } = parsePrg(prgFileContent.buffer);
 	patchPrg(patched, levels);
 
 	expect(patched).toStrictEqual(prgFileContent);

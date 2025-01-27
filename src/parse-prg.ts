@@ -31,14 +31,14 @@ import { readSprites } from "./prg/sprites";
 import { readTileBitmaps } from "./prg/tile-bitmap";
 import { GetByte } from "./prg/types";
 
-export function parsePrg(prg: DataView): {
+export function parsePrg(prg: ArrayBuffer): {
 	levels: readonly Level[];
 	sprites: Sprites;
 	items: CharBlock[];
 } {
-	const startAddres = getPrgStartAddress(prg.buffer);
+	const startAddres = getPrgStartAddress(prg);
 	const getByte = (address: number) =>
-		getPrgByteAtAddress(prg, startAddres, address);
+		getPrgByteAtAddress(new DataView(prg), startAddres, address);
 
 	const levels = readLevels(getByte);
 	const sprites = readSprites(getByte);
