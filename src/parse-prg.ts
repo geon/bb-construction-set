@@ -57,6 +57,13 @@ function readLevels(getByte: GetByte): ReadonlyArray<Level> {
 		"symmetryMetadata"
 	);
 
+	const getHoleMetadataByte = makeGetBoundedByte(
+		getByte,
+		holeMetadataArrayAddress,
+		100,
+		"holeMetadata"
+	);
+
 	const tileBitmaps = readTileBitmaps(
 		makeGetBoundedByte(
 			getByte,
@@ -88,15 +95,7 @@ function readLevels(getByte: GetByte): ReadonlyArray<Level> {
 			),
 			getSymmetryMetadataByte
 		),
-		tiles: readTiles(
-			makeGetBoundedByte(
-				getByte,
-				holeMetadataArrayAddress,
-				100,
-				"holeMetadata"
-			),
-			tileBitmaps
-		),
+		tiles: readTiles(getHoleMetadataByte, tileBitmaps),
 		monsters: readMonsters(
 			makeGetBoundedByte(
 				getByte,
