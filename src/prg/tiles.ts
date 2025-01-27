@@ -84,6 +84,9 @@ export function readTilesAndBubbleCurrentLineDefault(getByte: GetByte) {
 						bits[bitIndex];
 				}
 			}
+		}
+
+		for (let rowIndex = 0; rowIndex < 23; ++rowIndex) {
 			if (isSymmetric) {
 				// Mirror the left half to the right half.
 				const tilesPerHalfRow = (bytesPerRow / 2) * 8;
