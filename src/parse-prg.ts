@@ -8,8 +8,8 @@ import {
 	holeMetadataArrayAddress,
 	symmetryMetadataArrayAddress,
 	platformCharArrayAddress,
-	bitmapArrayByteLength,
-	windCurrentsArrayAddress,
+	getDataSegments,
+	DataSegments,
 } from "./prg/data-locations";
 import { Level, levelIsSymmetric } from "./level";
 import { maxAsymmetric, maxMonsters, maxSidebars } from "./prg/data-locations";
@@ -20,7 +20,6 @@ import {
 	getPrgStartAddress,
 	getPrgByteAtAddress,
 	setPrgByteAtAddress,
-	makeGetBoundedByte,
 } from "./prg/io";
 import { readItems } from "./prg/items";
 import { readBubbleCurrentRectangles } from "./prg/bubble-current-rectangles";
@@ -29,7 +28,6 @@ import { readTiles } from "./prg/tiles";
 import { readMonsters } from "./prg/monsters";
 import { readSprites } from "./prg/sprites";
 import { readTileBitmaps } from "./prg/tile-bitmap";
-import { GetByte } from "./prg/types";
 
 export function parsePrg(prg: ArrayBuffer): {
 	levels: readonly Level[];
@@ -40,80 +38,33 @@ export function parsePrg(prg: ArrayBuffer): {
 	const getByte = (address: number) =>
 		getPrgByteAtAddress(new DataView(prg), startAddres, address);
 
-	const levels = readLevels(getByte);
+	const dataSegments = getDataSegments(getByte);
+
+	const levels = readLevels(dataSegments);
 	const sprites = readSprites(getByte);
 	const items = readItems(getByte);
 
 	return { levels, sprites, items };
 }
 
-function readLevels(getByte: GetByte): ReadonlyArray<Level> {
-	// TODO: Check the original data size, and verify.
-
-	const getSymmetryMetadataByte = makeGetBoundedByte(
-		getByte,
-		symmetryMetadataArrayAddress,
-		100,
-		"symmetryMetadata"
-	);
-
-	const getHoleMetadataByte = makeGetBoundedByte(
-		getByte,
-		holeMetadataArrayAddress,
-		100,
-		"holeMetadata"
-	);
-
+function readLevels(dataSegments: DataSegments): ReadonlyArray<Level> {
 	const tileBitmaps = readTileBitmaps(
-		makeGetBoundedByte(
-			getByte,
-			bitmapArrayAddress,
-			bitmapArrayByteLength,
-			"bitmaps"
-		),
-		getSymmetryMetadataByte
+		dataSegments.bitmaps,
+		dataSegments.symmetryMetadata
 	);
 
 	return zipObject({
-		platformChar: readPlatformChars(
-			makeGetBoundedByte(
-				getByte,
-				platformCharArrayAddress,
-				800,
-				"platformChars"
-			)
-		),
-		...readBgColors(
-			makeGetBoundedByte(getByte, bgColorMetadataArrayAddress, 100, "bgColors")
-		),
+		platformChar: readPlatformChars(dataSegments.platformChars),
+		...readBgColors(dataSegments.bgColors),
 		sidebarChars: readSidebarChars(
-			makeGetBoundedByte(
-				getByte,
-				sidebarCharArrayAddress,
-				4 * 8 * maxSidebars,
-				"sidebarChars"
-			),
-			getSymmetryMetadataByte
+			dataSegments.sidebarChars,
+			dataSegments.symmetryMetadata
 		),
-		tiles: readTiles(getHoleMetadataByte, tileBitmaps),
-		monsters: readMonsters(
-			makeGetBoundedByte(
-				getByte,
-				monsterArrayAddress,
-				// 3 bytes per monster plus a stop-byte for each level. Boss level has no stored monsters.
-				maxMonsters * 3 + 99,
-				"monsters"
-			)
-		),
+		tiles: readTiles(dataSegments.holeMetadata, tileBitmaps),
+		monsters: readMonsters(dataSegments.monsters),
 		bubbleCurrents: readBubbleCurrentRectangles(
-			makeGetBoundedByte(
-				getByte,
-				windCurrentsArrayAddress,
-				// TODO: Move to constant.
-				1487,
-				"windCurrents"
-			),
-			getHoleMetadataByte,
+			dataSegments.windCurrents,
+			dataSegments.holeMetadata,
 			tileBitmaps
 		),
 	});

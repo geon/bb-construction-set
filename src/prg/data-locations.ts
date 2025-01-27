@@ -1,3 +1,6 @@
+import { GetBoundedByte, makeGetBoundedByte } from "./io";
+import { GetByte } from "./types";
+
 export const maxAsymmetric = 45;
 export const maxSidebars = 59;
 export const maxMonsters = 572;
@@ -88,3 +91,70 @@ export const itemCharsArrays = [
 		numItems: 2,
 	},
 ];
+
+type DataSegmentName =
+	| "symmetryMetadata"
+	| "bitmaps"
+	| "platformChars"
+	| "bgColors"
+	| "sidebarChars"
+	| "holeMetadata"
+	| "monsters"
+	| "windCurrents";
+
+export type DataSegments = Record<DataSegmentName, GetBoundedByte>;
+
+export function getDataSegments(getByte: GetByte): DataSegments {
+	return {
+		symmetryMetadata: makeGetBoundedByte(
+			getByte,
+			symmetryMetadataArrayAddress,
+			100,
+			"symmetryMetadata"
+		),
+		bitmaps: makeGetBoundedByte(
+			getByte,
+			bitmapArrayAddress,
+			bitmapArrayByteLength,
+			"bitmaps"
+		),
+		platformChars: makeGetBoundedByte(
+			getByte,
+			platformCharArrayAddress,
+			800,
+			"platformChars"
+		),
+		bgColors: makeGetBoundedByte(
+			getByte,
+			bgColorMetadataArrayAddress,
+			100,
+			"bgColors"
+		),
+		sidebarChars: makeGetBoundedByte(
+			getByte,
+			sidebarCharArrayAddress,
+			4 * 8 * maxSidebars,
+			"sidebarChars"
+		),
+		holeMetadata: makeGetBoundedByte(
+			getByte,
+			holeMetadataArrayAddress,
+			100,
+			"holeMetadata"
+		),
+		monsters: makeGetBoundedByte(
+			getByte,
+			monsterArrayAddress,
+			// 3 bytes per monster plus a stop-byte for each level. Boss level has no stored monsters.
+			maxMonsters * 3 + 99,
+			"monsters"
+		),
+		windCurrents: makeGetBoundedByte(
+			getByte,
+			windCurrentsArrayAddress,
+			// TODO: Move to constant.
+			1487,
+			"windCurrents"
+		),
+	};
+}
