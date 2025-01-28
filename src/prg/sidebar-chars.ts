@@ -2,6 +2,7 @@ import { CharBlock, parseCharsetCharLine } from "../charset-char";
 import { chunk } from "../functions";
 import { Level } from "../level";
 import { isBitSet } from "./bit-twiddling";
+import { maxSidebars } from "./data-locations";
 import { dataViewSetBytes, getBytes } from "./io";
 import { ReadonlyDataView } from "./types";
 
@@ -33,6 +34,13 @@ export function patchSidebarChars(
 	dataView: DataView,
 	levels: readonly Level[]
 ) {
+	const sidebarLevels = levels.filter((level) => !!level.sidebarChars);
+	if (sidebarLevels.length > maxSidebars) {
+		throw new Error(
+			`Too many levels with sidebar graphics: ${sidebarLevels.length}. Should be max ${maxSidebars}.`
+		);
+	}
+
 	dataViewSetBytes(
 		dataView,
 		levels.flatMap(

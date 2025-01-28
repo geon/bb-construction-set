@@ -1,7 +1,7 @@
 import { CharBlock } from "./charset-char";
 import { chunk, zipObject } from "./functions";
 import { Level, levelIsSymmetric } from "./level";
-import { maxAsymmetric, maxSidebars } from "./prg/data-locations";
+import { maxAsymmetric } from "./prg/data-locations";
 import { readBgColors } from "./prg/bg-colors";
 import { Sprites } from "./sprite";
 import { patchPlatformChars, readPlatformChars } from "./prg/charset-char";
@@ -65,20 +65,6 @@ export function patchPrg(prg: ArrayBuffer, levels: readonly Level[]) {
 	if (levels.length !== 100) {
 		throw new Error(`Wrong number of levels: ${levels.length}. Should be 100.`);
 	}
-	const asymmetricLevels = levels.filter(
-		(level) => !levelIsSymmetric(level.tiles)
-	);
-	if (asymmetricLevels.length > maxAsymmetric) {
-		throw new Error(
-			`Too many asymmetric levels: ${asymmetricLevels.length}. Should be max ${maxAsymmetric}.`
-		);
-	}
-	const sidebarLevels = levels.filter((level) => !!level.sidebarChars);
-	if (sidebarLevels.length > maxSidebars) {
-		throw new Error(
-			`Too many levels with sidebar graphics: ${sidebarLevels.length}. Should be max ${maxSidebars}.`
-		);
-	}
 
 	const dataSegments = getDataSegments<"mutable">(prg);
 
@@ -122,6 +108,15 @@ function patchHoles(dataView: DataView, levels: readonly Level[]) {
 }
 
 function patchSymmetry(dataView: DataView, levels: readonly Level[]) {
+	const asymmetricLevels = levels.filter(
+		(level) => !levelIsSymmetric(level.tiles)
+	);
+	if (asymmetricLevels.length > maxAsymmetric) {
+		throw new Error(
+			`Too many asymmetric levels: ${asymmetricLevels.length}. Should be max ${maxAsymmetric}.`
+		);
+	}
+
 	// Write symmetry.
 	dataViewSetBytes(
 		dataView,
