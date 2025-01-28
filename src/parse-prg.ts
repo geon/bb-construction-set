@@ -159,7 +159,6 @@ function patchSymmetry(
 
 function patchBitmaps(levels: readonly Level[], setBytes: SetBytes) {
 	// Write platforms bitmap
-	let foo = bitmapArrayAddress;
 	const levelBitmapBytes = levels.flatMap((level) => {
 		const isSymmetric = levelIsSymmetric(level.tiles);
 
@@ -201,8 +200,6 @@ function patchBitmaps(levels: readonly Level[], setBytes: SetBytes) {
 						((bits[7] ? 1 : 0) << 0)
 				)
 			);
-
-		foo += isSymmetric ? 46 : 2 * 46;
 
 		return byteRows.flat();
 	});
