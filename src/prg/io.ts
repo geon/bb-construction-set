@@ -1,3 +1,5 @@
+import { mapRecord } from "../functions";
+import { segmentLocations } from "./data-locations";
 import { GetByte, ReadonlyDataView } from "./types";
 
 export function getPrgStartAddress(prg: ArrayBuffer): number {
@@ -83,5 +85,22 @@ export function dataViewSlice(
 		(dataView as DataView).buffer,
 		(dataView as DataView).byteOffset + byteOffset,
 		byteLength
+	);
+}
+
+type DataSegmentName = keyof typeof segmentLocations;
+
+export type ReadonlyDataSegments = Record<DataSegmentName, ReadonlyDataView>;
+
+export function getDataSegments(prg: ArrayBuffer): ReadonlyDataSegments {
+	const prgStartAddress = getPrgStartAddress(prg);
+	return mapRecord(
+		segmentLocations,
+		(segmentLocation) =>
+			new DataView(
+				prg,
+				segmentLocation.startAddress - prgStartAddress + 2, // 2 bytes extra for the prg header.
+				segmentLocation.length
+			)
 	);
 }

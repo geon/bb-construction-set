@@ -5,8 +5,6 @@ import {
 	bgColorMetadataArrayAddress,
 	holeMetadataArrayAddress,
 	symmetryMetadataArrayAddress,
-	getDataSegments,
-	ReadonlyDataSegments,
 } from "./prg/data-locations";
 import { Level, levelIsSymmetric } from "./level";
 import { maxAsymmetric, maxSidebars } from "./prg/data-locations";
@@ -17,6 +15,8 @@ import {
 	getPrgStartAddress,
 	getPrgByteAtAddress,
 	setPrgByteAtAddress,
+	getDataSegments,
+	ReadonlyDataSegments,
 } from "./prg/io";
 import { readItems } from "./prg/items";
 import { readBubbleCurrentRectangles } from "./prg/bubble-current-rectangles";

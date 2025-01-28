@@ -1,7 +1,3 @@
-import { mapRecord } from "../functions";
-import { getPrgStartAddress } from "./io";
-import { ReadonlyDataView } from "./types";
-
 export const maxAsymmetric = 45;
 export const maxSidebars = 59;
 export const maxMonsters = 572;
@@ -107,7 +103,7 @@ interface SegmentLocation {
 	readonly length: number;
 }
 
-const segmentLocations = {
+export const segmentLocations = {
 	symmetryMetadata: {
 		startAddress: symmetryMetadataArrayAddress,
 		length: 100,
@@ -141,20 +137,3 @@ const segmentLocations = {
 		length: 1487, // TODO: Move to constant.
 	},
 } satisfies Readonly<Record<string, SegmentLocation>>;
-
-type DataSegmentName = keyof typeof segmentLocations;
-
-export type ReadonlyDataSegments = Record<DataSegmentName, ReadonlyDataView>;
-
-export function getDataSegments(prg: ArrayBuffer): ReadonlyDataSegments {
-	const prgStartAddress = getPrgStartAddress(prg);
-	return mapRecord(
-		segmentLocations,
-		(segmentLocation) =>
-			new DataView(
-				prg,
-				segmentLocation.startAddress - prgStartAddress + 2, // 2 bytes extra for the prg header.
-				segmentLocation.length
-			)
-	);
-}
