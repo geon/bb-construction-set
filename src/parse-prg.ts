@@ -136,60 +136,7 @@ export function patchPrg(prg: Uint8Array, levels: readonly Level[]) {
 
 	patchHoles(levels, setByte);
 	patchSymmetry(setBytes, levels, getByte);
-
-	// Write platforms bitmap
-	let foo = bitmapArrayAddress;
-	const levelBitmapBytes = levels.flatMap((level) => {
-		const isSymmetric = levelIsSymmetric(level.tiles);
-
-		const bitRows = [];
-		for (let rowIndex = 1; rowIndex < 24; ++rowIndex) {
-			const row = level.tiles[rowIndex].slice(0, isSymmetric ? 16 : 32);
-
-			// So stupid.
-			const bitPositions = (
-				{
-					symmetric: [0, 1],
-					notSymmetric: [31, 30],
-				} as const
-			)[isSymmetric ? "symmetric" : "notSymmetric"];
-
-			// Encode the per-line bubble current into the edge of the platforms bitmap.
-			row[bitPositions[0]] = !!(
-				level.bubbleCurrents.perLineDefaults[rowIndex] & 0b01
-			);
-			row[bitPositions[1]] = !!(
-				level.bubbleCurrents.perLineDefaults[rowIndex] & 0b10
-			);
-
-			bitRows.push(row);
-		}
-
-		const byteRows = bitRows
-			.map((row) => chunk(row, 8))
-			.map((row) =>
-				row.map(
-					(bits) =>
-						((bits[0] ? 1 : 0) << 7) +
-						((bits[1] ? 1 : 0) << 6) +
-						((bits[2] ? 1 : 0) << 5) +
-						((bits[3] ? 1 : 0) << 4) +
-						((bits[4] ? 1 : 0) << 3) +
-						((bits[5] ? 1 : 0) << 2) +
-						((bits[6] ? 1 : 0) << 1) +
-						((bits[7] ? 1 : 0) << 0)
-				)
-			);
-
-		foo += isSymmetric ? 46 : 2 * 46;
-
-		return byteRows.flat();
-	});
-	const maxLevelBytes = 46 * 100 + 46 * maxAsymmetric;
-	if (levelBitmapBytes.length > maxLevelBytes) {
-		throw new Error("Too many level bytes.");
-	}
-	setBytes(bitmapArrayAddress, levelBitmapBytes);
+	patchBitmaps(levels, setBytes);
 
 	// Write monsters.
 	const numMonsters = levels.flatMap((level) => level.monsters).length;
@@ -257,4 +204,60 @@ function patchSymmetry(
 				(getByte(symmetryMetadataArrayAddress + index) & 0b00111111)
 		)
 	);
+}
+
+function patchBitmaps(levels: readonly Level[], setBytes: SetBytes) {
+	// Write platforms bitmap
+	let foo = bitmapArrayAddress;
+	const levelBitmapBytes = levels.flatMap((level) => {
+		const isSymmetric = levelIsSymmetric(level.tiles);
+
+		const bitRows = [];
+		for (let rowIndex = 1; rowIndex < 24; ++rowIndex) {
+			const row = level.tiles[rowIndex].slice(0, isSymmetric ? 16 : 32);
+
+			// So stupid.
+			const bitPositions = (
+				{
+					symmetric: [0, 1],
+					notSymmetric: [31, 30],
+				} as const
+			)[isSymmetric ? "symmetric" : "notSymmetric"];
+
+			// Encode the per-line bubble current into the edge of the platforms bitmap.
+			row[bitPositions[0]] = !!(
+				level.bubbleCurrents.perLineDefaults[rowIndex] & 0b01
+			);
+			row[bitPositions[1]] = !!(
+				level.bubbleCurrents.perLineDefaults[rowIndex] & 0b10
+			);
+
+			bitRows.push(row);
+		}
+
+		const byteRows = bitRows
+			.map((row) => chunk(row, 8))
+			.map((row) =>
+				row.map(
+					(bits) =>
+						((bits[0] ? 1 : 0) << 7) +
+						((bits[1] ? 1 : 0) << 6) +
+						((bits[2] ? 1 : 0) << 5) +
+						((bits[3] ? 1 : 0) << 4) +
+						((bits[4] ? 1 : 0) << 3) +
+						((bits[5] ? 1 : 0) << 2) +
+						((bits[6] ? 1 : 0) << 1) +
+						((bits[7] ? 1 : 0) << 0)
+				)
+			);
+
+		foo += isSymmetric ? 46 : 2 * 46;
+
+		return byteRows.flat();
+	});
+	const maxLevelBytes = 46 * 100 + 46 * maxAsymmetric;
+	if (levelBitmapBytes.length > maxLevelBytes) {
+		throw new Error("Too many level bytes.");
+	}
+	setBytes(bitmapArrayAddress, levelBitmapBytes);
 }
