@@ -3,6 +3,7 @@ import { dataViewSlice } from "./io";
 import { ReadonlyDataView } from "./types";
 
 export type TileBitmap = {
+	readonly isSymmetric: boolean;
 	readonly bytes: readonly (readonly number[])[];
 };
 
@@ -66,6 +67,7 @@ function readTileBitmap(
 		bitmapBytesRows.push(bitmapBytes);
 	}
 	return {
+		isSymmetric,
 		bytes: bitmapBytesRows,
 	};
 }
