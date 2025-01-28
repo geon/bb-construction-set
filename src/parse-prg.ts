@@ -6,7 +6,7 @@ import {
 	holeMetadataArrayAddress,
 	symmetryMetadataArrayAddress,
 	getDataSegments,
-	DataSegments,
+	ReadonlyDataSegments,
 } from "./prg/data-locations";
 import { Level, levelIsSymmetric } from "./level";
 import { maxAsymmetric, maxSidebars } from "./prg/data-locations";
@@ -45,7 +45,7 @@ export function parsePrg(prg: ArrayBuffer): {
 	return { levels, sprites, items };
 }
 
-function readLevels(dataSegments: DataSegments): ReadonlyArray<Level> {
+function readLevels(dataSegments: ReadonlyDataSegments): ReadonlyArray<Level> {
 	const tileBitmaps = readTileBitmaps(
 		dataSegments.bitmaps,
 		dataSegments.symmetryMetadata

@@ -144,9 +144,9 @@ const segmentLocations = {
 
 type DataSegmentName = keyof typeof segmentLocations;
 
-export type DataSegments = Record<DataSegmentName, ReadonlyDataView>;
+export type ReadonlyDataSegments = Record<DataSegmentName, ReadonlyDataView>;
 
-export function getDataSegments(prg: ArrayBuffer): DataSegments {
+export function getDataSegments(prg: ArrayBuffer): ReadonlyDataSegments {
 	const prgStartAddress = getPrgStartAddress(prg);
 	return mapRecord(
 		segmentLocations,
