@@ -2,7 +2,6 @@ import { CharBlock } from "./charset-char";
 import { chunk, zipObject } from "./functions";
 import {
 	bitmapArrayAddress,
-	sidebarCharArrayAddress,
 	bgColorMetadataArrayAddress,
 	holeMetadataArrayAddress,
 	symmetryMetadataArrayAddress,
@@ -22,7 +21,7 @@ import {
 } from "./prg/io";
 import { readItems } from "./prg/items";
 import { readBubbleCurrentRectangles } from "./prg/bubble-current-rectangles";
-import { readSidebarChars } from "./prg/sidebar-chars";
+import { patchSidebarChars, readSidebarChars } from "./prg/sidebar-chars";
 import { readTiles } from "./prg/tiles";
 import { patchMonsters, readMonsters } from "./prg/monsters";
 import { readSprites } from "./prg/sprites";
@@ -113,20 +112,7 @@ export function patchPrg(prg: Uint8Array, levels: readonly Level[]) {
 		)
 	);
 
-	// Write sidebar chars.
-	setBytes(
-		sidebarCharArrayAddress,
-		levels.flatMap(
-			(level) =>
-				level.sidebarChars?.flatMap((char) =>
-					char.lines.map(
-						(line) =>
-							(line[0] << 6) + (line[1] << 4) + (line[2] << 2) + (line[3] << 0)
-					)
-				) ?? []
-		)
-	);
-
+	patchSidebarChars(setBytes, levels);
 	patchBgColors(setBytes, levels);
 	patchHoles(levels, setByte);
 	patchSymmetry(setBytes, levels, getByte);
