@@ -68,8 +68,7 @@ function readLevels(dataSegments: DataSegments): ReadonlyArray<Level> {
 	});
 }
 
-export function patchPrg(prg_: ArrayBuffer, levels: readonly Level[]) {
-	const prg = Buffer.from(prg_);
+export function patchPrg(prg: ArrayBuffer, levels: readonly Level[]) {
 	if (levels.length !== 100) {
 		throw new Error(`Wrong number of levels: ${levels.length}. Should be 100.`);
 	}
@@ -88,9 +87,9 @@ export function patchPrg(prg_: ArrayBuffer, levels: readonly Level[]) {
 		);
 	}
 
-	const startAddres = getPrgStartAddress(prg.buffer);
+	const startAddres = getPrgStartAddress(prg);
 	const setByte = (address: number, value: number) =>
-		setPrgByteAtAddress(prg, startAddres, address, value);
+		setPrgByteAtAddress(new Uint8Array(prg), startAddres, address, value);
 	const setBytes = (address: number, bytes: number[]) => {
 		let currentAddress = address;
 		for (const byte of bytes) {
@@ -99,7 +98,7 @@ export function patchPrg(prg_: ArrayBuffer, levels: readonly Level[]) {
 		}
 	};
 	const getByte = (address: number) =>
-		getPrgByteAtAddress(new DataView(prg.buffer), startAddres, address);
+		getPrgByteAtAddress(new DataView(prg), startAddres, address);
 
 	patchPlatformChars(setBytes, levels);
 	patchSidebarChars(setBytes, levels);
