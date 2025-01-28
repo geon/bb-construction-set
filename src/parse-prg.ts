@@ -25,7 +25,7 @@ import { readTiles } from "./prg/tiles";
 import { patchMonsters, readMonsters } from "./prg/monsters";
 import { readSprites } from "./prg/sprites";
 import { readTileBitmaps } from "./prg/tile-bitmap";
-import { GetByte, SetByte, SetBytes } from "./prg/types";
+import { GetByte, SetBytes } from "./prg/types";
 
 export function parsePrg(prg: ArrayBuffer): {
 	levels: readonly Level[];
@@ -103,7 +103,7 @@ export function patchPrg(prg: Uint8Array, levels: readonly Level[]) {
 	patchPlatformChars(setBytes, levels);
 	patchSidebarChars(setBytes, levels);
 	patchBgColors(setBytes, levels);
-	patchHoles(levels, setByte);
+	patchHoles(levels, setBytes);
 	patchSymmetry(setBytes, levels, getByte);
 	patchBitmaps(levels, setBytes);
 	patchMonsters(levels, setBytes, getByte, setByte);
@@ -116,26 +116,27 @@ function patchBgColors(setBytes: SetBytes, levels: readonly Level[]) {
 	);
 }
 
-function patchHoles(levels: readonly Level[], setByte: SetByte) {
-	for (const [levelIndex, level] of levels.entries()) {
+function patchHoles(levels: readonly Level[], setBytes: SetBytes) {
+	const bytes = levels.map((level) => {
 		const topLeft = !level.tiles[0][10];
 		const topRight = !level.tiles[0][20];
 		const bottomLeft = !level.tiles[24][10];
 		const bottomRight = !level.tiles[24][20];
 
-		setByte(
-			holeMetadataArrayAddress + levelIndex,
+		return (
 			((topLeft ? 1 : 0) << 0) +
-				((topRight ? 1 : 0) << 1) +
-				((bottomLeft ? 1 : 0) << 2) +
-				((bottomRight ? 1 : 0) << 3) +
-				// The most significant bits are the bubble current of the top and bottom rows.
-				((level.bubbleCurrents.perLineDefaults[0] & 0b01 ? 1 : 0) << 4) +
-				((level.bubbleCurrents.perLineDefaults[0] & 0b10 ? 1 : 0) << 5) +
-				((level.bubbleCurrents.perLineDefaults[24] & 0b01 ? 1 : 0) << 6) +
-				((level.bubbleCurrents.perLineDefaults[24] & 0b10 ? 1 : 0) << 7)
+			((topRight ? 1 : 0) << 1) +
+			((bottomLeft ? 1 : 0) << 2) +
+			((bottomRight ? 1 : 0) << 3) +
+			// The most significant bits are the bubble current of the top and bottom rows.
+			((level.bubbleCurrents.perLineDefaults[0] & 0b01 ? 1 : 0) << 4) +
+			((level.bubbleCurrents.perLineDefaults[0] & 0b10 ? 1 : 0) << 5) +
+			((level.bubbleCurrents.perLineDefaults[24] & 0b01 ? 1 : 0) << 6) +
+			((level.bubbleCurrents.perLineDefaults[24] & 0b10 ? 1 : 0) << 7)
 		);
-	}
+	});
+
+	setBytes(holeMetadataArrayAddress, bytes);
 }
 
 function patchSymmetry(
