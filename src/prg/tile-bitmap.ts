@@ -2,7 +2,9 @@ import { isBitSet, mirrorBits } from "./bit-twiddling";
 import { dataViewSlice } from "./io";
 import { ReadonlyDataView } from "./types";
 
-export type TileBitmap = readonly (readonly number[])[];
+export type TileBitmap = {
+	readonly bytes: readonly (readonly number[])[];
+};
 
 export function readTileBitmaps(
 	bitmapBytes: ReadonlyDataView,
@@ -63,5 +65,7 @@ function readTileBitmap(
 
 		bitmapBytesRows.push(bitmapBytes);
 	}
-	return bitmapBytesRows;
+	return {
+		bytes: bitmapBytesRows,
+	};
 }

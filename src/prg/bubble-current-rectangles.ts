@@ -165,7 +165,7 @@ function extractbubbleCurrentLineDefault(
 ): Array<BubbleCurrentDirection> {
 	return [
 		((holeMetadata & 0b00110000) >> 4) as BubbleCurrentDirection,
-		...tileBitmap.map((row) =>
+		...tileBitmap.bytes.map((row) =>
 			bitsToBubbleCurrentDirection([isBitSet(row[3], 6), isBitSet(row[3], 7)])
 		),
 		((holeMetadata & 0b11000000) >> 6) as BubbleCurrentDirection,

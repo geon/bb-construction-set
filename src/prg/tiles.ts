@@ -48,7 +48,7 @@ export function readTiles(
 				bitmapByteOfRowIndex < bytesPerRow;
 				++bitmapByteOfRowIndex
 			) {
-				const bitmapByte = tileBitmap[rowIndex][bitmapByteOfRowIndex];
+				const bitmapByte = tileBitmap.bytes[rowIndex][bitmapByteOfRowIndex];
 				// Convert the bitmap to an array of bools.
 				const bits = byteToBits(bitmapByte);
 				for (let bitIndex = 0; bitIndex < 8; ++bitIndex) {
