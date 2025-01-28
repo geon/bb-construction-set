@@ -4,7 +4,7 @@ import { ReadonlyDataView } from "./types";
 
 export type TileBitmap = {
 	readonly isSymmetric: boolean;
-	readonly bytes: readonly (readonly number[])[];
+	readonly bytes: readonly (readonly [number, number, number, number])[];
 };
 
 export function readTileBitmaps(
@@ -37,7 +37,7 @@ function readTileBitmap(
 
 	// Read tile bitmap.
 	let currentBitmapByteIndex = 0;
-	const bitmapBytesRows = [];
+	const bitmapBytesRows: TileBitmap["bytes"][number][] = [];
 	for (let rowIndex = 0; rowIndex < 23; ++rowIndex) {
 		// Read half or full lines from the level data.
 		const bytesToRead = isSymmetric ? bytesPerRow / 2 : bytesPerRow;
@@ -64,7 +64,7 @@ function readTileBitmap(
 			}
 		}
 
-		bitmapBytesRows.push(bitmapBytes);
+		bitmapBytesRows.push(bitmapBytes as unknown as TileBitmap["bytes"][number]);
 	}
 	return {
 		isSymmetric,
