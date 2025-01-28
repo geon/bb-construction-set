@@ -1,9 +1,7 @@
 import { Monster } from "../level";
 import { isBitSet } from "./bit-twiddling";
-import { GetBoundedByte } from "./io";
-import { GetByte } from "./types";
 
-export function readMonsters(getMonsterByte: GetBoundedByte) {
+export function readMonsters(monsterBytes: DataView) {
 	const monstersForAllLevels: Monster[][] = [];
 
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
@@ -18,15 +16,15 @@ export function readMonsters(getMonsterByte: GetBoundedByte) {
 		for (let index = 0; index < levelIndex; ++index) {
 			do {
 				currentMonsterByteIndex += 3;
-			} while (getMonsterByte(currentMonsterByteIndex));
+			} while (monsterBytes.getUint8(currentMonsterByteIndex));
 			currentMonsterByteIndex += 1; // The monsters of each level are separated with a zero byte.
 		}
 
 		const monsters: Monster[] = [];
 		do {
-			monsters.push(readMonster(currentMonsterByteIndex, getMonsterByte));
+			monsters.push(readMonster(currentMonsterByteIndex, monsterBytes));
 			currentMonsterByteIndex += 3;
-		} while (getMonsterByte(currentMonsterByteIndex));
+		} while (monsterBytes.getUint8(currentMonsterByteIndex));
 
 		monstersForAllLevels.push(monsters);
 	}
@@ -34,13 +32,14 @@ export function readMonsters(getMonsterByte: GetBoundedByte) {
 	return monstersForAllLevels;
 }
 
-function readMonster(address: number, getByte: GetByte): Monster {
+// TODO: Restrict the DataView to a single monster.
+function readMonster(address: number, monsterBytes: DataView): Monster {
 	return {
-		type: getByte(address) & 0b111,
+		type: monsterBytes.getUint8(address) & 0b111,
 		spawnPoint: {
-			x: (getByte(address) & 0b11111000) + 20,
-			y: (getByte(address + 1) & 0b11111110) + 21,
+			x: (monsterBytes.getUint8(address) & 0b11111000) + 20,
+			y: (monsterBytes.getUint8(address + 1) & 0b11111110) + 21,
 		},
-		facingLeft: isBitSet(getByte(address + 2), 0),
+		facingLeft: isBitSet(monsterBytes.getUint8(address + 2), 0),
 	};
 }

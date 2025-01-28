@@ -38,7 +38,7 @@ export function parsePrg(prg: ArrayBuffer): {
 	const getByte = (address: number) =>
 		getPrgByteAtAddress(new DataView(prg), startAddres, address);
 
-	const dataSegments = getDataSegments(getByte);
+	const dataSegments = getDataSegments(prg);
 
 	const levels = readLevels(dataSegments);
 	const sprites = readSprites(getByte);

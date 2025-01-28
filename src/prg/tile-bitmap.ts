@@ -1,16 +1,15 @@
 import { isBitSet, mirrorBits } from "./bit-twiddling";
-import { GetBoundedByte } from "./io";
 
 export function readTileBitmaps(
-	getBitmapByte: GetBoundedByte,
-	getSymmetryMetadataByte: GetBoundedByte
+	bitmapBytes: DataView,
+	symmetryMetadataBytes: DataView
 ): number[][][] {
 	const tileBitmaps = [];
 
 	let offset = 0;
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
-		const isSymmetric = isBitSet(getSymmetryMetadataByte(levelIndex), 0);
-		tileBitmaps.push(readTileBitmap(offset, isSymmetric, getBitmapByte));
+		const isSymmetric = isBitSet(symmetryMetadataBytes.getUint8(levelIndex), 0);
+		tileBitmaps.push(readTileBitmap(offset, isSymmetric, bitmapBytes));
 		offset += isSymmetric ? 46 : 92;
 	}
 
@@ -20,7 +19,8 @@ export function readTileBitmaps(
 function readTileBitmap(
 	offset: number,
 	isSymmetric: boolean,
-	getBitmapByte: GetBoundedByte
+	// TODO: Restrict the dataview to a single level.
+	bitmapDataview: DataView
 ) {
 	const bytesPerRow = 4;
 
@@ -36,7 +36,7 @@ function readTileBitmap(
 			bitmapByteOfRowIndex < bytesToRead;
 			++bitmapByteOfRowIndex
 		) {
-			bitmapBytes.push(getBitmapByte(currentBitmapByteIndex));
+			bitmapBytes.push(bitmapDataview.getUint8(currentBitmapByteIndex));
 			currentBitmapByteIndex += 1;
 		}
 

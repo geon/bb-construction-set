@@ -5,12 +5,10 @@ import {
 	BubbleCurrentDirection,
 } from "../level";
 import { isBitSet } from "./bit-twiddling";
-import { GetBoundedByte } from "./io";
-import { GetByte } from "./types";
 
 export function readBubbleCurrentRectangles(
-	getBubbleCurrentRectanglesByte: GetBoundedByte,
-	getHoleMetadataByte: GetByte,
+	bubbleCurrentRectangleBytes: DataView,
+	holeMetadataBytes: DataView,
 	tileBitmaps: number[][][]
 ): BubbleCurrents[] {
 	const monstersForAllLevels = [];
@@ -20,8 +18,8 @@ export function readBubbleCurrentRectangles(
 			readBubbleCurrentRectanglesForLevel(
 				levelIndex,
 				tileBitmaps[levelIndex],
-				getBubbleCurrentRectanglesByte,
-				getHoleMetadataByte
+				bubbleCurrentRectangleBytes,
+				holeMetadataBytes
 			)
 		);
 	}
@@ -40,10 +38,10 @@ export function readBubbleCurrentRectangles(
 function readBubbleCurrentRectanglesForLevel(
 	levelIndex: number,
 	tileBitmap: number[][],
-	getBubbleCurrentRectanglesByte: GetBoundedByte,
-	getHoleMetadataByte: GetBoundedByte
+	bubbleCurrentRectangleBytes: DataView,
+	holeMetadataBytes: DataView
 ): BubbleCurrents {
-	const holeMetadata = getHoleMetadataByte(levelIndex);
+	const holeMetadata = holeMetadataBytes.getUint8(levelIndex);
 	const perLineDefaults = extractbubbleCurrentLineDefault(
 		tileBitmap,
 		holeMetadata
@@ -51,7 +49,7 @@ function readBubbleCurrentRectanglesForLevel(
 
 	let currentWindCurrentsByteIndex = 0;
 	for (let index = 0; index < levelIndex; ++index) {
-		const firstByte = getBubbleCurrentRectanglesByte(
+		const firstByte = bubbleCurrentRectangleBytes.getUint8(
 			currentWindCurrentsByteIndex
 		);
 		const firstByteWithoutCopyFlag = firstByte & 0b01111111;
@@ -61,7 +59,7 @@ function readBubbleCurrentRectanglesForLevel(
 
 	const startingWindCurrentsAddress = currentWindCurrentsByteIndex;
 
-	const firstByte = getBubbleCurrentRectanglesByte(
+	const firstByte = bubbleCurrentRectangleBytes.getUint8(
 		currentWindCurrentsByteIndex++
 	);
 	const copy = isBitSet(firstByte, 0);
@@ -90,7 +88,7 @@ function readBubbleCurrentRectanglesForLevel(
 		currentWindCurrentsByteIndex - startingWindCurrentsAddress <
 		byteCount
 	) {
-		const firstByte = getBubbleCurrentRectanglesByte(
+		const firstByte = bubbleCurrentRectangleBytes.getUint8(
 			currentWindCurrentsByteIndex++
 		);
 		const symmetry = !isBitSet(firstByte, 0);
@@ -106,8 +104,8 @@ function readBubbleCurrentRectanglesForLevel(
 			type: "rectangle",
 			...bytesToBubbleCurrentRectangle([
 				firstByte,
-				getBubbleCurrentRectanglesByte(currentWindCurrentsByteIndex++),
-				getBubbleCurrentRectanglesByte(currentWindCurrentsByteIndex++),
+				bubbleCurrentRectangleBytes.getUint8(currentWindCurrentsByteIndex++),
+				bubbleCurrentRectangleBytes.getUint8(currentWindCurrentsByteIndex++),
 			]),
 		});
 	}

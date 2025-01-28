@@ -1,6 +1,5 @@
 import { mapRecord } from "../functions";
-import { GetBoundedByte, makeGetBoundedByte } from "./io";
-import { GetByte } from "./types";
+import { getPrgStartAddress } from "./io";
 
 export const maxAsymmetric = 45;
 export const maxSidebars = 59;
@@ -136,10 +135,17 @@ const segmentLocations = {
 
 type DataSegmentName = keyof typeof segmentLocations;
 
-export type DataSegments = Record<DataSegmentName, GetBoundedByte>;
+export type DataSegments = Record<DataSegmentName, DataView>;
 
-export function getDataSegments(getByte: GetByte): DataSegments {
-	return mapRecord(segmentLocations, (segmentLocation, segmentName) =>
-		makeGetBoundedByte({ getByte, ...segmentLocation, segmentName })
+export function getDataSegments(prg: ArrayBuffer): DataSegments {
+	const prgStartAddress = getPrgStartAddress(prg);
+	return mapRecord(
+		segmentLocations,
+		(segmentLocation) =>
+			new DataView(
+				prg,
+				segmentLocation.startAddress - prgStartAddress + 2, // 2 bytes extra for the prg header.
+				segmentLocation.length
+			)
 	);
 }

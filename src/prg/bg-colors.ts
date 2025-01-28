@@ -1,8 +1,8 @@
 import { PaletteIndex } from "../palette";
-import { GetBoundedByte, getBytes } from "./io";
+import { getBytes } from "./io";
 
-export function readBgColors(getBgColorByte: GetBoundedByte) {
-	const bytes = getBytes(getBgColorByte, 100);
+export function readBgColors(dataView: DataView) {
+	const bytes = getBytes(dataView);
 	return {
 		bgColorLight: bytes.map(
 			(bgColorMetadata) => (bgColorMetadata & 0b1111) as PaletteIndex
