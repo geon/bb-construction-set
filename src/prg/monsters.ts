@@ -1,5 +1,6 @@
 import { Monster } from "../level";
 import { isBitSet } from "./bit-twiddling";
+import { bytesPerMonster } from "./data-locations";
 import { dataViewSlice } from "./io";
 
 export function readMonsters(monsterBytes: DataView) {
@@ -16,9 +17,11 @@ export function readMonsters(monsterBytes: DataView) {
 		const monsters: Monster[] = [];
 		do {
 			monsters.push(
-				readMonster(dataViewSlice(monsterBytes, currentMonsterByteIndex, 3))
+				readMonster(
+					dataViewSlice(monsterBytes, currentMonsterByteIndex, bytesPerMonster)
+				)
 			);
-			currentMonsterByteIndex += 3;
+			currentMonsterByteIndex += bytesPerMonster;
 		} while (monsterBytes.getUint8(currentMonsterByteIndex));
 		currentMonsterByteIndex += 1; // The monsters of each level are separated with a zero byte.
 
