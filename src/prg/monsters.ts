@@ -4,6 +4,7 @@ import { isBitSet } from "./bit-twiddling";
 export function readMonsters(monsterBytes: DataView) {
 	const monstersForAllLevels: Monster[][] = [];
 
+	let currentMonsterByteIndex = 0;
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
 		// Level 100 is the boss level. It has no monsters.
 		if (levelIndex === 99) {
@@ -11,20 +12,12 @@ export function readMonsters(monsterBytes: DataView) {
 			continue;
 		}
 
-		// TODO: Remove.
-		let currentMonsterByteIndex = 0;
-		for (let index = 0; index < levelIndex; ++index) {
-			do {
-				currentMonsterByteIndex += 3;
-			} while (monsterBytes.getUint8(currentMonsterByteIndex));
-			currentMonsterByteIndex += 1; // The monsters of each level are separated with a zero byte.
-		}
-
 		const monsters: Monster[] = [];
 		do {
 			monsters.push(readMonster(currentMonsterByteIndex, monsterBytes));
 			currentMonsterByteIndex += 3;
 		} while (monsterBytes.getUint8(currentMonsterByteIndex));
+		currentMonsterByteIndex += 1; // The monsters of each level are separated with a zero byte.
 
 		monstersForAllLevels.push(monsters);
 	}
