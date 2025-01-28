@@ -127,16 +127,18 @@ export function patchPrg(prg: Uint8Array, levels: readonly Level[]) {
 		)
 	);
 
-	// Write level colors.
-	setBytes(
-		bgColorMetadataArrayAddress,
-		levels.map((level) => level.bgColorLight + (level.bgColorDark << 4))
-	);
-
+	patchBgColors(setBytes, levels);
 	patchHoles(levels, setByte);
 	patchSymmetry(setBytes, levels, getByte);
 	patchBitmaps(levels, setBytes);
 	patchMonsters(levels, setBytes, getByte, setByte);
+}
+
+function patchBgColors(setBytes: SetBytes, levels: readonly Level[]) {
+	setBytes(
+		bgColorMetadataArrayAddress,
+		levels.map((level) => level.bgColorLight + (level.bgColorDark << 4))
+	);
 }
 
 function patchHoles(levels: readonly Level[], setByte: SetByte) {
