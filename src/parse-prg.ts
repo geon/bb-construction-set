@@ -2,7 +2,7 @@ import { CharBlock } from "./charset-char";
 import { chunk, zipObject } from "./functions";
 import { Level, levelIsSymmetric } from "./level";
 import { maxAsymmetric } from "./prg/data-locations";
-import { readBgColors } from "./prg/bg-colors";
+import { patchBgColors, readBgColors } from "./prg/bg-colors";
 import { Sprites } from "./sprite";
 import { patchPlatformChars, readPlatformChars } from "./prg/charset-char";
 import {
@@ -75,13 +75,6 @@ export function patchPrg(prg: ArrayBuffer, levels: readonly Level[]) {
 	patchSymmetry(dataSegments.symmetryMetadata, levels);
 	patchBitmaps(dataSegments.bitmaps, levels);
 	patchMonsters(dataSegments.monsters, levels);
-}
-
-function patchBgColors(bytes: DataView, levels: readonly Level[]) {
-	dataViewSetBytes(
-		bytes,
-		levels.map((level) => level.bgColorLight + (level.bgColorDark << 4))
-	);
 }
 
 function patchHoles(dataView: DataView, levels: readonly Level[]) {

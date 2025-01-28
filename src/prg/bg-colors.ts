@@ -1,5 +1,6 @@
+import { Level } from "../level";
 import { PaletteIndex } from "../palette";
-import { getBytes } from "./io";
+import { dataViewSetBytes, getBytes } from "./io";
 import { ReadonlyDataView } from "./types";
 
 export function readBgColors(dataView: ReadonlyDataView) {
@@ -12,4 +13,11 @@ export function readBgColors(dataView: ReadonlyDataView) {
 			(bgColorMetadata) => ((bgColorMetadata & 0b11110000) >> 4) as PaletteIndex
 		),
 	};
+}
+
+export function patchBgColors(bytes: DataView, levels: readonly Level[]) {
+	dataViewSetBytes(
+		bytes,
+		levels.map((level) => level.bgColorLight + (level.bgColorDark << 4))
+	);
 }
