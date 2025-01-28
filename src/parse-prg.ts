@@ -106,7 +106,7 @@ export function patchPrg(prg: Uint8Array, levels: readonly Level[]) {
 	patchHoles(levels, setBytes);
 	patchSymmetry(setBytes, levels, getByte);
 	patchBitmaps(levels, setBytes);
-	patchMonsters(levels, setBytes, getByte, setByte);
+	patchMonsters(levels, setBytes, getByte);
 }
 
 function patchBgColors(setBytes: SetBytes, levels: readonly Level[]) {

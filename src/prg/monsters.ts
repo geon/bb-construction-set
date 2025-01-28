@@ -6,7 +6,7 @@ import {
 	monsterArrayAddress,
 } from "./data-locations";
 import { dataViewSlice } from "./io";
-import { SetBytes, GetByte, SetByte } from "./types";
+import { SetBytes, GetByte } from "./types";
 
 export function readMonsters(monsterBytes: DataView) {
 	const monstersForAllLevels: Monster[][] = [];
@@ -50,8 +50,7 @@ function readMonster(monsterBytes: DataView): Monster {
 export function patchMonsters(
 	levels: readonly Level[],
 	setBytes: SetBytes,
-	getByte: GetByte,
-	setByte: SetByte
+	getByte: GetByte
 ) {
 	// Write monsters.
 	const numMonsters = levels.flatMap((level) => level.monsters).length;
@@ -61,10 +60,10 @@ export function patchMonsters(
 		);
 	}
 	let monsterStartByte = monsterArrayAddress;
-	for (const level of levels) {
-		for (const monster of level.monsters) {
+	const bytes = levels.flatMap((level) => {
+		const subBytes = level.monsters.flatMap((monster) => {
 			const currentMonsterStartByte = monsterStartByte;
-			setBytes(currentMonsterStartByte, [
+			const subSubBytes = [
 				((monster.spawnPoint.x - 20) & 0b11111000) + monster.type,
 				((monster.spawnPoint.y - 21) & 0b11111110) +
 					// TODO: No idea what the rest of the bits are.
@@ -72,11 +71,14 @@ export function patchMonsters(
 				((monster.facingLeft ? 1 : 0) << 7) +
 					// TODO: No idea what the rest of the bits are.
 					(getByte(currentMonsterStartByte + 2) & 0b01111111),
-			]);
+			];
 			monsterStartByte += 3;
-		}
-		// Terminate each level with a zero.
-		setByte(monsterStartByte, 0);
+			return subSubBytes;
+		});
 		monsterStartByte += 1;
-	}
+		// Terminate each level with a zero.
+		return [...subBytes, 0];
+	});
+
+	setBytes(monsterArrayAddress, bytes);
 }
