@@ -5,7 +5,6 @@ import {
 	bgColorMetadataArrayAddress,
 	holeMetadataArrayAddress,
 	symmetryMetadataArrayAddress,
-	platformCharArrayAddress,
 	getDataSegments,
 	DataSegments,
 } from "./prg/data-locations";
@@ -13,7 +12,7 @@ import { Level, levelIsSymmetric } from "./level";
 import { maxAsymmetric, maxSidebars } from "./prg/data-locations";
 import { readBgColors } from "./prg/bg-colors";
 import { Sprites } from "./sprite";
-import { readPlatformChars } from "./prg/charset-char";
+import { patchPlatformChars, readPlatformChars } from "./prg/charset-char";
 import {
 	getPrgStartAddress,
 	getPrgByteAtAddress,
@@ -101,17 +100,7 @@ export function patchPrg(prg: Uint8Array, levels: readonly Level[]) {
 	const getByte = (address: number) =>
 		getPrgByteAtAddress(new DataView(prg.buffer), startAddres, address);
 
-	// Write platform chars.
-	setBytes(
-		platformCharArrayAddress,
-		levels.flatMap((level) =>
-			level.platformChar.lines.map(
-				(line) =>
-					(line[0] << 6) + (line[1] << 4) + (line[2] << 2) + (line[3] << 0)
-			)
-		)
-	);
-
+	patchPlatformChars(setBytes, levels);
 	patchSidebarChars(setBytes, levels);
 	patchBgColors(setBytes, levels);
 	patchHoles(levels, setByte);
