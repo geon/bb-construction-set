@@ -28,6 +28,7 @@ import { readTiles } from "./prg/tiles";
 import { readMonsters } from "./prg/monsters";
 import { readSprites } from "./prg/sprites";
 import { readTileBitmaps } from "./prg/tile-bitmap";
+import { SetByte } from "./prg/types";
 
 export function parsePrg(prg: ArrayBuffer): {
 	levels: readonly Level[];
@@ -133,26 +134,7 @@ export function patchPrg(prg: Uint8Array, levels: readonly Level[]) {
 		levels.map((level) => level.bgColorLight + (level.bgColorDark << 4))
 	);
 
-	// Write holes.
-	for (const [levelIndex, level] of levels.entries()) {
-		const topLeft = !level.tiles[0][10];
-		const topRight = !level.tiles[0][20];
-		const bottomLeft = !level.tiles[24][10];
-		const bottomRight = !level.tiles[24][20];
-
-		setByte(
-			holeMetadataArrayAddress + levelIndex,
-			((topLeft ? 1 : 0) << 0) +
-				((topRight ? 1 : 0) << 1) +
-				((bottomLeft ? 1 : 0) << 2) +
-				((bottomRight ? 1 : 0) << 3) +
-				// The most significant bits are the bubble current of the top and bottom rows.
-				((level.bubbleCurrents.perLineDefaults[0] & 0b01 ? 1 : 0) << 4) +
-				((level.bubbleCurrents.perLineDefaults[0] & 0b10 ? 1 : 0) << 5) +
-				((level.bubbleCurrents.perLineDefaults[24] & 0b01 ? 1 : 0) << 6) +
-				((level.bubbleCurrents.perLineDefaults[24] & 0b10 ? 1 : 0) << 7)
-		);
-	}
+	patchHoles(levels, setByte);
 
 	// Write symmetry.
 	setBytes(
@@ -245,5 +227,27 @@ export function patchPrg(prg: Uint8Array, levels: readonly Level[]) {
 		// Terminate each level with a zero.
 		setByte(monsterStartByte, 0);
 		monsterStartByte += 1;
+	}
+}
+
+function patchHoles(levels: readonly Level[], setByte: SetByte) {
+	for (const [levelIndex, level] of levels.entries()) {
+		const topLeft = !level.tiles[0][10];
+		const topRight = !level.tiles[0][20];
+		const bottomLeft = !level.tiles[24][10];
+		const bottomRight = !level.tiles[24][20];
+
+		setByte(
+			holeMetadataArrayAddress + levelIndex,
+			((topLeft ? 1 : 0) << 0) +
+				((topRight ? 1 : 0) << 1) +
+				((bottomLeft ? 1 : 0) << 2) +
+				((bottomRight ? 1 : 0) << 3) +
+				// The most significant bits are the bubble current of the top and bottom rows.
+				((level.bubbleCurrents.perLineDefaults[0] & 0b01 ? 1 : 0) << 4) +
+				((level.bubbleCurrents.perLineDefaults[0] & 0b10 ? 1 : 0) << 5) +
+				((level.bubbleCurrents.perLineDefaults[24] & 0b01 ? 1 : 0) << 6) +
+				((level.bubbleCurrents.perLineDefaults[24] & 0b10 ? 1 : 0) << 7)
+		);
 	}
 }
