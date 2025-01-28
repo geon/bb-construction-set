@@ -5,7 +5,7 @@ import { ReadonlyDataView } from "./types";
 
 export function readTiles(
 	holeMetadataBytes: ReadonlyDataView,
-	tileBitmaps: TileBitmap[]
+	tileBitmaps: readonly TileBitmap[]
 ) {
 	const tilesForAllLevels: Tiles[] = [];
 

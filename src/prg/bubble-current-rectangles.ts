@@ -11,7 +11,7 @@ import { ReadonlyDataView } from "./types";
 export function readBubbleCurrentRectangles(
 	bubbleCurrentRectangleBytes: ReadonlyDataView,
 	holeMetadataBytes: ReadonlyDataView,
-	tileBitmaps: TileBitmap[]
+	tileBitmaps: readonly TileBitmap[]
 ): BubbleCurrents[] {
 	const monstersForAllLevels = [];
 

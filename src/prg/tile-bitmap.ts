@@ -7,8 +7,8 @@ export type TileBitmap = readonly (readonly number[])[];
 export function readTileBitmaps(
 	bitmapBytes: ReadonlyDataView,
 	symmetryMetadataBytes: ReadonlyDataView
-): TileBitmap[] {
-	const tileBitmaps = [];
+): readonly TileBitmap[] {
+	const tileBitmaps: TileBitmap[] = [];
 
 	let offset = 0;
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
@@ -29,7 +29,7 @@ export function readTileBitmaps(
 function readTileBitmap(
 	isSymmetric: boolean,
 	bitmapDataview: ReadonlyDataView
-) {
+): TileBitmap {
 	const bytesPerRow = 4;
 
 	// Read tile bitmap.
