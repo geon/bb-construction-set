@@ -1,11 +1,5 @@
 import { CharBlock } from "./charset-char";
 import { chunk, zipObject } from "./functions";
-import {
-	bitmapArrayAddress,
-	bgColorMetadataArrayAddress,
-	holeMetadataArrayAddress,
-	symmetryMetadataArrayAddress,
-} from "./prg/data-locations";
 import { Level, levelIsSymmetric } from "./level";
 import { maxAsymmetric, maxSidebars } from "./prg/data-locations";
 import { readBgColors } from "./prg/bg-colors";
@@ -14,9 +8,9 @@ import { patchPlatformChars, readPlatformChars } from "./prg/charset-char";
 import {
 	getPrgStartAddress,
 	getPrgByteAtAddress,
-	setPrgByteAtAddress,
 	getDataSegments,
 	ReadonlyDataSegments,
+	dataViewSetBytes,
 } from "./prg/io";
 import { readItems } from "./prg/items";
 import { readBubbleCurrentRectangles } from "./prg/bubble-current-rectangles";
@@ -25,7 +19,6 @@ import { readTiles } from "./prg/tiles";
 import { patchMonsters, readMonsters } from "./prg/monsters";
 import { readSprites } from "./prg/sprites";
 import { readTileBitmaps } from "./prg/tile-bitmap";
-import { GetByte, SetBytes } from "./prg/types";
 
 export function parsePrg(prg: ArrayBuffer): {
 	levels: readonly Level[];
@@ -87,36 +80,25 @@ export function patchPrg(prg: ArrayBuffer, levels: readonly Level[]) {
 		);
 	}
 
-	const startAddres = getPrgStartAddress(prg);
-	const setByte = (address: number, value: number) =>
-		setPrgByteAtAddress(new Uint8Array(prg), startAddres, address, value);
-	const setBytes = (address: number, bytes: number[]) => {
-		let currentAddress = address;
-		for (const byte of bytes) {
-			setByte(currentAddress, byte);
-			++currentAddress;
-		}
-	};
-	const getByte = (address: number) =>
-		getPrgByteAtAddress(new DataView(prg), startAddres, address);
+	const dataSegments = getDataSegments<"mutable">(prg);
 
-	patchPlatformChars(setBytes, levels);
-	patchSidebarChars(setBytes, levels);
-	patchBgColors(setBytes, levels);
-	patchHoles(levels, setBytes);
-	patchSymmetry(setBytes, levels, getByte);
-	patchBitmaps(levels, setBytes);
-	patchMonsters(levels, setBytes, getByte);
+	patchPlatformChars(dataSegments.platformChars, levels);
+	patchSidebarChars(dataSegments.sidebarChars, levels);
+	patchBgColors(dataSegments.bgColors, levels);
+	patchHoles(dataSegments.holeMetadata, levels);
+	patchSymmetry(dataSegments.symmetryMetadata, levels);
+	patchBitmaps(dataSegments.bitmaps, levels);
+	patchMonsters(dataSegments.monsters, levels);
 }
 
-function patchBgColors(setBytes: SetBytes, levels: readonly Level[]) {
-	setBytes(
-		bgColorMetadataArrayAddress,
+function patchBgColors(bytes: DataView, levels: readonly Level[]) {
+	dataViewSetBytes(
+		bytes,
 		levels.map((level) => level.bgColorLight + (level.bgColorDark << 4))
 	);
 }
 
-function patchHoles(levels: readonly Level[], setBytes: SetBytes) {
+function patchHoles(dataView: DataView, levels: readonly Level[]) {
 	const bytes = levels.map((level) => {
 		const topLeft = !level.tiles[0][10];
 		const topRight = !level.tiles[0][20];
@@ -136,28 +118,24 @@ function patchHoles(levels: readonly Level[], setBytes: SetBytes) {
 		);
 	});
 
-	setBytes(holeMetadataArrayAddress, bytes);
+	dataViewSetBytes(dataView, bytes);
 }
 
-function patchSymmetry(
-	setBytes: SetBytes,
-	levels: readonly Level[],
-	getByte: GetByte
-) {
+function patchSymmetry(dataView: DataView, levels: readonly Level[]) {
 	// Write symmetry.
-	setBytes(
-		symmetryMetadataArrayAddress,
+	dataViewSetBytes(
+		dataView,
 		levels.map(
 			(level, index) =>
 				((levelIsSymmetric(level.tiles) ? 1 : 0) << 7) +
 				((!level.sidebarChars ? 1 : 0) << 6) +
 				// TODO: No idea what the rest of the bits are.
-				(getByte(symmetryMetadataArrayAddress + index) & 0b00111111)
+				(dataView.getUint8(index) & 0b00111111)
 		)
 	);
 }
 
-function patchBitmaps(levels: readonly Level[], setBytes: SetBytes) {
+function patchBitmaps(dataView: DataView, levels: readonly Level[]) {
 	// Write platforms bitmap
 	const levelBitmapBytes = levels.flatMap((level) => {
 		const isSymmetric = levelIsSymmetric(level.tiles);
@@ -207,5 +185,5 @@ function patchBitmaps(levels: readonly Level[], setBytes: SetBytes) {
 	if (levelBitmapBytes.length > maxLevelBytes) {
 		throw new Error("Too many level bytes.");
 	}
-	setBytes(bitmapArrayAddress, levelBitmapBytes);
+	dataViewSetBytes(dataView, levelBitmapBytes);
 }

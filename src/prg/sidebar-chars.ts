@@ -2,9 +2,8 @@ import { CharBlock, parseCharsetCharLine } from "../charset-char";
 import { chunk } from "../functions";
 import { Level } from "../level";
 import { isBitSet } from "./bit-twiddling";
-import { sidebarCharArrayAddress } from "./data-locations";
-import { getBytes } from "./io";
-import { ReadonlyDataView, SetBytes } from "./types";
+import { dataViewSetBytes, getBytes } from "./io";
+import { ReadonlyDataView } from "./types";
 
 export function readSidebarChars(
 	sidebarCharsBytes: ReadonlyDataView,
@@ -31,11 +30,11 @@ export function readSidebarChars(
 }
 
 export function patchSidebarChars(
-	setBytes: SetBytes,
+	dataView: DataView,
 	levels: readonly Level[]
 ) {
-	setBytes(
-		sidebarCharArrayAddress,
+	dataViewSetBytes(
+		dataView,
 		levels.flatMap(
 			(level) =>
 				level.sidebarChars?.flatMap((char) =>

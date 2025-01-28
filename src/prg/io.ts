@@ -20,19 +20,6 @@ export function getPrgByteAtAddress(
 	return prg.getUint8(offset);
 }
 
-export function setPrgByteAtAddress(
-	prg: Uint8Array,
-	startAddres: number,
-	address: number,
-	value: number
-): void {
-	const offset = 2 - startAddres + address;
-	if (offset >= prg.byteLength) {
-		throw new Error("File is too short.");
-	}
-	prg[offset] = value;
-}
-
 export function getBytes(dataView: ReadonlyDataView): readonly number[] {
 	const length = dataView.byteLength;
 	const bytes = Array<number>(length);
