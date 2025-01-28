@@ -9,8 +9,9 @@ export function readTileBitmaps(
 	let offset = 0;
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
 		const isSymmetric = isBitSet(symmetryMetadataBytes.getUint8(levelIndex), 0);
+		const levelBitmapByteLength = isSymmetric ? 46 : 92;
 		tileBitmaps.push(readTileBitmap(offset, isSymmetric, bitmapBytes));
-		offset += isSymmetric ? 46 : 92;
+		offset += levelBitmapByteLength;
 	}
 
 	return tileBitmaps;
