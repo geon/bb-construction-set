@@ -1,9 +1,10 @@
 import { isBitSet, mirrorBits } from "./bit-twiddling";
 import { dataViewSlice } from "./io";
+import { ReadonlyDataView } from "./types";
 
 export function readTileBitmaps(
-	bitmapBytes: DataView,
-	symmetryMetadataBytes: DataView
+	bitmapBytes: ReadonlyDataView,
+	symmetryMetadataBytes: ReadonlyDataView
 ): number[][][] {
 	const tileBitmaps = [];
 
@@ -23,7 +24,10 @@ export function readTileBitmaps(
 	return tileBitmaps;
 }
 
-function readTileBitmap(isSymmetric: boolean, bitmapDataview: DataView) {
+function readTileBitmap(
+	isSymmetric: boolean,
+	bitmapDataview: ReadonlyDataView
+) {
 	const bytesPerRow = 4;
 
 	// Read tile bitmap.

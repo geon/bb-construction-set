@@ -5,10 +5,11 @@ import {
 	BubbleCurrentDirection,
 } from "../level";
 import { isBitSet } from "./bit-twiddling";
+import { ReadonlyDataView } from "./types";
 
 export function readBubbleCurrentRectangles(
-	bubbleCurrentRectangleBytes: DataView,
-	holeMetadataBytes: DataView,
+	bubbleCurrentRectangleBytes: ReadonlyDataView,
+	holeMetadataBytes: ReadonlyDataView,
 	tileBitmaps: number[][][]
 ): BubbleCurrents[] {
 	const monstersForAllLevels = [];
@@ -38,8 +39,8 @@ export function readBubbleCurrentRectangles(
 function readBubbleCurrentRectanglesForLevel(
 	levelIndex: number,
 	tileBitmap: number[][],
-	bubbleCurrentRectangleBytes: DataView,
-	holeMetadataBytes: DataView
+	bubbleCurrentRectangleBytes: ReadonlyDataView,
+	holeMetadataBytes: ReadonlyDataView
 ): BubbleCurrents {
 	const holeMetadata = holeMetadataBytes.getUint8(levelIndex);
 	const perLineDefaults = extractbubbleCurrentLineDefault(

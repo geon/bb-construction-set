@@ -1,5 +1,6 @@
 import { mapRecord } from "../functions";
 import { getPrgStartAddress } from "./io";
+import { ReadonlyDataView } from "./types";
 
 export const maxAsymmetric = 45;
 export const maxSidebars = 59;
@@ -143,7 +144,7 @@ const segmentLocations = {
 
 type DataSegmentName = keyof typeof segmentLocations;
 
-export type DataSegments = Record<DataSegmentName, DataView>;
+export type DataSegments = Record<DataSegmentName, ReadonlyDataView>;
 
 export function getDataSegments(prg: ArrayBuffer): DataSegments {
 	const prgStartAddress = getPrgStartAddress(prg);

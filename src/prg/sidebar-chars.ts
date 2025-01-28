@@ -4,11 +4,11 @@ import { Level } from "../level";
 import { isBitSet } from "./bit-twiddling";
 import { sidebarCharArrayAddress } from "./data-locations";
 import { getBytes } from "./io";
-import { SetBytes } from "./types";
+import { ReadonlyDataView, SetBytes } from "./types";
 
 export function readSidebarChars(
-	sidebarCharsBytes: DataView,
-	symmetryMetadataBytes: DataView
+	sidebarCharsBytes: ReadonlyDataView,
+	symmetryMetadataBytes: ReadonlyDataView
 ) {
 	const linesPerChar = 8;
 	const allSidebarCharBlocks = chunk(

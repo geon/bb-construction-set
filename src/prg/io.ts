@@ -1,4 +1,4 @@
-import { GetByte } from "./types";
+import { GetByte, ReadonlyDataView } from "./types";
 
 export function getPrgStartAddress(prg: ArrayBuffer): number {
 	// The prg contains a little endian 16 bit header with the start address. The rest is the raw data.
@@ -6,7 +6,7 @@ export function getPrgStartAddress(prg: ArrayBuffer): number {
 }
 
 export function getPrgByteAtAddress(
-	prg: DataView,
+	prg: ReadonlyDataView,
 	startAddres: number,
 	address: number
 ): number {
@@ -31,7 +31,7 @@ export function setPrgByteAtAddress(
 	prg[offset] = value;
 }
 
-export function getBytes(dataView: DataView): readonly number[] {
+export function getBytes(dataView: ReadonlyDataView): readonly number[] {
 	const length = dataView.byteLength;
 	const bytes = Array<number>(length);
 	for (let index = 0; index < length; ++index) {
@@ -63,10 +63,10 @@ export function makeGetBoundedByte({
 }
 
 export function dataViewSlice(
-	dataView: DataView,
+	dataView: ReadonlyDataView,
 	byteOffset: number,
 	byteLength: number
-): DataView {
+): ReadonlyDataView {
 	if (byteOffset < 0) {
 		throw new Error("Negative offset.");
 	}
@@ -80,8 +80,8 @@ export function dataViewSlice(
 	}
 
 	return new DataView(
-		dataView.buffer,
-		dataView.byteOffset + byteOffset,
+		(dataView as DataView).buffer,
+		(dataView as DataView).byteOffset + byteOffset,
 		byteLength
 	);
 }

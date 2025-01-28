@@ -6,9 +6,9 @@ import {
 	monsterArrayAddress,
 } from "./data-locations";
 import { dataViewSlice } from "./io";
-import { SetBytes, GetByte } from "./types";
+import { SetBytes, GetByte, ReadonlyDataView } from "./types";
 
-export function readMonsters(monsterBytes: DataView) {
+export function readMonsters(monsterBytes: ReadonlyDataView) {
 	const monstersForAllLevels: Monster[][] = [];
 
 	let currentMonsterByteIndex = 0;
@@ -36,7 +36,7 @@ export function readMonsters(monsterBytes: DataView) {
 	return monstersForAllLevels;
 }
 
-function readMonster(monsterBytes: DataView): Monster {
+function readMonster(monsterBytes: ReadonlyDataView): Monster {
 	return {
 		type: monsterBytes.getUint8(0) & 0b111,
 		spawnPoint: {

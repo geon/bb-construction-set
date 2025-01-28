@@ -3,11 +3,11 @@ import { chunk } from "../functions";
 import { Level } from "../level";
 import { platformCharArrayAddress } from "./data-locations";
 import { getBytes } from "./io";
-import { SetBytes } from "./types";
+import { ReadonlyDataView, SetBytes } from "./types";
 
 export const linesPerChar = 8;
 
-export function readPlatformChars(platformCharsBytes: DataView) {
+export function readPlatformChars(platformCharsBytes: ReadonlyDataView) {
 	return chunk(getBytes(platformCharsBytes), linesPerChar).map(
 		(char) => ({ lines: char.map(parseCharsetCharLine) } as CharsetChar)
 	);

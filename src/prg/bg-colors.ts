@@ -1,7 +1,8 @@
 import { PaletteIndex } from "../palette";
 import { getBytes } from "./io";
+import { ReadonlyDataView } from "./types";
 
-export function readBgColors(dataView: DataView) {
+export function readBgColors(dataView: ReadonlyDataView) {
 	const bytes = getBytes(dataView);
 	return {
 		bgColorLight: bytes.map(
