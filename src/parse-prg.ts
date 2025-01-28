@@ -28,7 +28,7 @@ import { readTiles } from "./prg/tiles";
 import { readMonsters } from "./prg/monsters";
 import { readSprites } from "./prg/sprites";
 import { readTileBitmaps } from "./prg/tile-bitmap";
-import { SetByte } from "./prg/types";
+import { GetByte, SetByte, SetBytes } from "./prg/types";
 
 export function parsePrg(prg: ArrayBuffer): {
 	levels: readonly Level[];
@@ -135,18 +135,7 @@ export function patchPrg(prg: Uint8Array, levels: readonly Level[]) {
 	);
 
 	patchHoles(levels, setByte);
-
-	// Write symmetry.
-	setBytes(
-		symmetryMetadataArrayAddress,
-		levels.map(
-			(level, index) =>
-				((levelIsSymmetric(level.tiles) ? 1 : 0) << 7) +
-				((!level.sidebarChars ? 1 : 0) << 6) +
-				// TODO: No idea what the rest of the bits are.
-				(getByte(symmetryMetadataArrayAddress + index) & 0b00111111)
-		)
-	);
+	patchSymmetry(setBytes, levels, getByte);
 
 	// Write platforms bitmap
 	let foo = bitmapArrayAddress;
@@ -250,4 +239,22 @@ function patchHoles(levels: readonly Level[], setByte: SetByte) {
 				((level.bubbleCurrents.perLineDefaults[24] & 0b10 ? 1 : 0) << 7)
 		);
 	}
+}
+
+function patchSymmetry(
+	setBytes: SetBytes,
+	levels: readonly Level[],
+	getByte: GetByte
+) {
+	// Write symmetry.
+	setBytes(
+		symmetryMetadataArrayAddress,
+		levels.map(
+			(level, index) =>
+				((levelIsSymmetric(level.tiles) ? 1 : 0) << 7) +
+				((!level.sidebarChars ? 1 : 0) << 6) +
+				// TODO: No idea what the rest of the bits are.
+				(getByte(symmetryMetadataArrayAddress + index) & 0b00111111)
+		)
+	);
 }
