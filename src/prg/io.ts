@@ -42,6 +42,15 @@ export function getBytes(dataView: ReadonlyDataView): readonly number[] {
 	return bytes;
 }
 
+export function dataViewSetBytes(
+	dataView: DataView,
+	bytes: readonly number[]
+): void {
+	for (const [index, byte] of bytes.entries()) {
+		dataView.setUint8(index, byte);
+	}
+}
+
 export type GetBoundedByte = (index: number) => number;
 export function makeGetBoundedByte({
 	getByte,
@@ -64,11 +73,11 @@ export function makeGetBoundedByte({
 	};
 }
 
-export function dataViewSlice(
-	dataView: ReadonlyDataView,
+export function dataViewSlice<TDataView extends ReadonlyDataView | DataView>(
+	dataView: TDataView,
 	byteOffset: number,
 	byteLength: number
-): ReadonlyDataView {
+): TDataView extends DataView ? DataView : ReadonlyDataView {
 	if (byteOffset < 0) {
 		throw new Error("Negative offset.");
 	}
@@ -91,8 +100,15 @@ export function dataViewSlice(
 type DataSegmentName = keyof typeof segmentLocations;
 
 export type ReadonlyDataSegments = Record<DataSegmentName, ReadonlyDataView>;
+export type MutableDataSegments = Record<DataSegmentName, DataView>;
 
-export function getDataSegments(prg: ArrayBuffer): ReadonlyDataSegments {
+export function getDataSegments<
+	TReadonlyOrMutable extends "readonly" | "mutable" = "readonly"
+>(
+	prg: ArrayBuffer
+): TReadonlyOrMutable extends "readonly"
+	? ReadonlyDataSegments
+	: MutableDataSegments {
 	const prgStartAddress = getPrgStartAddress(prg);
 	return mapRecord(
 		segmentLocations,
