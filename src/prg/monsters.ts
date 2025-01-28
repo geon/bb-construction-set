@@ -1,5 +1,6 @@
 import { Monster } from "../level";
 import { isBitSet } from "./bit-twiddling";
+import { dataViewSlice } from "./io";
 
 export function readMonsters(monsterBytes: DataView) {
 	const monstersForAllLevels: Monster[][] = [];
@@ -14,7 +15,9 @@ export function readMonsters(monsterBytes: DataView) {
 
 		const monsters: Monster[] = [];
 		do {
-			monsters.push(readMonster(currentMonsterByteIndex, monsterBytes));
+			monsters.push(
+				readMonster(dataViewSlice(monsterBytes, currentMonsterByteIndex, 3))
+			);
 			currentMonsterByteIndex += 3;
 		} while (monsterBytes.getUint8(currentMonsterByteIndex));
 		currentMonsterByteIndex += 1; // The monsters of each level are separated with a zero byte.
@@ -25,14 +28,13 @@ export function readMonsters(monsterBytes: DataView) {
 	return monstersForAllLevels;
 }
 
-// TODO: Restrict the DataView to a single monster.
-function readMonster(address: number, monsterBytes: DataView): Monster {
+function readMonster(monsterBytes: DataView): Monster {
 	return {
-		type: monsterBytes.getUint8(address) & 0b111,
+		type: monsterBytes.getUint8(0) & 0b111,
 		spawnPoint: {
-			x: (monsterBytes.getUint8(address) & 0b11111000) + 20,
-			y: (monsterBytes.getUint8(address + 1) & 0b11111110) + 21,
+			x: (monsterBytes.getUint8(0) & 0b11111000) + 20,
+			y: (monsterBytes.getUint8(1) & 0b11111110) + 21,
 		},
-		facingLeft: isBitSet(monsterBytes.getUint8(address + 2), 0),
+		facingLeft: isBitSet(monsterBytes.getUint8(2), 0),
 	};
 }

@@ -1,4 +1,5 @@
 import { isBitSet, mirrorBits } from "./bit-twiddling";
+import { dataViewSlice } from "./io";
 
 export function readTileBitmaps(
 	bitmapBytes: DataView,
@@ -10,23 +11,23 @@ export function readTileBitmaps(
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
 		const isSymmetric = isBitSet(symmetryMetadataBytes.getUint8(levelIndex), 0);
 		const levelBitmapByteLength = isSymmetric ? 46 : 92;
-		tileBitmaps.push(readTileBitmap(offset, isSymmetric, bitmapBytes));
+		tileBitmaps.push(
+			readTileBitmap(
+				isSymmetric,
+				dataViewSlice(bitmapBytes, offset, levelBitmapByteLength)
+			)
+		);
 		offset += levelBitmapByteLength;
 	}
 
 	return tileBitmaps;
 }
 
-function readTileBitmap(
-	offset: number,
-	isSymmetric: boolean,
-	// TODO: Restrict the dataview to a single level.
-	bitmapDataview: DataView
-) {
+function readTileBitmap(isSymmetric: boolean, bitmapDataview: DataView) {
 	const bytesPerRow = 4;
 
 	// Read tile bitmap.
-	let currentBitmapByteIndex = offset;
+	let currentBitmapByteIndex = 0;
 	const bitmapBytesRows = [];
 	for (let rowIndex = 0; rowIndex < 23; ++rowIndex) {
 		// Read half or full lines from the level data.

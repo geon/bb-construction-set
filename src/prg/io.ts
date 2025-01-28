@@ -61,3 +61,27 @@ export function makeGetBoundedByte({
 		return getByte(startAddress + index);
 	};
 }
+
+export function dataViewSlice(
+	dataView: DataView,
+	byteOffset: number,
+	byteLength: number
+): DataView {
+	if (byteOffset < 0) {
+		throw new Error("Negative offset.");
+	}
+
+	if (byteOffset > dataView.byteLength) {
+		throw new Error("Too large offset.");
+	}
+
+	if (byteLength + byteOffset > dataView.byteLength) {
+		throw new Error("Too large length.");
+	}
+
+	return new DataView(
+		dataView.buffer,
+		dataView.byteOffset + byteOffset,
+		byteLength
+	);
+}
