@@ -5,6 +5,7 @@ export const maxAsymmetric = 45;
 export const maxSidebars = 59;
 export const maxMonsters = 572;
 export const bytesPerMonster = 3;
+const monsterStopBytes = 99; // A stop-byte for each level. Boss level has no stored monsters.
 
 export const platformCharArrayAddress = 0xc26e;
 export const sidebarCharArrayAddress = 0xbb0e;
@@ -126,7 +127,7 @@ const segmentLocations = {
 	},
 	monsters: {
 		startAddress: monsterArrayAddress,
-		length: maxMonsters * bytesPerMonster + 99, // A stop-byte for each level. Boss level has no stored monsters.
+		length: maxMonsters * bytesPerMonster + monsterStopBytes,
 	},
 	windCurrents: {
 		startAddress: windCurrentsArrayAddress,
