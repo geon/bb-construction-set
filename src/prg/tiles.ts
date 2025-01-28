@@ -1,10 +1,11 @@
 import { createTiles, levelWidth, levelHeight, Tiles } from "../level";
 import { byteToBits, isBitSet } from "./bit-twiddling";
+import { TileBitmap } from "./tile-bitmap";
 import { ReadonlyDataView } from "./types";
 
 export function readTiles(
 	holeMetadataBytes: ReadonlyDataView,
-	tileBitmaps: number[][][]
+	tileBitmaps: TileBitmap[]
 ) {
 	const tilesForAllLevels: Tiles[] = [];
 

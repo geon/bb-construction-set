@@ -2,10 +2,12 @@ import { isBitSet, mirrorBits } from "./bit-twiddling";
 import { dataViewSlice } from "./io";
 import { ReadonlyDataView } from "./types";
 
+export type TileBitmap = number[][];
+
 export function readTileBitmaps(
 	bitmapBytes: ReadonlyDataView,
 	symmetryMetadataBytes: ReadonlyDataView
-): number[][][] {
+): TileBitmap[] {
 	const tileBitmaps = [];
 
 	let offset = 0;
