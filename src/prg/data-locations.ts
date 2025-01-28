@@ -20,7 +20,13 @@ export const monsterArrayAddress = 0xae51;
 export const windCurrentsArrayAddress = 0xb695;
 
 export const spriteBitmapArrayAddress = 0x5800;
-export const itemCharsArrays = [
+
+interface ItemCharsLocation {
+	readonly address: number;
+	readonly numItems: number;
+	readonly withMask?: true;
+}
+export const itemCharsArrays: readonly ItemCharsLocation[] = [
 	// Blow bubble animation.
 	{
 		address: 0x8000,
