@@ -3,7 +3,6 @@ import { chunk, zipObject } from "./functions";
 import {
 	bitmapArrayAddress,
 	sidebarCharArrayAddress,
-	monsterArrayAddress,
 	bgColorMetadataArrayAddress,
 	holeMetadataArrayAddress,
 	symmetryMetadataArrayAddress,
@@ -12,7 +11,7 @@ import {
 	DataSegments,
 } from "./prg/data-locations";
 import { Level, levelIsSymmetric } from "./level";
-import { maxAsymmetric, maxMonsters, maxSidebars } from "./prg/data-locations";
+import { maxAsymmetric, maxSidebars } from "./prg/data-locations";
 import { readBgColors } from "./prg/bg-colors";
 import { Sprites } from "./sprite";
 import { readPlatformChars } from "./prg/charset-char";
@@ -25,7 +24,7 @@ import { readItems } from "./prg/items";
 import { readBubbleCurrentRectangles } from "./prg/bubble-current-rectangles";
 import { readSidebarChars } from "./prg/sidebar-chars";
 import { readTiles } from "./prg/tiles";
-import { readMonsters } from "./prg/monsters";
+import { patchMonsters, readMonsters } from "./prg/monsters";
 import { readSprites } from "./prg/sprites";
 import { readTileBitmaps } from "./prg/tile-bitmap";
 import { GetByte, SetByte, SetBytes } from "./prg/types";
@@ -137,33 +136,7 @@ export function patchPrg(prg: Uint8Array, levels: readonly Level[]) {
 	patchHoles(levels, setByte);
 	patchSymmetry(setBytes, levels, getByte);
 	patchBitmaps(levels, setBytes);
-
-	// Write monsters.
-	const numMonsters = levels.flatMap((level) => level.monsters).length;
-	if (numMonsters > maxMonsters) {
-		throw new Error(
-			`Too many monsters: ${numMonsters}. Should be max ${maxMonsters}.`
-		);
-	}
-	let monsterStartByte = monsterArrayAddress;
-	for (const level of levels) {
-		for (const monster of level.monsters) {
-			const currentMonsterStartByte = monsterStartByte;
-			setBytes(currentMonsterStartByte, [
-				((monster.spawnPoint.x - 20) & 0b11111000) + monster.type,
-				((monster.spawnPoint.y - 21) & 0b11111110) +
-					// TODO: No idea what the rest of the bits are.
-					(getByte(currentMonsterStartByte + 1) & 0b00000001),
-				((monster.facingLeft ? 1 : 0) << 7) +
-					// TODO: No idea what the rest of the bits are.
-					(getByte(currentMonsterStartByte + 2) & 0b01111111),
-			]);
-			monsterStartByte += 3;
-		}
-		// Terminate each level with a zero.
-		setByte(monsterStartByte, 0);
-		monsterStartByte += 1;
-	}
+	patchMonsters(levels, setBytes, getByte, setByte);
 }
 
 function patchHoles(levels: readonly Level[], setByte: SetByte) {

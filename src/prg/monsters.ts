@@ -1,7 +1,12 @@
-import { Monster } from "../level";
+import { Level, Monster } from "../level";
 import { isBitSet } from "./bit-twiddling";
-import { bytesPerMonster } from "./data-locations";
+import {
+	bytesPerMonster,
+	maxMonsters,
+	monsterArrayAddress,
+} from "./data-locations";
 import { dataViewSlice } from "./io";
+import { SetBytes, GetByte, SetByte } from "./types";
 
 export function readMonsters(monsterBytes: DataView) {
 	const monstersForAllLevels: Monster[][] = [];
@@ -40,4 +45,38 @@ function readMonster(monsterBytes: DataView): Monster {
 		},
 		facingLeft: isBitSet(monsterBytes.getUint8(2), 0),
 	};
+}
+
+export function patchMonsters(
+	levels: readonly Level[],
+	setBytes: SetBytes,
+	getByte: GetByte,
+	setByte: SetByte
+) {
+	// Write monsters.
+	const numMonsters = levels.flatMap((level) => level.monsters).length;
+	if (numMonsters > maxMonsters) {
+		throw new Error(
+			`Too many monsters: ${numMonsters}. Should be max ${maxMonsters}.`
+		);
+	}
+	let monsterStartByte = monsterArrayAddress;
+	for (const level of levels) {
+		for (const monster of level.monsters) {
+			const currentMonsterStartByte = monsterStartByte;
+			setBytes(currentMonsterStartByte, [
+				((monster.spawnPoint.x - 20) & 0b11111000) + monster.type,
+				((monster.spawnPoint.y - 21) & 0b11111110) +
+					// TODO: No idea what the rest of the bits are.
+					(getByte(currentMonsterStartByte + 1) & 0b00000001),
+				((monster.facingLeft ? 1 : 0) << 7) +
+					// TODO: No idea what the rest of the bits are.
+					(getByte(currentMonsterStartByte + 2) & 0b01111111),
+			]);
+			monsterStartByte += 3;
+		}
+		// Terminate each level with a zero.
+		setByte(monsterStartByte, 0);
+		monsterStartByte += 1;
+	}
 }
