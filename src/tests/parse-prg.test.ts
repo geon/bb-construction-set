@@ -55,10 +55,11 @@ test("First few levels bubble current rectangles.", () => {
 test("patchPrg", () => {
 	const prgFileContent = readFileSync(__dirname + "/decompressed-bb.prg");
 
-	const patched = Buffer.from(prgFileContent.buffer.slice());
+	const patched = prgFileContent.buffer.slice();
 
 	const { levels } = parsePrg(prgFileContent.buffer);
 	patchPrg(patched, levels);
 
-	expect(patched).toStrictEqual(prgFileContent);
+	// Just comparing the ArrayBuffers is super slow and fails.
+	expect(Buffer.from(patched)).toStrictEqual(Buffer.from(prgFileContent));
 });

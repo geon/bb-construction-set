@@ -189,7 +189,7 @@ function App() {
 					<>
 						<BlobDownloadButton
 							getBlob={() => {
-								const prg = new Uint8Array(parsedPrgData.prg.buffer.slice(0));
+								const prg = parsedPrgData.prg.buffer.slice(0);
 								try {
 									patchPrg(prg, parsedPeData.levels);
 									return new Blob([prg], {

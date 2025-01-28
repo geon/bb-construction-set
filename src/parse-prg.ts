@@ -68,7 +68,8 @@ function readLevels(dataSegments: DataSegments): ReadonlyArray<Level> {
 	});
 }
 
-export function patchPrg(prg: Uint8Array, levels: readonly Level[]) {
+export function patchPrg(prg_: ArrayBuffer, levels: readonly Level[]) {
+	const prg = Buffer.from(prg_);
 	if (levels.length !== 100) {
 		throw new Error(`Wrong number of levels: ${levels.length}. Should be 100.`);
 	}
