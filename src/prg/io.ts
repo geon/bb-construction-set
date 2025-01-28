@@ -23,12 +23,12 @@ export function setPrgByteAtAddress(
 	startAddres: number,
 	address: number,
 	value: number
-): number {
+): void {
 	const offset = 2 - startAddres + address;
 	if (offset >= prg.byteLength) {
 		throw new Error("File is too short.");
 	}
-	return (prg[offset] = value);
+	prg[offset] = value;
 }
 
 export function getBytes(dataView: DataView): readonly number[] {
