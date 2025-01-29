@@ -5,6 +5,7 @@ import {
 	writeBubbleCurrentRectanglesForLevel,
 	readBubbleCurrentRectangles,
 	readBubbleCurrentRectanglesForLevel,
+	writeBubbleCurrentRectangles,
 } from "../prg/bubble-current-rectangles";
 import { getDataSegments } from "../prg/io";
 import { readFileSync } from "fs";
@@ -60,4 +61,16 @@ test("readBubbleCurrentRectanglesForLevel & patchBubbleCurrentRectanglesForLevel
 	const patched = writeBubbleCurrentRectanglesForLevel(rects);
 
 	expect(patched).toStrictEqual(oneLevelData);
+});
+
+test("readBubbleCurrentRectangles & writeBubbleCurrentRectangles", () => {
+	const dataSegments = getDataSegments(
+		readFileSync(__dirname + "/decompressed-bb.prg").buffer
+	);
+
+	const rects = readBubbleCurrentRectangles(dataSegments.windCurrents);
+
+	const patched = writeBubbleCurrentRectangles(rects);
+
+	expect(patched).toStrictEqual(dataSegments.windCurrents);
 });

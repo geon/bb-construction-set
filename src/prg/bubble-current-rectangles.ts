@@ -125,7 +125,8 @@ export function writeBubbleCurrentRectanglesForLevel(
 			encodeFirstByte({
 				type: "copy",
 				levelIndex: rectangles.levelIndex,
-				byteCount: 1,
+				// The byte count is of course 1, but the c64 data has 0, so just follow that.
+				byteCount: 0,
 			}),
 		]);
 	}
@@ -189,5 +190,17 @@ export function bubbleCurrentRectangleToBytes(
 export function encodeFirstByte(firstByte: FirstByte): number {
 	return firstByte.type === "copy"
 		? 0b10000000 | firstByte.levelIndex
+		: firstByte.byteCount === 1
+		? 0
 		: firstByte.byteCount;
+}
+
+export function writeBubbleCurrentRectangles(
+	bubbleCurrentses: readonly BubbleCurrentRectangles[]
+): Uint8Array {
+	return uint8ArrayConcatenate(
+		bubbleCurrentses.map((bubbleCurrents) =>
+			writeBubbleCurrentRectanglesForLevel(bubbleCurrents)
+		)
+	);
 }

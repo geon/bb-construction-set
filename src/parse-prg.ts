@@ -11,7 +11,10 @@ import {
 	ReadonlyDataSegments,
 } from "./prg/io";
 import { readItems } from "./prg/items";
-import { readBubbleCurrentRectangles } from "./prg/bubble-current-rectangles";
+import {
+	readBubbleCurrentRectangles,
+	writeBubbleCurrentRectangles,
+} from "./prg/bubble-current-rectangles";
 import { writeSidebarChars, readSidebarChars } from "./prg/sidebar-chars";
 import { readTiles } from "./prg/tiles";
 import { writeMonsters, readMonsters } from "./prg/monsters";
@@ -100,5 +103,8 @@ export function patchPrg(prg: ArrayBuffer, levels: readonly Level[]) {
 	);
 	dataSegments.monsters.set(
 		writeMonsters(dataSegments.monsters, unzippedLevels.monsters)
+	);
+	dataSegments.windCurrents.set(
+		writeBubbleCurrentRectangles(unzippedLevels.bubbleCurrentRectangles)
 	);
 }
