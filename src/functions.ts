@@ -86,3 +86,7 @@ export function mapRecord<TKey extends string, TIn, TOut>(
 		])
 	) as Readonly<Record<TKey, TOut>>;
 }
+
+export function isDefined<T>(x: T | undefined): x is T {
+	return x !== undefined;
+}
