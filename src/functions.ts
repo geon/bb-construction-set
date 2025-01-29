@@ -58,6 +58,23 @@ export function zipObject<TResult extends object>(arrays: {
 	return results;
 }
 
+export function unzipObject<TInput extends object>(
+	array: ReadonlyArray<TInput>
+): { readonly [TKey in keyof TInput]: ReadonlyArray<TInput[TKey]> } {
+	const result = {} as any;
+
+	for (const [index, element] of array.entries()) {
+		for (const [name, value] of Object.entries(element)) {
+			if (!result[name]) {
+				result[name] = Array(array.length).fill(undefined);
+			}
+			result[name][index] = value;
+		}
+	}
+
+	return result;
+}
+
 export function mapRecord<TKey extends string, TIn, TOut>(
 	record: Readonly<Record<TKey, TIn>>,
 	transform: (value: TIn, key: TKey) => TOut
