@@ -28,7 +28,7 @@ export function createTiles(): Tiles {
 		.map((_) => Array(levelWidth).fill(false)) as Tiles;
 }
 
-type PerLineBubbleCurrentDefaults = Array<BubbleCurrentDirection>;
+type BubbleCurrentPerLineDefaults = Array<BubbleCurrentDirection>;
 
 export interface BubbleCurrentRectangle {
 	left: number;
@@ -49,7 +49,7 @@ export type BubbleCurrentRectangleOrSymmetry =
 export type BubbleCurrents = {
 	// The default bubble current direction for each tile row, so lenght = levelHeight.
 	// Stores all 25 rows.
-	perLineDefaults: PerLineBubbleCurrentDefaults;
+	perLineDefaults: BubbleCurrentPerLineDefaults;
 } & (
 	| {
 			readonly type: "copy";
