@@ -1,4 +1,4 @@
-import { Level } from "../level";
+import { zipObject } from "../functions";
 import { PaletteIndex } from "../palette";
 import { dataViewSetBytes, getBytes } from "./io";
 import { ReadonlyDataView } from "./types";
@@ -15,9 +15,15 @@ export function readBgColors(dataView: ReadonlyDataView) {
 	};
 }
 
-export function patchBgColors(bytes: DataView, levels: readonly Level[]) {
+export function patchBgColors(
+	bytes: DataView,
+	bgColorLight: readonly PaletteIndex[],
+	bgColorDark: readonly PaletteIndex[]
+) {
 	dataViewSetBytes(
 		bytes,
-		levels.map((level) => level.bgColorLight + (level.bgColorDark << 4))
+		zipObject({ bgColorLight, bgColorDark }).map(
+			({ bgColorLight, bgColorDark }) => bgColorLight + (bgColorDark << 4)
+		)
 	);
 }

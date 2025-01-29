@@ -14,12 +14,12 @@ export function readPlatformChars(platformCharsBytes: ReadonlyDataView) {
 
 export function patchPlatformChars(
 	dataView: DataView,
-	levels: readonly Level[]
+	platformChars: readonly Level["platformChar"][]
 ) {
 	dataViewSetBytes(
 		dataView,
-		levels.flatMap((level) =>
-			level.platformChar.lines.map(
+		platformChars.flatMap((platformChar) =>
+			platformChar.lines.map(
 				(line) =>
 					(line[0] << 6) + (line[1] << 4) + (line[2] << 2) + (line[3] << 0)
 			)

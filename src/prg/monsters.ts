@@ -1,4 +1,4 @@
-import { Level, Monster } from "../level";
+import { Monster } from "../level";
 import { isBitSet } from "./bit-twiddling";
 import { bytesPerMonster, maxMonsters } from "./data-locations";
 import { dataViewSetBytes, dataViewSlice } from "./io";
@@ -43,17 +43,21 @@ function readMonster(monsterBytes: ReadonlyDataView): Monster {
 	};
 }
 
-export function patchMonsters(dataView: DataView, levels: readonly Level[]) {
-	// Write monsters.
-	const numMonsters = levels.flatMap((level) => level.monsters).length;
+export function patchMonsters(
+	dataView: DataView,
+	monsterses: readonly Monster[][]
+) {
+	const numMonsters = monsterses.flatMap((monsters) => monsters).length;
 	if (numMonsters > maxMonsters) {
 		throw new Error(
 			`Too many monsters: ${numMonsters}. Should be max ${maxMonsters}.`
 		);
 	}
+
+	// Write monsters.
 	let monsterStartByte = 0;
-	const bytes = levels.flatMap((level) => {
-		const subBytes = level.monsters.flatMap((monster) => {
+	const bytes = monsterses.flatMap((monsters) => {
+		const subBytes = monsters.flatMap((monster) => {
 			const currentMonsterStartByte = monsterStartByte;
 			const subSubBytes = [
 				((monster.spawnPoint.x - 20) & 0b11111000) + monster.type,
