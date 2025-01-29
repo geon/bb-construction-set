@@ -28,7 +28,7 @@ export function createTiles(): Tiles {
 		.map((_) => Array(levelWidth).fill(false)) as Tiles;
 }
 
-export type PerLineBubbleCurrentDefaults = Array<BubbleCurrentDirection>;
+type PerLineBubbleCurrentDefaults = Array<BubbleCurrentDirection>;
 
 export interface BubbleCurrentRectangle {
 	left: number;
