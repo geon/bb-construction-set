@@ -1,23 +1,7 @@
 import { Color, hexToRgb } from "./color";
+import { Tuple } from "./tuple";
 
-type Palette = [
-	Color,
-	Color,
-	Color,
-	Color,
-	Color,
-	Color,
-	Color,
-	Color,
-	Color,
-	Color,
-	Color,
-	Color,
-	Color,
-	Color,
-	Color,
-	Color
-];
+type Palette = Tuple<Color, 16>;
 
 export type PaletteIndex =
 	| 0
