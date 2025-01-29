@@ -3,7 +3,7 @@ import { Tuple } from "./tuple";
 export type CharsetCharColor = 0 | 1 | 2 | 3;
 export type CharsetCharLine = Tuple<CharsetCharColor, 4>;
 export interface CharsetChar {
-	lines: Tuple<CharsetCharLine, 8>;
+	readonly lines: Tuple<CharsetCharLine, 8>;
 }
 export type CharBlock = Tuple<CharsetChar, 4>;
 export type CharBlockIndex = 0 | 1 | 2 | 3;
