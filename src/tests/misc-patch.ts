@@ -1,13 +1,17 @@
 import { CharBlock } from "../charset-char";
 import { zipObject, chunk } from "../functions";
-import { Tiles, levelIsSymmetric, BubbleCurrents } from "../level";
+import {
+	Tiles,
+	levelIsSymmetric,
+	BubbleCurrentPerLineDefaults,
+} from "../level";
 import { maxAsymmetric } from "../prg/data-locations";
 import { dataViewSetBytes } from "../prg/io";
 
 export function patchHoles(
 	dataView: DataView,
 	tileses: readonly Tiles[],
-	bubbleCurrentses: readonly BubbleCurrents[]
+	bubbleCurrentPerLineDefaultses: readonly BubbleCurrentPerLineDefaults[]
 ) {
 	const tilesHalfBytes = tileses.map((tiles) => {
 		const topLeft = !tiles[0][10];
@@ -23,15 +27,17 @@ export function patchHoles(
 		);
 	});
 
-	const currentsHalfBytes = bubbleCurrentses.map((bubbleCurrents) => {
-		return (
-			// The most significant bits are the bubble current of the top and bottom rows.
-			((bubbleCurrents.perLineDefaults[0] & 0b01 ? 1 : 0) << 4) +
-			((bubbleCurrents.perLineDefaults[0] & 0b10 ? 1 : 0) << 5) +
-			((bubbleCurrents.perLineDefaults[24] & 0b01 ? 1 : 0) << 6) +
-			((bubbleCurrents.perLineDefaults[24] & 0b10 ? 1 : 0) << 7)
-		);
-	});
+	const currentsHalfBytes = bubbleCurrentPerLineDefaultses.map(
+		(bubbleCurrentPerLineDefaults) => {
+			return (
+				// The most significant bits are the bubble current of the top and bottom rows.
+				((bubbleCurrentPerLineDefaults[0] & 0b01 ? 1 : 0) << 4) +
+				((bubbleCurrentPerLineDefaults[0] & 0b10 ? 1 : 0) << 5) +
+				((bubbleCurrentPerLineDefaults[24] & 0b01 ? 1 : 0) << 6) +
+				((bubbleCurrentPerLineDefaults[24] & 0b10 ? 1 : 0) << 7)
+			);
+		}
+	);
 
 	const bytes = zipObject({
 		tilesHalfBytes,
@@ -86,7 +92,7 @@ export function patchSymmetry(
 export function patchBitmaps(
 	dataView: DataView,
 	tileses: readonly Tiles[],
-	bubbleCurrentses: readonly BubbleCurrents[]
+	bubbleCurrentPerLineDefaultses: readonly BubbleCurrentPerLineDefaults[]
 ) {
 	// Write platforms bitmap
 	const levelBitmapBytes = tileses.flatMap((tiles, levelIndex) => {
@@ -106,10 +112,10 @@ export function patchBitmaps(
 
 			// Encode the per-line bubble current into the edge of the platforms bitmap.
 			row[bitPositions[0]] = !!(
-				bubbleCurrentses[levelIndex].perLineDefaults[rowIndex] & 0b01
+				bubbleCurrentPerLineDefaultses[levelIndex][rowIndex] & 0b01
 			);
 			row[bitPositions[1]] = !!(
-				bubbleCurrentses[levelIndex].perLineDefaults[rowIndex] & 0b10
+				bubbleCurrentPerLineDefaultses[levelIndex][rowIndex] & 0b10
 			);
 
 			bitRows.push(row);

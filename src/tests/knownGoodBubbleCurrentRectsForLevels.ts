@@ -1,12 +1,9 @@
-import { BubbleCurrents } from "../level";
+import { BubbleCurrentRectangles } from "../level";
 
 // Read from emulator by stepping and and inspecting registers in debugger.
-export const knownGoodBubbleCurrentRectsForLevels: BubbleCurrents[] = [
+export const knownGoodBubbleCurrentRectsForLevels: BubbleCurrentRectangles[] = [
 	{
 		type: "rectangles",
-		perLineDefaults: [
-			2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		],
 		rectangles: [
 			{
 				type: "rectangle",
@@ -23,16 +20,10 @@ export const knownGoodBubbleCurrentRectsForLevels: BubbleCurrents[] = [
 	},
 	{
 		type: "copy",
-		perLineDefaults: [
-			2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		],
 		levelIndex: 0,
 	},
 	{
 		type: "rectangles",
-		perLineDefaults: [
-			0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 3, 3, 3, 3, 0, 1, 1, 1, 1, 0,
-		],
 		rectangles: [
 			{
 				type: "rectangle",

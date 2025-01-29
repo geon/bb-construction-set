@@ -1,27 +1,22 @@
 import {
-	BubbleCurrents,
+	BubbleCurrentRectangles,
 	BubbleCurrentRectangleOrSymmetry,
 	BubbleCurrentRectangle,
 	BubbleCurrentDirection,
 } from "../level";
 import { isBitSet } from "./bit-twiddling";
-import { TileBitmap } from "./tile-bitmap";
 import { ReadonlyDataView } from "./types";
 
 export function readBubbleCurrentRectangles(
-	bubbleCurrentRectangleBytes: ReadonlyDataView,
-	holeMetadataBytes: ReadonlyDataView,
-	tileBitmaps: readonly TileBitmap[]
-): BubbleCurrents[] {
+	bubbleCurrentRectangleBytes: ReadonlyDataView
+): BubbleCurrentRectangles[] {
 	const monstersForAllLevels = [];
 
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
 		monstersForAllLevels.push(
 			readBubbleCurrentRectanglesForLevel(
 				levelIndex,
-				tileBitmaps[levelIndex],
-				bubbleCurrentRectangleBytes,
-				holeMetadataBytes
+				bubbleCurrentRectangleBytes
 			)
 		);
 	}
@@ -39,16 +34,8 @@ export function readBubbleCurrentRectangles(
 
 function readBubbleCurrentRectanglesForLevel(
 	levelIndex: number,
-	tileBitmap: TileBitmap,
-	bubbleCurrentRectangleBytes: ReadonlyDataView,
-	holeMetadataBytes: ReadonlyDataView
-): BubbleCurrents {
-	const holeMetadata = holeMetadataBytes.getUint8(levelIndex);
-	const perLineDefaults = extractbubbleCurrentLineDefault(
-		tileBitmap,
-		holeMetadata
-	);
-
+	bubbleCurrentRectangleBytes: ReadonlyDataView
+): BubbleCurrentRectangles {
 	let currentWindCurrentsByteIndex = 0;
 	for (let index = 0; index < levelIndex; ++index) {
 		const firstByte = bubbleCurrentRectangleBytes.getUint8(
@@ -71,7 +58,6 @@ function readBubbleCurrentRectanglesForLevel(
 		return {
 			type: "copy",
 			levelIndex: firstByteWithoutCopyFlag,
-			perLineDefaults,
 		};
 	}
 
@@ -81,7 +67,6 @@ function readBubbleCurrentRectanglesForLevel(
 		return {
 			type: "rectangles",
 			rectangles: [],
-			perLineDefaults,
 		};
 	}
 
@@ -115,7 +100,6 @@ function readBubbleCurrentRectanglesForLevel(
 	return {
 		type: "rectangles",
 		rectangles,
-		perLineDefaults,
 	};
 }
 
@@ -157,23 +141,4 @@ export function bubbleCurrentRectangleToBytes(
 	bytes[2] =
 		(((rectangle.width - 1) << 6) & 0b11000000) | (rectangle.height - 1);
 	return bytes;
-}
-
-function extractbubbleCurrentLineDefault(
-	tileBitmap: TileBitmap,
-	holeMetadata: number
-): Array<BubbleCurrentDirection> {
-	return [
-		((holeMetadata & 0b00110000) >> 4) as BubbleCurrentDirection,
-		...tileBitmap.bytes.map((row) =>
-			bitsToBubbleCurrentDirection([isBitSet(row[3], 6), isBitSet(row[3], 7)])
-		),
-		((holeMetadata & 0b11000000) >> 6) as BubbleCurrentDirection,
-	];
-}
-
-function bitsToBubbleCurrentDirection(
-	bits: [boolean, boolean]
-): BubbleCurrentDirection {
-	return ((bits[1] ? 1 : 0) + (bits[0] ? 1 : 0) * 2) as BubbleCurrentDirection;
 }

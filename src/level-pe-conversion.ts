@@ -451,7 +451,7 @@ function makeLevelCharAndColorData(
 	const bubblePlatformsOffset = 33;
 	for (const [tileY, row] of level.tiles.entries()) {
 		const perLineDefaultCurrent =
-			level.bubbleCurrents.perLineDefaults[tileY] + 12;
+			level.bubbleCurrentPerLineDefaults[tileY] + 12;
 		charData[tileY][66] = perLineDefaultCurrent;
 		colorData[tileY][66] = windColors.explicit;
 
@@ -465,8 +465,8 @@ function makeLevelCharAndColorData(
 	}
 	// Draw bubble current rectangles.
 	const platformAndSidebarChars = new Set([1, 16, 17, 32, 33]);
-	if (level.bubbleCurrents.type === "rectangles") {
-		for (const rectangle of level.bubbleCurrents.rectangles) {
+	if (level.bubbleCurrentRectangles.type === "rectangles") {
+		for (const rectangle of level.bubbleCurrentRectangles.rectangles) {
 			if (rectangle.type === "rectangle") {
 				for (let y = rectangle.top; y < rectangle.top + rectangle.height; ++y) {
 					for (
@@ -525,14 +525,14 @@ function makeLevelCharAndColorData(
 			] ?? 0
 		);
 	}
-	if (level.bubbleCurrents.type === "copy") {
+	if (level.bubbleCurrentRectangles.type === "copy") {
 		print(
-			Array.from("C " + level.bubbleCurrents.levelIndex.toString()).map(
-				charToCharsetIndex
-			)
+			Array.from(
+				"C " + level.bubbleCurrentRectangles.levelIndex.toString()
+			).map(charToCharsetIndex)
 		);
 	} else {
-		for (const rectangle of level.bubbleCurrents.rectangles) {
+		for (const rectangle of level.bubbleCurrentRectangles.rectangles) {
 			if (rectangle.type === "symmetry") {
 				print([charToCharsetIndex("S")]);
 			} else {
@@ -665,17 +665,15 @@ export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 				? sidebarChars
 				: undefined,
 			monsters,
-			bubbleCurrents: {
+			bubbleCurrentRectangles: {
 				type: "rectangles",
-				perLineDefaults: screen.charData.map((row) =>
-					arrowChars.has(row[33])
-						? ((row[33] - 12) as BubbleCurrentDirection)
-						: 0
-				),
 				rectangles: [
 					// TODO: Find rectangles in charData.
 				],
 			},
+			bubbleCurrentPerLineDefaults: screen.charData.map((row) =>
+				arrowChars.has(row[33]) ? ((row[33] - 12) as BubbleCurrentDirection) : 0
+			),
 		};
 	});
 }

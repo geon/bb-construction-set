@@ -18,6 +18,7 @@ import { patchMonsters, readMonsters } from "./prg/monsters";
 import { readSprites } from "./prg/sprites";
 import { readTileBitmaps } from "./prg/tile-bitmap";
 import { patchSymmetry, patchBitmaps, patchHoles } from "./tests/misc-patch";
+import { readBubbleCurrentPerLineDefaults } from "./prg/bubble-current-per-line-defaults";
 
 export function parsePrg(prg: ArrayBuffer): {
 	levels: readonly Level[];
@@ -52,8 +53,10 @@ function readLevels(dataSegments: ReadonlyDataSegments): ReadonlyArray<Level> {
 		),
 		tiles: readTiles(dataSegments.holeMetadata, tileBitmaps),
 		monsters: readMonsters(dataSegments.monsters),
-		bubbleCurrents: readBubbleCurrentRectangles(
-			dataSegments.windCurrents,
+		bubbleCurrentRectangles: readBubbleCurrentRectangles(
+			dataSegments.windCurrents
+		),
+		bubbleCurrentPerLineDefaults: readBubbleCurrentPerLineDefaults(
 			dataSegments.holeMetadata,
 			tileBitmaps
 		),
@@ -79,7 +82,7 @@ export function patchPrg(prg: ArrayBuffer, levels: readonly Level[]) {
 	patchHoles(
 		dataSegments.holeMetadata,
 		unzippedLevels.tiles,
-		unzippedLevels.bubbleCurrents
+		unzippedLevels.bubbleCurrentPerLineDefaults
 	);
 	patchSymmetry(
 		dataSegments.symmetryMetadata,
@@ -89,7 +92,7 @@ export function patchPrg(prg: ArrayBuffer, levels: readonly Level[]) {
 	patchBitmaps(
 		dataSegments.bitmaps,
 		unzippedLevels.tiles,
-		unzippedLevels.bubbleCurrents
+		unzippedLevels.bubbleCurrentPerLineDefaults
 	);
 	patchMonsters(dataSegments.monsters, unzippedLevels.monsters);
 }

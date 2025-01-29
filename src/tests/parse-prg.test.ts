@@ -34,8 +34,10 @@ test("parsePrg", () => {
 	)[0];
 
 	// Not tested.
-	levelFromPrg.bubbleCurrents = undefined!;
-	levelFromPe.bubbleCurrents = undefined!;
+	levelFromPrg.bubbleCurrentRectangles = undefined!;
+	levelFromPe.bubbleCurrentRectangles = undefined!;
+	levelFromPrg.bubbleCurrentPerLineDefaults = undefined!;
+	levelFromPe.bubbleCurrentPerLineDefaults = undefined!;
 
 	expect(levelFromPrg).toStrictEqual(levelFromPe);
 });
@@ -47,7 +49,7 @@ test("First few levels bubble current rectangles.", () => {
 
 	const rectsFromPrg = levelFromPrg
 		.slice(0, knownGoodBubbleCurrentRectsForLevels.length)
-		.map((level) => level.bubbleCurrents);
+		.map((level) => level.bubbleCurrentRectangles);
 
 	expect(rectsFromPrg).toStrictEqual(knownGoodBubbleCurrentRectsForLevels);
 });
