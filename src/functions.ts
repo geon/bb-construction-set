@@ -1,3 +1,5 @@
+import { Tuple } from "./tuple";
+
 export function padRight<T>(
 	array: readonly T[],
 	length: number,
@@ -18,6 +20,18 @@ export function chunk<T>(array: readonly T[], chunkLength: number): T[][] {
 		start += chunkLength;
 	} while (start < array.length);
 	return chunks;
+}
+
+export function strictChunk<T, TChunkLength extends number>(
+	array: readonly T[],
+	chunkLength: TChunkLength
+): Tuple<T, TChunkLength>[] {
+	if (array.length % chunkLength !== 0) {
+		throw new Error(
+			"Strict chunked array.length must be a multiple of chunkLength."
+		);
+	}
+	return chunk(array, chunkLength) as Tuple<T, TChunkLength>[];
 }
 
 export function sum(array: readonly number[]): number {
