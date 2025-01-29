@@ -1,26 +1,11 @@
+import { Tuple } from "./tuple";
+
 export type CharsetCharColor = 0 | 1 | 2 | 3;
-
-export type CharsetCharLine = [
-	CharsetCharColor,
-	CharsetCharColor,
-	CharsetCharColor,
-	CharsetCharColor
-];
-
+export type CharsetCharLine = Tuple<CharsetCharColor, 4>;
 export interface CharsetChar {
-	lines: [
-		CharsetCharLine,
-		CharsetCharLine,
-		CharsetCharLine,
-		CharsetCharLine,
-		CharsetCharLine,
-		CharsetCharLine,
-		CharsetCharLine,
-		CharsetCharLine
-	];
+	lines: Tuple<CharsetCharLine, 8>;
 }
-
-export type CharBlock = [CharsetChar, CharsetChar, CharsetChar, CharsetChar];
+export type CharBlock = Tuple<CharsetChar, 4>;
 export type CharBlockIndex = 0 | 1 | 2 | 3;
 
 export function parseCharsetCharLine(byte: number): CharsetCharLine {
