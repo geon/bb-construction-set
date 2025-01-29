@@ -1,6 +1,7 @@
 import { CharBlock } from "./charset-char";
 import { CharsetChar } from "./charset-char";
 import { PaletteIndex } from "./palette";
+import { Tuple } from "./tuple";
 
 export const levelWidth = 32;
 export const levelHeight = 25;
@@ -18,68 +19,8 @@ export interface Monster {
 // up, right, down, left
 export type BubbleCurrentDirection = 0 | 1 | 2 | 3;
 
-type TileRow = [
-	boolean,
-	boolean,
-	boolean,
-	boolean,
-	boolean,
-	boolean,
-	boolean,
-	boolean,
-	boolean,
-	boolean,
-	boolean,
-	boolean,
-	boolean,
-	boolean,
-	boolean,
-	boolean,
-	boolean,
-	boolean,
-	boolean,
-	boolean,
-	boolean,
-	boolean,
-	boolean,
-	boolean,
-	boolean,
-	boolean,
-	boolean,
-	boolean,
-	boolean,
-	boolean,
-	boolean,
-	boolean
-];
-
-export type Tiles = [
-	TileRow,
-	TileRow,
-	TileRow,
-	TileRow,
-	TileRow,
-	TileRow,
-	TileRow,
-	TileRow,
-	TileRow,
-	TileRow,
-	TileRow,
-	TileRow,
-	TileRow,
-	TileRow,
-	TileRow,
-	TileRow,
-	TileRow,
-	TileRow,
-	TileRow,
-	TileRow,
-	TileRow,
-	TileRow,
-	TileRow,
-	TileRow,
-	TileRow
-];
+type TileRow = Tuple<boolean, 32>;
+export type Tiles = Tuple<TileRow, 25>;
 
 export function createTiles(): Tiles {
 	return Array(levelHeight)
