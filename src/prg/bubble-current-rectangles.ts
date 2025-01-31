@@ -43,10 +43,10 @@ export function readBubbleCurrentRectangles(
 // [a bbbbbbb]
 
 function readBubbleCurrentRectanglesForLevel(
-	currentWindCurrentsByteIndex: number,
+	startingWindCurrentsAddress: number,
 	bubbleCurrentRectangleBytes: ReadonlyDataView
 ): BubbleCurrentRectangles {
-	const startingWindCurrentsAddress = currentWindCurrentsByteIndex;
+	let currentWindCurrentsByteIndex = startingWindCurrentsAddress;
 
 	const firstByte = bubbleCurrentRectangleBytes.getUint8(
 		currentWindCurrentsByteIndex++
