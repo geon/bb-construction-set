@@ -5,6 +5,7 @@ import {
 	BubbleCurrentDirection,
 } from "../level";
 import { isBitSet } from "./bit-twiddling";
+import { dataViewSlice } from "./io";
 import { ReadonlyDataView } from "./types";
 
 export function readBubbleCurrentRectangles(
@@ -74,7 +75,13 @@ function readBubbleCurrentRectanglesForLevel(
 		const symmetry = !isBitSet(firstByte, 0);
 
 		rectangles.push(
-			readRectangle(currentWindCurrentsByteIndex, bubbleCurrentRectangleBytes)
+			readRectangle(
+				dataViewSlice(
+					bubbleCurrentRectangleBytes,
+					currentWindCurrentsByteIndex,
+					symmetry ? 1 : 3
+				)
+			)
 		);
 
 		currentWindCurrentsByteIndex += symmetry ? 1 : 3;
@@ -87,12 +94,9 @@ function readBubbleCurrentRectanglesForLevel(
 }
 
 function readRectangle(
-	currentWindCurrentsByteIndex: number,
 	bubbleCurrentRectangleBytes: ReadonlyDataView
 ): BubbleCurrentRectangleOrSymmetry {
-	const firstByte = bubbleCurrentRectangleBytes.getUint8(
-		currentWindCurrentsByteIndex++
-	);
+	const firstByte = bubbleCurrentRectangleBytes.getUint8(0);
 	const symmetry = !isBitSet(firstByte, 0);
 	return symmetry
 		? {
@@ -102,8 +106,8 @@ function readRectangle(
 				type: "rectangle",
 				...bytesToBubbleCurrentRectangle([
 					firstByte,
-					bubbleCurrentRectangleBytes.getUint8(currentWindCurrentsByteIndex++),
-					bubbleCurrentRectangleBytes.getUint8(currentWindCurrentsByteIndex++),
+					bubbleCurrentRectangleBytes.getUint8(1),
+					bubbleCurrentRectangleBytes.getUint8(2),
 				]),
 		  };
 }
