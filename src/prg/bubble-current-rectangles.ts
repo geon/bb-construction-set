@@ -11,7 +11,7 @@ import { ReadonlyDataView } from "./types";
 export function readBubbleCurrentRectangles(
 	bubbleCurrentRectangleBytes: ReadonlyDataView
 ): BubbleCurrentRectangles[] {
-	const bubbleCurrentRectanglesForAllLevels = [];
+	const bubbleCurrentRectanglesForAllLevels: BubbleCurrentRectangles[] = [];
 
 	let currentWindCurrentsByteIndex = 0;
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
@@ -23,13 +23,18 @@ export function readBubbleCurrentRectangles(
 		const byteCount = copy ? 1 : Math.max(1, firstByteWithoutCopyFlag);
 
 		bubbleCurrentRectanglesForAllLevels.push(
-			readBubbleCurrentRectanglesForLevel(
-				dataViewSlice(
-					bubbleCurrentRectangleBytes,
-					currentWindCurrentsByteIndex,
-					byteCount
-				)
-			)
+			copy
+				? {
+						type: "copy",
+						levelIndex: firstByteWithoutCopyFlag,
+				  }
+				: readBubbleCurrentRectanglesForLevel(
+						dataViewSlice(
+							bubbleCurrentRectangleBytes,
+							currentWindCurrentsByteIndex,
+							byteCount
+						)
+				  )
 		);
 
 		currentWindCurrentsByteIndex += byteCount;
@@ -54,15 +59,7 @@ function readBubbleCurrentRectanglesForLevel(
 	const firstByte = bubbleCurrentRectangleBytes.getUint8(
 		currentWindCurrentsByteIndex++
 	);
-	const copy = isBitSet(firstByte, 0);
 	const firstByteWithoutCopyFlag = firstByte & 0b01111111;
-
-	if (copy) {
-		return {
-			type: "copy",
-			levelIndex: firstByteWithoutCopyFlag,
-		};
-	}
 
 	const byteCount = Math.max(1, firstByteWithoutCopyFlag);
 
