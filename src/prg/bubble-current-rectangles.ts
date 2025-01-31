@@ -76,31 +76,43 @@ function readBubbleCurrentRectanglesForLevel(
 		byteCount
 	) {
 		const firstByte = bubbleCurrentRectangleBytes.getUint8(
-			currentWindCurrentsByteIndex++
+			currentWindCurrentsByteIndex
 		);
 		const symmetry = !isBitSet(firstByte, 0);
-		if (symmetry) {
-			rectangles.push({
-				type: "symmetry",
-			});
 
-			continue;
-		}
+		rectangles.push(
+			readRectangle(currentWindCurrentsByteIndex, bubbleCurrentRectangleBytes)
+		);
 
-		rectangles.push({
-			type: "rectangle",
-			...bytesToBubbleCurrentRectangle([
-				firstByte,
-				bubbleCurrentRectangleBytes.getUint8(currentWindCurrentsByteIndex++),
-				bubbleCurrentRectangleBytes.getUint8(currentWindCurrentsByteIndex++),
-			]),
-		});
+		currentWindCurrentsByteIndex += symmetry ? 1 : 3;
 	}
 
 	return {
 		type: "rectangles",
 		rectangles,
 	};
+}
+
+function readRectangle(
+	currentWindCurrentsByteIndex: number,
+	bubbleCurrentRectangleBytes: ReadonlyDataView
+): BubbleCurrentRectangleOrSymmetry {
+	const firstByte = bubbleCurrentRectangleBytes.getUint8(
+		currentWindCurrentsByteIndex++
+	);
+	const symmetry = !isBitSet(firstByte, 0);
+	return symmetry
+		? {
+				type: "symmetry",
+		  }
+		: {
+				type: "rectangle",
+				...bytesToBubbleCurrentRectangle([
+					firstByte,
+					bubbleCurrentRectangleBytes.getUint8(currentWindCurrentsByteIndex++),
+					bubbleCurrentRectangleBytes.getUint8(currentWindCurrentsByteIndex++),
+				]),
+		  };
 }
 
 export function bytesToBubbleCurrentRectangle(
