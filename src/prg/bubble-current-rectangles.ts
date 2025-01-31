@@ -24,8 +24,11 @@ export function readBubbleCurrentRectangles(
 
 		monstersForAllLevels.push(
 			readBubbleCurrentRectanglesForLevel(
-				currentWindCurrentsByteIndex,
-				bubbleCurrentRectangleBytes
+				dataViewSlice(
+					bubbleCurrentRectangleBytes,
+					currentWindCurrentsByteIndex,
+					byteCount
+				)
 			)
 		);
 
@@ -44,10 +47,9 @@ export function readBubbleCurrentRectangles(
 // [a bbbbbbb]
 
 function readBubbleCurrentRectanglesForLevel(
-	startingWindCurrentsAddress: number,
 	bubbleCurrentRectangleBytes: ReadonlyDataView
 ): BubbleCurrentRectangles {
-	let currentWindCurrentsByteIndex = startingWindCurrentsAddress;
+	let currentWindCurrentsByteIndex = 0;
 
 	const firstByte = bubbleCurrentRectangleBytes.getUint8(
 		currentWindCurrentsByteIndex++
@@ -65,10 +67,7 @@ function readBubbleCurrentRectanglesForLevel(
 	const byteCount = Math.max(1, firstByteWithoutCopyFlag);
 
 	const rectangles: BubbleCurrentRectangleOrSymmetry[] = [];
-	while (
-		currentWindCurrentsByteIndex - startingWindCurrentsAddress <
-		byteCount
-	) {
+	while (currentWindCurrentsByteIndex < byteCount) {
 		const firstByte = bubbleCurrentRectangleBytes.getUint8(
 			currentWindCurrentsByteIndex
 		);
