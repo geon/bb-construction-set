@@ -74,7 +74,11 @@ export function dataViewSlice<TDataView extends ReadonlyDataView | DataView>(
 	}
 
 	if (byteLength + byteOffset > dataView.byteLength) {
-		throw new Error("Too large length.");
+		throw new Error(
+			`Too large length: ${byteLength}, Max: ${
+				dataView.byteLength - byteOffset
+			}`
+		);
 	}
 
 	return new DataView(
