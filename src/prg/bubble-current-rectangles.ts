@@ -63,13 +63,6 @@ function readBubbleCurrentRectanglesForLevel(
 
 	const byteCount = Math.max(1, firstByteWithoutCopyFlag);
 
-	if (!byteCount) {
-		return {
-			type: "rectangles",
-			rectangles: [],
-		};
-	}
-
 	const rectangles: BubbleCurrentRectangleOrSymmetry[] = [];
 	while (
 		currentWindCurrentsByteIndex - startingWindCurrentsAddress <
