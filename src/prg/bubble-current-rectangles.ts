@@ -13,9 +13,20 @@ export function readBubbleCurrentRectangles(
 	const monstersForAllLevels = [];
 
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
+		let currentWindCurrentsByteIndex = 0;
+		for (let index = 0; index < levelIndex; ++index) {
+			const firstByte = bubbleCurrentRectangleBytes.getUint8(
+				currentWindCurrentsByteIndex
+			);
+			const copy = isBitSet(firstByte, 0);
+			const firstByteWithoutCopyFlag = firstByte & 0b01111111;
+			const byteCount = copy ? 1 : Math.max(1, firstByteWithoutCopyFlag);
+			currentWindCurrentsByteIndex += byteCount;
+		}
+
 		monstersForAllLevels.push(
 			readBubbleCurrentRectanglesForLevel(
-				levelIndex,
+				currentWindCurrentsByteIndex,
 				bubbleCurrentRectangleBytes
 			)
 		);
@@ -33,20 +44,9 @@ export function readBubbleCurrentRectangles(
 // [a bbbbbbb]
 
 function readBubbleCurrentRectanglesForLevel(
-	levelIndex: number,
+	currentWindCurrentsByteIndex: number,
 	bubbleCurrentRectangleBytes: ReadonlyDataView
 ): BubbleCurrentRectangles {
-	let currentWindCurrentsByteIndex = 0;
-	for (let index = 0; index < levelIndex; ++index) {
-		const firstByte = bubbleCurrentRectangleBytes.getUint8(
-			currentWindCurrentsByteIndex
-		);
-		const copy = isBitSet(firstByte, 0);
-		const firstByteWithoutCopyFlag = firstByte & 0b01111111;
-		const byteCount = copy ? 1 : Math.max(1, firstByteWithoutCopyFlag);
-		currentWindCurrentsByteIndex += byteCount;
-	}
-
 	const startingWindCurrentsAddress = currentWindCurrentsByteIndex;
 
 	const firstByte = bubbleCurrentRectangleBytes.getUint8(
