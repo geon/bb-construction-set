@@ -11,7 +11,7 @@ import { ReadonlyDataView } from "./types";
 export function readBubbleCurrentRectangles(
 	bubbleCurrentRectangleBytes: ReadonlyDataView
 ): BubbleCurrentRectangles[] {
-	const monstersForAllLevels = [];
+	const bubbleCurrentRectanglesForAllLevels = [];
 
 	let currentWindCurrentsByteIndex = 0;
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
@@ -22,7 +22,7 @@ export function readBubbleCurrentRectangles(
 		const firstByteWithoutCopyFlag = firstByte & 0b01111111;
 		const byteCount = copy ? 1 : Math.max(1, firstByteWithoutCopyFlag);
 
-		monstersForAllLevels.push(
+		bubbleCurrentRectanglesForAllLevels.push(
 			readBubbleCurrentRectanglesForLevel(
 				dataViewSlice(
 					bubbleCurrentRectangleBytes,
@@ -35,7 +35,7 @@ export function readBubbleCurrentRectangles(
 		currentWindCurrentsByteIndex += byteCount;
 	}
 
-	return monstersForAllLevels;
+	return bubbleCurrentRectanglesForAllLevels;
 }
 
 // Bytes are within [square brackets].
