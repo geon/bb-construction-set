@@ -12,17 +12,14 @@ export function readBubbleCurrentRectangles(
 ): BubbleCurrentRectangles[] {
 	const monstersForAllLevels = [];
 
+	let currentWindCurrentsByteIndex = 0;
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
-		let currentWindCurrentsByteIndex = 0;
-		for (let index = 0; index < levelIndex; ++index) {
-			const firstByte = bubbleCurrentRectangleBytes.getUint8(
-				currentWindCurrentsByteIndex
-			);
-			const copy = isBitSet(firstByte, 0);
-			const firstByteWithoutCopyFlag = firstByte & 0b01111111;
-			const byteCount = copy ? 1 : Math.max(1, firstByteWithoutCopyFlag);
-			currentWindCurrentsByteIndex += byteCount;
-		}
+		const firstByte = bubbleCurrentRectangleBytes.getUint8(
+			currentWindCurrentsByteIndex
+		);
+		const copy = isBitSet(firstByte, 0);
+		const firstByteWithoutCopyFlag = firstByte & 0b01111111;
+		const byteCount = copy ? 1 : Math.max(1, firstByteWithoutCopyFlag);
 
 		monstersForAllLevels.push(
 			readBubbleCurrentRectanglesForLevel(
@@ -30,6 +27,8 @@ export function readBubbleCurrentRectangles(
 				bubbleCurrentRectangleBytes
 			)
 		);
+
+		currentWindCurrentsByteIndex += byteCount;
 	}
 
 	return monstersForAllLevels;
