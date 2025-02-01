@@ -468,6 +468,13 @@ function makeLevelCharAndColorData(
 	if (level.bubbleCurrentRectangles.type === "rectangles") {
 		for (const rectangle of level.bubbleCurrentRectangles.rectangles) {
 			if (rectangle.type === "rectangle") {
+				if (
+					rectangle.top + rectangle.height > 25 ||
+					rectangle.left + rectangle.width > 32
+				) {
+					console.log("Bad rectangle:", rectangle);
+					break;
+				}
 				for (let y = rectangle.top; y < rectangle.top + rectangle.height; ++y) {
 					for (
 						let x = rectangle.left;
@@ -511,6 +518,11 @@ function makeLevelCharAndColorData(
 	function print(charsetIndices: readonly number[]): void {
 		const white = 1;
 		for (const charsetIndex of charsetIndices) {
+			if (cursor.col >= sizeX || cursor.row >= sizeY) {
+				console.log("Bad print:", cursor);
+				break;
+			}
+
 			charData[cursor.row][68 + cursor.col] = charsetIndex;
 			colorData[cursor.row][68 + cursor.col] = white;
 			cursor.col++;
