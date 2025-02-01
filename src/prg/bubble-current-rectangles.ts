@@ -20,18 +20,14 @@ export function readBubbleCurrentRectangles(
 		);
 
 		bubbleCurrentRectanglesForAllLevels.push(
-			firstByte.type === "copy"
-				? {
-						type: "copy",
-						levelIndex: firstByte.levelIndex,
-				  }
-				: readBubbleCurrentRectanglesForLevel(
-						dataViewSlice(
-							bubbleCurrentRectangleBytes,
-							currentWindCurrentsByteIndex + 1,
-							firstByte.byteCount - 1
-						)
-				  )
+			readBubbleCurrentRectanglesForLevel(
+				firstByte,
+				dataViewSlice(
+					bubbleCurrentRectangleBytes,
+					currentWindCurrentsByteIndex + 1,
+					firstByte.byteCount - 1
+				)
+			)
 		);
 
 		currentWindCurrentsByteIndex += firstByte.byteCount;
@@ -77,8 +73,16 @@ export function parseFirstByte(firstByte: number): FirstByte {
 // [a bbbbbbb]
 
 function readBubbleCurrentRectanglesForLevel(
+	firstByte: FirstByte,
 	bubbleCurrentRectangleBytes: ReadonlyDataView
 ): BubbleCurrentRectangles {
+	if (firstByte.type === "copy") {
+		return {
+			type: "copy",
+			levelIndex: firstByte.levelIndex,
+		};
+	}
+
 	let currentWindCurrentsByteIndex = 0;
 
 	const rectangles: BubbleCurrentRectangleOrSymmetry[] = [];
