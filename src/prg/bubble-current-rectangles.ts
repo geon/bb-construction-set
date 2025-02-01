@@ -120,17 +120,19 @@ function readRectangle(
 		  }
 		: {
 				type: "rectangle",
-				...bytesToBubbleCurrentRectangle([
-					firstByte,
-					bubbleCurrentRectangleBytes.getUint8(1),
-					bubbleCurrentRectangleBytes.getUint8(2),
-				]),
+				...bytesToBubbleCurrentRectangle(bubbleCurrentRectangleBytes),
 		  };
 }
 
 export function bytesToBubbleCurrentRectangle(
-	bytes: [number, number, number]
+	dataView: ReadonlyDataView
 ): BubbleCurrentRectangle {
+	const bytes = [
+		dataView.getUint8(0),
+		dataView.getUint8(1),
+		dataView.getUint8(2),
+	];
+
 	// Bytes are within [square brackets].
 	// Values are separated | with | pipes.
 	// [Skip | Direction | Left] | [Top | Wid][th | Unused | Height]
@@ -153,7 +155,7 @@ export function bytesToBubbleCurrentRectangle(
 
 export function bubbleCurrentRectangleToBytes(
 	rectangle: BubbleCurrentRectangle
-): [number, number, number] {
+): DataView {
 	const bytes: [number, number, number] = [0, 0, 0];
 
 	// const direction = ((bytes[0] & 0b01100000) >> 5) as BubbleCurrentDirection;
@@ -165,7 +167,7 @@ export function bubbleCurrentRectangleToBytes(
 	bytes[1] = (rectangle.top << 3) | ((rectangle.width - 1) >> 2);
 	bytes[2] =
 		(((rectangle.width - 1) << 6) & 0b11000000) | (rectangle.height - 1);
-	return bytes;
+	return new DataView(new Uint8Array(bytes).buffer);
 }
 
 export function encodeFirstByte(firstByte: FirstByte): number {
