@@ -31,8 +31,8 @@ export function readBubbleCurrentRectangles(
 				: readBubbleCurrentRectanglesForLevel(
 						dataViewSlice(
 							bubbleCurrentRectangleBytes,
-							currentWindCurrentsByteIndex,
-							byteCount
+							currentWindCurrentsByteIndex + 1,
+							byteCount - 1
 						)
 				  )
 		);
@@ -54,7 +54,7 @@ export function readBubbleCurrentRectangles(
 function readBubbleCurrentRectanglesForLevel(
 	bubbleCurrentRectangleBytes: ReadonlyDataView
 ): BubbleCurrentRectangles {
-	let currentWindCurrentsByteIndex = 1;
+	let currentWindCurrentsByteIndex = 0;
 
 	const rectangles: BubbleCurrentRectangleOrSymmetry[] = [];
 	while (
