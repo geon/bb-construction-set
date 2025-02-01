@@ -41,8 +41,9 @@ function readBubbleCurrentRectanglesForLevel(
 		const firstByte = bubbleCurrentRectangleBytes.getUint8(
 			currentWindCurrentsByteIndex
 		);
+		const copy = isBitSet(firstByte, 0);
 		const firstByteWithoutCopyFlag = firstByte & 0b01111111;
-		const byteCount = Math.max(1, firstByteWithoutCopyFlag);
+		const byteCount = copy ? 1 : Math.max(1, firstByteWithoutCopyFlag);
 		currentWindCurrentsByteIndex += byteCount;
 	}
 
