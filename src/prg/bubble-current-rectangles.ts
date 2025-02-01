@@ -167,3 +167,9 @@ export function bubbleCurrentRectangleToBytes(
 		(((rectangle.width - 1) << 6) & 0b11000000) | (rectangle.height - 1);
 	return bytes;
 }
+
+export function encodeFirstByte(firstByte: FirstByte): number {
+	return firstByte.type === "copy"
+		? 0b10000000 | firstByte.levelIndex
+		: firstByte.byteCount;
+}

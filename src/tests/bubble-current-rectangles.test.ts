@@ -1,5 +1,6 @@
 import { expect, test } from "vitest";
 import {
+	encodeFirstByte,
 	parseFirstByte,
 	readBubbleCurrentRectangles,
 } from "../prg/bubble-current-rectangles";
@@ -26,4 +27,20 @@ test("parseFirstByte", () => {
 		type: "rectangles",
 		byteCount: 5,
 	});
+});
+
+test("encodeFirstByte", () => {
+	expect(
+		encodeFirstByte({
+			type: "copy",
+			levelIndex: 5,
+			byteCount: 1,
+		})
+	).toStrictEqual(0b10000000 | 5);
+	expect(
+		encodeFirstByte({
+			type: "rectangles",
+			byteCount: 5,
+		})
+	).toStrictEqual(5);
 });
