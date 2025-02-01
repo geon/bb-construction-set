@@ -15,32 +15,57 @@ export function readBubbleCurrentRectangles(
 
 	let currentWindCurrentsByteIndex = 0;
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
-		const firstByte = bubbleCurrentRectangleBytes.getUint8(
-			currentWindCurrentsByteIndex
+		const firstByte = parseFirstByte(
+			bubbleCurrentRectangleBytes.getUint8(currentWindCurrentsByteIndex)
 		);
-		const copy = isBitSet(firstByte, 0);
-		const firstByteWithoutCopyFlag = firstByte & 0b01111111;
-		const byteCount = copy ? 1 : Math.max(1, firstByteWithoutCopyFlag);
 
 		bubbleCurrentRectanglesForAllLevels.push(
-			copy
+			firstByte.type === "copy"
 				? {
 						type: "copy",
-						levelIndex: firstByteWithoutCopyFlag,
+						levelIndex: firstByte.levelIndex,
 				  }
 				: readBubbleCurrentRectanglesForLevel(
 						dataViewSlice(
 							bubbleCurrentRectangleBytes,
 							currentWindCurrentsByteIndex + 1,
-							byteCount - 1
+							firstByte.byteCount - 1
 						)
 				  )
 		);
 
-		currentWindCurrentsByteIndex += byteCount;
+		currentWindCurrentsByteIndex += firstByte.byteCount;
 	}
 
 	return bubbleCurrentRectanglesForAllLevels;
+}
+
+type FirstByte = {
+	byteCount: number;
+} & (
+	| {
+			type: "copy";
+			levelIndex: number;
+	  }
+	| {
+			type: "rectangles";
+	  }
+);
+
+export function parseFirstByte(firstByte: number): FirstByte {
+	const copy = isBitSet(firstByte, 0);
+	const firstByteWithoutCopyFlag = firstByte & 0b01111111;
+
+	return copy
+		? {
+				type: "copy",
+				levelIndex: firstByteWithoutCopyFlag,
+				byteCount: 1,
+		  }
+		: {
+				type: "rectangles",
+				byteCount: Math.max(1, firstByteWithoutCopyFlag),
+		  };
 }
 
 // Bytes are within [square brackets].
