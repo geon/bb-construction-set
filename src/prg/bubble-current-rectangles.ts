@@ -72,7 +72,7 @@ export function parseFirstByte(firstByte: number): FirstByte {
 // [NotSure | Count]
 // [a bbbbbbb]
 
-function readBubbleCurrentRectanglesForLevel(
+export function readBubbleCurrentRectanglesForLevel(
 	firstByte: FirstByte,
 	bubbleCurrentRectangleBytes: ReadonlyDataView
 ): BubbleCurrentRectangles {
