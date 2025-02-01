@@ -54,17 +54,12 @@ export function readBubbleCurrentRectangles(
 function readBubbleCurrentRectanglesForLevel(
 	bubbleCurrentRectangleBytes: ReadonlyDataView
 ): BubbleCurrentRectangles {
-	let currentWindCurrentsByteIndex = 0;
-
-	const firstByte = bubbleCurrentRectangleBytes.getUint8(
-		currentWindCurrentsByteIndex++
-	);
-	const firstByteWithoutCopyFlag = firstByte & 0b01111111;
-
-	const byteCount = Math.max(1, firstByteWithoutCopyFlag);
+	let currentWindCurrentsByteIndex = 1;
 
 	const rectangles: BubbleCurrentRectangleOrSymmetry[] = [];
-	while (currentWindCurrentsByteIndex < byteCount) {
+	while (
+		currentWindCurrentsByteIndex < bubbleCurrentRectangleBytes.byteLength
+	) {
 		const firstByte = bubbleCurrentRectangleBytes.getUint8(
 			currentWindCurrentsByteIndex
 		);
