@@ -10,7 +10,8 @@
 		"preview": "vite preview",
 		"test": "vitest",
 		"coverage": "vitest run --coverage",
-		"publish": "npm run build && ./publish.sh"
+		"publish": "npm run build && ./publish.sh",
+		"export-original-levels-to-pe": "tsx src/scripts/export-original-levels-to-pe.ts"
 	},
 	"dependencies": {
 		"client-zip": "^2.5.0",
@@ -29,6 +30,7 @@
 		"eslint": "^8.55.0",
 		"eslint-plugin-react-hooks": "^4.6.0",
 		"eslint-plugin-react-refresh": "^0.4.5",
+		"tsx": "^4.19.2",
 		"typescript": "^5.7.2",
 		"vite": "^5.0.8",
 		"vitest": "^2.1.8"
