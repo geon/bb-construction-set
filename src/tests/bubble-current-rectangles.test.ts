@@ -55,14 +55,9 @@ test("readBubbleCurrentRectanglesForLevel & patchBubbleCurrentRectanglesForLevel
 		4, 0,
 	]);
 
-	const firstByte = parseFirstByte(oneLevelData[0]);
 	const rects = readBubbleCurrentRectanglesForLevel(oneLevelData);
 
-	const patched = new Uint8Array(oneLevelData.byteLength);
-	patched[0] = encodeFirstByte(firstByte);
-	patched
-		.subarray(1)
-		.set(writeBubbleCurrentRectanglesForLevel(firstByte, rects));
+	const patched = writeBubbleCurrentRectanglesForLevel(rects);
 
 	expect(patched).toStrictEqual(oneLevelData);
 });
