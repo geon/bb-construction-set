@@ -65,3 +65,20 @@ export function getDataSegments<
 			)
 	);
 }
+
+// https://stackoverflow.com/a/43933693/446536
+export function uint8ArrayConcatenate(
+	arrays: readonly Uint8Array[]
+): Uint8Array {
+	let totalLength = 0;
+	for (const arr of arrays) {
+		totalLength += arr.length;
+	}
+	const result = new Uint8Array(totalLength);
+	let offset = 0;
+	for (const arr of arrays) {
+		result.set(arr, offset);
+		offset += arr.length;
+	}
+	return result;
+}

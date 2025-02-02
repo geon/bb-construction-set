@@ -5,6 +5,7 @@ import {
 	BubbleCurrentDirection,
 } from "../level";
 import { isBitSet } from "./bit-twiddling";
+import { uint8ArrayConcatenate } from "./io";
 import { ReadonlyUint8Array } from "./types";
 
 export function readBubbleCurrentRectangles(
@@ -115,6 +116,29 @@ export function readBubbleCurrentRectanglesForLevel(
 	};
 }
 
+export function writeBubbleCurrentRectanglesForLevel(
+	// TODO: Group into one type? Both have a type fiels that must be identical.
+	firstByte: FirstByte,
+	rectangles: BubbleCurrentRectangles
+): Uint8Array {
+	if (firstByte.type === "copy") {
+		// TODO: This seems stupid.
+		return new Uint8Array([]);
+	}
+
+	if (rectangles.type !== firstByte.type) {
+		throw new Error("Must be identical.");
+	}
+
+	return uint8ArrayConcatenate(
+		rectangles.rectangles.map((rectangle) => {
+			return rectangle.type === "symmetry"
+				? new Uint8Array([0])
+				: bubbleCurrentRectangleToBytes(rectangle);
+		})
+	);
+}
+
 export function bytesToBubbleCurrentRectangle(
 	bytes: ReadonlyUint8Array
 ): BubbleCurrentRectangle {
@@ -148,7 +172,7 @@ export function bubbleCurrentRectangleToBytes(
 	// const top = (bytes[1] & 0b11111000) >> 3;
 	// const width = ((bytes[1] & 0b00000111) << 2) | ((bytes[2] & 0b11000000) >> 6);
 	// const height = bytes[2] & 0b00011111;
-	bytes[0] = (rectangle.direction << 5) | rectangle.left;
+	bytes[0] = 0b10000000 | (rectangle.direction << 5) | rectangle.left;
 	bytes[1] = (rectangle.top << 3) | ((rectangle.width - 1) >> 2);
 	bytes[2] =
 		(((rectangle.width - 1) << 6) & 0b11000000) | (rectangle.height - 1);
