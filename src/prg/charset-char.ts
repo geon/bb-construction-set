@@ -1,7 +1,6 @@
 import { CharsetChar, parseCharsetCharLine } from "../charset-char";
 import { chunk } from "../functions";
 import { Level } from "../level";
-import { dataViewSetBytes } from "./io";
 import { ReadonlyUint8Array } from "./types";
 
 export const linesPerChar = 8;
@@ -16,8 +15,7 @@ export function patchPlatformChars(
 	dataView: Uint8Array,
 	platformChars: readonly Level["platformChar"][]
 ) {
-	dataViewSetBytes(
-		dataView,
+	dataView.set(
 		platformChars.flatMap((platformChar) =>
 			platformChar.lines.map(
 				(line) =>

@@ -6,7 +6,6 @@ import {
 	BubbleCurrentPerLineDefaults,
 } from "../level";
 import { maxAsymmetric } from "../prg/data-locations";
-import { dataViewSetBytes } from "../prg/io";
 
 export function patchHoles(
 	dataView: Uint8Array,
@@ -47,7 +46,7 @@ export function patchHoles(
 			tilesHalfBytes + currentsHalfBytes
 	);
 
-	dataViewSetBytes(dataView, bytes);
+	dataView.set(bytes);
 }
 
 export function patchSymmetry(
@@ -86,7 +85,7 @@ export function patchSymmetry(
 	);
 
 	// Write symmetry.
-	dataViewSetBytes(dataView, bytes);
+	dataView.set(bytes);
 }
 
 export function patchBitmaps(
@@ -143,5 +142,5 @@ export function patchBitmaps(
 	if (levelBitmapBytes.length > maxLevelBytes) {
 		throw new Error("Too many level bytes.");
 	}
-	dataViewSetBytes(dataView, levelBitmapBytes);
+	dataView.set(levelBitmapBytes);
 }

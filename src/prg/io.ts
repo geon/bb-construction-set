@@ -20,15 +20,6 @@ export function getPrgByteAtAddress(
 	return prg[offset];
 }
 
-export function dataViewSetBytes(
-	dataView: Uint8Array,
-	bytes: readonly number[]
-): void {
-	for (const [index, byte] of bytes.entries()) {
-		dataView[index] = byte;
-	}
-}
-
 export type GetBoundedByte = (index: number) => number;
 export function makeGetBoundedByte({
 	getByte,

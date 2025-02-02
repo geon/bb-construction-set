@@ -1,6 +1,5 @@
 import { zipObject } from "../functions";
 import { PaletteIndex } from "../palette";
-import { dataViewSetBytes } from "./io";
 import { ReadonlyUint8Array } from "./types";
 
 export function readBgColors(bytes: ReadonlyUint8Array): {
@@ -22,8 +21,7 @@ export function patchBgColors(
 	bgColorLight: readonly PaletteIndex[],
 	bgColorDark: readonly PaletteIndex[]
 ) {
-	dataViewSetBytes(
-		bytes,
+	bytes.set(
 		zipObject({ bgColorLight, bgColorDark }).map(
 			({ bgColorLight, bgColorDark }) => bgColorLight + (bgColorDark << 4)
 		)

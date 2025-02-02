@@ -3,7 +3,6 @@ import { chunk, isDefined } from "../functions";
 import { Level } from "../level";
 import { isBitSet } from "./bit-twiddling";
 import { maxSidebars } from "./data-locations";
-import { dataViewSetBytes } from "./io";
 import { ReadonlyUint8Array } from "./types";
 
 export function readSidebarChars(
@@ -40,8 +39,7 @@ export function patchSidebarChars(
 		);
 	}
 
-	dataViewSetBytes(
-		dataView,
+	dataView.set(
 		sidebarLevels.flatMap((sidebarChars) =>
 			sidebarChars.flatMap((char) =>
 				char.lines.map(

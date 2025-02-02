@@ -1,7 +1,7 @@
 import { Monster } from "../level";
 import { isBitSet } from "./bit-twiddling";
 import { bytesPerMonster, maxMonsters } from "./data-locations";
-import { dataViewSetBytes, dataViewSlice } from "./io";
+import { dataViewSlice } from "./io";
 import { ReadonlyUint8Array } from "./types";
 
 export function readMonsters(monsterBytes: ReadonlyUint8Array) {
@@ -76,5 +76,5 @@ export function patchMonsters(
 		return [...subBytes, 0];
 	});
 
-	dataViewSetBytes(dataView, bytes);
+	dataView.set(bytes);
 }
