@@ -27,7 +27,7 @@ export function parsePrg(prg: ArrayBuffer): {
 } {
 	const startAddres = getPrgStartAddress(prg);
 	const getByte = (address: number) =>
-		getPrgByteAtAddress(new DataView(prg), startAddres, address);
+		getPrgByteAtAddress(new Uint8Array(prg), startAddres, address);
 
 	const dataSegments = getDataSegments(prg);
 

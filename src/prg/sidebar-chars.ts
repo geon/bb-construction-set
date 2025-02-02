@@ -4,11 +4,11 @@ import { Level } from "../level";
 import { isBitSet } from "./bit-twiddling";
 import { maxSidebars } from "./data-locations";
 import { dataViewSetBytes, getBytes } from "./io";
-import { ReadonlyDataView } from "./types";
+import { ReadonlyUint8Array } from "./types";
 
 export function readSidebarChars(
-	sidebarCharsBytes: ReadonlyDataView,
-	symmetryMetadataBytes: ReadonlyDataView
+	sidebarCharsBytes: ReadonlyUint8Array,
+	symmetryMetadataBytes: ReadonlyUint8Array
 ) {
 	const linesPerChar = 8;
 	const allSidebarCharBlocks = chunk(
@@ -31,7 +31,7 @@ export function readSidebarChars(
 }
 
 export function patchSidebarChars(
-	dataView: DataView,
+	dataView: Uint8Array,
 	sidebarCharses: readonly Level["sidebarChars"][]
 ) {
 	const sidebarLevels = sidebarCharses.filter(isDefined);

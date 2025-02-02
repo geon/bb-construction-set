@@ -9,7 +9,7 @@ import { maxAsymmetric } from "../prg/data-locations";
 import { dataViewSetBytes } from "../prg/io";
 
 export function patchHoles(
-	dataView: DataView,
+	dataView: Uint8Array,
 	tileses: readonly Tiles[],
 	bubbleCurrentPerLineDefaultses: readonly BubbleCurrentPerLineDefaults[]
 ) {
@@ -51,7 +51,7 @@ export function patchHoles(
 }
 
 export function patchSymmetry(
-	dataView: DataView,
+	dataView: Uint8Array,
 	tileses: readonly Tiles[],
 	sidebarCharses: readonly (CharBlock | undefined)[]
 ) {
@@ -73,7 +73,7 @@ export function patchSymmetry(
 	const oldBits = tileses.map(
 		(_, index) =>
 			// TODO: No idea what the rest of the bits are.
-			dataView.getUint8(index) & 0b00111111
+			dataView[index] & 0b00111111
 	);
 
 	const bytes = zipObject({
@@ -90,7 +90,7 @@ export function patchSymmetry(
 }
 
 export function patchBitmaps(
-	dataView: DataView,
+	dataView: Uint8Array,
 	tileses: readonly Tiles[],
 	bubbleCurrentPerLineDefaultses: readonly BubbleCurrentPerLineDefaults[]
 ) {

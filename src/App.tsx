@@ -29,7 +29,7 @@ function App() {
 		| ({ fileName: string; fileSize: number } & (
 				| {
 						type: "success";
-						prg: DataView;
+						prg: Uint8Array;
 						levels: readonly Level[];
 						sprites: Sprites;
 						items: CharBlock[];
@@ -50,7 +50,7 @@ function App() {
 			const parsed = parsePrg(buffer);
 			setParsedPrgData({
 				type: "success",
-				prg: new DataView(buffer),
+				prg: new Uint8Array(buffer),
 				...parsed,
 				fileName: file.name,
 				fileSize: file.size,

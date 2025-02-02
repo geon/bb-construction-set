@@ -6,17 +6,17 @@ import {
 } from "../level";
 import { isBitSet } from "./bit-twiddling";
 import { dataViewSlice } from "./io";
-import { ReadonlyDataView } from "./types";
+import { ReadonlyUint8Array } from "./types";
 
 export function readBubbleCurrentRectangles(
-	bubbleCurrentRectangleBytes: ReadonlyDataView
+	bubbleCurrentRectangleBytes: ReadonlyUint8Array
 ): BubbleCurrentRectangles[] {
 	const bubbleCurrentRectanglesForAllLevels: BubbleCurrentRectangles[] = [];
 
 	let currentWindCurrentsByteIndex = 0;
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
 		const firstByte = parseFirstByte(
-			bubbleCurrentRectangleBytes.getUint8(currentWindCurrentsByteIndex)
+			bubbleCurrentRectangleBytes[currentWindCurrentsByteIndex]
 		);
 
 		bubbleCurrentRectanglesForAllLevels.push(
@@ -74,7 +74,7 @@ export function parseFirstByte(firstByte: number): FirstByte {
 
 export function readBubbleCurrentRectanglesForLevel(
 	firstByte: FirstByte,
-	bubbleCurrentRectangleBytes: ReadonlyDataView
+	bubbleCurrentRectangleBytes: ReadonlyUint8Array
 ): BubbleCurrentRectangles {
 	if (firstByte.type === "copy") {
 		return {
@@ -89,9 +89,7 @@ export function readBubbleCurrentRectanglesForLevel(
 	while (
 		currentWindCurrentsByteIndex < bubbleCurrentRectangleBytes.byteLength
 	) {
-		const firstByte = bubbleCurrentRectangleBytes.getUint8(
-			currentWindCurrentsByteIndex
-		);
+		const firstByte = bubbleCurrentRectangleBytes[currentWindCurrentsByteIndex];
 		const symmetry = !isBitSet(firstByte, 0);
 
 		rectangles.push(
@@ -121,13 +119,9 @@ export function readBubbleCurrentRectanglesForLevel(
 }
 
 export function bytesToBubbleCurrentRectangle(
-	dataView: ReadonlyDataView
+	dataView: ReadonlyUint8Array
 ): BubbleCurrentRectangle {
-	const bytes = [
-		dataView.getUint8(0),
-		dataView.getUint8(1),
-		dataView.getUint8(2),
-	];
+	const bytes = [dataView[0], dataView[1], dataView[2]];
 
 	// Bytes are within [square brackets].
 	// Values are separated | with | pipes.
@@ -151,7 +145,7 @@ export function bytesToBubbleCurrentRectangle(
 
 export function bubbleCurrentRectangleToBytes(
 	rectangle: BubbleCurrentRectangle
-): DataView {
+): Uint8Array {
 	const bytes: [number, number, number] = [0, 0, 0];
 
 	// const direction = ((bytes[0] & 0b01100000) >> 5) as BubbleCurrentDirection;
@@ -163,7 +157,7 @@ export function bubbleCurrentRectangleToBytes(
 	bytes[1] = (rectangle.top << 3) | ((rectangle.width - 1) >> 2);
 	bytes[2] =
 		(((rectangle.width - 1) << 6) & 0b11000000) | (rectangle.height - 1);
-	return new DataView(new Uint8Array(bytes).buffer);
+	return new Uint8Array(bytes);
 }
 
 export function encodeFirstByte(firstByte: FirstByte): number {

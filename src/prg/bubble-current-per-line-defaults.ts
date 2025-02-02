@@ -1,10 +1,10 @@
 import { BubbleCurrentDirection, BubbleCurrentPerLineDefaults } from "../level";
 import { isBitSet } from "./bit-twiddling";
 import { TileBitmap } from "./tile-bitmap";
-import { ReadonlyDataView } from "./types";
+import { ReadonlyUint8Array } from "./types";
 
 export function readBubbleCurrentPerLineDefaults(
-	holeMetadataBytes: ReadonlyDataView,
+	holeMetadataBytes: ReadonlyUint8Array,
 	tileBitmaps: readonly TileBitmap[]
 ): BubbleCurrentPerLineDefaults[] {
 	const monstersForAllLevels = [];
@@ -25,9 +25,9 @@ export function readBubbleCurrentPerLineDefaults(
 function readBubbleCurrentPerLineDefaultsForLevel(
 	levelIndex: number,
 	tileBitmap: TileBitmap,
-	holeMetadataBytes: ReadonlyDataView
+	holeMetadataBytes: ReadonlyUint8Array
 ): BubbleCurrentPerLineDefaults {
-	const holeMetadata = holeMetadataBytes.getUint8(levelIndex);
+	const holeMetadata = holeMetadataBytes[levelIndex];
 	const perLineDefaults = extractbubbleCurrentLineDefault(
 		tileBitmap,
 		holeMetadata

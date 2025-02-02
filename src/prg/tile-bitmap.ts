@@ -1,6 +1,6 @@
 import { isBitSet, mirrorBits } from "./bit-twiddling";
 import { dataViewSlice } from "./io";
-import { ReadonlyDataView } from "./types";
+import { ReadonlyUint8Array } from "./types";
 
 export type TileBitmap = {
 	readonly isSymmetric: boolean;
@@ -8,14 +8,14 @@ export type TileBitmap = {
 };
 
 export function readTileBitmaps(
-	bitmapBytes: ReadonlyDataView,
-	symmetryMetadataBytes: ReadonlyDataView
+	bitmapBytes: ReadonlyUint8Array,
+	symmetryMetadataBytes: ReadonlyUint8Array
 ): readonly TileBitmap[] {
 	const tileBitmaps: TileBitmap[] = [];
 
 	let offset = 0;
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
-		const isSymmetric = isBitSet(symmetryMetadataBytes.getUint8(levelIndex), 0);
+		const isSymmetric = isBitSet(symmetryMetadataBytes[levelIndex], 0);
 		const levelBitmapByteLength = isSymmetric ? 46 : 92;
 		tileBitmaps.push(
 			readTileBitmap(
@@ -31,7 +31,7 @@ export function readTileBitmaps(
 
 function readTileBitmap(
 	isSymmetric: boolean,
-	bitmapDataview: ReadonlyDataView
+	bitmapDataview: ReadonlyUint8Array
 ): TileBitmap {
 	const bytesPerRow = 4;
 
@@ -47,7 +47,7 @@ function readTileBitmap(
 			bitmapByteOfRowIndex < bytesToRead;
 			++bitmapByteOfRowIndex
 		) {
-			bitmapBytes.push(bitmapDataview.getUint8(currentBitmapByteIndex));
+			bitmapBytes.push(bitmapDataview[currentBitmapByteIndex]);
 			currentBitmapByteIndex += 1;
 		}
 

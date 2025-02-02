@@ -1,6 +1,6 @@
 import { mapRecord } from "../functions";
 import { segmentLocations } from "./data-locations";
-import { GetByte, ReadonlyDataView } from "./types";
+import { GetByte, ReadonlyUint8Array } from "./types";
 
 export function getPrgStartAddress(prg: ArrayBuffer): number {
 	// The prg contains a little endian 16 bit header with the start address. The rest is the raw data.
@@ -8,7 +8,7 @@ export function getPrgStartAddress(prg: ArrayBuffer): number {
 }
 
 export function getPrgByteAtAddress(
-	prg: ReadonlyDataView,
+	prg: ReadonlyUint8Array,
 	startAddres: number,
 	address: number
 ): number {
@@ -17,24 +17,24 @@ export function getPrgByteAtAddress(
 	if (offset >= prg.byteLength) {
 		throw new Error("File is too short.");
 	}
-	return prg.getUint8(offset);
+	return prg[offset];
 }
 
-export function getBytes(dataView: ReadonlyDataView): readonly number[] {
+export function getBytes(dataView: ReadonlyUint8Array): readonly number[] {
 	const length = dataView.byteLength;
 	const bytes = Array<number>(length);
 	for (let index = 0; index < length; ++index) {
-		bytes[index] = dataView.getUint8(index);
+		bytes[index] = dataView[index];
 	}
 	return bytes;
 }
 
 export function dataViewSetBytes(
-	dataView: DataView,
+	dataView: Uint8Array,
 	bytes: readonly number[]
 ): void {
 	for (const [index, byte] of bytes.entries()) {
-		dataView.setUint8(index, byte);
+		dataView[index] = byte;
 	}
 }
 
@@ -60,11 +60,13 @@ export function makeGetBoundedByte({
 	};
 }
 
-export function dataViewSlice<TDataView extends ReadonlyDataView | DataView>(
+export function dataViewSlice<
+	TDataView extends ReadonlyUint8Array | Uint8Array
+>(
 	dataView: TDataView,
 	byteOffset: number,
 	byteLength: number
-): TDataView extends DataView ? DataView : ReadonlyDataView {
+): TDataView extends Uint8Array ? Uint8Array : ReadonlyUint8Array {
 	if (byteOffset < 0) {
 		throw new Error("Negative offset.");
 	}
@@ -81,17 +83,17 @@ export function dataViewSlice<TDataView extends ReadonlyDataView | DataView>(
 		);
 	}
 
-	return new DataView(
-		(dataView as DataView).buffer,
-		(dataView as DataView).byteOffset + byteOffset,
+	return new Uint8Array(
+		(dataView as Uint8Array).buffer,
+		(dataView as Uint8Array).byteOffset + byteOffset,
 		byteLength
 	);
 }
 
 type DataSegmentName = keyof typeof segmentLocations;
 
-export type ReadonlyDataSegments = Record<DataSegmentName, ReadonlyDataView>;
-export type MutableDataSegments = Record<DataSegmentName, DataView>;
+export type ReadonlyDataSegments = Record<DataSegmentName, ReadonlyUint8Array>;
+export type MutableDataSegments = Record<DataSegmentName, Uint8Array>;
 
 export function getDataSegments<
 	TReadonlyOrMutable extends "readonly" | "mutable" = "readonly"
@@ -104,7 +106,7 @@ export function getDataSegments<
 	return mapRecord(
 		segmentLocations,
 		(segmentLocation) =>
-			new DataView(
+			new Uint8Array(
 				prg,
 				segmentLocation.startAddress - prgStartAddress + 2, // 2 bytes extra for the prg header.
 				segmentLocation.length

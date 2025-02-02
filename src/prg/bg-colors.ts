@@ -1,9 +1,9 @@
 import { zipObject } from "../functions";
 import { PaletteIndex } from "../palette";
 import { dataViewSetBytes, getBytes } from "./io";
-import { ReadonlyDataView } from "./types";
+import { ReadonlyUint8Array } from "./types";
 
-export function readBgColors(dataView: ReadonlyDataView) {
+export function readBgColors(dataView: ReadonlyUint8Array) {
 	const bytes = getBytes(dataView);
 	return {
 		bgColorLight: bytes.map(
@@ -16,7 +16,7 @@ export function readBgColors(dataView: ReadonlyDataView) {
 }
 
 export function patchBgColors(
-	bytes: DataView,
+	bytes: Uint8Array,
 	bgColorLight: readonly PaletteIndex[],
 	bgColorDark: readonly PaletteIndex[]
 ) {

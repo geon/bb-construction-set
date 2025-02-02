@@ -2,9 +2,9 @@ import { Monster } from "../level";
 import { isBitSet } from "./bit-twiddling";
 import { bytesPerMonster, maxMonsters } from "./data-locations";
 import { dataViewSetBytes, dataViewSlice } from "./io";
-import { ReadonlyDataView } from "./types";
+import { ReadonlyUint8Array } from "./types";
 
-export function readMonsters(monsterBytes: ReadonlyDataView) {
+export function readMonsters(monsterBytes: ReadonlyUint8Array) {
 	const monstersForAllLevels: Monster[][] = [];
 
 	let currentMonsterByteIndex = 0;
@@ -23,7 +23,7 @@ export function readMonsters(monsterBytes: ReadonlyDataView) {
 				)
 			);
 			currentMonsterByteIndex += bytesPerMonster;
-		} while (monsterBytes.getUint8(currentMonsterByteIndex));
+		} while (monsterBytes[currentMonsterByteIndex]);
 		currentMonsterByteIndex += 1; // The monsters of each level are separated with a zero byte.
 
 		monstersForAllLevels.push(monsters);
@@ -32,19 +32,19 @@ export function readMonsters(monsterBytes: ReadonlyDataView) {
 	return monstersForAllLevels;
 }
 
-function readMonster(monsterBytes: ReadonlyDataView): Monster {
+function readMonster(monsterBytes: ReadonlyUint8Array): Monster {
 	return {
-		type: monsterBytes.getUint8(0) & 0b111,
+		type: monsterBytes[0] & 0b111,
 		spawnPoint: {
-			x: (monsterBytes.getUint8(0) & 0b11111000) + 20,
-			y: (monsterBytes.getUint8(1) & 0b11111110) + 21,
+			x: (monsterBytes[0] & 0b11111000) + 20,
+			y: (monsterBytes[1] & 0b11111110) + 21,
 		},
-		facingLeft: isBitSet(monsterBytes.getUint8(2), 0),
+		facingLeft: isBitSet(monsterBytes[2], 0),
 	};
 }
 
 export function patchMonsters(
-	dataView: DataView,
+	dataView: Uint8Array,
 	monsterses: readonly Monster[][]
 ) {
 	const numMonsters = monsterses.flatMap((monsters) => monsters).length;
@@ -63,10 +63,10 @@ export function patchMonsters(
 				((monster.spawnPoint.x - 20) & 0b11111000) + monster.type,
 				((monster.spawnPoint.y - 21) & 0b11111110) +
 					// TODO: No idea what the rest of the bits are.
-					(dataView.getUint8(currentMonsterStartByte + 1) & 0b00000001),
+					(dataView[currentMonsterStartByte + 1] & 0b00000001),
 				((monster.facingLeft ? 1 : 0) << 7) +
 					// TODO: No idea what the rest of the bits are.
-					(dataView.getUint8(currentMonsterStartByte + 2) & 0b01111111),
+					(dataView[currentMonsterStartByte + 2] & 0b01111111),
 			];
 			monsterStartByte += 3;
 			return subSubBytes;
