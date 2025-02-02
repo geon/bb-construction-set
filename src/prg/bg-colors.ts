@@ -3,7 +3,10 @@ import { PaletteIndex } from "../palette";
 import { dataViewSetBytes } from "./io";
 import { ReadonlyUint8Array } from "./types";
 
-export function readBgColors(bytes: ReadonlyUint8Array) {
+export function readBgColors(bytes: ReadonlyUint8Array): {
+	readonly bgColorLight: readonly PaletteIndex[];
+	readonly bgColorDark: readonly PaletteIndex[];
+} {
 	return {
 		bgColorLight: [...bytes].map(
 			(bgColorMetadata) => (bgColorMetadata & 0b1111) as PaletteIndex
