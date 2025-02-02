@@ -30,7 +30,7 @@ export function readTileBitmaps(
 
 function readTileBitmap(
 	isSymmetric: boolean,
-	bitmapDataview: ReadonlyUint8Array
+	byteArray: ReadonlyUint8Array
 ): TileBitmap {
 	const bytesPerRow = 4;
 
@@ -46,7 +46,7 @@ function readTileBitmap(
 			bitmapByteOfRowIndex < bytesToRead;
 			++bitmapByteOfRowIndex
 		) {
-			bitmapBytes.push(bitmapDataview[currentBitmapByteIndex]);
+			bitmapBytes.push(byteArray[currentBitmapByteIndex]);
 			currentBitmapByteIndex += 1;
 		}
 

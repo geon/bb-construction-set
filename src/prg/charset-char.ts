@@ -12,10 +12,10 @@ export function readPlatformChars(platformCharsBytes: ReadonlyUint8Array) {
 }
 
 export function patchPlatformChars(
-	dataView: Uint8Array,
+	byteArray: Uint8Array,
 	platformChars: readonly Level["platformChar"][]
 ) {
-	dataView.set(
+	byteArray.set(
 		platformChars.flatMap((platformChar) =>
 			platformChar.lines.map(
 				(line) =>

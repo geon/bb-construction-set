@@ -8,7 +8,7 @@ import {
 import { maxAsymmetric } from "../prg/data-locations";
 
 export function patchHoles(
-	dataView: Uint8Array,
+	byteArray: Uint8Array,
 	tileses: readonly Tiles[],
 	bubbleCurrentPerLineDefaultses: readonly BubbleCurrentPerLineDefaults[]
 ) {
@@ -46,11 +46,11 @@ export function patchHoles(
 			tilesHalfBytes + currentsHalfBytes
 	);
 
-	dataView.set(bytes);
+	byteArray.set(bytes);
 }
 
 export function patchSymmetry(
-	dataView: Uint8Array,
+	byteArray: Uint8Array,
 	tileses: readonly Tiles[],
 	sidebarCharses: readonly (CharBlock | undefined)[]
 ) {
@@ -72,7 +72,7 @@ export function patchSymmetry(
 	const oldBits = tileses.map(
 		(_, index) =>
 			// TODO: No idea what the rest of the bits are.
-			dataView[index] & 0b00111111
+			byteArray[index] & 0b00111111
 	);
 
 	const bytes = zipObject({
@@ -85,11 +85,11 @@ export function patchSymmetry(
 	);
 
 	// Write symmetry.
-	dataView.set(bytes);
+	byteArray.set(bytes);
 }
 
 export function patchBitmaps(
-	dataView: Uint8Array,
+	byteArray: Uint8Array,
 	tileses: readonly Tiles[],
 	bubbleCurrentPerLineDefaultses: readonly BubbleCurrentPerLineDefaults[]
 ) {
@@ -142,5 +142,5 @@ export function patchBitmaps(
 	if (levelBitmapBytes.length > maxLevelBytes) {
 		throw new Error("Too many level bytes.");
 	}
-	dataView.set(levelBitmapBytes);
+	byteArray.set(levelBitmapBytes);
 }

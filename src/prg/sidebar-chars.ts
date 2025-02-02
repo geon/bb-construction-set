@@ -29,7 +29,7 @@ export function readSidebarChars(
 }
 
 export function patchSidebarChars(
-	dataView: Uint8Array,
+	byteArray: Uint8Array,
 	sidebarCharses: readonly Level["sidebarChars"][]
 ) {
 	const sidebarLevels = sidebarCharses.filter(isDefined);
@@ -39,7 +39,7 @@ export function patchSidebarChars(
 		);
 	}
 
-	dataView.set(
+	byteArray.set(
 		sidebarLevels.flatMap((sidebarChars) =>
 			sidebarChars.flatMap((char) =>
 				char.lines.map(
