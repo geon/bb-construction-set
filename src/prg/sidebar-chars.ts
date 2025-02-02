@@ -3,7 +3,7 @@ import { chunk, isDefined } from "../functions";
 import { Level } from "../level";
 import { isBitSet } from "./bit-twiddling";
 import { maxSidebars } from "./data-locations";
-import { dataViewSetBytes, getBytes } from "./io";
+import { dataViewSetBytes } from "./io";
 import { ReadonlyUint8Array } from "./types";
 
 export function readSidebarChars(
@@ -12,15 +12,14 @@ export function readSidebarChars(
 ) {
 	const linesPerChar = 8;
 	const allSidebarCharBlocks = chunk(
-		chunk(getBytes(sidebarCharsBytes), linesPerChar).map((char) => ({
+		chunk([...sidebarCharsBytes], linesPerChar).map((char) => ({
 			lines: char.map(parseCharsetCharLine),
 		})),
 		4
 	) as CharBlock[];
 
 	let sidebarCharsIndex = 0;
-	const symmetryMetadata = getBytes(symmetryMetadataBytes);
-	const sidebarChars = symmetryMetadata.map((byte) => {
+	const sidebarChars = [...symmetryMetadataBytes].map((byte) => {
 		const hasSidebarChars = !isBitSet(byte, 1);
 		return hasSidebarChars
 			? allSidebarCharBlocks[sidebarCharsIndex++]

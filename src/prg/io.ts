@@ -20,15 +20,6 @@ export function getPrgByteAtAddress(
 	return prg[offset];
 }
 
-export function getBytes(dataView: ReadonlyUint8Array): readonly number[] {
-	const length = dataView.byteLength;
-	const bytes = Array<number>(length);
-	for (let index = 0; index < length; ++index) {
-		bytes[index] = dataView[index];
-	}
-	return bytes;
-}
-
 export function dataViewSetBytes(
 	dataView: Uint8Array,
 	bytes: readonly number[]
