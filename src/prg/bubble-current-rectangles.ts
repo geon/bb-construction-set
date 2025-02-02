@@ -119,10 +119,8 @@ export function readBubbleCurrentRectanglesForLevel(
 }
 
 export function bytesToBubbleCurrentRectangle(
-	dataView: ReadonlyUint8Array
+	bytes: ReadonlyUint8Array
 ): BubbleCurrentRectangle {
-	const bytes = [dataView[0], dataView[1], dataView[2]];
-
 	// Bytes are within [square brackets].
 	// Values are separated | with | pipes.
 	// [Skip | Direction | Left] | [Top | Wid][th | Unused | Height]
