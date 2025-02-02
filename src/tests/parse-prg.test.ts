@@ -43,9 +43,9 @@ test("parsePrg", () => {
 });
 
 test("First few levels bubble current rectangles.", () => {
-	const prgDataView = readFileSync(__dirname + "/decompressed-bb.prg").buffer;
+	const prg = readFileSync(__dirname + "/decompressed-bb.prg").buffer;
 
-	const levelFromPrg = parsePrg(prgDataView).levels;
+	const levelFromPrg = parsePrg(prg).levels;
 
 	const rectsFromPrg = levelFromPrg
 		.slice(0, knownGoodBubbleCurrentRectsForLevels.length)
