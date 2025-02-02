@@ -5,7 +5,6 @@ import {
 	BubbleCurrentDirection,
 } from "../level";
 import { isBitSet } from "./bit-twiddling";
-import { dataViewSlice } from "./io";
 import { ReadonlyUint8Array } from "./types";
 
 export function readBubbleCurrentRectangles(
@@ -22,10 +21,9 @@ export function readBubbleCurrentRectangles(
 		bubbleCurrentRectanglesForAllLevels.push(
 			readBubbleCurrentRectanglesForLevel(
 				firstByte,
-				dataViewSlice(
-					bubbleCurrentRectangleBytes,
+				bubbleCurrentRectangleBytes.subarray(
 					currentWindCurrentsByteIndex + 1,
-					firstByte.byteCount - 1
+					currentWindCurrentsByteIndex + 1 + firstByte.byteCount - 1
 				)
 			)
 		);
@@ -100,10 +98,9 @@ export function readBubbleCurrentRectanglesForLevel(
 				: {
 						type: "rectangle",
 						...bytesToBubbleCurrentRectangle(
-							dataViewSlice(
-								bubbleCurrentRectangleBytes,
+							bubbleCurrentRectangleBytes.subarray(
 								currentWindCurrentsByteIndex,
-								3
+								currentWindCurrentsByteIndex + 3
 							)
 						),
 				  }

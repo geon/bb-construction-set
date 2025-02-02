@@ -1,5 +1,4 @@
 import { isBitSet, mirrorBits } from "./bit-twiddling";
-import { dataViewSlice } from "./io";
 import { ReadonlyUint8Array } from "./types";
 
 export type TileBitmap = {
@@ -20,7 +19,7 @@ export function readTileBitmaps(
 		tileBitmaps.push(
 			readTileBitmap(
 				isSymmetric,
-				dataViewSlice(bitmapBytes, offset, levelBitmapByteLength)
+				bitmapBytes.subarray(offset, offset + levelBitmapByteLength)
 			)
 		);
 		offset += levelBitmapByteLength;

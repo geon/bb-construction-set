@@ -42,36 +42,6 @@ export function makeGetBoundedByte({
 	};
 }
 
-export function dataViewSlice<
-	TDataView extends ReadonlyUint8Array | Uint8Array
->(
-	dataView: TDataView,
-	byteOffset: number,
-	byteLength: number
-): TDataView extends Uint8Array ? Uint8Array : ReadonlyUint8Array {
-	if (byteOffset < 0) {
-		throw new Error("Negative offset.");
-	}
-
-	if (byteOffset > dataView.byteLength) {
-		throw new Error("Too large offset.");
-	}
-
-	if (byteLength + byteOffset > dataView.byteLength) {
-		throw new Error(
-			`Too large length: ${byteLength}, Max: ${
-				dataView.byteLength - byteOffset
-			}`
-		);
-	}
-
-	return new Uint8Array(
-		(dataView as Uint8Array).buffer,
-		(dataView as Uint8Array).byteOffset + byteOffset,
-		byteLength
-	);
-}
-
 type DataSegmentName = keyof typeof segmentLocations;
 
 export type ReadonlyDataSegments = Record<DataSegmentName, ReadonlyUint8Array>;

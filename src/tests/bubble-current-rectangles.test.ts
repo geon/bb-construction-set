@@ -5,7 +5,7 @@ import {
 	readBubbleCurrentRectangles,
 	readBubbleCurrentRectanglesForLevel,
 } from "../prg/bubble-current-rectangles";
-import { dataViewSlice, getDataSegments } from "../prg/io";
+import { getDataSegments } from "../prg/io";
 import { readFileSync } from "fs";
 
 test("readBubbleCurrentRectangles snapshot", () => {
@@ -55,7 +55,7 @@ test("readBubbleCurrentRectanglesForLevel snapshot", () => {
 	const firstByte = parseFirstByte(oneLevelData[0]);
 	const rects = readBubbleCurrentRectanglesForLevel(
 		firstByte,
-		dataViewSlice(oneLevelData, 1, firstByte.byteCount - 1)
+		oneLevelData.subarray(1, 1 + firstByte.byteCount - 1)
 	);
 
 	expect(rects).toMatchSnapshot();
