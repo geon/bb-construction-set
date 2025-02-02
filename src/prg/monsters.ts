@@ -45,10 +45,10 @@ function readMonster(monsterBytes: ReadonlyUint8Array): Monster {
 	};
 }
 
-export function patchMonsters(
-	byteArray: Uint8Array,
+export function writeMonsters(
+	oldByteArray: Uint8Array,
 	monsterses: readonly Monster[][]
-) {
+): Uint8Array {
 	const numMonsters = monsterses.flatMap((monsters) => monsters).length;
 	if (numMonsters > maxMonsters) {
 		throw new Error(
@@ -65,10 +65,10 @@ export function patchMonsters(
 				((monster.spawnPoint.x - 20) & 0b11111000) + monster.type,
 				((monster.spawnPoint.y - 21) & 0b11111110) +
 					// TODO: No idea what the rest of the bits are.
-					(byteArray[currentMonsterStartByte + 1] & 0b00000001),
+					(oldByteArray[currentMonsterStartByte + 1] & 0b00000001),
 				((monster.facingLeft ? 1 : 0) << 7) +
 					// TODO: No idea what the rest of the bits are.
-					(byteArray[currentMonsterStartByte + 2] & 0b01111111),
+					(oldByteArray[currentMonsterStartByte + 2] & 0b01111111),
 			];
 			monsterStartByte += 3;
 			return subSubBytes;
@@ -78,5 +78,5 @@ export function patchMonsters(
 		return [...subBytes, 0];
 	});
 
-	byteArray.set(bytes);
+	return new Uint8Array(bytes);
 }

@@ -28,10 +28,9 @@ export function readSidebarChars(
 	return sidebarChars;
 }
 
-export function patchSidebarChars(
-	byteArray: Uint8Array,
+export function writeSidebarChars(
 	sidebarCharses: readonly Level["sidebarChars"][]
-) {
+): Uint8Array {
 	const sidebarLevels = sidebarCharses.filter(isDefined);
 	if (sidebarLevels.length > maxSidebars) {
 		throw new Error(
@@ -39,7 +38,7 @@ export function patchSidebarChars(
 		);
 	}
 
-	byteArray.set(
+	return new Uint8Array(
 		sidebarLevels.flatMap((sidebarChars) =>
 			sidebarChars.flatMap((char) =>
 				char.lines.map(

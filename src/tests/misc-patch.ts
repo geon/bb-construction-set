@@ -7,11 +7,10 @@ import {
 } from "../level";
 import { maxAsymmetric } from "../prg/data-locations";
 
-export function patchHoles(
-	byteArray: Uint8Array,
+export function writeHoles(
 	tileses: readonly Tiles[],
 	bubbleCurrentPerLineDefaultses: readonly BubbleCurrentPerLineDefaults[]
-) {
+): Uint8Array {
 	const tilesHalfBytes = tileses.map((tiles) => {
 		const topLeft = !tiles[0][10];
 		const topRight = !tiles[0][20];
@@ -46,14 +45,14 @@ export function patchHoles(
 			tilesHalfBytes + currentsHalfBytes
 	);
 
-	byteArray.set(bytes);
+	return new Uint8Array(bytes);
 }
 
-export function patchSymmetry(
-	byteArray: Uint8Array,
+export function writeSymmetry(
+	oldByteArray: Uint8Array,
 	tileses: readonly Tiles[],
 	sidebarCharses: readonly (CharBlock | undefined)[]
-) {
+): Uint8Array {
 	const asymmetricLevels = tileses.filter((tiles) => !levelIsSymmetric(tiles));
 	if (asymmetricLevels.length > maxAsymmetric) {
 		throw new Error(
@@ -72,7 +71,7 @@ export function patchSymmetry(
 	const oldBits = tileses.map(
 		(_, index) =>
 			// TODO: No idea what the rest of the bits are.
-			byteArray[index] & 0b00111111
+			oldByteArray[index] & 0b00111111
 	);
 
 	const bytes = zipObject({
@@ -85,14 +84,13 @@ export function patchSymmetry(
 	);
 
 	// Write symmetry.
-	byteArray.set(bytes);
+	return new Uint8Array(bytes);
 }
 
-export function patchBitmaps(
-	byteArray: Uint8Array,
+export function writeBitmaps(
 	tileses: readonly Tiles[],
 	bubbleCurrentPerLineDefaultses: readonly BubbleCurrentPerLineDefaults[]
-) {
+): Uint8Array {
 	// Write platforms bitmap
 	const levelBitmapBytes = tileses.flatMap((tiles, levelIndex) => {
 		const isSymmetric = levelIsSymmetric(tiles);
@@ -142,5 +140,5 @@ export function patchBitmaps(
 	if (levelBitmapBytes.length > maxLevelBytes) {
 		throw new Error("Too many level bytes.");
 	}
-	byteArray.set(levelBitmapBytes);
+	return new Uint8Array(levelBitmapBytes);
 }

@@ -11,11 +11,10 @@ export function readPlatformChars(platformCharsBytes: ReadonlyUint8Array) {
 	);
 }
 
-export function patchPlatformChars(
-	byteArray: Uint8Array,
+export function writePlatformChars(
 	platformChars: readonly Level["platformChar"][]
-) {
-	byteArray.set(
+): Uint8Array {
+	return new Uint8Array(
 		platformChars.flatMap((platformChar) =>
 			platformChar.lines.map(
 				(line) =>

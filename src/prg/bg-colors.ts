@@ -16,12 +16,11 @@ export function readBgColors(bytes: ReadonlyUint8Array): {
 	};
 }
 
-export function patchBgColors(
-	bytes: Uint8Array,
+export function writeBgColors(
 	bgColorLight: readonly PaletteIndex[],
 	bgColorDark: readonly PaletteIndex[]
-) {
-	bytes.set(
+): Uint8Array {
+	return new Uint8Array(
 		zipObject({ bgColorLight, bgColorDark }).map(
 			({ bgColorLight, bgColorDark }) => bgColorLight + (bgColorDark << 4)
 		)

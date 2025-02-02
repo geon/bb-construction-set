@@ -1,9 +1,9 @@
 import { CharBlock } from "./charset-char";
 import { unzipObject, zipObject } from "./functions";
 import { Level } from "./level";
-import { patchBgColors, readBgColors } from "./prg/bg-colors";
+import { writeBgColors, readBgColors } from "./prg/bg-colors";
 import { Sprites } from "./sprite";
-import { patchPlatformChars, readPlatformChars } from "./prg/charset-char";
+import { readPlatformChars, writePlatformChars } from "./prg/charset-char";
 import {
 	getPrgStartAddress,
 	getPrgByteAtAddress,
@@ -12,12 +12,12 @@ import {
 } from "./prg/io";
 import { readItems } from "./prg/items";
 import { readBubbleCurrentRectangles } from "./prg/bubble-current-rectangles";
-import { patchSidebarChars, readSidebarChars } from "./prg/sidebar-chars";
+import { writeSidebarChars, readSidebarChars } from "./prg/sidebar-chars";
 import { readTiles } from "./prg/tiles";
-import { patchMonsters, readMonsters } from "./prg/monsters";
+import { writeMonsters, readMonsters } from "./prg/monsters";
 import { readSprites } from "./prg/sprites";
 import { readTileBitmaps } from "./prg/tile-bitmap";
-import { patchSymmetry, patchBitmaps, patchHoles } from "./tests/misc-patch";
+import { writeSymmetry, writeBitmaps, writeHoles } from "./tests/misc-patch";
 import { readBubbleCurrentPerLineDefaults } from "./prg/bubble-current-per-line-defaults";
 
 export function parsePrg(prg: ArrayBuffer): {
@@ -72,27 +72,33 @@ export function patchPrg(prg: ArrayBuffer, levels: readonly Level[]) {
 
 	const unzippedLevels = unzipObject(levels);
 
-	patchPlatformChars(dataSegments.platformChars, unzippedLevels.platformChar);
-	patchSidebarChars(dataSegments.sidebarChars, unzippedLevels.sidebarChars);
-	patchBgColors(
-		dataSegments.bgColors,
-		unzippedLevels.bgColorLight,
-		unzippedLevels.bgColorDark
+	dataSegments.platformChars.set(
+		writePlatformChars(unzippedLevels.platformChar)
 	);
-	patchHoles(
-		dataSegments.holeMetadata,
-		unzippedLevels.tiles,
-		unzippedLevels.bubbleCurrentPerLineDefaults
+	dataSegments.sidebarChars.set(writeSidebarChars(unzippedLevels.sidebarChars));
+	dataSegments.bgColors.set(
+		writeBgColors(unzippedLevels.bgColorLight, unzippedLevels.bgColorDark)
 	);
-	patchSymmetry(
-		dataSegments.symmetryMetadata,
-		unzippedLevels.tiles,
-		unzippedLevels.sidebarChars
+	dataSegments.holeMetadata.set(
+		writeHoles(
+			unzippedLevels.tiles,
+			unzippedLevels.bubbleCurrentPerLineDefaults
+		)
 	);
-	patchBitmaps(
-		dataSegments.bitmaps,
-		unzippedLevels.tiles,
-		unzippedLevels.bubbleCurrentPerLineDefaults
+	dataSegments.symmetryMetadata.set(
+		writeSymmetry(
+			dataSegments.symmetryMetadata,
+			unzippedLevels.tiles,
+			unzippedLevels.sidebarChars
+		)
 	);
-	patchMonsters(dataSegments.monsters, unzippedLevels.monsters);
+	dataSegments.bitmaps.set(
+		writeBitmaps(
+			unzippedLevels.tiles,
+			unzippedLevels.bubbleCurrentPerLineDefaults
+		)
+	);
+	dataSegments.monsters.set(
+		writeMonsters(dataSegments.monsters, unzippedLevels.monsters)
+	);
 }
