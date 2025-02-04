@@ -8,21 +8,10 @@ import {
 	peFileDataToLevels,
 } from "./bb/level-pe-conversion";
 import { deserializePeFileData, serializePeFileData } from "./bb/pe-file";
-import styled from "styled-components";
 import { CharBlock } from "./bb/charset-char";
 import { BlobDownloadButton } from "./BlobDownloadButton";
 import { Levels } from "./Levels";
-
-const Card = styled.div`
-	background: white;
-	box-shadow: 0px 2px 5px #00000066;
-	border-radius: 5px;
-
-	max-width: 600px;
-	padding: 1em;
-
-	margin-top: 2em;
-`;
+import { Card } from "./Card";
 
 function App() {
 	const [parsedPrgData, setParsedPrgData] = useState<
