@@ -15,19 +15,19 @@ import { Card } from "./Card";
 
 type ParsePrgResult =
 	| {
-			fileName: string;
-			fileSize: number;
+			readonly fileName: string;
+			readonly fileSize: number;
 	  } & (
 			| {
-					type: "success";
-					prg: Uint8Array;
-					levels: readonly Level[];
-					sprites: Sprites;
-					items: CharBlock[];
+					readonly type: "success";
+					readonly prg: Uint8Array;
+					readonly levels: readonly Level[];
+					readonly sprites: Sprites;
+					readonly items: CharBlock[];
 			  }
 			| {
-					type: "failed";
-					error: string;
+					readonly type: "failed";
+					readonly error: string;
 			  }
 	  );
 
