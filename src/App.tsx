@@ -85,9 +85,10 @@ type ParsePeResult = {
 	  }
 );
 
-function App() {
-	const [parsedPrgData, setPrg] = useParsePrg();
-
+function useParsePe(): readonly [
+	ParsePeResult | undefined,
+	(pe: File | undefined) => Promise<void>
+] {
 	const [parsedPeData, setParsedPeData] = useState<ParsePeResult | undefined>(
 		undefined
 	);
@@ -122,6 +123,13 @@ function App() {
 			});
 		}
 	};
+
+	return [parsedPeData, setPe];
+}
+
+function App() {
+	const [parsedPrgData, setPrg] = useParsePrg();
+	const [parsedPeData, setPe] = useParsePe();
 
 	const inputRef = useRef<HTMLInputElement>(null);
 
