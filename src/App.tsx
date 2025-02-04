@@ -13,19 +13,27 @@ import { BlobDownloadButton } from "./BlobDownloadButton";
 import { Levels } from "./Levels";
 import { Card } from "./Card";
 
+type ParsePrgResult =
+	| {
+			fileName: string;
+			fileSize: number;
+	  } & (
+			| {
+					type: "success";
+					prg: Uint8Array;
+					levels: readonly Level[];
+					sprites: Sprites;
+					items: CharBlock[];
+			  }
+			| {
+					type: "failed";
+					error: string;
+			  }
+	  );
+
 function App() {
 	const [parsedPrgData, setParsedPrgData] = useState<
-		| ({ fileName: string; fileSize: number } & (
-				| {
-						type: "success";
-						prg: Uint8Array;
-						levels: readonly Level[];
-						sprites: Sprites;
-						items: CharBlock[];
-				  }
-				| { type: "failed"; error: string }
-		  ))
-		| undefined
+		ParsePrgResult | undefined
 	>(undefined);
 
 	const setPrg = async (file: File | undefined): Promise<void> => {
