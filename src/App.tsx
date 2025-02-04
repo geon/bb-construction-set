@@ -1,16 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import "./App.css";
 import { parsePrg, patchPrg } from "./bb/parse-prg";
-import {
-	drawLevelsToCanvas,
-	drawPlatformCharsToCanvas,
-} from "./bb/draw-levels-to-canvas";
-import { Level, levelIsSymmetric } from "./bb/level";
-import {
-	maxAsymmetric,
-	maxMonsters,
-	maxSidebars,
-} from "./bb/prg/data-locations";
+import { Level } from "./bb/level";
 import { Sprites } from "./bb/sprite";
 import {
 	levelsToPeFileData,
@@ -20,6 +11,7 @@ import { deserializePeFileData, serializePeFileData } from "./bb/pe-file";
 import styled from "styled-components";
 import { CharBlock } from "./bb/charset-char";
 import { BlobDownloadButton } from "./BlobDownloadButton";
+import { Levels } from "./Levels";
 
 const Card = styled.div`
 	background: white;
@@ -219,41 +211,3 @@ function App() {
 }
 
 export default App;
-
-function Levels(props: {
-	readonly fileName: string;
-	readonly fileSize: number;
-	readonly levels: readonly Level[];
-}): React.ReactNode {
-	const levelsCanvasRef = useRef<HTMLCanvasElement>(null);
-	const platformCharsCanvasRef = useRef<HTMLCanvasElement>(null);
-
-	useEffect(() => {
-		(async () => {
-			if (!(levelsCanvasRef.current && platformCharsCanvasRef.current)) {
-				return;
-			}
-
-			drawLevelsToCanvas(props.levels, levelsCanvasRef.current);
-			drawPlatformCharsToCanvas(props.levels, platformCharsCanvasRef.current);
-		})();
-	}, [props.levels, levelsCanvasRef.current, platformCharsCanvasRef.current]);
-
-	return (
-		<>
-			<p>
-				{props.levels.filter((level) => !levelIsSymmetric(level.tiles)).length}/
-				{maxAsymmetric} are asymmetric
-				<br />
-				{props.levels.filter((level) => level.sidebarChars).length}/
-				{maxSidebars} have side decor
-				<br />
-				{props.levels.flatMap((level) => level.monsters).length}/{maxMonsters}{" "}
-				monsters
-			</p>
-			<canvas ref={levelsCanvasRef} />
-			<br />
-			<canvas ref={platformCharsCanvasRef} />
-		</>
-	);
-}
