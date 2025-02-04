@@ -31,7 +31,10 @@ type ParsePrgResult =
 			  }
 	  );
 
-function App() {
+function useParsePrg(): readonly [
+	ParsePrgResult | undefined,
+	(file: File | undefined) => Promise<void>
+] {
 	const [parsedPrgData, setParsedPrgData] = useState<
 		ParsePrgResult | undefined
 	>(undefined);
@@ -64,6 +67,12 @@ function App() {
 			});
 		}
 	};
+
+	return [parsedPrgData, setPrg] as const;
+}
+
+function App() {
+	const [parsedPrgData, setPrg] = useParsePrg();
 
 	const [parsedPeData, setParsedPeData] = useState<
 		| ({ fileName: string; fileSize: number } & (
