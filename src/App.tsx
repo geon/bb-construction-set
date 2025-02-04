@@ -1,17 +1,24 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
-import { parsePrg, patchPrg } from "./parse-prg";
+import { parsePrg, patchPrg } from "./bb/parse-prg";
 import {
 	drawLevelsToCanvas,
 	drawPlatformCharsToCanvas,
-} from "./draw-levels-to-canvas";
-import { Level, levelIsSymmetric } from "./level";
-import { maxAsymmetric, maxMonsters, maxSidebars } from "./prg/data-locations";
-import { Sprites } from "./sprite";
-import { levelsToPeFileData, peFileDataToLevels } from "./level-pe-conversion";
-import { deserializePeFileData, serializePeFileData } from "./pe-file";
+} from "./bb/draw-levels-to-canvas";
+import { Level, levelIsSymmetric } from "./bb/level";
+import {
+	maxAsymmetric,
+	maxMonsters,
+	maxSidebars,
+} from "./bb/prg/data-locations";
+import { Sprites } from "./bb/sprite";
+import {
+	levelsToPeFileData,
+	peFileDataToLevels,
+} from "./bb/level-pe-conversion";
+import { deserializePeFileData, serializePeFileData } from "./bb/pe-file";
 import styled from "styled-components";
-import { CharBlock } from "./charset-char";
+import { CharBlock } from "./bb/charset-char";
 
 const Card = styled.div`
 	background: white;
