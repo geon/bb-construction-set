@@ -72,16 +72,16 @@ function useParsePrg(): readonly [
 }
 
 type ParsePeResult = {
-	fileName: string;
-	fileSize: number;
+	readonly fileName: string;
+	readonly fileSize: number;
 } & (
 	| {
-			type: "success";
-			levels: readonly Level[];
+			readonly type: "success";
+			readonly levels: readonly Level[];
 	  }
 	| {
-			type: "failed";
-			error: string;
+			readonly type: "failed";
+			readonly error: string;
 	  }
 );
 
