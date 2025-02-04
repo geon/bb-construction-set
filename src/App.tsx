@@ -71,16 +71,26 @@ function useParsePrg(): readonly [
 	return [parsedPrgData, setPrg] as const;
 }
 
+type ParsePeResult = {
+	fileName: string;
+	fileSize: number;
+} & (
+	| {
+			type: "success";
+			levels: readonly Level[];
+	  }
+	| {
+			type: "failed";
+			error: string;
+	  }
+);
+
 function App() {
 	const [parsedPrgData, setPrg] = useParsePrg();
 
-	const [parsedPeData, setParsedPeData] = useState<
-		| ({ fileName: string; fileSize: number } & (
-				| { type: "success"; levels: readonly Level[] }
-				| { type: "failed"; error: string }
-		  ))
-		| undefined
-	>(undefined);
+	const [parsedPeData, setParsedPeData] = useState<ParsePeResult | undefined>(
+		undefined
+	);
 
 	const setPe = async (pe: File | undefined): Promise<void> => {
 		if (!pe) {
