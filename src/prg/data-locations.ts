@@ -134,6 +134,7 @@ export const segmentLocations = {
 	},
 	windCurrents: {
 		startAddress: windCurrentsArrayAddress,
-		length: 1487, // TODO: Move to constant.
+		// Determined through experimentation with ts code. Might be wrong.
+		length: 1145,
 	},
 } satisfies Readonly<Record<string, SegmentLocation>>;
