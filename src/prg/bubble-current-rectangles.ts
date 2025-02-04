@@ -23,8 +23,8 @@ export function readBubbleCurrentRectangles(
 			readBubbleCurrentRectanglesForLevel(
 				firstByte,
 				bubbleCurrentRectangleBytes.subarray(
-					currentWindCurrentsByteIndex + 1,
-					currentWindCurrentsByteIndex + 1 + firstByte.byteCount - 1
+					currentWindCurrentsByteIndex,
+					currentWindCurrentsByteIndex + firstByte.byteCount
 				)
 			)
 		);
@@ -82,7 +82,7 @@ export function readBubbleCurrentRectanglesForLevel(
 		};
 	}
 
-	let currentWindCurrentsByteIndex = 0;
+	let currentWindCurrentsByteIndex = 1;
 
 	const rectangles: BubbleCurrentRectangleOrSymmetry[] = [];
 	while (
