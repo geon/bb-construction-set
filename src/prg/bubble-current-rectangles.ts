@@ -21,7 +21,6 @@ export function readBubbleCurrentRectangles(
 
 		bubbleCurrentRectanglesForAllLevels.push(
 			readBubbleCurrentRectanglesForLevel(
-				firstByte,
 				bubbleCurrentRectangleBytes.subarray(
 					currentWindCurrentsByteIndex,
 					currentWindCurrentsByteIndex + firstByte.byteCount
@@ -72,9 +71,10 @@ export function parseFirstByte(firstByte: number): FirstByte {
 // [a bbbbbbb]
 
 export function readBubbleCurrentRectanglesForLevel(
-	firstByte: FirstByte,
 	bubbleCurrentRectangleBytes: ReadonlyUint8Array
 ): BubbleCurrentRectangles {
+	const firstByte = parseFirstByte(bubbleCurrentRectangleBytes[0]);
+
 	if (firstByte.type === "copy") {
 		return {
 			type: "copy",

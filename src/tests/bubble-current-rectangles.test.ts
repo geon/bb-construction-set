@@ -56,10 +56,7 @@ test("readBubbleCurrentRectanglesForLevel & patchBubbleCurrentRectanglesForLevel
 	]);
 
 	const firstByte = parseFirstByte(oneLevelData[0]);
-	const rects = readBubbleCurrentRectanglesForLevel(
-		firstByte,
-		oneLevelData.subarray(0, 0 + firstByte.byteCount)
-	);
+	const rects = readBubbleCurrentRectanglesForLevel(oneLevelData);
 
 	const patched = new Uint8Array(oneLevelData.byteLength);
 	patched[0] = encodeFirstByte(firstByte);
