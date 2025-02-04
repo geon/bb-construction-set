@@ -19,6 +19,7 @@ import {
 import { deserializePeFileData, serializePeFileData } from "./bb/pe-file";
 import styled from "styled-components";
 import { CharBlock } from "./bb/charset-char";
+import { BlobDownloadButton } from "./BlobDownloadButton";
 
 const Card = styled.div`
 	background: white;
@@ -214,25 +215,6 @@ function App() {
 				)}
 			</Card>
 		</>
-	);
-}
-
-function BlobDownloadButton(props: {
-	getBlob: () => Blob;
-	label: string;
-	fileName: string;
-}) {
-	return (
-		<input
-			type="button"
-			onClick={() => {
-				var link = document.createElement("a");
-				link.download = props.fileName;
-				link.href = URL.createObjectURL(props.getBlob());
-				link.click();
-			}}
-			value={props.label}
-		/>
 	);
 }
 
