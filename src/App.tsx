@@ -1,131 +1,13 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import "./App.css";
-import { parsePrg, patchPrg } from "./bb/parse-prg";
-import { Level } from "./bb/level";
-import { Sprites } from "./bb/sprite";
-import {
-	levelsToPeFileData,
-	peFileDataToLevels,
-} from "./bb/level-pe-conversion";
-import { deserializePeFileData, serializePeFileData } from "./bb/pe-file";
-import { CharBlock } from "./bb/charset-char";
+import { patchPrg } from "./bb/parse-prg";
+import { levelsToPeFileData } from "./bb/level-pe-conversion";
+import { serializePeFileData } from "./bb/pe-file";
 import { BlobDownloadButton } from "./BlobDownloadButton";
 import { Levels } from "./Levels";
 import { Card } from "./Card";
-
-type ParsePrgResult =
-	| {
-			readonly fileName: string;
-			readonly fileSize: number;
-	  } & (
-			| {
-					readonly type: "success";
-					readonly prg: Uint8Array;
-					readonly levels: readonly Level[];
-					readonly sprites: Sprites;
-					readonly items: CharBlock[];
-			  }
-			| {
-					readonly type: "failed";
-					readonly error: string;
-			  }
-	  );
-
-function useParsePrg(): readonly [
-	ParsePrgResult | undefined,
-	(file: File | undefined) => Promise<void>
-] {
-	const [parsedPrgData, setParsedPrgData] = useState<
-		ParsePrgResult | undefined
-	>(undefined);
-
-	const setPrg = async (file: File | undefined): Promise<void> => {
-		if (!file) {
-			setParsedPrgData(undefined);
-			return;
-		}
-
-		try {
-			const buffer = await file.arrayBuffer();
-			const parsed = parsePrg(buffer);
-			setParsedPrgData({
-				type: "success",
-				prg: new Uint8Array(buffer),
-				...parsed,
-				fileName: file.name,
-				fileSize: file.size,
-			});
-		} catch (error: unknown) {
-			if (!(error instanceof Error)) {
-				return;
-			}
-			setParsedPrgData({
-				type: "failed",
-				error: error.message,
-				fileName: file.name,
-				fileSize: file.size,
-			});
-		}
-	};
-
-	return [parsedPrgData, setPrg] as const;
-}
-
-type ParsePeResult = {
-	readonly fileName: string;
-	readonly fileSize: number;
-} & (
-	| {
-			readonly type: "success";
-			readonly levels: readonly Level[];
-	  }
-	| {
-			readonly type: "failed";
-			readonly error: string;
-	  }
-);
-
-function useParsePe(): readonly [
-	ParsePeResult | undefined,
-	(pe: File | undefined) => Promise<void>
-] {
-	const [parsedPeData, setParsedPeData] = useState<ParsePeResult | undefined>(
-		undefined
-	);
-
-	const setPe = async (pe: File | undefined): Promise<void> => {
-		if (!pe) {
-			setParsedPeData(undefined);
-			return;
-		}
-
-		try {
-			const levels = peFileDataToLevels(
-				deserializePeFileData(
-					new TextDecoder("utf-8").decode(await pe.arrayBuffer())
-				)
-			);
-			setParsedPeData({
-				type: "success",
-				levels,
-				fileName: pe.name,
-				fileSize: pe.size,
-			});
-		} catch (error: unknown) {
-			if (!(error instanceof Error)) {
-				return;
-			}
-			setParsedPeData({
-				type: "failed",
-				error: error.message,
-				fileName: pe.name,
-				fileSize: pe.size,
-			});
-		}
-	};
-
-	return [parsedPeData, setPe];
-}
+import { useParsePrg } from "./useParsePrg";
+import { useParsePe } from "./useParsePe";
 
 function App() {
 	const [parsedPrgData, setPrg] = useParsePrg();
