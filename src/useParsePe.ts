@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Level } from "./bb/level";
 import { peFileDataToLevels } from "./bb/level-pe-conversion";
-import { deserializePeFileData } from "./bb/pe-file";
+import { deserializePeFileData, PeFileData } from "./bb/pe-file";
 
 export type ParsePeResult = {
 	readonly fileName: string;
@@ -10,6 +10,7 @@ export type ParsePeResult = {
 	| {
 			readonly type: "success";
 			readonly levels: readonly Level[];
+			readonly deserializedPeFileData: PeFileData;
 	  }
 	| {
 			readonly type: "failed";
@@ -31,16 +32,16 @@ export function useParsePe(): readonly [
 		}
 
 		try {
-			const levels = peFileDataToLevels(
-				deserializePeFileData(
-					new TextDecoder("utf-8").decode(await pe.arrayBuffer())
-				)
+			const deserializedPeFileData = deserializePeFileData(
+				new TextDecoder("utf-8").decode(await pe.arrayBuffer())
 			);
+			const levels = peFileDataToLevels(deserializedPeFileData);
 			setParsedPeData({
 				type: "success",
 				levels,
 				fileName: pe.name,
 				fileSize: pe.size,
+				deserializedPeFileData,
 			});
 		} catch (error: unknown) {
 			if (!(error instanceof Error)) {

@@ -1,5 +1,6 @@
 import { TabBar } from "./TabBar";
 import { PatchLevels } from "./PatchLevels";
+import { ReformatPe } from "./ReformatPe";
 import styled from "styled-components";
 
 const Page = styled.div`
@@ -21,12 +22,8 @@ export function App() {
 						render: () => <PatchLevels />,
 					},
 					reformatLevels: {
-						title: "Reformat Levels",
-						render: () => (
-							<>
-								<p>Placeholder</p>
-							</>
-						),
+						title: "Reformat Pe",
+						render: () => <ReformatPe />,
 					},
 				}}
 			/>
