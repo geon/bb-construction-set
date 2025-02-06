@@ -3,7 +3,7 @@ import { PatchLevels } from "./PatchLevels";
 import styled from "styled-components";
 
 const Page = styled.div`
-	max-width: 600px;
+	width: 600px;
 	margin: 0 auto;
 	padding: 2rem;
 	text-align: center;
