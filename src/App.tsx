@@ -4,7 +4,7 @@ import { PatchLevels } from "./PatchLevels";
 
 export function App() {
 	return (
-		<>
+		<div id="root">
 			<h1>BB Construction Set</h1>
 			<TabBar
 				initialTabId={"patchLevels"}
@@ -23,6 +23,6 @@ export function App() {
 					},
 				}}
 			/>
-		</>
+		</div>
 	);
 }
