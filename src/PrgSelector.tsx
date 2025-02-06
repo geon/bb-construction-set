@@ -1,4 +1,4 @@
-import { ReactNode, useRef } from "react";
+import { ReactNode } from "react";
 import { levelsToPeFileData } from "./bb/level-pe-conversion";
 import { serializePeFileData } from "./bb/pe-file";
 import { BlobDownloadButton } from "./BlobDownloadButton";
@@ -12,8 +12,6 @@ export function PrgSelector({
 	readonly parsedPrgData: ParsePrgResult | undefined;
 	readonly setPrg: (file: File | undefined) => Promise<void>;
 }): ReactNode {
-	const inputRef = useRef<HTMLInputElement>(null);
-
 	return (
 		<>
 			<h2>Select a prg-file</h2>
@@ -27,12 +25,6 @@ export function PrgSelector({
 			<input
 				type="file"
 				onChange={(event) => setPrg(event.target.files?.[0])}
-				ref={inputRef}
-			/>
-			<input
-				type="button"
-				value="Reload"
-				onClick={() => inputRef.current && setPrg(inputRef.current.files?.[0])}
 			/>
 			{!parsedPrgData ? (
 				<p>No prg selected.</p>
