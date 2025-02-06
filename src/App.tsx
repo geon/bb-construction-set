@@ -1,10 +1,17 @@
-import "./App.css";
 import { TabBar } from "./TabBar";
 import { PatchLevels } from "./PatchLevels";
+import styled from "styled-components";
+
+const Page = styled.div`
+	max-width: 1280px;
+	margin: 0 auto;
+	padding: 2rem;
+	text-align: center;
+`;
 
 export function App() {
 	return (
-		<div id="root">
+		<Page>
 			<h1>BB Construction Set</h1>
 			<TabBar
 				initialTabId={"patchLevels"}
@@ -23,6 +30,6 @@ export function App() {
 					},
 				}}
 			/>
-		</div>
+		</Page>
 	);
 }
