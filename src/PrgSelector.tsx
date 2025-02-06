@@ -4,6 +4,7 @@ import { serializePeFileData } from "./bb/pe-file";
 import { BlobDownloadButton } from "./BlobDownloadButton";
 import { Levels } from "./Levels";
 import { ParsePrgResult } from "./useParsePrg";
+import { FileInput } from "./FileInput";
 
 export function PrgSelector({
 	parsedPrgData,
@@ -22,10 +23,9 @@ export function PrgSelector({
 				<a href="https://csdb.dk/release/?id=235681">Unp64</a> to unpack some of
 				them.
 			</p>
-			<input
-				type="file"
-				onChange={(event) => setPrg(event.target.files?.[0])}
-			/>
+			<FileInput accept={["prg"]} onChange={setPrg}>
+				Choose file
+			</FileInput>
 			{!parsedPrgData ? (
 				<p>No prg selected.</p>
 			) : parsedPrgData?.type !== "success" ? (

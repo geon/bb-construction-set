@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { Levels } from "./Levels";
 import { ParsePeResult } from "./useParsePe";
+import { FileInput } from "./FileInput";
 
 export function PeSelector({
 	parsedPeData,
@@ -17,7 +18,9 @@ export function PeSelector({
 				<a href="https://petscii.krissz.hu">PETSCII Editor web app</a>, save it
 				and select it here.
 			</p>
-			<input type="file" onChange={(event) => setPe(event.target.files?.[0])} />
+			<FileInput accept={["pe"]} onChange={setPe}>
+				Choose file
+			</FileInput>
 			{!parsedPeData ? (
 				<p>No pe selected.</p>
 			) : parsedPeData?.type !== "success" ? (
