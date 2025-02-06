@@ -5,7 +5,7 @@ import styled from "styled-components";
 const Page = styled.div`
 	width: 600px;
 	margin: 0 auto;
-	padding: 2rem;
+	padding: 1rem;
 	text-align: center;
 `;
 
