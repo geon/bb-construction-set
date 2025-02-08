@@ -71,40 +71,40 @@ export function patchPrg(prg: ArrayBuffer, levels: readonly Level[]) {
 		throw new Error(`Wrong number of levels: ${levels.length}. Should be 100.`);
 	}
 
-	const dataSegments = getDataSegments<"mutable">(prg);
+	const prgSegments = getDataSegments<"mutable">(prg);
 
 	const unzippedLevels = unzipObject(levels);
 
-	dataSegments.platformChars.set(
+	prgSegments.platformChars.set(
 		writePlatformChars(unzippedLevels.platformChar)
 	);
-	dataSegments.sidebarChars.set(writeSidebarChars(unzippedLevels.sidebarChars));
-	dataSegments.bgColors.set(
+	prgSegments.sidebarChars.set(writeSidebarChars(unzippedLevels.sidebarChars));
+	prgSegments.bgColors.set(
 		writeBgColors(unzippedLevels.bgColorLight, unzippedLevels.bgColorDark)
 	);
-	dataSegments.holeMetadata.set(
+	prgSegments.holeMetadata.set(
 		writeHoles(
 			unzippedLevels.tiles,
 			unzippedLevels.bubbleCurrentPerLineDefaults
 		)
 	);
-	dataSegments.symmetryMetadata.set(
+	prgSegments.symmetryMetadata.set(
 		writeSymmetry(
-			dataSegments.symmetryMetadata,
+			prgSegments.symmetryMetadata,
 			unzippedLevels.tiles,
 			unzippedLevels.sidebarChars
 		)
 	);
-	dataSegments.bitmaps.set(
+	prgSegments.bitmaps.set(
 		writeBitmaps(
 			unzippedLevels.tiles,
 			unzippedLevels.bubbleCurrentPerLineDefaults
 		)
 	);
-	dataSegments.monsters.set(
-		writeMonsters(dataSegments.monsters, unzippedLevels.monsters)
+	prgSegments.monsters.set(
+		writeMonsters(prgSegments.monsters, unzippedLevels.monsters)
 	);
-	dataSegments.windCurrents.set(
+	prgSegments.windCurrents.set(
 		writeBubbleCurrentRectangles(unzippedLevels.bubbleCurrentRectangles)
 	);
 }
