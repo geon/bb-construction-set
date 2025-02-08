@@ -87,6 +87,15 @@ export function levelsToPeFileData(data: {
 	levels: readonly Level[];
 	sprites: Sprites;
 }): PeFileData {
+	return createPeFileData({
+		spriteSets: spritesToPeSpriteSets(data.sprites),
+		...levelsToPeScreensAndCharsets(data.levels),
+	});
+}
+
+export function createPeFileData(
+	data: Pick<PeFileData, "charsets" | "screens" | "spriteSets">
+): PeFileData {
 	const now = new Date().getTime();
 	const peFileData: PeFileData = {
 		app: "PETSCII Editor",
@@ -114,8 +123,7 @@ export function levelsToPeFileData(data: {
 			cursorFollow: "yes",
 		},
 		clipboards: { screenEditor: [], charsetEditor: false, spriteEditor: false },
-		spriteSets: spritesToPeSpriteSets(data.sprites),
-		...levelsToPeScreensAndCharsets(data.levels),
+		...data,
 	};
 
 	return peFileData;
