@@ -42,7 +42,7 @@ export function makeGetBoundedByte({
 	};
 }
 
-type DataSegmentName = keyof typeof segmentLocations;
+export type DataSegmentName = keyof typeof segmentLocations;
 
 export type ReadonlyDataSegments = Record<DataSegmentName, ReadonlyUint8Array>;
 export type MutableDataSegments = Record<DataSegmentName, Uint8Array>;

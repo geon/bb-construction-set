@@ -9,6 +9,7 @@ import {
 	getPrgByteAtAddress,
 	getDataSegments,
 	ReadonlyDataSegments,
+	DataSegmentName,
 } from "./prg/io";
 import { readItems } from "./prg/items";
 import {
@@ -75,36 +76,33 @@ export function patchPrg(prg: ArrayBuffer, levels: readonly Level[]) {
 
 	const unzippedLevels = unzipObject(levels);
 
-	prgSegments.platformChars.set(
-		writePlatformChars(unzippedLevels.platformChar)
-	);
-	prgSegments.sidebarChars.set(writeSidebarChars(unzippedLevels.sidebarChars));
-	prgSegments.bgColors.set(
-		writeBgColors(unzippedLevels.bgColorLight, unzippedLevels.bgColorDark)
-	);
-	prgSegments.holeMetadata.set(
-		writeHoles(
+	const newSegments: ReadonlyDataSegments = {
+		platformChars: writePlatformChars(unzippedLevels.platformChar),
+		sidebarChars: writeSidebarChars(unzippedLevels.sidebarChars),
+		bgColors: writeBgColors(
+			unzippedLevels.bgColorLight,
+			unzippedLevels.bgColorDark
+		),
+		holeMetadata: writeHoles(
 			unzippedLevels.tiles,
 			unzippedLevels.bubbleCurrentPerLineDefaults
-		)
-	);
-	prgSegments.symmetryMetadata.set(
-		writeSymmetry(
+		),
+		symmetryMetadata: writeSymmetry(
 			prgSegments.symmetryMetadata,
 			unzippedLevels.tiles,
 			unzippedLevels.sidebarChars
-		)
-	);
-	prgSegments.bitmaps.set(
-		writeBitmaps(
+		),
+		bitmaps: writeBitmaps(
 			unzippedLevels.tiles,
 			unzippedLevels.bubbleCurrentPerLineDefaults
-		)
-	);
-	prgSegments.monsters.set(
-		writeMonsters(prgSegments.monsters, unzippedLevels.monsters)
-	);
-	prgSegments.windCurrents.set(
-		writeBubbleCurrentRectangles(unzippedLevels.bubbleCurrentRectangles)
-	);
+		),
+		monsters: writeMonsters(prgSegments.monsters, unzippedLevels.monsters),
+		windCurrents: writeBubbleCurrentRectangles(
+			unzippedLevels.bubbleCurrentRectangles
+		),
+	};
+
+	for (const segmentName of Object.keys(newSegments) as DataSegmentName[]) {
+		prgSegments[segmentName].set(newSegments[segmentName]);
+	}
 }
