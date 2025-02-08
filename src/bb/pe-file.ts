@@ -139,3 +139,39 @@ function unmangle(mangledString: string): string {
 export function deserializePeFileData(data: string): PeFileData {
 	return JSON.parse(unmangle(JSON.parse(data).data));
 }
+
+export function createPeFileData(
+	data: Pick<PeFileData, "charsets" | "screens" | "spriteSets">
+): PeFileData {
+	const now = new Date().getTime();
+	const peFileData: PeFileData = {
+		app: "PETSCII Editor",
+		url: "http://petscii.krissz.hu/",
+		meta: {
+			name: "Bubble Bobble c64",
+			authorName: "",
+			editorVersion: "3.0",
+			fileFormatVersion: "3.0",
+			createTime: now,
+			lastSaveTime: now,
+		},
+		options: {
+			palette: "pepto-pal",
+			crtFilter: "scanlines",
+			fileName: "bubble-bobble-c64",
+			saveCounter: 1,
+			concatSaveCounter: "yes",
+			autosave: "yes",
+			autosaveInterval: 10,
+			keyboardLayout: "us",
+			firstKeydown: "draw",
+			firstClick: "draw",
+			tooltips: "yes",
+			cursorFollow: "yes",
+		},
+		clipboards: { screenEditor: [], charsetEditor: false, spriteEditor: false },
+		...data,
+	};
+
+	return peFileData;
+}

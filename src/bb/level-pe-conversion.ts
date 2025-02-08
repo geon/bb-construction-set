@@ -1,6 +1,6 @@
 import { padRight } from "./functions";
 import { BubbleCurrentDirection, createTiles, Level, Monster } from "./level";
-import { Bit, CharBitmap, PeFileData } from "./pe-file";
+import { Bit, CharBitmap, createPeFileData, PeFileData } from "./pe-file";
 import {
 	Sprites,
 	characterNames,
@@ -91,42 +91,6 @@ export function levelsToPeFileData(data: {
 		spriteSets: spritesToPeSpriteSets(data.sprites),
 		...levelsToPeScreensAndCharsets(data.levels),
 	});
-}
-
-export function createPeFileData(
-	data: Pick<PeFileData, "charsets" | "screens" | "spriteSets">
-): PeFileData {
-	const now = new Date().getTime();
-	const peFileData: PeFileData = {
-		app: "PETSCII Editor",
-		url: "http://petscii.krissz.hu/",
-		meta: {
-			name: "Bubble Bobble c64",
-			authorName: "",
-			editorVersion: "3.0",
-			fileFormatVersion: "3.0",
-			createTime: now,
-			lastSaveTime: now,
-		},
-		options: {
-			palette: "pepto-pal",
-			crtFilter: "scanlines",
-			fileName: "bubble-bobble-c64",
-			saveCounter: 1,
-			concatSaveCounter: "yes",
-			autosave: "yes",
-			autosaveInterval: 10,
-			keyboardLayout: "us",
-			firstKeydown: "draw",
-			firstClick: "draw",
-			tooltips: "yes",
-			cursorFollow: "yes",
-		},
-		clipboards: { screenEditor: [], charsetEditor: false, spriteEditor: false },
-		...data,
-	};
-
-	return peFileData;
 }
 
 export function levelsToPeScreensAndCharsets(
