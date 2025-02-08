@@ -11,6 +11,7 @@ import {
 import { CharsetChar, CharsetCharLine } from "./charset-char";
 import { c64BuiltinCharsets } from "./c64-builtin-charsets";
 import { PaletteIndex } from "./palette";
+import { shadowChars } from "./shadow-chars";
 
 const emptyChar: CharBitmap = [0, 0, 0, 0, 0, 0, 0, 0];
 
@@ -22,69 +23,6 @@ const shadowCharIndexByName = {
 	right: 4 + 2,
 	innerCorner: 5 + 2,
 };
-const shadowChars: CharBitmap[] = [
-	[
-		0b00000000, // Comment to prevent formatting.
-		0b01010101,
-		0b00010101,
-		0b00000101,
-		0b00000000,
-		0b00000000,
-		0b00000000,
-		0b00000000,
-	],
-	[
-		0b00010100, //
-		0b01010100,
-		0b01010100,
-		0b01010100,
-		0b00000000,
-		0b00000000,
-		0b00000000,
-		0b00000000,
-	],
-	[
-		0b00010000, //
-		0b00010000,
-		0b00010100,
-		0b00010100,
-		0b00010100,
-		0b00010100,
-		0b00010100,
-		0b00010100,
-	],
-	[
-		0b00000000, //
-		0b01010101,
-		0b01010101,
-		0b01010101,
-		0b00000000,
-		0b00000000,
-		0b00000000,
-		0b00000000,
-	],
-	[
-		0b00010100, //
-		0b00010100,
-		0b00010100,
-		0b00010100,
-		0b00010100,
-		0b00010100,
-		0b00010100,
-		0b00010100,
-	],
-	[
-		0b00000000, //
-		0b00010101,
-		0b00010101,
-		0b00010101,
-		0b00010100,
-		0b00010100,
-		0b00010100,
-		0b00010100,
-	],
-];
-
 // Single color, high res.
 // up, right, down, left
 const bubbleCurrentChars: Record<BubbleCurrentDirection, CharBitmap> = {
