@@ -580,7 +580,7 @@ export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 		const monsters = screen.sprites
 			.map((sprite): Monster | undefined => {
 				const { monsterName, facingLeft } = parseSpriteUid(sprite.uid);
-				if (!isCharacterName(monsterName)) {
+				if (!isCharacterName(monsterName) || monsterName === "player") {
 					return undefined;
 				}
 				const type = characterNames.indexOf(monsterName) - 1;
@@ -590,8 +590,7 @@ export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 					facingLeft,
 				};
 			})
-			.filter(isDefined)
-			.filter((monster) => monster.type !== -1);
+			.filter(isDefined);
 
 		const arrowChars = new Set([12, 13, 14, 15]);
 		return {
