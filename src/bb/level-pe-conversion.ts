@@ -580,8 +580,9 @@ export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 		const monsters = screen.sprites
 			.map((sprite): Monster => {
 				const { monsterName, facingLeft } = parseSpriteUid(sprite.uid);
+				const type = Object.keys(spriteCounts).indexOf(monsterName) - 1;
 				return {
-					type: Object.keys(spriteCounts).indexOf(monsterName) - 1,
+					type,
 					spawnPoint: { x: sprite.x, y: sprite.y },
 					facingLeft,
 				};
