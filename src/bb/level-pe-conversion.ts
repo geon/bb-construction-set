@@ -1,9 +1,10 @@
-import { padRight } from "./functions";
+import { isDefined, padRight } from "./functions";
 import { BubbleCurrentDirection, createTiles, Level, Monster } from "./level";
 import { Bit, CharBitmap, createPeFileData, PeFileData } from "./pe-file";
 import {
 	Sprites,
 	characterNames,
+	isCharacterName,
 	spriteColors,
 	spriteCounts,
 	spriteLeftIndex,
@@ -578,8 +579,11 @@ export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 		];
 
 		const monsters = screen.sprites
-			.map((sprite): Monster => {
+			.map((sprite): Monster | undefined => {
 				const { monsterName, facingLeft } = parseSpriteUid(sprite.uid);
+				if (!isCharacterName(monsterName)) {
+					return undefined;
+				}
 				const type = Object.keys(spriteCounts).indexOf(monsterName) - 1;
 				return {
 					type,
@@ -587,6 +591,7 @@ export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 					facingLeft,
 				};
 			})
+			.filter(isDefined)
 			.filter((monster) => monster.type !== -1);
 
 		const arrowChars = new Set([12, 13, 14, 15]);
