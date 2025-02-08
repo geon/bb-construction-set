@@ -11,7 +11,7 @@ import {
 import { CharsetChar, CharsetCharLine } from "./charset-char";
 import { c64BuiltinCharsets } from "./c64-builtin-charsets";
 import { PaletteIndex } from "./palette";
-import { shadowChars } from "./shadow-chars";
+import { shadowChars, ShadowStyle } from "./shadow-chars";
 
 const emptyChar: CharBitmap = [0, 0, 0, 0, 0, 0, 0, 0];
 
@@ -89,12 +89,13 @@ export function levelsToPeFileData(data: {
 }): PeFileData {
 	return createPeFileData({
 		spriteSets: spritesToPeSpriteSets(data.sprites),
-		...levelsToPeScreensAndCharsets(data.levels),
+		...levelsToPeScreensAndCharsets(data.levels, "originalC64"),
 	});
 }
 
 export function levelsToPeScreensAndCharsets(
-	levels: readonly Level[]
+	levels: readonly Level[],
+	shadowStyle: ShadowStyle
 ): Pick<PeFileData, "screens" | "charsets"> {
 	const peFileData: Pick<PeFileData, "screens" | "charsets"> = {
 		charsets: [
@@ -124,7 +125,7 @@ export function levelsToPeScreensAndCharsets(
 				charColor: 0, // Black to not tempt using it.
 				multiColor1: level.bgColorDark,
 				multiColor2: level.bgColorLight,
-				bitmaps: makeCharsetBitmaps(level),
+				bitmaps: makeCharsetBitmaps(level, shadowStyle),
 			})),
 		],
 		screens: levels.map((level, levelIndex): PeFileData["screens"][number] => {
@@ -488,14 +489,17 @@ function makeLevelCharAndColorData(
 	return { charData, colorData };
 }
 
-function makeCharsetBitmaps(level: Level): CharBitmap[] {
+function makeCharsetBitmaps(
+	level: Level,
+	shadowStyle: ShadowStyle
+): CharBitmap[] {
 	const platformChar = levelCharToPeChar(level.platformChar);
 
 	const charset = padRight(
 		[
 			emptyChar,
 			platformChar,
-			...shadowChars.originalC64,
+			...shadowChars[shadowStyle],
 			...Array<CharBitmap>(4).fill(emptyChar),
 			...Object.values(bubbleCurrentChars),
 		],

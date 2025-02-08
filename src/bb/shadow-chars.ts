@@ -127,3 +127,5 @@ export const shadowChars = {
 		],
 	],
 } satisfies Record<string, CharBitmap[]>;
+
+export type ShadowStyle = keyof typeof shadowChars;
