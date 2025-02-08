@@ -495,7 +495,7 @@ function makeCharsetBitmaps(level: Level): CharBitmap[] {
 		[
 			emptyChar,
 			platformChar,
-			...shadowChars,
+			...shadowChars.originalC64,
 			...Array<CharBitmap>(4).fill(emptyChar),
 			...Object.values(bubbleCurrentChars),
 		],
