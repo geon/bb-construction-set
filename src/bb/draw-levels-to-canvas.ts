@@ -135,12 +135,12 @@ export function drawPlatformCharsToCanvas(
 	canvas.height = 4 * 8 * 10;
 
 	const image = new ImageData(8, 8);
-	for (let levelY = 0; levelY < 10; ++levelY) {
+	outerLoop: for (let levelY = 0; levelY < 10; ++levelY) {
 		for (let levelX = 0; levelX < 10; ++levelX) {
 			const levelIndex = levelY * 10 + levelX;
 			const level = levels[levelIndex];
 			if (!level) {
-				throw new Error("Missing level.");
+				break outerLoop;
 			}
 
 			const charPalette = getCharPalette(level);
