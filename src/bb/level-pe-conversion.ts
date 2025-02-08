@@ -114,6 +114,17 @@ export function levelsToPeFileData(data: {
 			cursorFollow: "yes",
 		},
 		clipboards: { screenEditor: [], charsetEditor: false, spriteEditor: false },
+		spriteSets: spritesToPeSpriteSets(data.sprites),
+		...levelsToPeScreensAndCharsets(data.levels),
+	};
+
+	return peFileData;
+}
+
+export function levelsToPeScreensAndCharsets(
+	levels: readonly Level[]
+): Pick<PeFileData, "screens" | "charsets"> {
+	const peFileData: Pick<PeFileData, "screens" | "charsets"> = {
 		charsets: [
 			// The builtin charsets are treated differently by PETSCII Editor.
 			{
@@ -134,143 +145,146 @@ export function levelsToPeFileData(data: {
 				multiColor2: 2,
 				bitmaps: c64BuiltinCharsets.lowercase,
 			},
-			...data.levels.map(
-				(level, levelIndex): PeFileData["charsets"][number] => ({
-					name: "Level " + (levelIndex + 1),
-					mode: "multicolor",
-					bgColor: 0,
-					charColor: 0, // Black to not tempt using it.
-					multiColor1: level.bgColorDark,
-					multiColor2: level.bgColorLight,
-					bitmaps: makeCharsetBitmaps(level),
-				})
-			),
+			...levels.map((level, levelIndex): PeFileData["charsets"][number] => ({
+				name: "Level " + (levelIndex + 1),
+				mode: "multicolor",
+				bgColor: 0,
+				charColor: 0, // Black to not tempt using it.
+				multiColor1: level.bgColorDark,
+				multiColor2: level.bgColorLight,
+				bitmaps: makeCharsetBitmaps(level),
+			})),
 		],
-		screens: data.levels.map(
-			(level, levelIndex): PeFileData["screens"][number] => {
-				const sizeX = 81;
-				const sizeY = 25;
-				const { charData, colorData } = makeLevelCharAndColorData(
-					level,
-					sizeX,
-					sizeY
-				);
+		screens: levels.map((level, levelIndex): PeFileData["screens"][number] => {
+			const sizeX = 81;
+			const sizeY = 25;
+			const { charData, colorData } = makeLevelCharAndColorData(
+				level,
+				sizeX,
+				sizeY
+			);
 
-				return {
-					name: "Level " + (levelIndex + 1),
-					mode: "multicolor",
-					sizeX,
-					sizeY,
-					colorBorder: 0,
-					colorBg: 0,
-					colorChar: 13, // Multicolor green for bubbles.
-					multiColor1: level.bgColorDark,
-					multiColor2: level.bgColorLight,
-					extBgColor1: 0,
-					extBgColor2: 0,
-					extBgColor3: 0,
-					spriteMultiColor1: 2, // Dark red
-					spriteMultiColor2: 1, // White
-					spritesInBorder: "hidden",
-					spritesVisible: true,
-					characterSet: levelIndex + 2, // Take the 2 builtin charsets into account.
-					charData,
-					colorData,
-					sprites: [
-						{
-							setId: 0,
-							uid: getSpriteUid({
-								monsterName: "player",
-								facingLeft: false,
-							}),
-							x: 44, // The tail is 6 pixels from the edge.
-							y: 221,
-							color: 5, // Dark green
-							expandX: false,
-							expandY: false,
-							priority: "front",
-						},
-						{
-							setId: 0,
-							uid: getSpriteUid({
-								monsterName: "player",
-								facingLeft: true,
-							}),
-							x: 236, // Only 4 pixels from the edge. Not same as pl1.
-							y: 221,
-							color: 3, // Cyan
-							expandX: false,
-							expandY: false,
-							priority: "front",
-						},
-						...level.monsters.map(
-							(monster): PeFileData["screens"][number]["sprites"][number] => {
-								const monsterName = characterNames[monster.type + 1];
-								return {
-									setId: 0,
-									uid: getSpriteUid({
-										monsterName,
-										facingLeft: monster.facingLeft,
-									}),
-									x: monster.spawnPoint.x,
-									y: monster.spawnPoint.y,
-									color: spriteColors[monsterName],
-									expandX: false,
-									expandY: false,
-									priority: "front",
-								};
-							}
-						),
-					],
-					undoStack: [],
-					redoStack: [],
-				};
-			}
-		),
-		spriteSets: [
-			{
-				name: "Characters",
-				sprites: characterNames.flatMap(
-					(
-						monsterName
-					): PeFileData["spriteSets"][number]["sprites"][number][] => {
-						const sprites = data.sprites[monsterName];
-						return [false, true].map(
-							(
-								facingLeft
-							): PeFileData["spriteSets"][number]["sprites"][number] => ({
-								uid: getSpriteUid({ monsterName, facingLeft }),
-								mode: "multicolor",
-								colorBg: 0,
-								colorSprite:
-									monsterName === "player" && facingLeft
-										? 3 // Cyan for Bob.
-										: spriteColors[monsterName],
-								multiColor1: 2,
-								multiColor2: 1,
+			return {
+				name: "Level " + (levelIndex + 1),
+				mode: "multicolor",
+				sizeX,
+				sizeY,
+				colorBorder: 0,
+				colorBg: 0,
+				colorChar: 13, // Multicolor green for bubbles.
+				multiColor1: level.bgColorDark,
+				multiColor2: level.bgColorLight,
+				extBgColor1: 0,
+				extBgColor2: 0,
+				extBgColor3: 0,
+				spriteMultiColor1: 2, // Dark red
+				spriteMultiColor2: 1, // White
+				spritesInBorder: "hidden",
+				spritesVisible: true,
+				characterSet: levelIndex + 2, // Take the 2 builtin charsets into account.
+				charData,
+				colorData,
+				sprites: [
+					{
+						setId: 0,
+						uid: getSpriteUid({
+							monsterName: "player",
+							facingLeft: false,
+						}),
+						x: 44, // The tail is 6 pixels from the edge.
+						y: 221,
+						color: 5, // Dark green
+						expandX: false,
+						expandY: false,
+						priority: "front",
+					},
+					{
+						setId: 0,
+						uid: getSpriteUid({
+							monsterName: "player",
+							facingLeft: true,
+						}),
+						x: 236, // Only 4 pixels from the edge. Not same as pl1.
+						y: 221,
+						color: 3, // Cyan
+						expandX: false,
+						expandY: false,
+						priority: "front",
+					},
+					...level.monsters.map(
+						(monster): PeFileData["screens"][number]["sprites"][number] => {
+							const monsterName = characterNames[monster.type + 1];
+							return {
+								setId: 0,
+								uid: getSpriteUid({
+									monsterName,
+									facingLeft: monster.facingLeft,
+								}),
+								x: monster.spawnPoint.x,
+								y: monster.spawnPoint.y,
+								color: spriteColors[monsterName],
 								expandX: false,
 								expandY: false,
-								bitmapData: sprites[
-									facingLeft ? spriteLeftIndex[monsterName] : 0
-								].bitmap.map((byte) => [
-									isBitSet(byte, 0),
-									isBitSet(byte, 1),
-									isBitSet(byte, 2),
-									isBitSet(byte, 3),
-									isBitSet(byte, 4),
-									isBitSet(byte, 5),
-									isBitSet(byte, 6),
-									isBitSet(byte, 7),
-								]),
-							})
-						);
-					}
-				),
+								priority: "front",
+							};
+						}
+					),
+				],
 				undoStack: [],
 				redoStack: [],
-			},
-		],
+			};
+		}),
 	};
+
+	return peFileData;
+}
+
+export function spritesToPeSpriteSets(
+	inputSprites: Sprites
+): PeFileData["spriteSets"] {
+	const peFileData: PeFileData["spriteSets"] = [
+		{
+			name: "Characters",
+			sprites: characterNames.flatMap(
+				(
+					monsterName
+				): PeFileData["spriteSets"][number]["sprites"][number][] => {
+					const sprites = inputSprites[monsterName];
+					return [false, true].map(
+						(
+							facingLeft
+						): PeFileData["spriteSets"][number]["sprites"][number] => ({
+							uid: getSpriteUid({ monsterName, facingLeft }),
+							mode: "multicolor",
+							colorBg: 0,
+							colorSprite:
+								monsterName === "player" && facingLeft
+									? 3 // Cyan for Bob.
+									: spriteColors[monsterName],
+							multiColor1: 2,
+							multiColor2: 1,
+							expandX: false,
+							expandY: false,
+							bitmapData: sprites[
+								facingLeft ? spriteLeftIndex[monsterName] : 0
+							].bitmap.map((byte) => [
+								isBitSet(byte, 0),
+								isBitSet(byte, 1),
+								isBitSet(byte, 2),
+								isBitSet(byte, 3),
+								isBitSet(byte, 4),
+								isBitSet(byte, 5),
+								isBitSet(byte, 6),
+								isBitSet(byte, 7),
+							]),
+						})
+					);
+				}
+			),
+			undoStack: [],
+			redoStack: [],
+		},
+	];
 
 	return peFileData;
 }
