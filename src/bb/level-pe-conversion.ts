@@ -6,7 +6,6 @@ import {
 	characterNames,
 	isCharacterName,
 	spriteColors,
-	spriteCounts,
 	spriteLeftIndex,
 } from "./sprite";
 import { CharsetChar, CharsetCharLine } from "./charset-char";
@@ -584,7 +583,7 @@ export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 				if (!isCharacterName(monsterName)) {
 					return undefined;
 				}
-				const type = Object.keys(spriteCounts).indexOf(monsterName) - 1;
+				const type = characterNames.indexOf(monsterName) - 1;
 				return {
 					type,
 					spawnPoint: { x: sprite.x, y: sprite.y },
