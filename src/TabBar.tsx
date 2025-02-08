@@ -22,12 +22,27 @@ export const TabBarStyle = styled.div`
 	gap: 1em;
 
 	${TabBarItemStyle} {
-		&:hover,
-		&:focus,
+		position: relative;
+		&:before {
+			content: "";
+			position: absolute;
+			left: 50%;
+			top: calc(100% + 10px);
+			width: 5px;
+			height: 5px;
+			border-radius: 100%;
+
+			background: transparent;
+			transition: background 0.2s;
+		}
+
 		&.active {
-			background: #555;
-			@media (prefers-color-scheme: light) {
-				background: #ccc;
+			&:before {
+				background: rgba(255, 255, 255, 0.87);
+				@media (prefers-color-scheme: light) {
+					background: #213547;
+				}
+				transition: background 0.2s;
 			}
 		}
 	}
