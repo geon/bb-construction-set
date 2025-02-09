@@ -3,7 +3,7 @@ import { patchPrg } from "./bb/parse-prg";
 import { BlobDownloadButton } from "./BlobDownloadButton";
 import { ParsePeResult } from "./useParsePe";
 import { ParsePrgResult } from "./useParsePrg";
-import { DataSegmentName } from "./bb/prg/io";
+import { DataSegmentName } from "./bb/prg/data-locations";
 import { CheckboxList } from "./CheckboxList";
 
 const segmentLabels: Record<DataSegmentName, string> = {

@@ -98,12 +98,26 @@ export const itemCharsArrays: readonly ItemCharsLocation[] = [
 	},
 ];
 
+export const dataSegmentNames = [
+	"symmetryMetadata",
+	"bitmaps",
+	"platformChars",
+	"bgColors",
+	"sidebarChars",
+	"holeMetadata",
+	"monsters",
+	"windCurrents",
+] as const;
+export type DataSegmentName = (typeof dataSegmentNames)[number];
+
 interface SegmentLocation {
 	readonly startAddress: number;
 	readonly length: number;
 }
 
-export const segmentLocations = {
+export const segmentLocations: Readonly<
+	Record<DataSegmentName, SegmentLocation>
+> = {
 	symmetryMetadata: {
 		startAddress: symmetryMetadataArrayAddress,
 		length: 100,
@@ -137,4 +151,4 @@ export const segmentLocations = {
 		// Determined through experimentation with ts code. Might be wrong.
 		length: 1145,
 	},
-} satisfies Readonly<Record<string, SegmentLocation>>;
+};

@@ -9,9 +9,8 @@ import {
 	getPrgByteAtAddress,
 	getDataSegments,
 	ReadonlyDataSegments,
-	DataSegmentName,
-	dataSegmentNames,
 } from "./prg/io";
+import { DataSegmentName, dataSegmentNames } from "./prg/data-locations";
 import { readItems } from "./prg/items";
 import {
 	readBubbleCurrentRectangles,

@@ -1,5 +1,5 @@
 import { mapRecord } from "../functions";
-import { segmentLocations } from "./data-locations";
+import { DataSegmentName, segmentLocations } from "./data-locations";
 import { GetByte, ReadonlyUint8Array } from "./types";
 
 export function getPrgStartAddress(prg: ArrayBuffer): number {
@@ -41,11 +41,6 @@ export function makeGetBoundedByte({
 		return getByte(startAddress + index);
 	};
 }
-
-export const dataSegmentNames = Object.keys(
-	segmentLocations
-) as readonly DataSegmentName[];
-export type DataSegmentName = keyof typeof segmentLocations;
 
 type DataSegment<BufferType extends ReadonlyUint8Array> = {
 	readonly buffer: BufferType;
