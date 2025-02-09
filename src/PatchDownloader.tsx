@@ -1,8 +1,21 @@
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { patchPrg } from "./bb/parse-prg";
 import { BlobDownloadButton } from "./BlobDownloadButton";
 import { ParsePeResult } from "./useParsePe";
 import { ParsePrgResult } from "./useParsePrg";
+import { DataSegmentName } from "./bb/prg/io";
+import { CheckboxList } from "./CheckboxList";
+
+const segmentLabels: Record<DataSegmentName, string> = {
+	symmetryMetadata: "Symmetry Metadata",
+	bitmaps: "Platforms",
+	platformChars: "Platform Chars",
+	bgColors: "Colors",
+	sidebarChars: "Side Border Chars",
+	holeMetadata: "Hole Metadata",
+	monsters: "Monsters",
+	windCurrents: "Wind Currents",
+};
 
 export function PatchDownloader({
 	parsedPrgData,
@@ -11,6 +24,10 @@ export function PatchDownloader({
 	readonly parsedPrgData: ParsePrgResult | undefined;
 	readonly parsedPeData: ParsePeResult | undefined;
 }): ReactNode {
+	const [selectedSegments, setSelectedSegments] = useState(
+		new Set<DataSegmentName>(["bgColors", "platformChars", "sidebarChars"])
+	);
+
 	return (
 		<>
 			<h2>Patch</h2>
@@ -22,11 +39,16 @@ export function PatchDownloader({
 				<p>Select valid files.</p>
 			) : (
 				<>
+					<CheckboxList
+						options={segmentLabels}
+						selected={selectedSegments}
+						setSelected={setSelectedSegments}
+					/>
 					<BlobDownloadButton
 						getBlob={() => {
 							const prg = parsedPrgData.prg.buffer.slice(0);
 							try {
-								patchPrg(prg, parsedPeData.levels);
+								patchPrg(prg, parsedPeData.levels, selectedSegments);
 								return new Blob([prg], {
 									type: "application/octet-stream",
 								});

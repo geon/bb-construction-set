@@ -10,6 +10,7 @@ import {
 	getDataSegments,
 	ReadonlyDataSegments,
 	DataSegmentName,
+	dataSegmentNames,
 } from "./prg/io";
 import { readItems } from "./prg/items";
 import {
@@ -67,7 +68,11 @@ function readLevels(dataSegments: ReadonlyDataSegments): ReadonlyArray<Level> {
 	});
 }
 
-export function patchPrg(prg: ArrayBuffer, levels: readonly Level[]) {
+export function patchPrg(
+	prg: ArrayBuffer,
+	levels: readonly Level[],
+	segmentsToPatch?: Set<DataSegmentName>
+) {
 	if (levels.length !== 100) {
 		throw new Error(`Wrong number of levels: ${levels.length}. Should be 100.`);
 	}
@@ -101,8 +106,7 @@ export function patchPrg(prg: ArrayBuffer, levels: readonly Level[]) {
 			unzippedLevels.bubbleCurrentRectangles
 		),
 	};
-
-	for (const segmentName of Object.keys(newSegments) as DataSegmentName[]) {
+	for (const segmentName of segmentsToPatch ?? dataSegmentNames) {
 		prgSegments[segmentName].set(newSegments[segmentName]);
 	}
 }

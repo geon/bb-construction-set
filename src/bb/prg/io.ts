@@ -42,6 +42,9 @@ export function makeGetBoundedByte({
 	};
 }
 
+export const dataSegmentNames = Object.keys(
+	segmentLocations
+) as readonly DataSegmentName[];
 export type DataSegmentName = keyof typeof segmentLocations;
 
 export type ReadonlyDataSegments = Record<DataSegmentName, ReadonlyUint8Array>;
