@@ -16,7 +16,9 @@ test("readBubbleCurrentRectangles snapshot", () => {
 		readFileSync(__dirname + "/decompressed-bb.prg").buffer
 	);
 
-	const rectsFromPrg = readBubbleCurrentRectangles(dataSegments.windCurrents);
+	const rectsFromPrg = readBubbleCurrentRectangles(
+		dataSegments.windCurrents.buffer
+	);
 
 	expect(rectsFromPrg).toMatchSnapshot();
 });
@@ -68,9 +70,9 @@ test("readBubbleCurrentRectangles & writeBubbleCurrentRectangles", () => {
 		readFileSync(__dirname + "/decompressed-bb.prg").buffer
 	);
 
-	const rects = readBubbleCurrentRectangles(dataSegments.windCurrents);
+	const rects = readBubbleCurrentRectangles(dataSegments.windCurrents.buffer);
 
 	const patched = writeBubbleCurrentRectangles(rects);
 
-	expect(patched).toStrictEqual(dataSegments.windCurrents);
+	expect(patched).toStrictEqual(dataSegments.windCurrents.buffer);
 });

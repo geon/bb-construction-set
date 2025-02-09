@@ -47,8 +47,17 @@ export const dataSegmentNames = Object.keys(
 ) as readonly DataSegmentName[];
 export type DataSegmentName = keyof typeof segmentLocations;
 
-export type ReadonlyDataSegments = Record<DataSegmentName, ReadonlyUint8Array>;
-export type MutableDataSegments = Record<DataSegmentName, Uint8Array>;
+type DataSegment<BufferType extends ReadonlyUint8Array> = {
+	readonly buffer: BufferType;
+};
+export type ReadonlyDataSegments = Record<
+	DataSegmentName,
+	DataSegment<ReadonlyUint8Array>
+>;
+export type MutableDataSegments = Record<
+	DataSegmentName,
+	DataSegment<Uint8Array>
+>;
 
 export function getDataSegments<
 	TReadonlyOrMutable extends "readonly" | "mutable" = "readonly"
@@ -58,15 +67,13 @@ export function getDataSegments<
 	? ReadonlyDataSegments
 	: MutableDataSegments {
 	const prgStartAddress = getPrgStartAddress(prg);
-	return mapRecord(
-		segmentLocations,
-		(segmentLocation) =>
-			new Uint8Array(
-				prg,
-				segmentLocation.startAddress - prgStartAddress + 2, // 2 bytes extra for the prg header.
-				segmentLocation.length
-			)
-	);
+	return mapRecord(segmentLocations, (segmentLocation) => ({
+		buffer: new Uint8Array(
+			prg,
+			segmentLocation.startAddress - prgStartAddress + 2, // 2 bytes extra for the prg header.
+			segmentLocation.length
+		),
+	}));
 }
 
 // https://stackoverflow.com/a/43933693/446536

@@ -45,24 +45,24 @@ export function parsePrg(prg: ArrayBuffer): {
 
 function readLevels(dataSegments: ReadonlyDataSegments): ReadonlyArray<Level> {
 	const tileBitmaps = readTileBitmaps(
-		dataSegments.bitmaps,
-		dataSegments.symmetryMetadata
+		dataSegments.bitmaps.buffer,
+		dataSegments.symmetryMetadata.buffer
 	);
 
 	return zipObject({
-		platformChar: readPlatformChars(dataSegments.platformChars),
-		...readBgColors(dataSegments.bgColors),
+		platformChar: readPlatformChars(dataSegments.platformChars.buffer),
+		...readBgColors(dataSegments.bgColors.buffer),
 		sidebarChars: readSidebarChars(
-			dataSegments.sidebarChars,
-			dataSegments.symmetryMetadata
+			dataSegments.sidebarChars.buffer,
+			dataSegments.symmetryMetadata.buffer
 		),
-		tiles: readTiles(dataSegments.holeMetadata, tileBitmaps),
-		monsters: readMonsters(dataSegments.monsters),
+		tiles: readTiles(dataSegments.holeMetadata.buffer, tileBitmaps),
+		monsters: readMonsters(dataSegments.monsters.buffer),
 		bubbleCurrentRectangles: readBubbleCurrentRectangles(
-			dataSegments.windCurrents
+			dataSegments.windCurrents.buffer
 		),
 		bubbleCurrentPerLineDefaults: readBubbleCurrentPerLineDefaults(
-			dataSegments.holeMetadata,
+			dataSegments.holeMetadata.buffer,
 			tileBitmaps
 		),
 	});
@@ -81,7 +81,10 @@ export function patchPrg(
 
 	const unzippedLevels = unzipObject(levels);
 
-	const newSegments: ReadonlyDataSegments = {
+	const newSegments: Record<
+		DataSegmentName,
+		ReadonlyDataSegments[DataSegmentName]["buffer"]
+	> = {
 		platformChars: writePlatformChars(unzippedLevels.platformChar),
 		sidebarChars: writeSidebarChars(unzippedLevels.sidebarChars),
 		bgColors: writeBgColors(
@@ -93,7 +96,7 @@ export function patchPrg(
 			unzippedLevels.bubbleCurrentPerLineDefaults
 		),
 		symmetryMetadata: writeSymmetry(
-			prgSegments.symmetryMetadata,
+			prgSegments.symmetryMetadata.buffer,
 			unzippedLevels.tiles,
 			unzippedLevels.sidebarChars
 		),
@@ -101,12 +104,15 @@ export function patchPrg(
 			unzippedLevels.tiles,
 			unzippedLevels.bubbleCurrentPerLineDefaults
 		),
-		monsters: writeMonsters(prgSegments.monsters, unzippedLevels.monsters),
+		monsters: writeMonsters(
+			prgSegments.monsters.buffer,
+			unzippedLevels.monsters
+		),
 		windCurrents: writeBubbleCurrentRectangles(
 			unzippedLevels.bubbleCurrentRectangles
 		),
 	};
 	for (const segmentName of segmentsToPatch ?? dataSegmentNames) {
-		prgSegments[segmentName].set(newSegments[segmentName]);
+		prgSegments[segmentName].buffer.set(newSegments[segmentName]);
 	}
 }
