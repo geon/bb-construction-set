@@ -1,12 +1,19 @@
 import { ComponentPropsWithoutRef, useEffect, useRef, useState } from "react";
 
-export function FileInput({
+type CallbackArg<Multiple> = Multiple extends true
+	? readonly File[]
+	: Multiple extends false | undefined
+	? File | undefined
+	: never;
+export function FileInput<Multiple extends boolean = false>({
+	multiple,
 	accept,
 	onChange,
 	...props
 }: Omit<ComponentPropsWithoutRef<"button">, "onChange"> & {
+	readonly multiple?: Multiple;
 	readonly accept: ReadonlyArray<string>;
-	readonly onChange: (file: File | undefined) => void;
+	readonly onChange: (files: CallbackArg<Multiple>) => void;
 }): JSX.Element {
 	const ref = useRefButItActuallyWorks();
 
@@ -21,9 +28,18 @@ export function FileInput({
 				ref={ref.prop}
 				type="file"
 				accept={accept.join(",")}
+				multiple={multiple}
 				style={{ display: "none" }}
 				onChange={(event) => {
-					onChange(event.target.files?.[0]);
+					if (multiple) {
+						(onChange as (arg: CallbackArg<true>) => void)([
+							...(event.target.files ?? []),
+						]);
+					} else {
+						(onChange as (arg: CallbackArg<false>) => void)(
+							event.target.files?.[0]
+						);
+					}
 					// Clear the input, so the same file can trigger it consecutively.
 					event.target.value = "";
 				}}

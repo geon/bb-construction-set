@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Level } from "./bb/level";
 import { peFileDataToLevels } from "./bb/level-pe-conversion";
 import { deserializePeFileData, PeFileData } from "./bb/pe-file";
+import { sum } from "./bb/functions";
 
 export type ParsePeResult = {
 	readonly fileName: string;
@@ -10,7 +11,7 @@ export type ParsePeResult = {
 	| {
 			readonly type: "success";
 			readonly levels: readonly Level[];
-			readonly deserializedPeFileData: PeFileData;
+			readonly deserializedPeFileDatas: PeFileData[];
 	  }
 	| {
 			readonly type: "failed";
@@ -19,39 +20,49 @@ export type ParsePeResult = {
 );
 export function useParsePe(): readonly [
 	ParsePeResult | undefined,
-	(pe: File | undefined) => Promise<void>
+	(pes: readonly File[]) => Promise<void>
 ] {
 	const [parsedPeData, setParsedPeData] = useState<ParsePeResult | undefined>(
 		undefined
 	);
 
-	const setPe = async (pe: File | undefined): Promise<void> => {
-		if (!pe) {
+	const setPe = async (pes: readonly File[]): Promise<void> => {
+		if (!pes.length) {
 			setParsedPeData(undefined);
 			return;
 		}
 
 		try {
-			const deserializedPeFileData = deserializePeFileData(
-				new TextDecoder("utf-8").decode(await pe.arrayBuffer())
-			);
-			const levels = peFileDataToLevels(deserializedPeFileData);
+			const deserializedPeFileDatas = (
+				await Promise.all(
+					pes.map(async (pe) => ({
+						...pe,
+						arrayBuffer: await pe.arrayBuffer(),
+					}))
+				)
+			).map((pe) => {
+				return deserializePeFileData(
+					new TextDecoder("utf-8").decode(pe.arrayBuffer)
+				);
+			});
+
+			const levels = deserializedPeFileDatas.flatMap(peFileDataToLevels);
+
 			setParsedPeData({
 				type: "success",
 				levels,
-				fileName: pe.name,
-				fileSize: pe.size,
-				deserializedPeFileData,
+				fileName: pes.map((pe) => pe.name).join(", "),
+				fileSize: sum(pes.map((pe) => pe.size)),
+				deserializedPeFileDatas,
 			});
-		} catch (error: unknown) {
-			if (!(error instanceof Error)) {
-				return;
-			}
+		} catch (e: unknown) {
+			const error = e instanceof Error ? e : undefined;
+
 			setParsedPeData({
 				type: "failed",
-				error: error.message,
-				fileName: pe.name,
-				fileSize: pe.size,
+				error: error?.message ?? "unknown",
+				fileName: pes.map((pe) => pe.name).join(", "),
+				fileSize: sum(pes.map((pe) => pe.size)),
 			});
 		}
 	};

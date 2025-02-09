@@ -8,7 +8,7 @@ export function PeSelector({
 	setPe,
 }: {
 	readonly parsedPeData: ParsePeResult | undefined;
-	readonly setPe: (pe: File | undefined) => Promise<void>;
+	readonly setPe: (pes: readonly File[]) => Promise<void>;
 }): ReactNode {
 	return (
 		<>
@@ -18,8 +18,8 @@ export function PeSelector({
 				<a href="https://petscii.krissz.hu">PETSCII Editor web app</a>, save it
 				and select it here.
 			</p>
-			<FileInput accept={["pe"]} onChange={setPe}>
-				Choose file
+			<FileInput accept={["pe"]} multiple onChange={setPe}>
+				Choose files
 			</FileInput>
 			{!parsedPeData ? (
 				<p>No pe selected.</p>
