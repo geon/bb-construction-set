@@ -67,16 +67,13 @@ function readLevels(dataSegments: ReadonlyDataSegments): ReadonlyArray<Level> {
 	});
 }
 
-export function patchPrg(
-	prg: ArrayBuffer,
-	levels: readonly Level[],
-	segmentsToPatch?: Set<DataSegmentName>
+export function levelsToSegments(
+	prgSegments: ReadonlyDataSegments,
+	levels: readonly Level[]
 ) {
 	if (levels.length !== 100) {
 		throw new Error(`Wrong number of levels: ${levels.length}. Should be 100.`);
 	}
-
-	const prgSegments = getDataSegments<"mutable">(prg);
 
 	const unzippedLevels = unzipObject(levels);
 
@@ -111,6 +108,18 @@ export function patchPrg(
 			unzippedLevels.bubbleCurrentRectangles
 		),
 	};
+
+	return newSegments;
+}
+
+export function patchPrg(
+	prg: ArrayBuffer,
+	levels: readonly Level[],
+	segmentsToPatch?: Set<DataSegmentName>
+) {
+	const prgSegments = getDataSegments<"mutable">(prg);
+	const newSegments = levelsToSegments(prgSegments, levels);
+
 	for (const segmentName of segmentsToPatch ?? dataSegmentNames) {
 		prgSegments[segmentName].buffer.set(newSegments[segmentName]);
 	}
