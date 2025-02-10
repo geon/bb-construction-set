@@ -62,13 +62,14 @@ export function getDataSegments<
 	? ReadonlyDataSegments
 	: MutableDataSegments {
 	const prgStartAddress = getPrgStartAddress(prg);
-	return mapRecord(segmentLocations, (segmentLocation) => ({
-		buffer: new Uint8Array(
-			prg,
-			segmentLocation.startAddress - prgStartAddress + 2, // 2 bytes extra for the prg header.
-			segmentLocation.length
-		),
-	}));
+	return mapRecord(segmentLocations, (segmentLocation) => {
+		// 2 bytes extra for the prg header.
+		const begin = segmentLocation.startAddress - prgStartAddress + 2;
+		const length = segmentLocation.length;
+		return {
+			buffer: new Uint8Array(prg, begin, length),
+		};
+	});
 }
 
 // https://stackoverflow.com/a/43933693/446536
