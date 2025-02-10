@@ -113,6 +113,7 @@ export type DataSegmentName = (typeof dataSegmentNames)[number];
 interface SegmentLocation {
 	readonly startAddress: number;
 	readonly length: number;
+	readonly mask?: number;
 }
 
 export const segmentLocations: Readonly<
@@ -121,6 +122,7 @@ export const segmentLocations: Readonly<
 	symmetryMetadata: {
 		startAddress: symmetryMetadataArrayAddress,
 		length: 100,
+		mask: 0b11000000,
 	},
 	bitmaps: {
 		startAddress: bitmapArrayAddress,

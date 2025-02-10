@@ -10,7 +10,11 @@ import {
 	getDataSegments,
 	ReadonlyDataSegments,
 } from "./prg/io";
-import { DataSegmentName, dataSegmentNames } from "./prg/data-locations";
+import {
+	DataSegmentName,
+	dataSegmentNames,
+	segmentLocations,
+} from "./prg/data-locations";
 import { readItems } from "./prg/items";
 import {
 	readBubbleCurrentRectangles,
@@ -92,7 +96,6 @@ export function levelsToSegments(
 			unzippedLevels.bubbleCurrentPerLineDefaults
 		),
 		symmetryMetadata: writeSymmetry(
-			prgSegments.symmetryMetadata.buffer,
 			unzippedLevels.tiles,
 			unzippedLevels.sidebarChars
 		),
@@ -126,7 +129,11 @@ export function patchPrg(
 				originalByte: [...prgSegments[segmentName].buffer],
 				newByte: [...newSegments[segmentName]],
 			}).map(({ originalByte, newByte }) =>
-				mixByte(newByte, originalByte, 0b11111111)
+				mixByte(
+					newByte,
+					originalByte,
+					segmentLocations[segmentName].mask ?? 0b11111111
+				)
 			)
 		);
 	}

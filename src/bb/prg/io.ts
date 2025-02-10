@@ -43,6 +43,7 @@ export function makeGetBoundedByte({
 }
 
 type DataSegment<BufferType extends ReadonlyUint8Array> = {
+	readonly mask: number | undefined;
 	readonly buffer: BufferType;
 };
 export type ReadonlyDataSegments = Record<
@@ -68,6 +69,7 @@ export function getDataSegments<
 		const length = segmentLocation.length;
 		return {
 			buffer: new Uint8Array(prg, begin, length),
+			mask: segmentLocation.mask,
 		};
 	});
 }

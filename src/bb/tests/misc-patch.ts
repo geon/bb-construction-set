@@ -6,7 +6,6 @@ import {
 	BubbleCurrentPerLineDefaults,
 } from "../level";
 import { maxAsymmetric } from "../prg/data-locations";
-import { ReadonlyUint8Array } from "../prg/types";
 
 export function writeHoles(
 	tileses: readonly Tiles[],
@@ -50,7 +49,6 @@ export function writeHoles(
 }
 
 export function writeSymmetry(
-	oldByteArray: ReadonlyUint8Array,
 	tileses: readonly Tiles[],
 	sidebarCharses: readonly (CharBlock | undefined)[]
 ): Uint8Array {
@@ -69,20 +67,10 @@ export function writeSymmetry(
 		(sidebarChars) => (!sidebarChars ? 1 : 0) << 6
 	);
 
-	const oldBits = tileses.map(
-		(_, index) =>
-			// TODO: No idea what the rest of the bits are.
-			oldByteArray[index] & 0b00111111
-	);
-
 	const bytes = zipObject({
 		tilesBits,
 		sidebarCharsBits,
-		oldBits,
-	}).map(
-		({ tilesBits, sidebarCharsBits, oldBits }) =>
-			tilesBits + sidebarCharsBits + oldBits
-	);
+	}).map(({ tilesBits, sidebarCharsBits }) => tilesBits + sidebarCharsBits);
 
 	// Write symmetry.
 	return new Uint8Array(bytes);
