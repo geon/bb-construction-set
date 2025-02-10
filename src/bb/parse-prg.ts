@@ -121,6 +121,17 @@ export function patchPrg(
 	const newSegments = levelsToSegments(prgSegments, levels);
 
 	for (const segmentName of segmentsToPatch ?? dataSegmentNames) {
-		prgSegments[segmentName].buffer.set(newSegments[segmentName]);
+		prgSegments[segmentName].buffer.set(
+			zipObject({
+				originalByte: [...prgSegments[segmentName].buffer],
+				newByte: [...newSegments[segmentName]],
+			}).map(({ originalByte, newByte }) =>
+				mixByte(newByte, originalByte, 0b11111111)
+			)
+		);
 	}
+}
+
+function mixByte(newByte: number, originalByte: number, mask: number): number {
+	return (newByte & mask) | (originalByte & ~mask);
 }
