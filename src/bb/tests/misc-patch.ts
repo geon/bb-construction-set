@@ -6,6 +6,7 @@ import {
 	BubbleCurrentPerLineDefaults,
 } from "../level";
 import { maxAsymmetric } from "../prg/data-locations";
+import { ReadonlyUint8Array } from "../prg/types";
 
 export function writeHoles(
 	tileses: readonly Tiles[],
@@ -49,7 +50,7 @@ export function writeHoles(
 }
 
 export function writeSymmetry(
-	oldByteArray: Uint8Array,
+	oldByteArray: ReadonlyUint8Array,
 	tileses: readonly Tiles[],
 	sidebarCharses: readonly (CharBlock | undefined)[]
 ): Uint8Array {

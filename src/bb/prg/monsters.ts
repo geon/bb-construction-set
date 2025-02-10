@@ -46,7 +46,7 @@ function readMonster(monsterBytes: ReadonlyUint8Array): Monster {
 }
 
 export function writeMonsters(
-	oldByteArray: Uint8Array,
+	oldByteArray: ReadonlyUint8Array,
 	monsterses: readonly Monster[][]
 ): Uint8Array {
 	const numMonsters = monsterses.flatMap((monsters) => monsters).length;
