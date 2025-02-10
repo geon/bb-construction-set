@@ -7,10 +7,11 @@ import { DataSegmentName } from "./bb/prg/data-locations";
 import { CheckboxList } from "./CheckboxList";
 
 const segmentLabels: Record<DataSegmentName, string> = {
-	symmetryMetadata: "Symmetry Metadata",
+	symmetry: "Symmetry",
 	bitmaps: "Platforms",
 	platformChars: "Platform Chars",
 	bgColors: "Colors",
+	hasSidebarChars: "Has Side Border Chars",
 	sidebarChars: "Side Border Chars",
 	holeMetadata: "Hole Metadata",
 	monsters: "Monsters",
@@ -25,7 +26,12 @@ export function PatchDownloader({
 	readonly parsedPeData: ParsePeResult | undefined;
 }): ReactNode {
 	const [selectedSegments, setSelectedSegments] = useState(
-		new Set<DataSegmentName>(["bgColors", "platformChars", "sidebarChars"])
+		new Set<DataSegmentName>([
+			"bgColors",
+			"platformChars",
+			"sidebarChars",
+			"hasSidebarChars",
+		])
 	);
 
 	return (

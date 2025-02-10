@@ -11,7 +11,7 @@ test("readBubbleCurrentPerLineDefaults snapshot", () => {
 
 	const tileBitmaps = readTileBitmaps(
 		dataSegments.bitmaps.buffer,
-		dataSegments.symmetryMetadata.buffer
+		dataSegments.symmetry.buffer
 	);
 
 	const rectsFromPrg = readBubbleCurrentPerLineDefaults(

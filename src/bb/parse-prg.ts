@@ -25,7 +25,12 @@ import { readTiles } from "./prg/tiles";
 import { writeMonsters, readMonsters } from "./prg/monsters";
 import { readSprites } from "./prg/sprites";
 import { readTileBitmaps } from "./prg/tile-bitmap";
-import { writeSymmetry, writeBitmaps, writeHoles } from "./tests/misc-patch";
+import {
+	writeSymmetry,
+	writeBitmaps,
+	writeHoles,
+	writeHasSideBarChars,
+} from "./tests/misc-patch";
 import { readBubbleCurrentPerLineDefaults } from "./prg/bubble-current-per-line-defaults";
 
 export function parsePrg(prg: ArrayBuffer): {
@@ -49,7 +54,7 @@ export function parsePrg(prg: ArrayBuffer): {
 function readLevels(dataSegments: ReadonlyDataSegments): ReadonlyArray<Level> {
 	const tileBitmaps = readTileBitmaps(
 		dataSegments.bitmaps.buffer,
-		dataSegments.symmetryMetadata.buffer
+		dataSegments.symmetry.buffer
 	);
 
 	return zipObject({
@@ -57,7 +62,7 @@ function readLevels(dataSegments: ReadonlyDataSegments): ReadonlyArray<Level> {
 		...readBgColors(dataSegments.bgColors.buffer),
 		sidebarChars: readSidebarChars(
 			dataSegments.sidebarChars.buffer,
-			dataSegments.symmetryMetadata.buffer
+			dataSegments.hasSidebarChars.buffer
 		),
 		tiles: readTiles(dataSegments.holeMetadata.buffer, tileBitmaps),
 		monsters: readMonsters(dataSegments.monsters.buffer),
@@ -95,10 +100,8 @@ export function levelsToSegments(
 			unzippedLevels.tiles,
 			unzippedLevels.bubbleCurrentPerLineDefaults
 		),
-		symmetryMetadata: writeSymmetry(
-			unzippedLevels.tiles,
-			unzippedLevels.sidebarChars
-		),
+		symmetry: writeSymmetry(unzippedLevels.tiles),
+		hasSidebarChars: writeHasSideBarChars(unzippedLevels.sidebarChars),
 		bitmaps: writeBitmaps(
 			unzippedLevels.tiles,
 			unzippedLevels.bubbleCurrentPerLineDefaults

@@ -48,10 +48,7 @@ export function writeHoles(
 	return new Uint8Array(bytes);
 }
 
-export function writeSymmetry(
-	tileses: readonly Tiles[],
-	sidebarCharses: readonly (CharBlock | undefined)[]
-): Uint8Array {
+export function writeSymmetry(tileses: readonly Tiles[]): Uint8Array {
 	const asymmetricLevels = tileses.filter((tiles) => !levelIsSymmetric(tiles));
 	if (asymmetricLevels.length > maxAsymmetric) {
 		throw new Error(
@@ -63,17 +60,17 @@ export function writeSymmetry(
 		(tiles) => (levelIsSymmetric(tiles) ? 1 : 0) << 7
 	);
 
+	return new Uint8Array(tilesBits);
+}
+
+export function writeHasSideBarChars(
+	sidebarCharses: readonly (CharBlock | undefined)[]
+): Uint8Array {
 	const sidebarCharsBits = sidebarCharses.map(
 		(sidebarChars) => (!sidebarChars ? 1 : 0) << 6
 	);
 
-	const bytes = zipObject({
-		tilesBits,
-		sidebarCharsBits,
-	}).map(({ tilesBits, sidebarCharsBits }) => tilesBits + sidebarCharsBits);
-
-	// Write symmetry.
-	return new Uint8Array(bytes);
+	return new Uint8Array(sidebarCharsBits);
 }
 
 export function writeBitmaps(

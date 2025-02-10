@@ -99,7 +99,8 @@ export const itemCharsArrays: readonly ItemCharsLocation[] = [
 ];
 
 export const dataSegmentNames = [
-	"symmetryMetadata",
+	"symmetry",
+	"hasSidebarChars",
 	"bitmaps",
 	"platformChars",
 	"bgColors",
@@ -119,10 +120,15 @@ interface SegmentLocation {
 export const segmentLocations: Readonly<
 	Record<DataSegmentName, SegmentLocation>
 > = {
-	symmetryMetadata: {
+	symmetry: {
 		startAddress: symmetryMetadataArrayAddress,
 		length: 100,
-		mask: 0b11000000,
+		mask: 0b10000000,
+	},
+	hasSidebarChars: {
+		startAddress: symmetryMetadataArrayAddress,
+		length: 100,
+		mask: 0b01000000,
 	},
 	bitmaps: {
 		startAddress: bitmapArrayAddress,
@@ -140,10 +146,23 @@ export const segmentLocations: Readonly<
 		startAddress: sidebarCharArrayAddress,
 		length: 4 * 8 * maxSidebars,
 	},
+
 	holeMetadata: {
 		startAddress: holeMetadataArrayAddress,
 		length: 100,
 	},
+
+	// holes: {
+	// 	startAddress: holeMetadataArrayAddress,
+	// 	length: 100,
+	// 	mask: 0b00001111,
+	// },
+	// bubbleCurrentInHoles: {
+	// 	startAddress: holeMetadataArrayAddress,
+	// 	length: 100,
+	// 	mask: 0b11110000,
+	// },
+
 	monsters: {
 		startAddress: monsterArrayAddress,
 		length: maxMonsters * bytesPerMonster + monsterStopBytes,
