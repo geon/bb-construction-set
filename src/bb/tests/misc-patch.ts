@@ -1,4 +1,3 @@
-import { CharBlock } from "../charset-char";
 import { zipObject, chunk } from "../functions";
 import {
 	Tiles,
@@ -61,16 +60,6 @@ export function writeSymmetry(tileses: readonly Tiles[]): Uint8Array {
 	);
 
 	return new Uint8Array(tilesBits);
-}
-
-export function writeHasSideBarChars(
-	sidebarCharses: readonly (CharBlock | undefined)[]
-): Uint8Array {
-	const sidebarCharsBits = sidebarCharses.map(
-		(sidebarChars) => (!sidebarChars ? 1 : 0) << 6
-	);
-
-	return new Uint8Array(sidebarCharsBits);
 }
 
 export function writeBitmaps(

@@ -49,3 +49,13 @@ export function writeSidebarChars(
 		)
 	);
 }
+
+export function writeHasSideBarChars(
+	sidebarCharses: readonly (CharBlock | undefined)[]
+): Uint8Array {
+	const sidebarCharsBits = sidebarCharses.map(
+		(sidebarChars) => (!sidebarChars ? 1 : 0) << 6
+	);
+
+	return new Uint8Array(sidebarCharsBits);
+}

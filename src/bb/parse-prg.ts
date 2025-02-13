@@ -20,17 +20,16 @@ import {
 	readBubbleCurrentRectangles,
 	writeBubbleCurrentRectangles,
 } from "./prg/bubble-current-rectangles";
-import { writeSidebarChars, readSidebarChars } from "./prg/sidebar-chars";
+import {
+	writeSidebarChars,
+	readSidebarChars,
+	writeHasSideBarChars,
+} from "./prg/sidebar-chars";
 import { readTiles } from "./prg/tiles";
 import { writeMonsters, readMonsters } from "./prg/monsters";
 import { readSprites } from "./prg/sprites";
 import { readTileBitmaps } from "./prg/tile-bitmap";
-import {
-	writeSymmetry,
-	writeBitmaps,
-	writeHoles,
-	writeHasSideBarChars,
-} from "./tests/misc-patch";
+import { writeSymmetry, writeBitmaps, writeHoles } from "./tests/misc-patch";
 import { readBubbleCurrentPerLineDefaults } from "./prg/bubble-current-per-line-defaults";
 
 export function parsePrg(prg: ArrayBuffer): {
