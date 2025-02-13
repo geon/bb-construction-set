@@ -23,7 +23,7 @@ import {
 import {
 	writeSidebarChars,
 	readSidebarChars,
-	writeHasSideBarChars,
+	writeSidebarCharsIndex,
 } from "./prg/sidebar-chars";
 import { readTiles } from "./prg/tiles";
 import { writeMonsters, readMonsters } from "./prg/monsters";
@@ -61,7 +61,7 @@ function readLevels(dataSegments: ReadonlyDataSegments): ReadonlyArray<Level> {
 		...readBgColors(dataSegments.bgColors.buffer),
 		sidebarChars: readSidebarChars(
 			dataSegments.sidebarChars.buffer,
-			dataSegments.hasSidebarChars.buffer
+			dataSegments.sidebarCharsIndex.buffer
 		),
 		tiles: readTiles(dataSegments.holeMetadata.buffer, tileBitmaps),
 		monsters: readMonsters(dataSegments.monsters.buffer),
@@ -100,7 +100,7 @@ export function levelsToSegments(
 			unzippedLevels.bubbleCurrentPerLineDefaults
 		),
 		symmetry: writeSymmetry(unzippedLevels.tiles),
-		hasSidebarChars: writeHasSideBarChars(unzippedLevels.sidebarChars),
+		sidebarCharsIndex: writeSidebarCharsIndex(unzippedLevels.sidebarChars),
 		bitmaps: writeBitmaps(
 			unzippedLevels.tiles,
 			unzippedLevels.bubbleCurrentPerLineDefaults

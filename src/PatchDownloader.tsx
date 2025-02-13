@@ -11,7 +11,7 @@ const segmentLabels: Record<DataSegmentName, string> = {
 	bitmaps: "Platforms",
 	platformChars: "Platform Chars",
 	bgColors: "Colors",
-	hasSidebarChars: "Has Side Border Chars",
+	sidebarCharsIndex: "Side Border Char Indices",
 	sidebarChars: "Side Border Chars",
 	holeMetadata: "Hole Metadata",
 	monsters: "Monsters",
@@ -30,7 +30,7 @@ export function PatchDownloader({
 			"bgColors",
 			"platformChars",
 			"sidebarChars",
-			"hasSidebarChars",
+			"sidebarCharsIndex",
 		])
 	);
 

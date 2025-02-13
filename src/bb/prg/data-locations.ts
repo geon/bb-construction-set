@@ -100,7 +100,7 @@ export const itemCharsArrays: readonly ItemCharsLocation[] = [
 
 export const dataSegmentNames = [
 	"symmetry",
-	"hasSidebarChars",
+	"sidebarCharsIndex",
 	"bitmaps",
 	"platformChars",
 	"bgColors",
@@ -125,10 +125,10 @@ export const segmentLocations: Readonly<
 		length: 100,
 		mask: 0b10000000,
 	},
-	hasSidebarChars: {
+	sidebarCharsIndex: {
 		startAddress: symmetryMetadataArrayAddress,
 		length: 100,
-		mask: 0b01000000,
+		mask: 0b01111111,
 	},
 	bitmaps: {
 		startAddress: bitmapArrayAddress,

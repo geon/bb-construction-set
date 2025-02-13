@@ -1,13 +1,12 @@
 import { CharBlock, parseCharsetCharLine } from "../charset-char";
 import { chunk, isDefined } from "../functions";
 import { Level } from "../level";
-import { isBitSet } from "./bit-twiddling";
-import { maxSidebars } from "./data-locations";
+import { maxSidebars, segmentLocations } from "./data-locations";
 import { ReadonlyUint8Array } from "./types";
 
 export function readSidebarChars(
 	sidebarCharsBytes: ReadonlyUint8Array,
-	symmetryMetadataBytes: ReadonlyUint8Array
+	sidebarCharsIndexBytes: ReadonlyUint8Array
 ) {
 	const linesPerChar = 8;
 	const allSidebarCharBlocks = chunk(
@@ -17,11 +16,15 @@ export function readSidebarChars(
 		4
 	) as CharBlock[];
 
-	let sidebarCharsIndex = 0;
-	const sidebarChars = [...symmetryMetadataBytes].map((byte) => {
-		const hasSidebarChars = !isBitSet(byte, 1);
+	const mask = segmentLocations.sidebarCharsIndex.mask;
+	if (mask === undefined) {
+		throw new Error("sidebarCharsIndex missing mask");
+	}
+	const sidebarChars = [...sidebarCharsIndexBytes].map((byte) => {
+		const sidebarCharsIndex = byte & mask;
+		const hasSidebarChars = sidebarCharsIndex < 100;
 		return hasSidebarChars
-			? allSidebarCharBlocks[sidebarCharsIndex++]
+			? allSidebarCharBlocks[sidebarCharsIndex]
 			: undefined;
 	});
 
@@ -50,11 +53,15 @@ export function writeSidebarChars(
 	);
 }
 
-export function writeHasSideBarChars(
+export function writeSidebarCharsIndex(
 	sidebarCharses: readonly (CharBlock | undefined)[]
 ): Uint8Array {
-	const sidebarCharsBits = sidebarCharses.map(
-		(sidebarChars) => (!sidebarChars ? 1 : 0) << 6
+	// TODO: Rewrite to find duplicates and reuse blocks.
+
+	let index = 0;
+	const sidebarCharsBits = sidebarCharses.map((sidebarChars) =>
+		// Just use consecutive indices, just like the original levels.
+		!sidebarChars ? 0b01111111 : index++
 	);
 
 	return new Uint8Array(sidebarCharsBits);
