@@ -11,6 +11,7 @@ const segmentLabels: Record<DataSegmentName, string> = {
 	bitmaps: "Platforms",
 	platformChars: "Platform Chars",
 	bgColors: "Colors",
+	shadowChars: "Shadow Chars",
 	sidebarCharsIndex: "Side Border Char Indices",
 	sidebarChars: "Side Border Chars",
 	holeMetadata: "Hole Metadata",
@@ -31,6 +32,7 @@ export function PatchDownloader({
 			"platformChars",
 			"sidebarChars",
 			"sidebarCharsIndex",
+			"shadowChars",
 		])
 	);
 
@@ -54,7 +56,12 @@ export function PatchDownloader({
 						getBlob={() => {
 							const prg = parsedPrgData.prg.buffer.slice(0);
 							try {
-								patchPrg(prg, parsedPeData.levels, selectedSegments);
+								patchPrg(
+									prg,
+									parsedPeData.levels,
+									selectedSegments,
+									"retroForge"
+								);
 								return new Blob([prg], {
 									type: "application/octet-stream",
 								});

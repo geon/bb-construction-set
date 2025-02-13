@@ -31,6 +31,7 @@ import { readSprites } from "./prg/sprites";
 import { readTileBitmaps } from "./prg/tile-bitmap";
 import { writeSymmetry, writeBitmaps, writeHoles } from "./tests/misc-patch";
 import { readBubbleCurrentPerLineDefaults } from "./prg/bubble-current-per-line-defaults";
+import { shadowChars, ShadowStyle } from "./shadow-chars";
 
 export function parsePrg(prg: ArrayBuffer): {
 	levels: readonly Level[];
@@ -77,7 +78,8 @@ function readLevels(dataSegments: ReadonlyDataSegments): ReadonlyArray<Level> {
 
 export function levelsToSegments(
 	prgSegments: ReadonlyDataSegments,
-	levels: readonly Level[]
+	levels: readonly Level[],
+	shadowStyle: ShadowStyle
 ) {
 	if (levels.length !== 100) {
 		throw new Error(`Wrong number of levels: ${levels.length}. Should be 100.`);
@@ -112,6 +114,7 @@ export function levelsToSegments(
 		windCurrents: writeBubbleCurrentRectangles(
 			unzippedLevels.bubbleCurrentRectangles
 		),
+		shadowChars: new Uint8Array(shadowChars[shadowStyle].flat()),
 	};
 
 	return newSegments;
@@ -120,10 +123,11 @@ export function levelsToSegments(
 export function patchPrg(
 	prg: ArrayBuffer,
 	levels: readonly Level[],
-	segmentsToPatch: Set<DataSegmentName> | undefined
+	segmentsToPatch: Set<DataSegmentName> | undefined,
+	shadowStyle: ShadowStyle
 ) {
 	const prgSegments = getDataSegments<"mutable">(prg);
-	const newSegments = levelsToSegments(prgSegments, levels);
+	const newSegments = levelsToSegments(prgSegments, levels, shadowStyle);
 
 	for (const segmentName of segmentsToPatch ?? dataSegmentNames) {
 		prgSegments[segmentName].buffer.set(

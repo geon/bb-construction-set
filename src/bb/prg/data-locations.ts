@@ -108,6 +108,7 @@ export const dataSegmentNames = [
 	"holeMetadata",
 	"monsters",
 	"windCurrents",
+	"shadowChars",
 ] as const;
 export type DataSegmentName = (typeof dataSegmentNames)[number];
 
@@ -171,5 +172,9 @@ export const segmentLocations: Readonly<
 		startAddress: windCurrentsArrayAddress,
 		// Determined through experimentation with ts code. Might be wrong.
 		length: 1145,
+	},
+	shadowChars: {
+		startAddress: 0x4050,
+		length: 6 * 8, // 6 chars of 8 bytes.
 	},
 };
