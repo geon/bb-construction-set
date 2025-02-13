@@ -120,7 +120,7 @@ export function levelsToSegments(
 export function patchPrg(
 	prg: ArrayBuffer,
 	levels: readonly Level[],
-	segmentsToPatch?: Set<DataSegmentName>
+	segmentsToPatch: Set<DataSegmentName> | undefined
 ) {
 	const prgSegments = getDataSegments<"mutable">(prg);
 	const newSegments = levelsToSegments(prgSegments, levels);
