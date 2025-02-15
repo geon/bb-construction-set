@@ -21,20 +21,17 @@ export const spriteBitmapArrayAddress = 0x5800;
 interface ItemCharsLocation {
 	readonly address: number;
 	readonly numItems: number;
-	readonly withMask?: true;
 }
 export const itemCharsArrays: readonly ItemCharsLocation[] = [
 	// Blow bubble animation.
 	{
 		address: 0x8000,
 		numItems: 144 / 4,
-		withMask: true,
 	},
 	// Bubble pop.2 frames + position.
 	{
 		address: 0x8980,
 		numItems: 12,
-		withMask: true,
 	},
 	// Baron von Blubba.
 	{
@@ -50,13 +47,11 @@ export const itemCharsArrays: readonly ItemCharsLocation[] = [
 	{
 		address: 0x8f00 + 4 * 8 * (12 + 18),
 		numItems: 2,
-		withMask: true,
 	},
 	// Fire
 	{
 		address: 0x8f00 + 4 * 8 * (12 + 18 + 2),
 		numItems: 12,
-		withMask: true,
 	},
 	// E-X-T-N-D bubbles.
 	{
@@ -72,13 +67,11 @@ export const itemCharsArrays: readonly ItemCharsLocation[] = [
 	{
 		address: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3),
 		numItems: 10,
-		withMask: true,
 	},
 	// Incendo weapon.
 	{
 		address: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3 + 10),
 		numItems: 8,
-		withMask: true,
 	},
 	// Items
 	{
@@ -89,7 +82,6 @@ export const itemCharsArrays: readonly ItemCharsLocation[] = [
 	{
 		address: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3 + 10 + 9 + 57),
 		numItems: 6,
-		withMask: true,
 	},
 	// Bonus round circles.
 	{
