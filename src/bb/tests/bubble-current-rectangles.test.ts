@@ -10,10 +10,12 @@ import {
 import { getDataSegments } from "../prg/io";
 import { readFileSync } from "fs";
 import { ReadonlyUint8Array } from "../prg/types";
+import { levelSegmentLocations } from "../prg/data-locations";
 
 test("readBubbleCurrentRectangles snapshot", () => {
 	const dataSegments = getDataSegments(
-		readFileSync(__dirname + "/decompressed-bb.prg").buffer
+		readFileSync(__dirname + "/decompressed-bb.prg").buffer,
+		levelSegmentLocations
 	);
 
 	const rectsFromPrg = readBubbleCurrentRectangles(
@@ -67,7 +69,8 @@ test("readBubbleCurrentRectanglesForLevel & patchBubbleCurrentRectanglesForLevel
 
 test("readBubbleCurrentRectangles & writeBubbleCurrentRectangles", () => {
 	const dataSegments = getDataSegments(
-		readFileSync(__dirname + "/decompressed-bb.prg").buffer
+		readFileSync(__dirname + "/decompressed-bb.prg").buffer,
+		levelSegmentLocations
 	);
 
 	const rects = readBubbleCurrentRectangles(dataSegments.windCurrents.buffer);

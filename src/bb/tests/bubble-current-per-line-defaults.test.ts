@@ -3,10 +3,12 @@ import { readBubbleCurrentPerLineDefaults } from "../prg/bubble-current-per-line
 import { getDataSegments } from "../prg/io";
 import { readFileSync } from "fs";
 import { readTileBitmaps } from "../prg/tile-bitmap";
+import { levelSegmentLocations } from "../prg/data-locations";
 
 test("readBubbleCurrentPerLineDefaults snapshot", () => {
 	const dataSegments = getDataSegments(
-		readFileSync(__dirname + "/decompressed-bb.prg").buffer
+		readFileSync(__dirname + "/decompressed-bb.prg").buffer,
+		levelSegmentLocations
 	);
 
 	const tileBitmaps = readTileBitmaps(

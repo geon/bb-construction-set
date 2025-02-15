@@ -1,5 +1,5 @@
 import { mapRecord } from "../functions";
-import { LevelDataSegmentName, levelSegmentLocations } from "./data-locations";
+import { SegmentLocation } from "./data-locations";
 import { GetByte, ReadonlyUint8Array } from "./types";
 
 export function getPrgStartAddress(prg: ArrayBuffer): number {
@@ -50,11 +50,15 @@ type _DataSegment<BufferType extends ReadonlyUint8Array> = {
 export type DataSegment = _DataSegment<ReadonlyUint8Array>;
 export type MutableDataSegment = _DataSegment<Uint8Array>;
 
-function _getDataSegments<TReadonlyOrMutable extends "readonly" | "mutable">(
-	prg: ArrayBuffer
+function _getDataSegments<
+	TReadonlyOrMutable extends "readonly" | "mutable",
+	TDataSegmentName extends string
+>(
+	prg: ArrayBuffer,
+	levelSegmentLocations: Readonly<Record<TDataSegmentName, SegmentLocation>>
 ): TReadonlyOrMutable extends "readonly"
-	? Record<LevelDataSegmentName, DataSegment>
-	: Record<LevelDataSegmentName, MutableDataSegment> {
+	? Record<TDataSegmentName, DataSegment>
+	: Record<TDataSegmentName, MutableDataSegment> {
 	const prgStartAddress = getPrgStartAddress(prg);
 	return mapRecord(levelSegmentLocations, (segmentLocation) => {
 		// 2 bytes extra for the prg header.
@@ -67,15 +71,23 @@ function _getDataSegments<TReadonlyOrMutable extends "readonly" | "mutable">(
 	});
 }
 
-export function getDataSegments(
-	prg: ArrayBuffer
-): Record<LevelDataSegmentName, DataSegment> {
-	return _getDataSegments<"readonly">(prg);
+export function getDataSegments<TDataSegmentName extends string>(
+	prg: ArrayBuffer,
+	levelSegmentLocations: Readonly<Record<TDataSegmentName, SegmentLocation>>
+): Record<TDataSegmentName, DataSegment> {
+	return _getDataSegments<"readonly", TDataSegmentName>(
+		prg,
+		levelSegmentLocations
+	);
 }
-export function getMutableDataSegments(
-	prg: ArrayBuffer
-): Record<LevelDataSegmentName, MutableDataSegment> {
-	return _getDataSegments<"mutable">(prg);
+export function getMutableDataSegments<TDataSegmentName extends string>(
+	prg: ArrayBuffer,
+	levelSegmentLocations: Readonly<Record<TDataSegmentName, SegmentLocation>>
+): Record<TDataSegmentName, MutableDataSegment> {
+	return _getDataSegments<"mutable", TDataSegmentName>(
+		prg,
+		levelSegmentLocations
+	);
 }
 
 // https://stackoverflow.com/a/43933693/446536

@@ -104,7 +104,7 @@ export const levelDataSegmentNames = [
 ] as const;
 export type LevelDataSegmentName = (typeof levelDataSegmentNames)[number];
 
-interface SegmentLocation {
+export interface SegmentLocation {
 	readonly startAddress: number;
 	readonly length: number;
 	readonly mask?: number;

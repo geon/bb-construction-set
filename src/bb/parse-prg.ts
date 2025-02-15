@@ -44,7 +44,7 @@ export function parsePrg(prg: ArrayBuffer): {
 	const getByte = (address: number) =>
 		getPrgByteAtAddress(new Uint8Array(prg), startAddres, address);
 
-	const dataSegments = getDataSegments(prg);
+	const dataSegments = getDataSegments(prg, levelSegmentLocations);
 
 	const levels = readLevels(dataSegments);
 	const sprites = readSprites(getByte);
@@ -127,7 +127,7 @@ export function patchPrg(
 	segmentsToPatch: Set<LevelDataSegmentName> | undefined,
 	shadowStyle: ShadowStyle
 ) {
-	const prgSegments = getMutableDataSegments(prg);
+	const prgSegments = getMutableDataSegments(prg, levelSegmentLocations);
 	const newSegments = levelsToSegments(prgSegments, levels, shadowStyle);
 
 	for (const segmentName of segmentsToPatch ?? levelDataSegmentNames) {
