@@ -12,6 +12,7 @@
 		"coverage": "vitest run --coverage",
 		"publish": "npm run build && ./publish.sh",
 		"export-original-levels-to-pe": "tsx src/scripts/export-original-levels-to-pe.ts",
+		"export-character-sprites-as-bin": "npx tsx src/scripts/export-character-sprites-as-bin.ts",
 		"search-in-prg": "npx tsx src/scripts/search-in-prg.ts"
 	},
 	"dependencies": {
