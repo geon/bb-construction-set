@@ -1,3 +1,6 @@
+import { sum } from "../functions";
+import { spriteCounts } from "../sprite";
+
 export const maxAsymmetric = 45;
 export const maxSidebars = 59;
 export const maxMonsters = 572;
@@ -16,7 +19,7 @@ const bitmapArrayByteLength = 46 * (100 + maxAsymmetric);
 const monsterArrayAddress = 0xae51;
 const windCurrentsArrayAddress = 0xb695;
 
-export const spriteBitmapArrayAddress = 0x5800;
+const spriteBitmapArrayAddress = 0x5800;
 
 interface ItemCharsLocation {
 	readonly address: number;
@@ -168,5 +171,16 @@ export const levelSegmentLocations: Readonly<
 	shadowChars: {
 		startAddress: 0x4050,
 		length: 6 * 8, // 6 chars of 8 bytes.
+	},
+};
+
+export const spriteDataSegmentNames = ["characters"] as const;
+export type SpriteDataSegmentName = (typeof spriteDataSegmentNames)[number];
+export const spriteDataSegmentLocations: Readonly<
+	Record<SpriteDataSegmentName, SegmentLocation>
+> = {
+	characters: {
+		startAddress: spriteBitmapArrayAddress,
+		length: 64 * sum(Object.values(spriteCounts)),
 	},
 };

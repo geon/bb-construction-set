@@ -15,6 +15,7 @@ import {
 	LevelDataSegmentName,
 	levelDataSegmentNames,
 	levelSegmentLocations,
+	spriteDataSegmentLocations,
 } from "./prg/data-locations";
 import { readItems } from "./prg/items";
 import {
@@ -45,7 +46,7 @@ export function parsePrg(prg: ArrayBuffer): {
 		getPrgByteAtAddress(new Uint8Array(prg), startAddres, address);
 
 	const levels = readLevels(getDataSegments(prg, levelSegmentLocations));
-	const sprites = readSprites(getByte);
+	const sprites = readSprites(getDataSegments(prg, spriteDataSegmentLocations));
 	const items = readItems(getByte);
 
 	return { levels, sprites, items };

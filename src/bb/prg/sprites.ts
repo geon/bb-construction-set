@@ -1,15 +1,17 @@
+import { strictChunk } from "../functions";
 import {
 	Sprites,
 	characterNames,
 	CharacterName,
 	spriteCounts,
 	Sprite,
-	numSpriteBytes,
 } from "../sprite";
-import { spriteBitmapArrayAddress } from "./data-locations";
-import { GetByte } from "./types";
+import { SpriteDataSegmentName } from "./data-locations";
+import { DataSegment } from "./io";
 
-export function readSprites(getByte: GetByte): Sprites {
+export function readSprites(
+	dataSegments: Record<SpriteDataSegmentName, DataSegment>
+): Sprites {
 	const sprites: Sprites = {
 		player: [],
 		bubbleBuster: [],
@@ -26,21 +28,13 @@ export function readSprites(getByte: GetByte): Sprites {
 		Array<CharacterName>(spriteCounts[name]).fill(name as CharacterName)
 	);
 
+	const spriteBitmaps = strictChunk([...dataSegments.characters.buffer], 64);
+
 	for (const [globalSpriteIndex, characterName] of nameByIndex.entries()) {
-		const sprite = readSprite(getByte, globalSpriteIndex);
+		const sprite: Sprite = {
+			bitmap: spriteBitmaps[globalSpriteIndex].slice(0, 63),
+		};
 		sprites[characterName].push(sprite);
 	}
 	return sprites;
-}
-
-function readSprite(getByte: GetByte, spriteIndex: number): Sprite {
-	const bitmap: Sprite["bitmap"] = [];
-	for (let byteIndex = 0; byteIndex < numSpriteBytes; ++byteIndex) {
-		bitmap.push(
-			getByte(spriteBitmapArrayAddress + spriteIndex * 64 + byteIndex)
-		);
-	}
-	return {
-		bitmap,
-	};
 }
