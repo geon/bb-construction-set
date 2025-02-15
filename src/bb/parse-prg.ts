@@ -32,6 +32,7 @@ import { readTileBitmaps } from "./prg/tile-bitmap";
 import { writeSymmetry, writeBitmaps, writeHoles } from "./tests/misc-patch";
 import { readBubbleCurrentPerLineDefaults } from "./prg/bubble-current-per-line-defaults";
 import { shadowChars, ShadowStyle } from "./shadow-chars";
+import { ReadonlyUint8Array } from "./prg/types";
 
 export function parsePrg(prg: ArrayBuffer): {
 	levels: readonly Level[];
@@ -87,10 +88,7 @@ export function levelsToSegments(
 
 	const unzippedLevels = unzipObject(levels);
 
-	const newSegments: Record<
-		LevelDataSegmentName,
-		ReadonlyDataSegments[LevelDataSegmentName]["buffer"]
-	> = {
+	const newSegments: Record<LevelDataSegmentName, ReadonlyUint8Array> = {
 		platformChars: writePlatformChars(unzippedLevels.platformChar),
 		sidebarChars: writeSidebarChars(unzippedLevels.sidebarChars),
 		bgColors: writeBgColors(

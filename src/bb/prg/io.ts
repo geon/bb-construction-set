@@ -42,7 +42,7 @@ export function makeGetBoundedByte({
 	};
 }
 
-type DataSegment<BufferType extends ReadonlyUint8Array> = {
+export type DataSegment<BufferType extends ReadonlyUint8Array> = {
 	readonly mask: number | undefined;
 	readonly buffer: BufferType;
 };
