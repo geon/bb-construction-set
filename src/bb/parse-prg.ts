@@ -13,7 +13,7 @@ import {
 import {
 	DataSegmentName,
 	dataSegmentNames,
-	segmentLocations,
+	levelSegmentLocations,
 } from "./prg/data-locations";
 import { readItems } from "./prg/items";
 import {
@@ -138,7 +138,7 @@ export function patchPrg(
 				mixByte(
 					newByte,
 					originalByte,
-					segmentLocations[segmentName].mask ?? 0b11111111
+					levelSegmentLocations[segmentName].mask ?? 0b11111111
 				)
 			)
 		);

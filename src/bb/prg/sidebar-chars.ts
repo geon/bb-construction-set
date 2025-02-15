@@ -1,7 +1,7 @@
 import { CharBlock, parseCharsetCharLine } from "../charset-char";
 import { chunk, isDefined } from "../functions";
 import { Level } from "../level";
-import { maxSidebars, segmentLocations } from "./data-locations";
+import { maxSidebars, levelSegmentLocations } from "./data-locations";
 import { ReadonlyUint8Array } from "./types";
 
 export function readSidebarChars(
@@ -16,7 +16,7 @@ export function readSidebarChars(
 		4
 	) as CharBlock[];
 
-	const mask = segmentLocations.sidebarCharsIndex.mask;
+	const mask = levelSegmentLocations.sidebarCharsIndex.mask;
 	if (mask === undefined) {
 		throw new Error("sidebarCharsIndex missing mask");
 	}

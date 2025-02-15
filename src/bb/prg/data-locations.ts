@@ -110,7 +110,7 @@ interface SegmentLocation {
 	readonly mask?: number;
 }
 
-export const segmentLocations: Readonly<
+export const levelSegmentLocations: Readonly<
 	Record<DataSegmentName, SegmentLocation>
 > = {
 	symmetry: {

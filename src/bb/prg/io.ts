@@ -1,5 +1,5 @@
 import { mapRecord } from "../functions";
-import { DataSegmentName, segmentLocations } from "./data-locations";
+import { DataSegmentName, levelSegmentLocations } from "./data-locations";
 import { GetByte, ReadonlyUint8Array } from "./types";
 
 export function getPrgStartAddress(prg: ArrayBuffer): number {
@@ -63,7 +63,7 @@ export function getDataSegments<
 	? ReadonlyDataSegments
 	: MutableDataSegments {
 	const prgStartAddress = getPrgStartAddress(prg);
-	return mapRecord(segmentLocations, (segmentLocation) => {
+	return mapRecord(levelSegmentLocations, (segmentLocation) => {
 		// 2 bytes extra for the prg header.
 		const begin = segmentLocation.startAddress - prgStartAddress + 2;
 		const length = segmentLocation.length;
