@@ -50,9 +50,7 @@ type _DataSegment<BufferType extends ReadonlyUint8Array> = {
 export type DataSegment = _DataSegment<ReadonlyUint8Array>;
 export type MutableDataSegment = _DataSegment<Uint8Array>;
 
-export function getDataSegments<
-	TReadonlyOrMutable extends "readonly" | "mutable" = "readonly"
->(
+function _getDataSegments<TReadonlyOrMutable extends "readonly" | "mutable">(
 	prg: ArrayBuffer
 ): TReadonlyOrMutable extends "readonly"
 	? Record<LevelDataSegmentName, DataSegment>
@@ -67,6 +65,17 @@ export function getDataSegments<
 			mask: segmentLocation.mask,
 		};
 	});
+}
+
+export function getDataSegments(
+	prg: ArrayBuffer
+): Record<LevelDataSegmentName, DataSegment> {
+	return _getDataSegments<"readonly">(prg);
+}
+export function getMutableDataSegments(
+	prg: ArrayBuffer
+): Record<LevelDataSegmentName, MutableDataSegment> {
+	return _getDataSegments<"mutable">(prg);
 }
 
 // https://stackoverflow.com/a/43933693/446536

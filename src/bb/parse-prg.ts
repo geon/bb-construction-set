@@ -9,6 +9,7 @@ import {
 	getPrgByteAtAddress,
 	getDataSegments,
 	DataSegment,
+	getMutableDataSegments,
 } from "./prg/io";
 import {
 	LevelDataSegmentName,
@@ -126,7 +127,7 @@ export function patchPrg(
 	segmentsToPatch: Set<LevelDataSegmentName> | undefined,
 	shadowStyle: ShadowStyle
 ) {
-	const prgSegments = getDataSegments<"mutable">(prg);
+	const prgSegments = getMutableDataSegments(prg);
 	const newSegments = levelsToSegments(prgSegments, levels, shadowStyle);
 
 	for (const segmentName of segmentsToPatch ?? levelDataSegmentNames) {
