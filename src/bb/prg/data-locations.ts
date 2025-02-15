@@ -90,7 +90,7 @@ export const itemCharsArrays: readonly ItemCharsLocation[] = [
 	},
 ];
 
-export const dataSegmentNames = [
+export const levelDataSegmentNames = [
 	"symmetry",
 	"sidebarCharsIndex",
 	"bitmaps",
@@ -102,7 +102,7 @@ export const dataSegmentNames = [
 	"windCurrents",
 	"shadowChars",
 ] as const;
-export type LevelDataSegmentName = (typeof dataSegmentNames)[number];
+export type LevelDataSegmentName = (typeof levelDataSegmentNames)[number];
 
 interface SegmentLocation {
 	readonly startAddress: number;

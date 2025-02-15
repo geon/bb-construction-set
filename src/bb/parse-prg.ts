@@ -12,7 +12,7 @@ import {
 } from "./prg/io";
 import {
 	LevelDataSegmentName,
-	dataSegmentNames,
+	levelDataSegmentNames,
 	levelSegmentLocations,
 } from "./prg/data-locations";
 import { readItems } from "./prg/items";
@@ -129,7 +129,7 @@ export function patchPrg(
 	const prgSegments = getDataSegments<"mutable">(prg);
 	const newSegments = levelsToSegments(prgSegments, levels, shadowStyle);
 
-	for (const segmentName of segmentsToPatch ?? dataSegmentNames) {
+	for (const segmentName of segmentsToPatch ?? levelDataSegmentNames) {
 		prgSegments[segmentName].buffer.set(
 			zipObject({
 				originalByte: [...prgSegments[segmentName].buffer],
