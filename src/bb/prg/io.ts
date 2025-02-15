@@ -46,22 +46,14 @@ export type DataSegment<BufferType extends ReadonlyUint8Array> = {
 	readonly mask: number | undefined;
 	readonly buffer: BufferType;
 };
-export type ReadonlyDataSegments = Record<
-	LevelDataSegmentName,
-	DataSegment<ReadonlyUint8Array>
->;
-export type MutableDataSegments = Record<
-	LevelDataSegmentName,
-	DataSegment<Uint8Array>
->;
 
 export function getDataSegments<
 	TReadonlyOrMutable extends "readonly" | "mutable" = "readonly"
 >(
 	prg: ArrayBuffer
 ): TReadonlyOrMutable extends "readonly"
-	? ReadonlyDataSegments
-	: MutableDataSegments {
+	? Record<LevelDataSegmentName, DataSegment<ReadonlyUint8Array>>
+	: Record<LevelDataSegmentName, DataSegment<Uint8Array>> {
 	const prgStartAddress = getPrgStartAddress(prg);
 	return mapRecord(levelSegmentLocations, (segmentLocation) => {
 		// 2 bytes extra for the prg header.

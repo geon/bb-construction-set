@@ -8,7 +8,7 @@ import {
 	getPrgStartAddress,
 	getPrgByteAtAddress,
 	getDataSegments,
-	ReadonlyDataSegments,
+	DataSegment,
 } from "./prg/io";
 import {
 	LevelDataSegmentName,
@@ -52,7 +52,9 @@ export function parsePrg(prg: ArrayBuffer): {
 	return { levels, sprites, items };
 }
 
-function readLevels(dataSegments: ReadonlyDataSegments): ReadonlyArray<Level> {
+function readLevels(
+	dataSegments: Record<LevelDataSegmentName, DataSegment<ReadonlyUint8Array>>
+): ReadonlyArray<Level> {
 	const tileBitmaps = readTileBitmaps(
 		dataSegments.bitmaps.buffer,
 		dataSegments.symmetry.buffer
@@ -78,7 +80,7 @@ function readLevels(dataSegments: ReadonlyDataSegments): ReadonlyArray<Level> {
 }
 
 export function levelsToSegments(
-	prgSegments: ReadonlyDataSegments,
+	prgSegments: Record<LevelDataSegmentName, DataSegment<ReadonlyUint8Array>>,
 	levels: readonly Level[],
 	shadowStyle: ShadowStyle
 ) {
