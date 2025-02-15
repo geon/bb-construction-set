@@ -42,18 +42,21 @@ export function makeGetBoundedByte({
 	};
 }
 
-export type DataSegment<BufferType extends ReadonlyUint8Array> = {
+type _DataSegment<BufferType extends ReadonlyUint8Array> = {
 	readonly mask: number | undefined;
 	readonly buffer: BufferType;
 };
+
+export type DataSegment = _DataSegment<ReadonlyUint8Array>;
+export type MutableDataSegment = _DataSegment<Uint8Array>;
 
 export function getDataSegments<
 	TReadonlyOrMutable extends "readonly" | "mutable" = "readonly"
 >(
 	prg: ArrayBuffer
 ): TReadonlyOrMutable extends "readonly"
-	? Record<LevelDataSegmentName, DataSegment<ReadonlyUint8Array>>
-	: Record<LevelDataSegmentName, DataSegment<Uint8Array>> {
+	? Record<LevelDataSegmentName, DataSegment>
+	: Record<LevelDataSegmentName, MutableDataSegment> {
 	const prgStartAddress = getPrgStartAddress(prg);
 	return mapRecord(levelSegmentLocations, (segmentLocation) => {
 		// 2 bytes extra for the prg header.

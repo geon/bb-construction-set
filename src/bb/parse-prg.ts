@@ -53,7 +53,7 @@ export function parsePrg(prg: ArrayBuffer): {
 }
 
 function readLevels(
-	dataSegments: Record<LevelDataSegmentName, DataSegment<ReadonlyUint8Array>>
+	dataSegments: Record<LevelDataSegmentName, DataSegment>
 ): ReadonlyArray<Level> {
 	const tileBitmaps = readTileBitmaps(
 		dataSegments.bitmaps.buffer,
@@ -80,7 +80,7 @@ function readLevels(
 }
 
 export function levelsToSegments(
-	prgSegments: Record<LevelDataSegmentName, DataSegment<ReadonlyUint8Array>>,
+	prgSegments: Record<LevelDataSegmentName, DataSegment>,
 	levels: readonly Level[],
 	shadowStyle: ShadowStyle
 ) {
