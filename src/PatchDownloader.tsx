@@ -3,10 +3,10 @@ import { patchPrg } from "./bb/parse-prg";
 import { BlobDownloadButton } from "./BlobDownloadButton";
 import { ParsePeResult } from "./useParsePe";
 import { ParsePrgResult } from "./useParsePrg";
-import { DataSegmentName } from "./bb/prg/data-locations";
+import { LevelDataSegmentName } from "./bb/prg/data-locations";
 import { CheckboxList } from "./CheckboxList";
 
-const segmentLabels: Record<DataSegmentName, string> = {
+const segmentLabels: Record<LevelDataSegmentName, string> = {
 	symmetry: "Symmetry",
 	bitmaps: "Platforms",
 	platformChars: "Platform Chars",
@@ -27,7 +27,7 @@ export function PatchDownloader({
 	readonly parsedPeData: ParsePeResult | undefined;
 }): ReactNode {
 	const [selectedSegments, setSelectedSegments] = useState(
-		new Set<DataSegmentName>([
+		new Set<LevelDataSegmentName>([
 			"bgColors",
 			"platformChars",
 			"sidebarChars",

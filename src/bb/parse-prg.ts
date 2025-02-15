@@ -11,7 +11,7 @@ import {
 	ReadonlyDataSegments,
 } from "./prg/io";
 import {
-	DataSegmentName,
+	LevelDataSegmentName,
 	dataSegmentNames,
 	levelSegmentLocations,
 } from "./prg/data-locations";
@@ -88,8 +88,8 @@ export function levelsToSegments(
 	const unzippedLevels = unzipObject(levels);
 
 	const newSegments: Record<
-		DataSegmentName,
-		ReadonlyDataSegments[DataSegmentName]["buffer"]
+		LevelDataSegmentName,
+		ReadonlyDataSegments[LevelDataSegmentName]["buffer"]
 	> = {
 		platformChars: writePlatformChars(unzippedLevels.platformChar),
 		sidebarChars: writeSidebarChars(unzippedLevels.sidebarChars),
@@ -123,7 +123,7 @@ export function levelsToSegments(
 export function patchPrg(
 	prg: ArrayBuffer,
 	levels: readonly Level[],
-	segmentsToPatch: Set<DataSegmentName> | undefined,
+	segmentsToPatch: Set<LevelDataSegmentName> | undefined,
 	shadowStyle: ShadowStyle
 ) {
 	const prgSegments = getDataSegments<"mutable">(prg);

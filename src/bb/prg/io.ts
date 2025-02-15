@@ -1,5 +1,5 @@
 import { mapRecord } from "../functions";
-import { DataSegmentName, levelSegmentLocations } from "./data-locations";
+import { LevelDataSegmentName, levelSegmentLocations } from "./data-locations";
 import { GetByte, ReadonlyUint8Array } from "./types";
 
 export function getPrgStartAddress(prg: ArrayBuffer): number {
@@ -47,11 +47,11 @@ type DataSegment<BufferType extends ReadonlyUint8Array> = {
 	readonly buffer: BufferType;
 };
 export type ReadonlyDataSegments = Record<
-	DataSegmentName,
+	LevelDataSegmentName,
 	DataSegment<ReadonlyUint8Array>
 >;
 export type MutableDataSegments = Record<
-	DataSegmentName,
+	LevelDataSegmentName,
 	DataSegment<Uint8Array>
 >;
 

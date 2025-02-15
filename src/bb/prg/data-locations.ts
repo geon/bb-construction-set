@@ -102,7 +102,7 @@ export const dataSegmentNames = [
 	"windCurrents",
 	"shadowChars",
 ] as const;
-export type DataSegmentName = (typeof dataSegmentNames)[number];
+export type LevelDataSegmentName = (typeof dataSegmentNames)[number];
 
 interface SegmentLocation {
 	readonly startAddress: number;
@@ -111,7 +111,7 @@ interface SegmentLocation {
 }
 
 export const levelSegmentLocations: Readonly<
-	Record<DataSegmentName, SegmentLocation>
+	Record<LevelDataSegmentName, SegmentLocation>
 > = {
 	symmetry: {
 		startAddress: symmetryMetadataArrayAddress,
