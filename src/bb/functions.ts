@@ -28,7 +28,9 @@ export function strictChunk<T, TChunkLength extends number>(
 ): Tuple<T, TChunkLength>[] {
 	if (array.length % chunkLength !== 0) {
 		throw new Error(
-			"Strict chunked array.length must be a multiple of chunkLength."
+			"Strict chunked array.length must be a multiple of chunkLength." +
+				" " +
+				`array.length: ${array.length}, chunkLength: ${chunkLength}`
 		);
 	}
 	return chunk(array, chunkLength) as Tuple<T, TChunkLength>[];

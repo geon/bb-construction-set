@@ -1,6 +1,3 @@
-export type GetByte = (address: number) => number;
-export type SetByte = (address: number, value: number) => void;
-
 export interface ReadonlyUint8Array
 	extends Omit<
 		Uint8Array,

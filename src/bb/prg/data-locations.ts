@@ -21,78 +21,6 @@ const windCurrentsArrayAddress = 0xb695;
 
 const spriteBitmapArrayAddress = 0x5800;
 
-interface ItemCharsLocation {
-	readonly address: number;
-	readonly numItems: number;
-}
-export const itemCharsArrays: readonly ItemCharsLocation[] = [
-	// Blow bubble animation.
-	{
-		address: 0x8000,
-		numItems: 144 / 4,
-	},
-	// Bubble pop.2 frames + position.
-	{
-		address: 0x8980,
-		numItems: 12,
-	},
-	// Baron von Blubba.
-	{
-		address: 0x8f00,
-		numItems: 12,
-	},
-	// Special bubbles: Water, fire, lightning.
-	{
-		address: 0x8f00 + 4 * 8 * 12,
-		numItems: 18,
-	},
-	// Lightning
-	{
-		address: 0x8f00 + 4 * 8 * (12 + 18),
-		numItems: 2,
-	},
-	// Fire
-	{
-		address: 0x8f00 + 4 * 8 * (12 + 18 + 2),
-		numItems: 12,
-	},
-	// E-X-T-N-D bubbles.
-	{
-		address: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12),
-		numItems: 30,
-	},
-	// Stoner weapon.
-	{
-		address: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30),
-		numItems: 3,
-	},
-	// Willy Whistle/Drunk weapon + Super Socket/Invader weapon.
-	{
-		address: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3),
-		numItems: 10,
-	},
-	// Incendo weapon.
-	{
-		address: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3 + 10),
-		numItems: 8,
-	},
-	// Items
-	{
-		address: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3 + 10 + 8),
-		numItems: 58,
-	},
-	// Large lightning. (4x4 chars, but only 12 chars are stored.)
-	{
-		address: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3 + 10 + 9 + 57),
-		numItems: 6,
-	},
-	// Bonus round circles.
-	{
-		address: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3 + 10 + 9 + 57 + 6),
-		numItems: 2,
-	},
-];
-
 export const levelDataSegmentNames = [
 	"symmetry",
 	"sidebarCharsIndex",
@@ -182,5 +110,85 @@ export const spriteDataSegmentLocations: Readonly<
 	characters: {
 		startAddress: spriteBitmapArrayAddress,
 		length: 64 * sum(Object.values(spriteCounts)),
+	},
+};
+
+export const itemDataSegmentNames = [
+	"bubbleBlow",
+	"bubblePop",
+	// "rest",
+	"baronVonBlubba",
+	"specialBubbles",
+	"lightning",
+	"fire",
+	"extendBubbles",
+	"stonerWeapon",
+	"drunkAndInvaderWeapon",
+	"incendoWeapon",
+	"items",
+	"largeLightning",
+	"bonusRoundCircles",
+] as const;
+export type ItemDataSegmentName = (typeof itemDataSegmentNames)[number];
+export const itemDataSegmentLocations: Readonly<
+	Record<ItemDataSegmentName, SegmentLocation>
+> = {
+	bubbleBlow: {
+		startAddress: 0x8000,
+		length: (4 * 8 * 144) / 4,
+	},
+	bubblePop: {
+		startAddress: 0x8980,
+		length: 4 * 8 * 12,
+	},
+	// rest: {
+	// 	startAddress: 0x8f00,
+	// 	length: 4 * 8 * 161,
+	// },
+	baronVonBlubba: {
+		startAddress: 0x8f00,
+		length: 4 * 8 * 12,
+	},
+	specialBubbles: {
+		startAddress: 0x8f00 + 4 * 8 * 12,
+		length: 4 * 8 * 18,
+	},
+	lightning: {
+		startAddress: 0x8f00 + 4 * 8 * (12 + 18),
+		length: 4 * 8 * 2,
+	},
+	fire: {
+		startAddress: 0x8f00 + 4 * 8 * (12 + 18 + 2),
+		length: 4 * 8 * 12,
+	},
+	extendBubbles: {
+		startAddress: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12),
+		length: 4 * 8 * 30,
+	},
+	stonerWeapon: {
+		startAddress: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30),
+		length: 4 * 8 * 3,
+	},
+	drunkAndInvaderWeapon: {
+		startAddress: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3),
+		length: 4 * 8 * 10,
+	},
+	incendoWeapon: {
+		startAddress: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3 + 10),
+		length: 4 * 8 * 8,
+	},
+	items: {
+		startAddress: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3 + 10 + 8),
+		length: 4 * 8 * 58,
+	},
+	//  (4x4 chars, but only 12 chars are stored.)
+	largeLightning: {
+		startAddress: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3 + 10 + 9 + 57),
+		length: 4 * 8 * 6,
+	},
+	bonusRoundCircles: {
+		startAddress:
+			0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3 + 10 + 9 + 57 + 6),
+		length: 4 * 8 * 2,
 	},
 };

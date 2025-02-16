@@ -3,6 +3,7 @@ import { CharBlock } from "./bb/charset-char";
 import { Level } from "./bb/level";
 import { parsePrg } from "./bb/parse-prg";
 import { Sprites } from "./bb/sprite";
+import { ItemDataSegmentName } from "./bb/prg/data-locations";
 
 export type ParsePrgResult = {
 	readonly fileName: string;
@@ -13,7 +14,7 @@ export type ParsePrgResult = {
 			readonly prg: Uint8Array;
 			readonly levels: readonly Level[];
 			readonly sprites: Sprites;
-			readonly items: CharBlock[];
+			readonly items: Record<ItemDataSegmentName, CharBlock[]>;
 	  }
 	| {
 			readonly type: "failed";

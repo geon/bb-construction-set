@@ -4,14 +4,10 @@ import { Level } from "./level";
 import { writeBgColors, readBgColors } from "./prg/bg-colors";
 import { Sprites } from "./sprite";
 import { readPlatformChars, writePlatformChars } from "./prg/charset-char";
+import { getDataSegments, DataSegment, getMutableDataSegments } from "./prg/io";
 import {
-	getPrgStartAddress,
-	getPrgByteAtAddress,
-	getDataSegments,
-	DataSegment,
-	getMutableDataSegments,
-} from "./prg/io";
-import {
+	itemDataSegmentLocations,
+	ItemDataSegmentName,
 	LevelDataSegmentName,
 	levelDataSegmentNames,
 	levelSegmentLocations,
@@ -39,15 +35,11 @@ import { ReadonlyUint8Array } from "./prg/types";
 export function parsePrg(prg: ArrayBuffer): {
 	levels: readonly Level[];
 	sprites: Sprites;
-	items: CharBlock[];
+	items: Record<ItemDataSegmentName, CharBlock[]>;
 } {
-	const startAddres = getPrgStartAddress(prg);
-	const getByte = (address: number) =>
-		getPrgByteAtAddress(new Uint8Array(prg), startAddres, address);
-
 	const levels = readLevels(getDataSegments(prg, levelSegmentLocations));
 	const sprites = readSprites(getDataSegments(prg, spriteDataSegmentLocations));
-	const items = readItems(getByte);
+	const items = readItems(getDataSegments(prg, itemDataSegmentLocations));
 
 	return { levels, sprites, items };
 }
