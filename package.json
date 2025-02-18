@@ -11,7 +11,8 @@
 		"test": "vitest",
 		"coverage": "vitest run --coverage",
 		"publish": "npm run build && ./publish.sh",
-		"export-original-levels-to-pe": "tsx src/scripts/export-original-levels-to-pe.ts"
+		"export-original-levels-to-pe": "tsx src/scripts/export-original-levels-to-pe.ts",
+		"search-in-prg": "npx tsx src/scripts/search-in-prg.ts"
 	},
 	"dependencies": {
 		"client-zip": "^2.5.0",
