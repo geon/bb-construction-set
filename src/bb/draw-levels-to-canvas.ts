@@ -134,7 +134,6 @@ export function drawPlatformCharsToCanvas(
 	canvas.width = 4 * 8 * 10;
 	canvas.height = 4 * 8 * 10;
 
-	const image = new ImageData(8, 8);
 	outerLoop: for (let levelY = 0; levelY < 10; ++levelY) {
 		for (let levelX = 0; levelX < 10; ++levelX) {
 			const levelIndex = levelY * 10 + levelX;
@@ -153,7 +152,7 @@ export function drawPlatformCharsToCanvas(
 							  ]
 							: level.platformChar;
 
-					drawChar(image, char, charPalette);
+					const image = drawChar(char, charPalette);
 
 					ctx.putImageData(
 						image,
@@ -176,10 +175,11 @@ function getCharPalette(level: Level): [Color, Color, Color, Color] {
 }
 
 function drawChar(
-	image: ImageData,
 	char: CharsetChar,
 	charPalette: readonly [Color, Color, Color, Color]
 ) {
+	const image = new ImageData(8, 8);
+
 	for (const [charY, line] of char.lines.entries()) {
 		for (const [charX, colorIndex] of line.entries()) {
 			const color = charPalette[colorIndex];
@@ -189,6 +189,7 @@ function drawChar(
 			plotPixel(image, pixelIndex + 1, color);
 		}
 	}
+	return image;
 }
 
 export function drawSpritesToCanvas(
@@ -269,7 +270,6 @@ export function drawItemsToCanvas(
 	canvas.width = 3 * 8 * numItemsX;
 	canvas.height = 3 * 8 * numItemsY;
 
-	const image = new ImageData(8, 8);
 	outerLoop: for (let itemY = 0; itemY < numItemsY; ++itemY) {
 		for (let levelX = 0; levelX < numItemsX; ++levelX) {
 			const itemIndex = itemY * numItemsX + levelX;
@@ -293,7 +293,7 @@ export function drawItemsToCanvas(
 					] as const;
 
 					const char = item[(charBlockY * 2 + charBlockX) as CharBlockIndex];
-					drawChar(image, char, charPalette);
+					const image = drawChar(char, charPalette);
 
 					ctx.putImageData(
 						image,
