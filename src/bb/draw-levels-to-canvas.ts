@@ -146,11 +146,9 @@ export function drawPlatformCharsToCanvas(levels: readonly Level[]): ImageData {
 							  ]
 							: level.platformChar;
 
-					const charImage = drawChar(char, charPalette);
-
 					blitImageData(
 						image,
-						charImage,
+						drawChar(char, charPalette),
 						levelX * 32 + sidebarX * 8,
 						levelY * 32 + sidebarY * 8
 					);
@@ -289,10 +287,9 @@ export function drawItemsToCanvas(
 					] as const;
 
 					const char = item[(charBlockY * 2 + charBlockX) as CharBlockIndex];
-					const image = drawChar(char, charPalette);
 
 					ctx.putImageData(
-						image,
+						drawChar(char, charPalette),
 						levelX * (2 * 8) + charBlockX * 8,
 						itemY * (2 * 8) + charBlockY * 8
 					);
