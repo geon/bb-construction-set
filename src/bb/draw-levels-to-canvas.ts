@@ -249,20 +249,14 @@ function getSpritePalette(color: PaletteIndex): [Color, Color, Color, Color] {
 	];
 }
 
-export function drawItemsToCanvas(
-	items: readonly CharBlock[],
-	canvas: HTMLCanvasElement
-) {
-	const ctx = canvas.getContext("2d");
-	if (!ctx) {
-		return;
-	}
-
+export function drawItemsToCanvas(items: readonly CharBlock[]): ImageData {
 	const numItemsX = 16;
 	const numItemsY = Math.ceil(items.length / numItemsX);
 
-	canvas.width = 3 * 8 * numItemsX;
-	canvas.height = 3 * 8 * numItemsY;
+	const width = 3 * 8 * numItemsX;
+	const height = 3 * 8 * numItemsY;
+
+	const image = new ImageData(width, height);
 
 	outerLoop: for (let itemY = 0; itemY < numItemsY; ++itemY) {
 		for (let levelX = 0; levelX < numItemsX; ++levelX) {
@@ -288,7 +282,8 @@ export function drawItemsToCanvas(
 
 					const char = item[(charBlockY * 2 + charBlockX) as CharBlockIndex];
 
-					ctx.putImageData(
+					blitImageData(
+						image,
 						drawChar(char, charPalette),
 						levelX * (2 * 8) + charBlockX * 8,
 						itemY * (2 * 8) + charBlockY * 8
@@ -297,6 +292,8 @@ export function drawItemsToCanvas(
 			}
 		}
 	}
+
+	return image;
 }
 
 // Just like ctx.putImageData
