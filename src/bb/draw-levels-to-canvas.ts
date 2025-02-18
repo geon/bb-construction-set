@@ -122,17 +122,11 @@ export function clearCanvas(canvas: HTMLCanvasElement) {
 	canvas.getContext("2d")?.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-export function drawPlatformCharsToCanvas(
-	levels: readonly Level[],
-	canvas: HTMLCanvasElement
-) {
-	const ctx = canvas.getContext("2d");
-	if (!ctx) {
-		return;
-	}
+export function drawPlatformCharsToCanvas(levels: readonly Level[]): ImageData {
+	const width = 4 * 8 * 10;
+	const height = 4 * 8 * 10;
 
-	canvas.width = 4 * 8 * 10;
-	canvas.height = 4 * 8 * 10;
+	const image = new ImageData(width, height);
 
 	outerLoop: for (let levelY = 0; levelY < 10; ++levelY) {
 		for (let levelX = 0; levelX < 10; ++levelX) {
@@ -152,10 +146,11 @@ export function drawPlatformCharsToCanvas(
 							  ]
 							: level.platformChar;
 
-					const image = drawChar(char, charPalette);
+					const charImage = drawChar(char, charPalette);
 
-					ctx.putImageData(
+					blitImageData(
 						image,
+						charImage,
 						levelX * 32 + sidebarX * 8,
 						levelY * 32 + sidebarY * 8
 					);
@@ -163,6 +158,7 @@ export function drawPlatformCharsToCanvas(
 			}
 		}
 	}
+	return image;
 }
 
 function getCharPalette(level: Level): [Color, Color, Color, Color] {
@@ -301,6 +297,18 @@ export function drawItemsToCanvas(
 						itemY * (2 * 8) + charBlockY * 8
 					);
 				}
+			}
+		}
+	}
+}
+
+// Just like ctx.putImageData
+function blitImageData(to: ImageData, from: ImageData, dx: number, dy: number) {
+	for (let y = 0; y < from.height; ++y) {
+		for (let x = 0; x < from.height; ++x) {
+			for (let channel = 0; channel < 4; ++channel) {
+				to.data[((y + dy) * to.height + (x + dx)) * 4 + channel] =
+					from.data[(y * from.height + x) * 4 + channel];
 			}
 		}
 	}

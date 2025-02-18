@@ -26,7 +26,13 @@ export function Levels(props: {
 			}
 			try {
 				drawLevelsToCanvas(props.levels, levelsCanvasRef.current);
-				drawPlatformCharsToCanvas(props.levels, platformCharsCanvasRef.current);
+				{
+					const platformCharsImage = drawPlatformCharsToCanvas(props.levels);
+					platformCharsCanvasRef.current.width = platformCharsImage.width;
+					platformCharsCanvasRef.current.height = platformCharsImage.height;
+					const ctx = platformCharsCanvasRef.current.getContext("2d");
+					ctx && ctx.putImageData(platformCharsImage, 0, 0);
+				}
 			} catch (error) {
 				if (error instanceof Error) {
 					setError(error.message);
