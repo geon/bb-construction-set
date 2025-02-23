@@ -100,7 +100,15 @@ export const levelSegmentLocations: Readonly<
 	},
 };
 
-export const spriteDataSegmentNames = ["characters"] as const;
+export const spriteDataSegmentNames = [
+	"characters",
+	"playerInBubble",
+	"bossA",
+	"bossB",
+	"bonusCupCake",
+	"bonusMelon",
+	"bonusDiamond",
+] as const;
 export type SpriteDataSegmentName = (typeof spriteDataSegmentNames)[number];
 export const spriteDataSegmentLocations: Readonly<
 	Record<SpriteDataSegmentName, SegmentLocation>
@@ -109,6 +117,20 @@ export const spriteDataSegmentLocations: Readonly<
 		startAddress: 22528,
 		length: 64 * sum(Object.values(spriteCounts)),
 	},
+	playerInBubble: { startAddress: 0x7440, length: 64 * 8 },
+	bossA: { startAddress: 0x7640, length: 64 * 18 },
+	bossB: { startAddress: 0x7c40, length: 64 * 9 },
+	bonusCupCake: { startAddress: 0xa320, length: 64 * 4 },
+	bonusMelon: { startAddress: 0xa4a0, length: 64 * 2 },
+	bonusDiamond: { startAddress: 0xa520, length: 64 * 2 },
+
+	// playerInBubble: { startAddress: 0x7440, length: 64 * 8 },
+	// bossLeft: { startAddress: 0x7640, length: 64 * 9 },
+	// bossInBubble: { startAddress: 0x7880, length: 64 * 9 },
+	// bossRight: { startAddress: 0x7c40, length: 64 * 9 },
+	// bonusCupCake: { startAddress: 0xa320, length: 64 * 4 },
+	// bonusMelon: { startAddress: 0xa4a0, length: 64 * 2 },
+	// bonusDiamond: { startAddress: 0xa520, length: 64 * 2 },
 };
 
 export const itemDataSegmentNames = [
