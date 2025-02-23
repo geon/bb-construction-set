@@ -19,8 +19,6 @@ const bitmapArrayByteLength = 46 * (100 + maxAsymmetric);
 const monsterArrayAddress = 0xae51;
 const windCurrentsArrayAddress = 0xb695;
 
-const spriteBitmapArrayAddress = 0x5800;
-
 export const levelDataSegmentNames = [
 	"symmetry",
 	"sidebarCharsIndex",
@@ -108,7 +106,7 @@ export const spriteDataSegmentLocations: Readonly<
 	Record<SpriteDataSegmentName, SegmentLocation>
 > = {
 	characters: {
-		startAddress: spriteBitmapArrayAddress,
+		startAddress: 22528,
 		length: 64 * sum(Object.values(spriteCounts)),
 	},
 };
