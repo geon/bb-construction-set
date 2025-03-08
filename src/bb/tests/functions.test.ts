@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { chunk, padRight, unzipObject, zipObject } from "../functions";
+import { chunk, padRight, range, unzipObject, zipObject } from "../functions";
 
 test("padRight", () => {
 	expect(padRight([1, 2, 3], 5, 0)).toStrictEqual([1, 2, 3, 0, 0]);
@@ -25,4 +25,9 @@ test("unzipObject", () => {
 			{ foo: 3, bar: "c" },
 		])
 	).toStrictEqual({ foo: [1, 2, 3], bar: ["a", "b", "c"] });
+});
+
+test("range", () => {
+	expect(range(0, 3)).toStrictEqual([0, 1, 2]);
+	expect(range(1, 3)).toStrictEqual([1, 2, 3]);
 });

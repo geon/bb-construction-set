@@ -106,3 +106,9 @@ export function mapRecord<TKey extends string, TIn, TOut>(
 export function isDefined<T>(x: T | undefined): x is T {
 	return x !== undefined;
 }
+
+export function range(from: number, length: number): readonly number[] {
+	return Array(length)
+		.fill(undefined)
+		.map((_, index) => index + from);
+}
