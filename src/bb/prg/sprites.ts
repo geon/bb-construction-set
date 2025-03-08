@@ -1,4 +1,4 @@
-import { range, strictChunk } from "../functions";
+import { objectFromEntries, range, strictChunk } from "../functions";
 import {
 	Sprites,
 	characterNames,
@@ -7,7 +7,11 @@ import {
 	Sprite,
 	spriteColors,
 } from "../sprite";
-import { SpriteDataSegmentName } from "./data-locations";
+import {
+	spriteDataSegmentLocations,
+	SpriteDataSegmentName,
+	spriteDataSegmentNames,
+} from "./data-locations";
 import { DataSegment, uint8ArrayConcatenate } from "./io";
 
 export function readSprites(
@@ -52,9 +56,9 @@ export function readSpritesBin(
 		.flat();
 
 	return uint8ArrayConcatenate(
-		(
-			Object.entries(dataSegments) as [SpriteDataSegmentName, DataSegment][]
-		).map(([segmentName, segment]) => {
+		spriteDataSegmentNames.map((segmentName) => {
+			// Not doing Object.entries(dataSegments) to avoid accidentally goint out of sync with writeSpritesBin.
+			const segment = dataSegments[segmentName];
 			const bufferCopy = new Uint8Array(segment.buffer).slice();
 
 			for (const spriteIndex of range(0, bufferCopy.length / 64)) {
@@ -68,6 +72,23 @@ export function readSpritesBin(
 			}
 
 			return bufferCopy;
+		})
+	);
+}
+
+export function writeSpritesBin(
+	binFileContents: Uint8Array
+): Record<SpriteDataSegmentName, Uint8Array> {
+	let nextOffset = 0;
+	return objectFromEntries(
+		spriteDataSegmentNames.map((segmentName) => {
+			const offset = nextOffset;
+			const length = spriteDataSegmentLocations[segmentName].length;
+			nextOffset += length;
+			return [
+				segmentName,
+				new Uint8Array(binFileContents.buffer, offset, length),
+			];
 		})
 	);
 }

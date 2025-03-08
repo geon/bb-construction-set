@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 import { readFileSync } from "fs";
-import { parsePrg, patchPrg } from "../parse-prg";
+import { parsePrg, patchPrg, patchPrgSpritesBin } from "../parse-prg";
 import {
 	bubbleCurrentRectangleToBytes,
 	bytesToBubbleCurrentRectangle,
@@ -8,6 +8,9 @@ import {
 import { deserializePeFileData } from "../pe-file";
 import { peFileDataToLevels } from "../level-pe-conversion";
 import { knownGoodBubbleCurrentRectsForLevels } from "./knownGoodBubbleCurrentRectsForLevels";
+import { readSpritesBin } from "../prg/sprites";
+import { spriteDataSegmentLocations } from "../prg/data-locations";
+import { getDataSegments } from "../prg/io";
 
 test("readBubbleCurrentRectangles", () => {
 	const rectanglesOnly = knownGoodBubbleCurrentRectsForLevels
@@ -61,6 +64,20 @@ test("patchPrg", () => {
 
 	const { levels } = parsePrg(prgFileContent.buffer);
 	patchPrg(patched, levels, undefined, "originalC64");
+
+	// Just comparing the ArrayBuffers is super slow and fails.
+	expect(Buffer.from(patched)).toStrictEqual(Buffer.from(prgFileContent));
+});
+
+test("patchPrgSpritesBin", () => {
+	const prgFileContent = readFileSync(__dirname + "/decompressed-bb.prg");
+
+	const patched = prgFileContent.buffer.slice();
+
+	const spritesBin = readSpritesBin(
+		getDataSegments(prgFileContent.buffer, spriteDataSegmentLocations)
+	);
+	patchPrgSpritesBin(patched, spritesBin);
 
 	// Just comparing the ArrayBuffers is super slow and fails.
 	expect(Buffer.from(patched)).toStrictEqual(Buffer.from(prgFileContent));

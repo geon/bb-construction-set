@@ -1,5 +1,5 @@
 import { CharBlock } from "./charset-char";
-import { unzipObject, zipObject } from "./functions";
+import { strictChunk, unzipObject, zipObject } from "./functions";
 import { Level } from "./level";
 import { writeBgColors, readBgColors } from "./prg/bg-colors";
 import { Sprites } from "./sprite";
@@ -12,6 +12,7 @@ import {
 	levelDataSegmentNames,
 	levelSegmentLocations,
 	spriteDataSegmentLocations,
+	spriteDataSegmentNames,
 } from "./prg/data-locations";
 import { readItems } from "./prg/items";
 import {
@@ -25,7 +26,7 @@ import {
 } from "./prg/sidebar-chars";
 import { readTiles } from "./prg/tiles";
 import { writeMonsters, readMonsters } from "./prg/monsters";
-import { readSprites } from "./prg/sprites";
+import { readSprites, writeSpritesBin } from "./prg/sprites";
 import { readTileBitmaps } from "./prg/tile-bitmap";
 import { writeSymmetry, writeBitmaps, writeHoles } from "./tests/misc-patch";
 import { readBubbleCurrentPerLineDefaults } from "./prg/bubble-current-per-line-defaults";
@@ -139,4 +140,28 @@ export function patchPrg(
 
 function mixByte(newByte: number, originalByte: number, mask: number): number {
 	return (newByte & mask) | (originalByte & ~mask);
+}
+
+export function patchPrgSpritesBin(prg: ArrayBuffer, spritesBin: Uint8Array) {
+	const prgSegments = getMutableDataSegments(prg, spriteDataSegmentLocations);
+	const newSegments = writeSpritesBin(spritesBin);
+
+	for (const segmentName of spriteDataSegmentNames) {
+		// Not sure if the padding byte is garbage or important, so skip it.
+		// If it turns out to just be garbage, we can just write the whole segment in one go:
+		// prgSegments[segmentName].buffer.set(newSegments[segmentName]);
+
+		const bytesToWrite = strictChunk(
+			[...newSegments[segmentName].entries()],
+			// Split into sprites: 63 bytes + 1 byte padding.
+			64
+		)
+			// Remove the padding byte.
+			.map((sprite) => sprite.slice(0, -1))
+			.flat();
+
+		for (const [index, byte] of bytesToWrite) {
+			prgSegments[segmentName].buffer[index] = byte;
+		}
+	}
 }
