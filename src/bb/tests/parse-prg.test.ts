@@ -8,7 +8,7 @@ import {
 import { deserializePeFileData } from "../pe-file";
 import { peFileDataToLevels } from "../level-pe-conversion";
 import { knownGoodBubbleCurrentRectsForLevels } from "./knownGoodBubbleCurrentRectsForLevels";
-import { readSpritesBin } from "../prg/sprites";
+import { readSpritesBin, writeSpritesBin } from "../prg/sprites";
 import { spriteDataSegmentLocations } from "../prg/data-locations";
 import { getDataSegments } from "../prg/io";
 
@@ -74,9 +74,12 @@ test("patchPrgSpritesBin", () => {
 
 	const patched = prgFileContent.buffer.slice();
 
-	const spritesBin = readSpritesBin(
-		getDataSegments(prgFileContent.buffer, spriteDataSegmentLocations)
+	const spritesBin = writeSpritesBin(
+		readSpritesBin(
+			getDataSegments(prgFileContent.buffer, spriteDataSegmentLocations)
+		)
 	);
+
 	patchPrgSpritesBin(patched, spritesBin);
 
 	// Just comparing the ArrayBuffers is super slow and fails.

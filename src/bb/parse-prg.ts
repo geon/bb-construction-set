@@ -12,6 +12,7 @@ import {
 	levelDataSegmentNames,
 	levelSegmentLocations,
 	spriteDataSegmentLocations,
+	SpriteDataSegmentName,
 	spriteDataSegmentNames,
 } from "./prg/data-locations";
 import { readItems } from "./prg/items";
@@ -26,7 +27,7 @@ import {
 } from "./prg/sidebar-chars";
 import { readTiles } from "./prg/tiles";
 import { writeMonsters, readMonsters } from "./prg/monsters";
-import { readSprites, writeSpritesBin } from "./prg/sprites";
+import { readSprites } from "./prg/sprites";
 import { readTileBitmaps } from "./prg/tile-bitmap";
 import { writeSymmetry, writeBitmaps, writeHoles } from "./tests/misc-patch";
 import { readBubbleCurrentPerLineDefaults } from "./prg/bubble-current-per-line-defaults";
@@ -142,9 +143,11 @@ function mixByte(newByte: number, originalByte: number, mask: number): number {
 	return (newByte & mask) | (originalByte & ~mask);
 }
 
-export function patchPrgSpritesBin(prg: ArrayBuffer, spritesBin: Uint8Array) {
+export function patchPrgSpritesBin(
+	prg: ArrayBuffer,
+	newSegments: Record<SpriteDataSegmentName, Uint8Array>
+) {
 	const prgSegments = getMutableDataSegments(prg, spriteDataSegmentLocations);
-	const newSegments = writeSpritesBin(spritesBin);
 
 	for (const segmentName of spriteDataSegmentNames) {
 		// Not sure if the padding byte is garbage or important, so skip it.
