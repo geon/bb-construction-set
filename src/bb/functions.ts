@@ -119,3 +119,25 @@ export function objectFromEntries<
 >(entries: T): { [K in T[number] as K[0]]: K[1] } {
 	return Object.fromEntries(entries) as { [K in T[number] as K[0]]: K[1] };
 }
+
+export function attempt<T>(fn: () => T):
+	| {
+			readonly type: "ok";
+			readonly result: T;
+	  }
+	| {
+			readonly type: "error";
+			readonly error: string;
+	  } {
+	try {
+		return {
+			type: "ok",
+			result: fn(),
+		};
+	} catch (e) {
+		return {
+			type: "error",
+			error: e instanceof Error ? e.message : "Error",
+		};
+	}
+}

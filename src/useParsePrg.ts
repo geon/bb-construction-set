@@ -39,29 +39,31 @@ export function useParsePrg(): readonly [
 
 		const buffer = await file.arrayBuffer();
 
-		(() => {
-			try {
-				const parsed = parsePrg(buffer);
-				setParsedPrgData({
-					type: "ok",
-					result: {
-						prg: new Uint8Array(buffer),
-						...parsed,
-					},
-					fileName: file.name,
-					fileSize: file.size,
-				});
-			} catch (e: unknown) {
-				const error = e instanceof Error ? e : undefined;
+		setParsedPrgData(
+			(() => {
+				try {
+					const parsed = parsePrg(buffer);
+					return {
+						type: "ok",
+						result: {
+							prg: new Uint8Array(buffer),
+							...parsed,
+						},
+						fileName: file.name,
+						fileSize: file.size,
+					};
+				} catch (e: unknown) {
+					const error = e instanceof Error ? e : undefined;
 
-				setParsedPrgData({
-					type: "error",
-					error: error?.message ?? "unknown",
-					fileName: file.name,
-					fileSize: file.size,
-				});
-			}
-		})();
+					return {
+						type: "error",
+						error: error?.message ?? "unknown",
+						fileName: file.name,
+						fileSize: file.size,
+					};
+				}
+			})()
+		);
 	};
 
 	return [parsedPrgData, setPrg] as const;

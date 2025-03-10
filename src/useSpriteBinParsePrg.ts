@@ -35,30 +35,32 @@ export function useSpriteBinParsePrg(): readonly [
 
 		const prg = await file.arrayBuffer();
 
-		(() => {
-			try {
-				const segments = getDataSegments(prg, spriteDataSegmentLocations);
-				const spriteBin = readSpritesBin(segments);
-				setParsedPrgData({
-					type: "ok",
-					result: {
-						prg: new Uint8Array(prg),
-						spriteBin,
-					},
-					fileName: file.name,
-					fileSize: file.size,
-				});
-			} catch (e: unknown) {
-				const error = e instanceof Error ? e : undefined;
+		setParsedPrgData(
+			(() => {
+				try {
+					const segments = getDataSegments(prg, spriteDataSegmentLocations);
+					const spriteBin = readSpritesBin(segments);
+					return {
+						type: "ok",
+						result: {
+							prg: new Uint8Array(prg),
+							spriteBin,
+						},
+						fileName: file.name,
+						fileSize: file.size,
+					};
+				} catch (e: unknown) {
+					const error = e instanceof Error ? e : undefined;
 
-				setParsedPrgData({
-					type: "error",
-					error: error?.message ?? "unknown",
-					fileName: file.name,
-					fileSize: file.size,
-				});
-			}
-		})();
+					return {
+						type: "error",
+						error: error?.message ?? "unknown",
+						fileName: file.name,
+						fileSize: file.size,
+					};
+				}
+			})()
+		);
 	};
 
 	return [parsedPrgData, setPrg] as const;

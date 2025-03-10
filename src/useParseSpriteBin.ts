@@ -33,26 +33,28 @@ export function useParseSpriteBin(): readonly [
 
 		const buffer = await file.arrayBuffer();
 
-		(() => {
-			try {
-				const parsed = writeSpritesBin(new Uint8Array(buffer));
-				setParsedSpriteBinData({
-					type: "ok",
-					result: { parsed },
-					fileName: file.name,
-					fileSize: file.size,
-				});
-			} catch (e: unknown) {
-				const error = e instanceof Error ? e : undefined;
+		setParsedSpriteBinData(
+			(() => {
+				try {
+					const parsed = writeSpritesBin(new Uint8Array(buffer));
+					return {
+						type: "ok",
+						result: { parsed },
+						fileName: file.name,
+						fileSize: file.size,
+					};
+				} catch (e: unknown) {
+					const error = e instanceof Error ? e : undefined;
 
-				setParsedSpriteBinData({
-					type: "error",
-					error: error?.message ?? "unknown",
-					fileName: file.name,
-					fileSize: file.size,
-				});
-			}
-		})();
+					return {
+						type: "error",
+						error: error?.message ?? "unknown",
+						fileName: file.name,
+						fileSize: file.size,
+					};
+				}
+			})()
+		);
 	};
 
 	return [parsedSpriteBinData, setSpriteBin];
