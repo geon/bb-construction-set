@@ -13,7 +13,7 @@ export type SpriteBinParsePrgResult = {
 			readonly spriteBin: Uint8Array;
 	  }
 	| {
-			readonly type: "failed";
+			readonly type: "error";
 			readonly error: string;
 	  }
 );
@@ -47,7 +47,7 @@ export function useSpriteBinParsePrg(): readonly [
 				return;
 			}
 			setParsedPrgData({
-				type: "failed",
+				type: "error",
 				error: error.message,
 				fileName: file.name,
 				fileSize: file.size,

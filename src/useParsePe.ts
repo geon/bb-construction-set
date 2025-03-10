@@ -14,7 +14,7 @@ export type ParsePeResult = {
 			readonly deserializedPeFileDatas: PeFileData[];
 	  }
 	| {
-			readonly type: "failed";
+			readonly type: "error";
 			readonly error: string;
 	  }
 );
@@ -59,7 +59,7 @@ export function useParsePe(): readonly [
 			const error = e instanceof Error ? e : undefined;
 
 			setParsedPeData({
-				type: "failed",
+				type: "error",
 				error: error?.message ?? "unknown",
 				fileName: pes.map((pe) => pe.name).join(", "),
 				fileSize: sum(pes.map((pe) => pe.size)),

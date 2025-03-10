@@ -17,7 +17,7 @@ export type ParsePrgResult = {
 			readonly items: Record<ItemDataSegmentName, CharBlock[]>;
 	  }
 	| {
-			readonly type: "failed";
+			readonly type: "error";
 			readonly error: string;
 	  }
 );
@@ -50,7 +50,7 @@ export function useParsePrg(): readonly [
 				return;
 			}
 			setParsedPrgData({
-				type: "failed",
+				type: "error",
 				error: error.message,
 				fileName: file.name,
 				fileSize: file.size,

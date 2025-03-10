@@ -11,7 +11,7 @@ export type ParseSpriteBinResult = {
 			readonly parsed: Record<SpriteDataSegmentName, Uint8Array>;
 	  }
 	| {
-			readonly type: "failed";
+			readonly type: "error";
 			readonly error: string;
 	  }
 );
@@ -43,7 +43,7 @@ export function useParseSpriteBin(): readonly [
 				return;
 			}
 			setParsedSpriteBinData({
-				type: "failed",
+				type: "error",
 				error: error.message,
 				fileName: file.name,
 				fileSize: file.size,
