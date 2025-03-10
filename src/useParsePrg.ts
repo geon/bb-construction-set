@@ -35,8 +35,9 @@ export function useParsePrg(): readonly [
 			return;
 		}
 
+		const buffer = await file.arrayBuffer();
+
 		try {
-			const buffer = await file.arrayBuffer();
 			const parsed = parsePrg(buffer);
 			setParsedPrgData({
 				type: "ok",

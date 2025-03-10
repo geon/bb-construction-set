@@ -32,10 +32,10 @@ export function useParsePe(): readonly [
 			return;
 		}
 
+		const buffers = await Promise.all(pes.map((pe) => pe.arrayBuffer()));
+
 		try {
-			const deserializedPeFileDatas = (
-				await Promise.all(pes.map((pe) => pe.arrayBuffer()))
-			).map((pe) => {
+			const deserializedPeFileDatas = buffers.map((pe) => {
 				return deserializePeFileData(new TextDecoder("utf-8").decode(pe));
 			});
 

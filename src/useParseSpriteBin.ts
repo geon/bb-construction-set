@@ -29,8 +29,9 @@ export function useParseSpriteBin(): readonly [
 			return;
 		}
 
+		const buffer = await file.arrayBuffer();
+
 		try {
-			const buffer = await file.arrayBuffer();
 			const parsed = writeSpritesBin(new Uint8Array(buffer));
 			setParsedSpriteBinData({
 				type: "ok",

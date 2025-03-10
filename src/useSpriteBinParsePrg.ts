@@ -31,8 +31,9 @@ export function useSpriteBinParsePrg(): readonly [
 			return;
 		}
 
+		const prg = await file.arrayBuffer();
+
 		try {
-			const prg = await file.arrayBuffer();
 			const segments = getDataSegments(prg, spriteDataSegmentLocations);
 			const spriteBin = readSpritesBin(segments);
 			setParsedPrgData({
