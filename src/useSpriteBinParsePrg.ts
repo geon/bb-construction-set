@@ -2,6 +2,7 @@ import { useState } from "react";
 import { spriteDataSegmentLocations } from "./bb/prg/data-locations";
 import { readSpritesBin } from "./bb/prg/sprites";
 import { getDataSegments } from "./bb/prg/io";
+import { attempt } from "./bb/functions";
 
 export type SpriteBinParsePrgResult = {
 	readonly fileName: string;
@@ -35,32 +36,18 @@ export function useSpriteBinParsePrg(): readonly [
 
 		const prg = await file.arrayBuffer();
 
-		setParsedPrgData(
-			(() => {
-				try {
-					const segments = getDataSegments(prg, spriteDataSegmentLocations);
-					const spriteBin = readSpritesBin(segments);
-					return {
-						type: "ok",
-						result: {
-							prg: new Uint8Array(prg),
-							spriteBin,
-						},
-						fileName: file.name,
-						fileSize: file.size,
-					};
-				} catch (e: unknown) {
-					const error = e instanceof Error ? e : undefined;
-
-					return {
-						type: "error",
-						error: error?.message ?? "unknown",
-						fileName: file.name,
-						fileSize: file.size,
-					};
-				}
-			})()
-		);
+		setParsedPrgData({
+			fileName: file.name,
+			fileSize: file.size,
+			...attempt(() => {
+				const segments = getDataSegments(prg, spriteDataSegmentLocations);
+				const spriteBin = readSpritesBin(segments);
+				return {
+					prg: new Uint8Array(prg),
+					spriteBin,
+				};
+			}),
+		});
 	};
 
 	return [parsedPrgData, setPrg] as const;

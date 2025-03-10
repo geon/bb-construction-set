@@ -4,6 +4,7 @@ import { Level } from "./bb/level";
 import { parsePrg } from "./bb/parse-prg";
 import { Sprites } from "./bb/sprite";
 import { ItemDataSegmentName } from "./bb/prg/data-locations";
+import { attempt } from "./bb/functions";
 
 export type ParsePrgResult = {
 	readonly fileName: string;
@@ -39,31 +40,17 @@ export function useParsePrg(): readonly [
 
 		const buffer = await file.arrayBuffer();
 
-		setParsedPrgData(
-			(() => {
-				try {
-					const parsed = parsePrg(buffer);
-					return {
-						type: "ok",
-						result: {
-							prg: new Uint8Array(buffer),
-							...parsed,
-						},
-						fileName: file.name,
-						fileSize: file.size,
-					};
-				} catch (e: unknown) {
-					const error = e instanceof Error ? e : undefined;
-
-					return {
-						type: "error",
-						error: error?.message ?? "unknown",
-						fileName: file.name,
-						fileSize: file.size,
-					};
-				}
-			})()
-		);
+		setParsedPrgData({
+			fileName: file.name,
+			fileSize: file.size,
+			...attempt(() => {
+				const parsed = parsePrg(buffer);
+				return {
+					prg: new Uint8Array(buffer),
+					...parsed,
+				};
+			}),
+		});
 	};
 
 	return [parsedPrgData, setPrg] as const;

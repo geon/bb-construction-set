@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { writeSpritesBin } from "./bb/prg/sprites";
 import { SpriteDataSegmentName } from "./bb/prg/data-locations";
+import { attempt } from "./bb/functions";
 
 export type ParseSpriteBinResult = {
 	readonly fileName: string;
@@ -33,28 +34,16 @@ export function useParseSpriteBin(): readonly [
 
 		const buffer = await file.arrayBuffer();
 
-		setParsedSpriteBinData(
-			(() => {
-				try {
-					const parsed = writeSpritesBin(new Uint8Array(buffer));
-					return {
-						type: "ok",
-						result: { parsed },
-						fileName: file.name,
-						fileSize: file.size,
-					};
-				} catch (e: unknown) {
-					const error = e instanceof Error ? e : undefined;
-
-					return {
-						type: "error",
-						error: error?.message ?? "unknown",
-						fileName: file.name,
-						fileSize: file.size,
-					};
-				}
-			})()
-		);
+		setParsedSpriteBinData({
+			fileName: file.name,
+			fileSize: file.size,
+			...attempt(() => {
+				const parsed = writeSpritesBin(new Uint8Array(buffer));
+				return {
+					parsed,
+				};
+			}),
+		});
 	};
 
 	return [parsedSpriteBinData, setSpriteBin];

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Level } from "./bb/level";
 import { peFileDataToLevels } from "./bb/level-pe-conversion";
 import { deserializePeFileData, PeFileData } from "./bb/pe-file";
-import { sum } from "./bb/functions";
+import { attempt, sum } from "./bb/functions";
 
 export type ParsePeResult = {
 	readonly fileName: string;
@@ -36,36 +36,22 @@ export function useParsePe(): readonly [
 
 		const buffers = await Promise.all(pes.map((pe) => pe.arrayBuffer()));
 
-		setParsedPeData(
-			(() => {
-				try {
-					const deserializedPeFileDatas = buffers.map((pe) => {
-						return deserializePeFileData(new TextDecoder("utf-8").decode(pe));
-					});
+		setParsedPeData({
+			fileName: pes.map((pe) => pe.name).join(", "),
+			fileSize: sum(pes.map((pe) => pe.size)),
+			...attempt(() => {
+				const deserializedPeFileDatas = buffers.map((pe) => {
+					return deserializePeFileData(new TextDecoder("utf-8").decode(pe));
+				});
 
-					const levels = deserializedPeFileDatas.flatMap(peFileDataToLevels);
+				const levels = deserializedPeFileDatas.flatMap(peFileDataToLevels);
 
-					return {
-						type: "ok",
-						result: {
-							levels,
-							deserializedPeFileDatas,
-						},
-						fileName: pes.map((pe) => pe.name).join(", "),
-						fileSize: sum(pes.map((pe) => pe.size)),
-					};
-				} catch (e: unknown) {
-					const error = e instanceof Error ? e : undefined;
-
-					return {
-						type: "error",
-						error: error?.message ?? "unknown",
-						fileName: pes.map((pe) => pe.name).join(", "),
-						fileSize: sum(pes.map((pe) => pe.size)),
-					};
-				}
-			})()
-		);
+				return {
+					levels,
+					deserializedPeFileDatas,
+				};
+			}),
+		});
 	};
 
 	return [parsedPeData, setPe];
