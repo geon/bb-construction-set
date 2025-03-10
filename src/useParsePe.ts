@@ -34,16 +34,9 @@ export function useParsePe(): readonly [
 
 		try {
 			const deserializedPeFileDatas = (
-				await Promise.all(
-					pes.map(async (pe) => ({
-						...pe,
-						arrayBuffer: await pe.arrayBuffer(),
-					}))
-				)
+				await Promise.all(pes.map((pe) => pe.arrayBuffer()))
 			).map((pe) => {
-				return deserializePeFileData(
-					new TextDecoder("utf-8").decode(pe.arrayBuffer)
-				);
+				return deserializePeFileData(new TextDecoder("utf-8").decode(pe));
 			});
 
 			const levels = deserializedPeFileDatas.flatMap(peFileDataToLevels);
