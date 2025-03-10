@@ -15,6 +15,13 @@ export function App() {
 	return (
 		<Page>
 			<h1>BB Construction Set</h1>
+			<p>
+				Drag an unpacked prg onto this{" "}
+				<a href={new URL("/pack.bat", import.meta.url).href} download>
+					.bat-file
+				</a>{" "}
+				to pack it for execution.
+			</p>
 			<TabBar
 				initialTabId={"patchLevels"}
 				tabs={{
