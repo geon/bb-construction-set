@@ -10,8 +10,10 @@ export type ParsePeResult = {
 } & (
 	| {
 			readonly type: "ok";
-			readonly levels: readonly Level[];
-			readonly deserializedPeFileDatas: PeFileData[];
+			readonly result: {
+				readonly levels: readonly Level[];
+				readonly deserializedPeFileDatas: PeFileData[];
+			};
 	  }
 	| {
 			readonly type: "error";
@@ -43,10 +45,12 @@ export function useParsePe(): readonly [
 
 			setParsedPeData({
 				type: "ok",
-				levels,
+				result: {
+					levels,
+					deserializedPeFileDatas,
+				},
 				fileName: pes.map((pe) => pe.name).join(", "),
 				fileSize: sum(pes.map((pe) => pe.size)),
-				deserializedPeFileDatas,
 			});
 		} catch (e: unknown) {
 			const error = e instanceof Error ? e : undefined;

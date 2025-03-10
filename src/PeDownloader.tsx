@@ -23,9 +23,9 @@ export function PeDownloader({
 							new Blob(
 								[
 									serializePeFileData({
-										...parsedPeData.deserializedPeFileDatas[0],
+										...parsedPeData.result.deserializedPeFileDatas[0],
 										...levelsToPeScreensAndCharsets(
-											parsedPeData.levels,
+											parsedPeData.result.levels,
 											"retroForge"
 										),
 									}),

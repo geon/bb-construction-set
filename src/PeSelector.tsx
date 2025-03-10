@@ -27,7 +27,7 @@ export function PeSelector({
 				<p>Could not parse pe: {parsedPeData?.error ?? "No reason."}</p>
 			) : (
 				<>
-					<Levels {...parsedPeData} />
+					<Levels {...parsedPeData} levels={parsedPeData.result.levels} />
 				</>
 			)}
 		</>

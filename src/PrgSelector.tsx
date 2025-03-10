@@ -32,12 +32,12 @@ export function PrgSelector({
 				<p>Could not parse prg: {parsedPrgData?.error ?? "No reason."}</p>
 			) : (
 				<>
-					<Levels {...parsedPrgData} />
+					<Levels {...parsedPrgData} levels={parsedPrgData.result.levels} />
 					<br />
 					<BlobDownloadButton
 						getBlob={() =>
 							new Blob(
-								[serializePeFileData(levelsToPeFileData(parsedPrgData))],
+								[serializePeFileData(levelsToPeFileData(parsedPrgData.result))],
 								{
 									type: "application/json",
 								}

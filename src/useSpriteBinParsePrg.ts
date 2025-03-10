@@ -9,8 +9,10 @@ export type SpriteBinParsePrgResult = {
 } & (
 	| {
 			readonly type: "ok";
-			readonly prg: Uint8Array;
-			readonly spriteBin: Uint8Array;
+			readonly result: {
+				readonly prg: Uint8Array;
+				readonly spriteBin: Uint8Array;
+			};
 	  }
 	| {
 			readonly type: "error";
@@ -38,8 +40,10 @@ export function useSpriteBinParsePrg(): readonly [
 			const spriteBin = readSpritesBin(segments);
 			setParsedPrgData({
 				type: "ok",
-				prg: new Uint8Array(prg),
-				spriteBin,
+				result: {
+					prg: new Uint8Array(prg),
+					spriteBin,
+				},
 				fileName: file.name,
 				fileSize: file.size,
 			});
