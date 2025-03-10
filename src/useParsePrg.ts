@@ -50,13 +50,12 @@ export function useParsePrg(): readonly [
 				fileName: file.name,
 				fileSize: file.size,
 			});
-		} catch (error: unknown) {
-			if (!(error instanceof Error)) {
-				return;
-			}
+		} catch (e: unknown) {
+			const error = e instanceof Error ? e : undefined;
+
 			setParsedPrgData({
 				type: "error",
-				error: error.message,
+				error: error?.message ?? "unknown",
 				fileName: file.name,
 				fileSize: file.size,
 			});
