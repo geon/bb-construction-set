@@ -14,7 +14,7 @@ export function PeDownloader({
 			<h2>Download pe-file</h2>
 			{!parsedPeData ? (
 				<p>No pe selected.</p>
-			) : parsedPeData?.type !== "success" ? (
+			) : parsedPeData?.type !== "ok" ? (
 				<p>Could not parse pe: {parsedPeData?.error ?? "No reason."}</p>
 			) : (
 				<>

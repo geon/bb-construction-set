@@ -17,8 +17,7 @@ export function SpriteBinPatchDownloader({
 			{!(parsedPrgData && parsedSpriteBinData) ? (
 				<p>Select both a prg and a pe file.</p>
 			) : !(
-					parsedPrgData?.type == "success" &&
-					parsedSpriteBinData?.type == "success"
+					parsedPrgData?.type == "ok" && parsedSpriteBinData?.type == "ok"
 			  ) ? (
 				<p>Select valid files.</p>
 			) : (

@@ -28,7 +28,7 @@ export function PrgSelector({
 			</FileInput>
 			{!parsedPrgData ? (
 				<p>No prg selected.</p>
-			) : parsedPrgData?.type !== "success" ? (
+			) : parsedPrgData?.type !== "ok" ? (
 				<p>Could not parse prg: {parsedPrgData?.error ?? "No reason."}</p>
 			) : (
 				<>

@@ -23,7 +23,7 @@ export function PeSelector({
 			</FileInput>
 			{!parsedPeData ? (
 				<p>No pe selected.</p>
-			) : parsedPeData?.type !== "success" ? (
+			) : parsedPeData?.type !== "ok" ? (
 				<p>Could not parse pe: {parsedPeData?.error ?? "No reason."}</p>
 			) : (
 				<>

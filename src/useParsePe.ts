@@ -9,7 +9,7 @@ export type ParsePeResult = {
 	readonly fileSize: number;
 } & (
 	| {
-			readonly type: "success";
+			readonly type: "ok";
 			readonly levels: readonly Level[];
 			readonly deserializedPeFileDatas: PeFileData[];
 	  }
@@ -49,7 +49,7 @@ export function useParsePe(): readonly [
 			const levels = deserializedPeFileDatas.flatMap(peFileDataToLevels);
 
 			setParsedPeData({
-				type: "success",
+				type: "ok",
 				levels,
 				fileName: pes.map((pe) => pe.name).join(", "),
 				fileSize: sum(pes.map((pe) => pe.size)),

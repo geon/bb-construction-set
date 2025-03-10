@@ -10,7 +10,7 @@ export type ParsePrgResult = {
 	readonly fileSize: number;
 } & (
 	| {
-			readonly type: "success";
+			readonly type: "ok";
 			readonly prg: Uint8Array;
 			readonly levels: readonly Level[];
 			readonly sprites: Sprites;
@@ -39,7 +39,7 @@ export function useParsePrg(): readonly [
 			const buffer = await file.arrayBuffer();
 			const parsed = parsePrg(buffer);
 			setParsedPrgData({
-				type: "success",
+				type: "ok",
 				prg: new Uint8Array(buffer),
 				...parsed,
 				fileName: file.name,

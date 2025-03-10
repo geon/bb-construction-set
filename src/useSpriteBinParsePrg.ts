@@ -8,7 +8,7 @@ export type SpriteBinParsePrgResult = {
 	readonly fileSize: number;
 } & (
 	| {
-			readonly type: "success";
+			readonly type: "ok";
 			readonly prg: Uint8Array;
 			readonly spriteBin: Uint8Array;
 	  }
@@ -36,7 +36,7 @@ export function useSpriteBinParsePrg(): readonly [
 			const segments = getDataSegments(prg, spriteDataSegmentLocations);
 			const spriteBin = readSpritesBin(segments);
 			setParsedPrgData({
-				type: "success",
+				type: "ok",
 				prg: new Uint8Array(prg),
 				spriteBin,
 				fileName: file.name,

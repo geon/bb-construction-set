@@ -7,7 +7,7 @@ export type ParseSpriteBinResult = {
 	readonly fileSize: number;
 } & (
 	| {
-			readonly type: "success";
+			readonly type: "ok";
 			readonly parsed: Record<SpriteDataSegmentName, Uint8Array>;
 	  }
 	| {
@@ -33,7 +33,7 @@ export function useParseSpriteBin(): readonly [
 			const buffer = await file.arrayBuffer();
 			const parsed = writeSpritesBin(new Uint8Array(buffer));
 			setParsedSpriteBinData({
-				type: "success",
+				type: "ok",
 				parsed,
 				fileName: file.name,
 				fileSize: file.size,

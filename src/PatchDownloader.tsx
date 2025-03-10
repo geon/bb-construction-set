@@ -41,9 +41,7 @@ export function PatchDownloader({
 			<h2>Patch</h2>
 			{!(parsedPrgData && parsedPeData) ? (
 				<p>Select both a prg and a pe file.</p>
-			) : !(
-					parsedPrgData?.type == "success" && parsedPeData?.type == "success"
-			  ) ? (
+			) : !(parsedPrgData?.type == "ok" && parsedPeData?.type == "ok") ? (
 				<p>Select valid files.</p>
 			) : (
 				<>

@@ -21,7 +21,7 @@ export function SpriteBinSelector({
 			</FileInput>
 			{!parsedSpriteBinData ? (
 				<p>No bin selected.</p>
-			) : parsedSpriteBinData?.type !== "success" ? (
+			) : parsedSpriteBinData?.type !== "ok" ? (
 				<p>Could not parse bin: {parsedSpriteBinData?.error ?? "No reason."}</p>
 			) : (
 				<></>
