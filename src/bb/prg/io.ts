@@ -1,4 +1,4 @@
-import { mapRecord } from "../functions";
+import { curry, mapRecord } from "../functions";
 import { SegmentLocation } from "./data-locations";
 import { ReadonlyUint8Array } from "./types";
 
@@ -15,6 +15,23 @@ type _DataSegment<BufferType extends ReadonlyUint8Array> = {
 export type DataSegment = _DataSegment<ReadonlyUint8Array>;
 export type MutableDataSegment = _DataSegment<Uint8Array>;
 
+export function getDataSegment(
+	prg: ArrayBuffer,
+	segmentLocation: SegmentLocation
+): {
+	readonly buffer: Uint8Array<ArrayBuffer>;
+	readonly mask: number | undefined;
+} {
+	const prgStartAddress = getPrgStartAddress(prg);
+	// 2 bytes extra for the prg header.
+	const begin = segmentLocation.startAddress - prgStartAddress + 2;
+	const length = segmentLocation.length;
+	return {
+		buffer: new Uint8Array(prg, begin, length),
+		mask: segmentLocation.mask,
+	};
+}
+
 function _getDataSegments<
 	TReadonlyOrMutable extends "readonly" | "mutable",
 	TDataSegmentName extends string
@@ -24,16 +41,7 @@ function _getDataSegments<
 ): TReadonlyOrMutable extends "readonly"
 	? Record<TDataSegmentName, DataSegment>
 	: Record<TDataSegmentName, MutableDataSegment> {
-	const prgStartAddress = getPrgStartAddress(prg);
-	return mapRecord(levelSegmentLocations, (segmentLocation) => {
-		// 2 bytes extra for the prg header.
-		const begin = segmentLocation.startAddress - prgStartAddress + 2;
-		const length = segmentLocation.length;
-		return {
-			buffer: new Uint8Array(prg, begin, length),
-			mask: segmentLocation.mask,
-		};
-	});
+	return mapRecord(levelSegmentLocations, curry(getDataSegment)(prg));
 }
 
 export function getDataSegments<TDataSegmentName extends string>(
