@@ -9,8 +9,11 @@ import { deserializePeFileData } from "../pe-file";
 import { peFileDataToLevels } from "../level-pe-conversion";
 import { knownGoodBubbleCurrentRectsForLevels } from "./knownGoodBubbleCurrentRectsForLevels";
 import { readSpritesBin, writeSpritesBin } from "../prg/sprites";
-import { spriteDataSegmentLocations } from "../prg/data-locations";
-import { getDataSegments } from "../prg/io";
+import {
+	monsterSpriteColorsSegmentLocation,
+	spriteDataSegmentLocations,
+} from "../prg/data-locations";
+import { getDataSegments, getDataSegment } from "../prg/io";
 
 test("readBubbleCurrentRectangles", () => {
 	const rectanglesOnly = knownGoodBubbleCurrentRectsForLevels
@@ -76,7 +79,8 @@ test("patchPrgSpritesBin", () => {
 
 	const spritesBin = writeSpritesBin(
 		readSpritesBin(
-			getDataSegments(prgFileContent.buffer, spriteDataSegmentLocations)
+			getDataSegments(prgFileContent.buffer, spriteDataSegmentLocations),
+			getDataSegment(prgFileContent.buffer, monsterSpriteColorsSegmentLocation)
 		)
 	);
 

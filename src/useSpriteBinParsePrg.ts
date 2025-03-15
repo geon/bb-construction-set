@@ -1,7 +1,10 @@
 import { useState } from "react";
-import { spriteDataSegmentLocations } from "./bb/prg/data-locations";
+import {
+	monsterSpriteColorsSegmentLocation,
+	spriteDataSegmentLocations,
+} from "./bb/prg/data-locations";
 import { readSpritesBin } from "./bb/prg/sprites";
-import { getDataSegments } from "./bb/prg/io";
+import { getDataSegment, getDataSegments } from "./bb/prg/io";
 import { attempt } from "./bb/functions";
 
 export type SpriteBinParsePrgResult = {
@@ -41,7 +44,11 @@ export function useSpriteBinParsePrg(): readonly [
 			fileSize: file.size,
 			...attempt(() => {
 				const segments = getDataSegments(prg, spriteDataSegmentLocations);
-				const spriteBin = readSpritesBin(segments);
+				const monsterColorsSegment = getDataSegment(
+					prg,
+					monsterSpriteColorsSegmentLocation
+				);
+				const spriteBin = readSpritesBin(segments, monsterColorsSegment);
 				return {
 					prg: new Uint8Array(prg),
 					spriteBin,

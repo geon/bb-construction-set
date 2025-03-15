@@ -132,6 +132,10 @@ export const spriteDataSegmentLocations: Readonly<
 	// bonusMelon: { startAddress: 0xa4a0, length: 64 * 2 },
 	// bonusDiamond: { startAddress: 0xa520, length: 64 * 2 },
 };
+export const monsterSpriteColorsSegmentLocation: SegmentLocation = {
+	startAddress: 0xab63,
+	length: 8,
+};
 
 export const itemDataSegmentNames = [
 	"bubbleBlow",

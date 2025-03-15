@@ -45,12 +45,15 @@ export function readSprites(
 }
 
 export function readSpritesBin(
-	spriteSegments: Record<SpriteDataSegmentName, DataSegment>
+	spriteSegments: Record<SpriteDataSegmentName, DataSegment>,
+	monsterColorSegment: DataSegment
 ): Uint8Array {
+	const characterColors = [spriteColors.player, ...monsterColorSegment.buffer];
+
 	const characterSpriteColors = characterNames
-		.map((name) => ({
+		.map((name, characterIndex) => ({
 			count: spriteCounts[name],
-			color: spriteColors[name],
+			color: characterColors[characterIndex],
 		}))
 		.map((charcater) => Array<number>(charcater.count).fill(charcater.color))
 		.flat();
