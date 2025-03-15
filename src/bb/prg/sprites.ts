@@ -45,7 +45,7 @@ export function readSprites(
 }
 
 export function readSpritesBin(
-	dataSegments: Record<SpriteDataSegmentName, DataSegment>
+	spriteSegments: Record<SpriteDataSegmentName, DataSegment>
 ): Uint8Array {
 	const characterSpriteColors = characterNames
 		.map((name) => ({
@@ -58,7 +58,7 @@ export function readSpritesBin(
 	return uint8ArrayConcatenate(
 		spriteDataSegmentNames.map((segmentName) => {
 			// Not doing Object.entries(dataSegments) to avoid accidentally goint out of sync with writeSpritesBin.
-			const segment = dataSegments[segmentName];
+			const segment = spriteSegments[segmentName];
 			const bufferCopy = new Uint8Array(segment.buffer).slice();
 
 			for (const spriteIndex of range(0, bufferCopy.length / 64)) {
