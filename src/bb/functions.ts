@@ -141,3 +141,20 @@ export function attempt<T>(fn: () => T):
 		};
 	}
 }
+
+type Curried<TFn extends (...args: readonly unknown[]) => unknown> =
+	TFn extends (
+		firstArg: infer FirstArg,
+		...restArgs: infer RestArgs
+	) => infer Return
+		? (firstArg: FirstArg) => (...restArgs: RestArgs) => Return
+		: never;
+
+// `args` must be `any` to allow the function to be used.
+export function curry<TFn extends (...args: readonly any[]) => unknown>(
+	fn: TFn
+): Curried<TFn> {
+	return ((firstArg) =>
+		(...restArgs) =>
+			fn(firstArg, ...restArgs)) as Curried<TFn>;
+}
