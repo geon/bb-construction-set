@@ -5,6 +5,7 @@ import { BlobDownloadButton } from "./BlobDownloadButton";
 import { Levels } from "./Levels";
 import { ParsePrgResult } from "./useParsePrg";
 import { FileInput } from "./FileInput";
+import { spriteColors } from "./bb/sprite";
 
 export function PrgSelector({
 	parsedPrgData,
@@ -32,7 +33,11 @@ export function PrgSelector({
 				<p>Could not parse prg: {parsedPrgData?.error ?? "No reason."}</p>
 			) : (
 				<>
-					<Levels {...parsedPrgData} levels={parsedPrgData.result.levels} />
+					<Levels
+						{...parsedPrgData}
+						levels={parsedPrgData.result.levels}
+						spriteColors={spriteColors}
+					/>
 					<br />
 					<BlobDownloadButton
 						getBlob={() =>

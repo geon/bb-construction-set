@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { Levels } from "./Levels";
 import { ParsePeResult } from "./useParsePe";
 import { FileInput } from "./FileInput";
+import { spriteColors } from "./bb/sprite";
 
 export function PeSelector({
 	parsedPeData,
@@ -27,7 +28,12 @@ export function PeSelector({
 				<p>Could not parse pe: {parsedPeData?.error ?? "No reason."}</p>
 			) : (
 				<>
-					<Levels {...parsedPeData} levels={parsedPeData.result.levels} />
+					<Levels
+						{...parsedPeData}
+						levels={parsedPeData.result.levels}
+						// TODO: Not really. Use the data from the file.
+						spriteColors={spriteColors}
+					/>
 				</>
 			)}
 		</>

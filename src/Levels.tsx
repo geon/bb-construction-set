@@ -9,12 +9,14 @@ import {
 	maxSidebars,
 	maxMonsters,
 } from "./bb/prg/data-locations";
-import { spriteColors } from "./bb/sprite";
+import { CharacterName } from "./bb/sprite";
+import { PaletteIndex } from "./bb/palette";
 
 export function Levels(props: {
 	readonly fileName: string;
 	readonly fileSize: number;
 	readonly levels: readonly Level[];
+	readonly spriteColors: Record<CharacterName, PaletteIndex>;
 }): React.ReactNode {
 	const levelsCanvasRef = useRef<HTMLCanvasElement>(null);
 	const platformCharsCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -26,7 +28,11 @@ export function Levels(props: {
 				return;
 			}
 			try {
-				drawLevelsToCanvas(props.levels, spriteColors, levelsCanvasRef.current);
+				drawLevelsToCanvas(
+					props.levels,
+					props.spriteColors,
+					levelsCanvasRef.current
+				);
 				{
 					const platformCharsImage = drawPlatformCharsToCanvas(props.levels);
 					platformCharsCanvasRef.current.width = platformCharsImage.width;
