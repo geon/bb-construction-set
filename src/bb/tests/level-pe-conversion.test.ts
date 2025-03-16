@@ -3,6 +3,7 @@ import { levelsToPeFileData, peFileDataToLevels } from "../level-pe-conversion";
 import { deserializePeFileData } from "../pe-file";
 import { readFileSync } from "fs";
 import { numSpriteBytes, spriteCounts, Sprites } from "../sprite";
+import { mapRecord } from "../functions";
 
 test("peFileDataToLevels & levelsToPeFileData", () => {
 	const peFileData = deserializePeFileData(
@@ -14,13 +15,10 @@ test("peFileDataToLevels & levelsToPeFileData", () => {
 	const generatedPeFileData = levelsToPeFileData({
 		levels,
 		// Dummy data, not tested.
-		sprites: Object.fromEntries(
-			Object.entries(spriteCounts).map(([characterName, count]) => [
-				characterName,
-				Array(count).fill({
-					bitmap: Array(numSpriteBytes).fill(0),
-				}),
-			])
+		sprites: mapRecord(spriteCounts, (count) =>
+			Array(count).fill({
+				bitmap: Array(numSpriteBytes).fill(0),
+			})
 		) as Sprites,
 	});
 
