@@ -33,11 +33,11 @@ test("readBubbleCurrentRectangles", () => {
 test("parsePrg", () => {
 	const levelFromPrg = parsePrg(
 		readFileSync(__dirname + "/decompressed-bb.prg").buffer
-	).levels[0];
+	).levels[0]!;
 
 	const levelFromPe = peFileDataToLevels(
 		deserializePeFileData(readFileSync(__dirname + "/level-01.pe", "utf8"))
-	)[0];
+	)[0]!;
 
 	// Not tested.
 	levelFromPrg.bubbleCurrentRectangles = undefined!;

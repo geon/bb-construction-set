@@ -79,7 +79,7 @@ function rowIsSymmetric(row: boolean[]): boolean {
 
 export function levelIsSymmetric(tiles: Tiles) {
 	for (let rowIndex = 1; rowIndex < 24; ++rowIndex) {
-		if (!rowIsSymmetric(tiles[rowIndex])) {
+		if (!rowIsSymmetric(tiles[rowIndex]!)) {
 			return false;
 		}
 	}

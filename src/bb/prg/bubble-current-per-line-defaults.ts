@@ -13,7 +13,7 @@ export function readBubbleCurrentPerLineDefaults(
 		monstersForAllLevels.push(
 			readBubbleCurrentPerLineDefaultsForLevel(
 				levelIndex,
-				tileBitmaps[levelIndex],
+				tileBitmaps[levelIndex]!,
 				holeMetadataBytes
 			)
 		);
@@ -27,7 +27,7 @@ function readBubbleCurrentPerLineDefaultsForLevel(
 	tileBitmap: TileBitmap,
 	holeMetadataBytes: ReadonlyUint8Array
 ): BubbleCurrentPerLineDefaults {
-	const holeMetadata = holeMetadataBytes[levelIndex];
+	const holeMetadata = holeMetadataBytes[levelIndex]!;
 	const perLineDefaults = extractbubbleCurrentLineDefault(
 		tileBitmap,
 		holeMetadata

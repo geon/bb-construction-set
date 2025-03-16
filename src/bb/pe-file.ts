@@ -114,7 +114,7 @@ function unmangle(mangledString: string): string {
 	const dictionary: Record<number, string> = {};
 	let nextFreeDictionaryEntry = 256;
 
-	let currentMangledChar = mangledCharArray[0];
+	let currentMangledChar = mangledCharArray[0]!;
 	const unmangledCharArray = [currentMangledChar];
 	let lastUnmangledChar = currentMangledChar;
 	for (const char of mangledCharArray.slice(1)) {
@@ -122,8 +122,8 @@ function unmangle(mangledString: string): string {
 		const unmangledChar =
 			256 > charCode
 				? char
-				: dictionary[charCode]
-				? dictionary[charCode]
+				: dictionary[charCode]!
+				? dictionary[charCode]!
 				: lastUnmangledChar + currentMangledChar;
 		unmangledCharArray.push(unmangledChar);
 		currentMangledChar = unmangledChar.charAt(0);

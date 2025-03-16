@@ -36,12 +36,12 @@ export function readMonsters(monsterBytes: ReadonlyUint8Array) {
 
 function readMonster(monsterBytes: ReadonlyUint8Array): Monster {
 	return {
-		type: monsterBytes[0] & 0b111,
+		type: monsterBytes[0]! & 0b111,
 		spawnPoint: {
-			x: (monsterBytes[0] & 0b11111000) + 20,
-			y: (monsterBytes[1] & 0b11111110) + 21,
+			x: (monsterBytes[0]! & 0b11111000) + 20,
+			y: (monsterBytes[1]! & 0b11111110) + 21,
 		},
-		facingLeft: isBitSet(monsterBytes[2], 0),
+		facingLeft: isBitSet(monsterBytes[2]!, 0),
 	};
 }
 
@@ -65,10 +65,10 @@ export function writeMonsters(
 				((monster.spawnPoint.x - 20) & 0b11111000) + monster.type,
 				((monster.spawnPoint.y - 21) & 0b11111110) +
 					// TODO: No idea what the rest of the bits are.
-					(oldByteArray[currentMonsterStartByte + 1] & 0b00000001),
+					(oldByteArray[currentMonsterStartByte + 1]! & 0b00000001),
 				((monster.facingLeft ? 1 : 0) << 7) +
 					// TODO: No idea what the rest of the bits are.
-					(oldByteArray[currentMonsterStartByte + 2] & 0b01111111),
+					(oldByteArray[currentMonsterStartByte + 2]! & 0b01111111),
 			];
 			monsterStartByte += 3;
 			return subSubBytes;

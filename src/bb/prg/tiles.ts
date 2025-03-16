@@ -14,31 +14,31 @@ export function readTiles(
 
 		// Fill in top and bottom row.
 		for (let x = 0; x < levelWidth; ++x) {
-			tiles[0][x] = true;
-			tiles[levelHeight - 1][x] = true;
+			tiles[0]![x]! = true;
+			tiles[levelHeight - 1]![x]! = true;
 		}
 		// Cut out the holes.
-		const holeMetadata = holeMetadataBytes[levelIndex];
+		const holeMetadata = holeMetadataBytes[levelIndex]!;
 		const topLeft = isBitSet(holeMetadata, 7);
 		const topRight = isBitSet(holeMetadata, 6);
 		const bottomLeft = isBitSet(holeMetadata, 5);
 		const bottomRight = isBitSet(holeMetadata, 4);
 		for (let x = 0; x < 4; ++x) {
 			if (topLeft) {
-				tiles[0][9 + x] = false;
+				tiles[0]![9 + x]! = false;
 			}
 			if (topRight) {
-				tiles[0][19 + x] = false;
+				tiles[0]![19 + x]! = false;
 			}
 			if (bottomLeft) {
-				tiles[24][9 + x] = false;
+				tiles[24]![9 + x]! = false;
 			}
 			if (bottomRight) {
-				tiles[24][19 + x] = false;
+				tiles[24]![19 + x]! = false;
 			}
 		}
 
-		const tileBitmap = tileBitmaps[levelIndex];
+		const tileBitmap = tileBitmaps[levelIndex]!;
 
 		const bytesPerRow = 4;
 		for (let rowIndex = 0; rowIndex < 23; ++rowIndex) {
@@ -48,13 +48,13 @@ export function readTiles(
 				bitmapByteOfRowIndex < bytesPerRow;
 				++bitmapByteOfRowIndex
 			) {
-				const bitmapByte = tileBitmap.bytes[rowIndex][bitmapByteOfRowIndex];
+				const bitmapByte = tileBitmap.bytes[rowIndex]![bitmapByteOfRowIndex]!;
 				// Convert the bitmap to an array of bools.
 				const bits = byteToBits(bitmapByte);
 				for (let bitIndex = 0; bitIndex < 8; ++bitIndex) {
 					// Offset by 32 for the top line.
-					tiles[rowIndex + 1][bitmapByteOfRowIndex * 8 + bitIndex] =
-						bits[bitIndex];
+					tiles[rowIndex + 1]![bitmapByteOfRowIndex * 8 + bitIndex]! =
+						bits[bitIndex]!;
 				}
 			}
 		}
@@ -63,10 +63,10 @@ export function readTiles(
 		// The 2 tile wide left and right borders are used to store part of the bubbleCurrent.
 		// It needs to be set to true to be solid.
 		for (let rowIndex = 0; rowIndex < 25; ++rowIndex) {
-			tiles[rowIndex][0] = true;
-			tiles[rowIndex][1] = true;
-			tiles[rowIndex][levelWidth - 2] = true;
-			tiles[rowIndex][levelWidth - 1] = true;
+			tiles[rowIndex]![0]! = true;
+			tiles[rowIndex]![1]! = true;
+			tiles[rowIndex]![levelWidth - 2]! = true;
+			tiles[rowIndex]![levelWidth - 1]! = true;
 		}
 
 		tilesForAllLevels.push(tiles);

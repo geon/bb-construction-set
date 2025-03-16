@@ -28,10 +28,10 @@ export function writeHoles(
 		(bubbleCurrentPerLineDefaults) => {
 			return (
 				// The most significant bits are the bubble current of the top and bottom rows.
-				((bubbleCurrentPerLineDefaults[0] & 0b01 ? 1 : 0) << 4) +
-				((bubbleCurrentPerLineDefaults[0] & 0b10 ? 1 : 0) << 5) +
-				((bubbleCurrentPerLineDefaults[24] & 0b01 ? 1 : 0) << 6) +
-				((bubbleCurrentPerLineDefaults[24] & 0b10 ? 1 : 0) << 7)
+				((bubbleCurrentPerLineDefaults[0]! & 0b01 ? 1 : 0) << 4) +
+				((bubbleCurrentPerLineDefaults[0]! & 0b10 ? 1 : 0) << 5) +
+				((bubbleCurrentPerLineDefaults[24]! & 0b01 ? 1 : 0) << 6) +
+				((bubbleCurrentPerLineDefaults[24]! & 0b10 ? 1 : 0) << 7)
 			);
 		}
 	);
@@ -72,7 +72,7 @@ export function writeBitmaps(
 
 		const bitRows = [];
 		for (let rowIndex = 1; rowIndex < 24; ++rowIndex) {
-			const row = tiles[rowIndex].slice(0, isSymmetric ? 16 : 32);
+			const row = tiles[rowIndex]!.slice(0, isSymmetric ? 16 : 32);
 
 			// So stupid.
 			const bitPositions = (
@@ -84,10 +84,10 @@ export function writeBitmaps(
 
 			// Encode the per-line bubble current into the edge of the platforms bitmap.
 			row[bitPositions[0]] = !!(
-				bubbleCurrentPerLineDefaultses[levelIndex][rowIndex] & 0b01
+				bubbleCurrentPerLineDefaultses[levelIndex]![rowIndex]! & 0b01
 			);
 			row[bitPositions[1]] = !!(
-				bubbleCurrentPerLineDefaultses[levelIndex][rowIndex] & 0b10
+				bubbleCurrentPerLineDefaultses[levelIndex]![rowIndex]! & 0b10
 			);
 
 			bitRows.push(row);

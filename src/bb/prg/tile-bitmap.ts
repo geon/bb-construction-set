@@ -14,7 +14,7 @@ export function readTileBitmaps(
 
 	let offset = 0;
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
-		const isSymmetric = isBitSet(symmetryMetadataBytes[levelIndex], 0);
+		const isSymmetric = isBitSet(symmetryMetadataBytes[levelIndex]!, 0);
 		const levelBitmapByteLength = isSymmetric ? 46 : 92;
 		tileBitmaps.push(
 			readTileBitmap(
@@ -58,7 +58,7 @@ function readTileBitmap(
 				++halfRowIndex
 			) {
 				bitmapBytes[bytesPerRow / 2 + halfRowIndex] = mirrorBits(
-					bitmapBytes[bytesPerRow / 2 - halfRowIndex - 1]
+					bitmapBytes[bytesPerRow / 2 - halfRowIndex - 1]!
 				);
 			}
 		}

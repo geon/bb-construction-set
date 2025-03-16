@@ -84,7 +84,7 @@ export function drawLevelsToCanvas(
 					plotPixel(
 						image,
 						pixelIndex + offset,
-						palette[Object.values(spriteColors)[monster.type + 1]]
+						palette[Object.values(spriteColors)[monster.type + 1]!]
 					);
 				}
 			}
@@ -214,13 +214,13 @@ export function drawSpritesToCanvas(
 	for (const [spriteY, characterSprites] of characherSpriteGroups.entries()) {
 		for (const [spriteX, sprite] of characterSprites.entries()) {
 			const spritePalette = getSpritePalette(
-				Object.values(spriteColors)[spriteY]
+				Object.values(spriteColors)[spriteY]!
 			);
 			for (let pixelY = 0; pixelY < spriteHeight; ++pixelY) {
 				for (let byteX = 0; byteX < spriteWidthBytes; ++byteX) {
-					const byte = sprite.bitmap[pixelY * spriteWidthBytes + byteX];
+					const byte = sprite.bitmap[pixelY * spriteWidthBytes + byteX]!;
 					for (let pixelX = 0; pixelX < 4; ++pixelX) {
-						const color = spritePalette[(byte >> ((3 - pixelX) * 2)) & 0b11];
+						const color = spritePalette[(byte >> ((3 - pixelX) * 2)) & 0b11]!;
 
 						// Double width pixels.
 						const pixelIndex =
@@ -302,7 +302,7 @@ function blitImageData(to: ImageData, from: ImageData, dx: number, dy: number) {
 		for (let x = 0; x < from.height; ++x) {
 			for (let channel = 0; channel < 4; ++channel) {
 				to.data[((y + dy) * to.height + (x + dx)) * 4 + channel] =
-					from.data[(y * from.height + x) * 4 + channel];
+					from.data[(y * from.height + x) * 4 + channel]!;
 			}
 		}
 	}

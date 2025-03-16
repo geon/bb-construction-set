@@ -17,7 +17,7 @@ export function readBubbleCurrentRectangles(
 	let currentWindCurrentsByteIndex = 0;
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
 		const firstByte = parseFirstByte(
-			bubbleCurrentRectangleBytes[currentWindCurrentsByteIndex]
+			bubbleCurrentRectangleBytes[currentWindCurrentsByteIndex]!
 		);
 
 		bubbleCurrentRectanglesForAllLevels.push(
@@ -74,7 +74,7 @@ export function parseFirstByte(firstByte: number): FirstByte {
 export function readBubbleCurrentRectanglesForLevel(
 	bubbleCurrentRectangleBytes: ReadonlyUint8Array
 ): BubbleCurrentRectangles {
-	const firstByte = parseFirstByte(bubbleCurrentRectangleBytes[0]);
+	const firstByte = parseFirstByte(bubbleCurrentRectangleBytes[0]!);
 
 	if (firstByte.type === "copy") {
 		return {
@@ -89,7 +89,8 @@ export function readBubbleCurrentRectanglesForLevel(
 	while (
 		currentWindCurrentsByteIndex < bubbleCurrentRectangleBytes.byteLength
 	) {
-		const firstByte = bubbleCurrentRectangleBytes[currentWindCurrentsByteIndex];
+		const firstByte =
+			bubbleCurrentRectangleBytes[currentWindCurrentsByteIndex]!;
 		const symmetry = !isBitSet(firstByte, 0);
 
 		rectangles.push(
@@ -154,12 +155,12 @@ export function bytesToBubbleCurrentRectangle(
 	// Values are separated | with | pipes.
 	// [Skip | Direction | Left] | [Top | Wid][th | Unused | Height]
 	// [a  bb ccccc] [ddddd eee][ee f ggggg]
-	const direction = ((bytes[0] & 0b01100000) >> 5) as BubbleCurrentDirection;
-	const left = bytes[0] & 0b00011111;
-	const top = (bytes[1] & 0b11111000) >> 3;
+	const direction = ((bytes[0]! & 0b01100000) >> 5) as BubbleCurrentDirection;
+	const left = bytes[0]! & 0b00011111;
+	const top = (bytes[1]! & 0b11111000) >> 3;
 	const width =
-		(((bytes[1] & 0b00000111) << 2) | ((bytes[2] & 0b11000000) >> 6)) + 1;
-	const height = (bytes[2] & 0b00011111) + 1;
+		(((bytes[1]! & 0b00000111) << 2) | ((bytes[2]! & 0b11000000) >> 6)) + 1;
+	const height = (bytes[2]! & 0b00011111) + 1;
 
 	return {
 		left,

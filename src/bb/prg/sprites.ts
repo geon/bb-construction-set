@@ -39,7 +39,7 @@ export function readSprites(
 	).map((bitmap): Sprite => ({ bitmap: bitmap.slice(0, 63) }));
 
 	for (const [globalSpriteIndex, characterName] of nameByIndex.entries()) {
-		const sprite = ungroupedSprites[globalSpriteIndex];
+		const sprite = ungroupedSprites[globalSpriteIndex]!;
 		sprites[characterName].push(sprite);
 	}
 	return sprites;
@@ -54,7 +54,7 @@ export function readSpritesBin(
 	const characterSpriteColors = characterNames
 		.map((name, characterIndex) => ({
 			count: spriteCounts[name],
-			color: characterColors[characterIndex],
+			color: characterColors[characterIndex]!,
 		}))
 		.map((charcater) => Array<number>(charcater.count).fill(charcater.color))
 		.flat();
@@ -71,7 +71,7 @@ export function readSpritesBin(
 				const color =
 					segmentName !== "characters"
 						? spriteColors.player
-						: characterSpriteColors[spriteIndex];
+						: characterSpriteColors[spriteIndex]!;
 				bufferCopy[paddingByteIndex] = multicolorBit | color;
 			}
 
