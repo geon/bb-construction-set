@@ -155,7 +155,7 @@ function mixByte(newByte: number, originalByte: number, mask: number): number {
 
 export function patchPrgSpritesBin(
 	prg: ArrayBuffer,
-	newSegments: Record<SpriteDataSegmentName, Uint8Array>
+	newSpriteSegments: Record<SpriteDataSegmentName, Uint8Array>
 ) {
 	const prgSegments = getMutableDataSegments(prg, spriteDataSegmentLocations);
 
@@ -165,7 +165,7 @@ export function patchPrgSpritesBin(
 		// prgSegments[segmentName].buffer.set(newSegments[segmentName]);
 
 		const bytesToWrite = strictChunk(
-			[...newSegments[segmentName].entries()],
+			[...newSpriteSegments[segmentName].entries()],
 			// Split into sprites: 63 bytes + 1 byte padding.
 			64
 		)
