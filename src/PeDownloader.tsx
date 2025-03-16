@@ -3,6 +3,7 @@ import { BlobDownloadButton } from "./BlobDownloadButton";
 import { ParsePeResult } from "./useParsePe";
 import { serializePeFileData } from "./bb/pe-file";
 import { levelsToPeScreensAndCharsets } from "./bb/level-pe-conversion";
+import { spriteColors } from "./bb/sprite";
 
 export function PeDownloader({
 	parsedPeData,
@@ -26,6 +27,8 @@ export function PeDownloader({
 										...parsedPeData.result.deserializedPeFileDatas[0]!,
 										...levelsToPeScreensAndCharsets(
 											parsedPeData.result.levels,
+											// TODO: Not really. Use the data from the file.
+											spriteColors,
 											"retroForge"
 										),
 									}),

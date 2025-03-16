@@ -2,6 +2,7 @@ import { isDefined, padRight } from "./functions";
 import { BubbleCurrentDirection, createTiles, Level, Monster } from "./level";
 import { Bit, CharBitmap, createPeFileData, PeFileData } from "./pe-file";
 import {
+	CharacterName,
 	Sprites,
 	characterNames,
 	isCharacterName,
@@ -89,12 +90,13 @@ export function levelsToPeFileData(data: {
 }): PeFileData {
 	return createPeFileData({
 		spriteSets: spritesToPeSpriteSets(data.sprites),
-		...levelsToPeScreensAndCharsets(data.levels, "originalC64"),
+		...levelsToPeScreensAndCharsets(data.levels, spriteColors, "originalC64"),
 	});
 }
 
 export function levelsToPeScreensAndCharsets(
 	levels: readonly Level[],
+	spriteColors: Record<CharacterName, PaletteIndex>,
 	shadowStyle: ShadowStyle
 ): Pick<PeFileData, "screens" | "charsets"> {
 	const peFileData: Pick<PeFileData, "screens" | "charsets"> = {
