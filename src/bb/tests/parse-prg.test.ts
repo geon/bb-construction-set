@@ -111,7 +111,11 @@ test("patchPrgSpritesBin", () => {
 		)
 	);
 
-	patchPrgSpritesBin(patched, spritesBin.spriteSegments);
+	patchPrgSpritesBin(
+		patched,
+		spritesBin.spriteSegments,
+		spritesBin.spriteColorsSegment
+	);
 
 	// Just comparing the ArrayBuffers is super slow and fails.
 	expect(Buffer.from(patched)).toStrictEqual(Buffer.from(prgFileContent));

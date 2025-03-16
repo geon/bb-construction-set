@@ -155,7 +155,8 @@ function mixByte(newByte: number, originalByte: number, mask: number): number {
 
 export function patchPrgSpritesBin(
 	prg: ArrayBuffer,
-	newSpriteSegments: Record<SpriteDataSegmentName, Uint8Array>
+	newSpriteSegments: Record<SpriteDataSegmentName, Uint8Array>,
+	newSpriteColorsSegment: Uint8Array
 ) {
 	const prgSpriteSegments = getMutableDataSegments(
 		prg,
@@ -180,4 +181,10 @@ export function patchPrgSpritesBin(
 			prgSpriteSegments[segmentName].buffer[index] = byte;
 		}
 	}
+
+	const prgSpriteColorsSegment = getDataSegment(
+		prg,
+		monsterSpriteColorsSegmentLocation
+	);
+	prgSpriteColorsSegment.buffer.set(newSpriteColorsSegment.slice(0, -1));
 }

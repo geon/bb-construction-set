@@ -28,7 +28,8 @@ export function SpriteBinPatchDownloader({
 							try {
 								patchPrgSpritesBin(
 									prg,
-									parsedSpriteBinData.result.parsed.spriteSegments
+									parsedSpriteBinData.result.parsed.spriteSegments,
+									parsedSpriteBinData.result.parsed.spriteColorsSegment
 								);
 								return new Blob([prg], {
 									type: "application/octet-stream",
