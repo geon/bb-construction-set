@@ -6,7 +6,7 @@ export const numSpriteBytes = spriteWidthBytes * spriteHeight;
 
 export interface Sprite {
 	// Should be exactly numSpriteBytes long.
-	bitmap: Array<number>;
+	readonly bitmap: Array<number>;
 }
 
 export const characterNames = [
