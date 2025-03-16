@@ -33,12 +33,13 @@ export function readSprites(
 		Array<CharacterName>(spriteCounts[name]).fill(name as CharacterName)
 	);
 
-	const spriteBitmaps = strictChunk([...dataSegments.characters.buffer], 64);
+	const ungroupedSprites = strictChunk(
+		[...dataSegments.characters.buffer],
+		64
+	).map((bitmap): Sprite => ({ bitmap: bitmap.slice(0, 63) }));
 
 	for (const [globalSpriteIndex, characterName] of nameByIndex.entries()) {
-		const sprite: Sprite = {
-			bitmap: spriteBitmaps[globalSpriteIndex].slice(0, 63),
-		};
+		const sprite = ungroupedSprites[globalSpriteIndex];
 		sprites[characterName].push(sprite);
 	}
 	return sprites;
