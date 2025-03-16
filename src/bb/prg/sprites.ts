@@ -105,16 +105,10 @@ export function readSpritesBin(
 export function writeSpritesBin(
 	binFileContents: Uint8Array
 ): Record<SpriteDataSegmentName, Uint8Array> {
-	return objectFromEntries(
-		spriteDataSegmentNames.map((segmentName) => {
-			const offset = getSpriteDataSegmentOffsetInBin(segmentName);
-			const length = spriteDataSegmentLocations[segmentName].length;
-			return [
-				segmentName,
-				new Uint8Array(binFileContents.buffer, offset, length),
-			];
-		})
-	);
+	return mapRecord(spriteDataSegmentLocations, ({ length }, segmentName) => {
+		const offset = getSpriteDataSegmentOffsetInBin(segmentName);
+		return new Uint8Array(binFileContents.buffer, offset, length);
+	});
 }
 
 function getSpriteDataSegmentOffsetInBin(
