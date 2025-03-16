@@ -5,7 +5,7 @@ import { BlobDownloadButton } from "./BlobDownloadButton";
 import { Levels } from "./Levels";
 import { ParsePrgResult } from "./useParsePrg";
 import { FileInput } from "./FileInput";
-import { spriteColors } from "./bb/sprite";
+import { mapRecord } from "./bb/functions";
 
 export function PrgSelector({
 	parsedPrgData,
@@ -36,7 +36,10 @@ export function PrgSelector({
 					<Levels
 						{...parsedPrgData}
 						levels={parsedPrgData.result.levels}
-						spriteColors={spriteColors}
+						spriteColors={mapRecord(
+							parsedPrgData.result.sprites,
+							({ color }) => color
+						)}
 					/>
 					<br />
 					<BlobDownloadButton
