@@ -21,14 +21,14 @@ import {
 import { DataSegment, uint8ArrayConcatenate } from "./io";
 
 export function readSprites(
-	dataSegments: Record<SpriteDataSegmentName, DataSegment>
+	spriteSegments: Record<SpriteDataSegmentName, DataSegment>
 ): Sprites {
 	const nameByIndex = characterNames.flatMap((name) =>
 		Array<CharacterName>(spriteCounts[name]).fill(name as CharacterName)
 	);
 
 	const ungroupedSprites = strictChunk(
-		[...dataSegments.characters.buffer],
+		[...spriteSegments.characters.buffer],
 		64
 	).map((bitmap): Sprite => ({ bitmap: bitmap.slice(0, 63) }));
 
