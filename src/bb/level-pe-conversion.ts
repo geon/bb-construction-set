@@ -1,4 +1,4 @@
-import { isDefined, padRight } from "./functions";
+import { isDefined, mapRecord, padRight } from "./functions";
 import { BubbleCurrentDirection, createTiles, Level, Monster } from "./level";
 import { Bit, CharBitmap, createPeFileData, PeFileData } from "./pe-file";
 import {
@@ -6,7 +6,6 @@ import {
 	Sprites,
 	characterNames,
 	isCharacterName,
-	spriteColors,
 	spriteLeftIndex,
 } from "./sprite";
 import { CharsetChar, CharsetCharLine } from "./charset-char";
@@ -90,7 +89,11 @@ export function levelsToPeFileData(data: {
 }): PeFileData {
 	return createPeFileData({
 		spriteSets: spritesToPeSpriteSets(data.sprites),
-		...levelsToPeScreensAndCharsets(data.levels, spriteColors, "originalC64"),
+		...levelsToPeScreensAndCharsets(
+			data.levels,
+			mapRecord(data.sprites, ({ color }) => color),
+			"originalC64"
+		),
 	});
 }
 
