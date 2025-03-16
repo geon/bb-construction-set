@@ -233,7 +233,7 @@ export function spritesToPeSpriteSets(
 							colorSprite:
 								monsterName === "player" && facingLeft
 									? 3 // Cyan for Bob.
-									: spriteColors[monsterName]!,
+									: characterSprites.color,
 							multiColor1: 2,
 							multiColor2: 1,
 							expandX: false,
