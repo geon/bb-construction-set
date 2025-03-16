@@ -102,13 +102,32 @@ export function readSpritesBin(
 	);
 }
 
-export function writeSpritesBin(
-	binFileContents: Uint8Array
-): Record<SpriteDataSegmentName, Uint8Array> {
-	return mapRecord(spriteDataSegmentLocations, ({ length }, segmentName) => {
-		const offset = getSpriteDataSegmentOffsetInBin(segmentName);
-		return new Uint8Array(binFileContents.buffer, offset, length);
-	});
+export function writeSpritesBin(binFileContents: Uint8Array): {
+	readonly spriteSegments: Record<SpriteDataSegmentName, Uint8Array>;
+	readonly spriteColorsSegment: Uint8Array;
+} {
+	const spriteSegments = mapRecord(
+		spriteDataSegmentLocations,
+		({ length }, segmentName) => {
+			const offset = getSpriteDataSegmentOffsetInBin(segmentName);
+			return new Uint8Array(binFileContents.buffer, offset, length);
+		}
+	);
+
+	const characterSprites = strictChunk([...spriteSegments.characters], 64);
+	const spriteColorsSegment = new Uint8Array(
+		characterNames
+			// The player color is not included in the segment.
+			.slice(1)
+			.map((name) => getCharacterOffsetInSprites(name))
+			.map((offset) => characterSprites[offset]![63] & 0b00001111)
+			.flat()
+	);
+
+	return {
+		spriteSegments,
+		spriteColorsSegment,
+	};
 }
 
 function getSpriteDataSegmentOffsetInBin(
@@ -119,5 +138,14 @@ function getSpriteDataSegmentOffsetInBin(
 		spriteDataSegmentNames
 			.slice(0, spriteDataSegmentNames.indexOf(segmentName))
 			.map((segmentName) => spriteDataSegmentLocations[segmentName].length)
+	);
+}
+
+function getCharacterOffsetInSprites(characterName: CharacterName): number {
+	// Sum up the length of all segments before the wanted one.
+	return sum(
+		characterNames
+			.slice(0, characterNames.indexOf(characterName))
+			.map((characterName) => spriteCounts[characterName])
 	);
 }

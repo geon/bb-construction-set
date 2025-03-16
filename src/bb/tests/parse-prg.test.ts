@@ -73,6 +73,31 @@ test("patchPrg", () => {
 	expect(Buffer.from(patched)).toStrictEqual(Buffer.from(prgFileContent));
 });
 
+test("spritesBin color", () => {
+	const prgFileContent = readFileSync(__dirname + "/decompressed-bb.prg");
+
+	const prgSpriteSegments = getDataSegments(
+		prgFileContent.buffer,
+		spriteDataSegmentLocations
+	);
+	const prgSpriteColorSegment = getDataSegment(
+		prgFileContent.buffer,
+		monsterSpriteColorsSegmentLocation
+	);
+	const spritesBin = writeSpritesBin(
+		readSpritesBin(
+			prgSpriteSegments,
+			prgSpriteColorSegment,
+			spriteColors.player
+		)
+	);
+
+	// Just comparing the ArrayBuffers is super slow and fails.
+	expect(Buffer.from(spritesBin.spriteColorsSegment)).toStrictEqual(
+		Buffer.from(prgSpriteColorSegment.buffer)
+	);
+});
+
 test("patchPrgSpritesBin", () => {
 	const prgFileContent = readFileSync(__dirname + "/decompressed-bb.prg");
 
@@ -86,7 +111,7 @@ test("patchPrgSpritesBin", () => {
 		)
 	);
 
-	patchPrgSpritesBin(patched, spritesBin);
+	patchPrgSpritesBin(patched, spritesBin.spriteSegments);
 
 	// Just comparing the ArrayBuffers is super slow and fails.
 	expect(Buffer.from(patched)).toStrictEqual(Buffer.from(prgFileContent));

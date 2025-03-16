@@ -40,7 +40,7 @@ export function useParseSpriteBin(): readonly [
 			...attempt(() => {
 				const parsed = writeSpritesBin(new Uint8Array(buffer));
 				return {
-					parsed,
+					parsed: parsed.spriteSegments,
 				};
 			}),
 		});
