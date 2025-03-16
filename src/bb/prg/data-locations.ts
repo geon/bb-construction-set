@@ -121,7 +121,7 @@ export const spriteDataSegmentLocations: Readonly<
 	bossA: { startAddress: 0x7640, length: 64 * 18 },
 	bossB: { startAddress: 0x7c40, length: 64 * 9 },
 	bonusCupCake: { startAddress: 0xa320, length: 64 * 4 },
-	bonusMelon: { startAddress: 0xa4a0, length: 64 * 2 },
+	bonusMelon: { startAddress: 0xa420, length: 64 * 4 },
 	bonusDiamond: { startAddress: 0xa520, length: 64 * 2 },
 
 	// playerInBubble: { startAddress: 0x7440, length: 64 * 8 },
