@@ -157,7 +157,10 @@ export function patchPrgSpritesBin(
 	prg: ArrayBuffer,
 	newSpriteSegments: Record<SpriteDataSegmentName, Uint8Array>
 ) {
-	const prgSegments = getMutableDataSegments(prg, spriteDataSegmentLocations);
+	const prgSpriteSegments = getMutableDataSegments(
+		prg,
+		spriteDataSegmentLocations
+	);
 
 	for (const segmentName of spriteDataSegmentNames) {
 		// Not sure if the padding byte is garbage or important, so skip it.
@@ -174,7 +177,7 @@ export function patchPrgSpritesBin(
 			.flat();
 
 		for (const [index, byte] of bytesToWrite) {
-			prgSegments[segmentName].buffer[index] = byte;
+			prgSpriteSegments[segmentName].buffer[index] = byte;
 		}
 	}
 }
