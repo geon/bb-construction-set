@@ -1,4 +1,4 @@
-import { objectFromEntries, range, strictChunk } from "../functions";
+import { groupBy, objectFromEntries, range, strictChunk } from "../functions";
 import {
 	Sprites,
 	characterNames,
@@ -17,18 +17,6 @@ import { DataSegment, uint8ArrayConcatenate } from "./io";
 export function readSprites(
 	dataSegments: Record<SpriteDataSegmentName, DataSegment>
 ): Sprites {
-	const sprites: Sprites = {
-		player: [],
-		bubbleBuster: [],
-		incendo: [],
-		colley: [],
-		hullaballoon: [],
-		beluga: [],
-		willyWhistle: [],
-		stoner: [],
-		superSocket: [],
-	};
-
 	const nameByIndex = characterNames.flatMap((name) =>
 		Array<CharacterName>(spriteCounts[name]).fill(name as CharacterName)
 	);
@@ -38,11 +26,24 @@ export function readSprites(
 		64
 	).map((bitmap): Sprite => ({ bitmap: bitmap.slice(0, 63) }));
 
-	for (const [globalSpriteIndex, characterName] of nameByIndex.entries()) {
-		const sprite = ungroupedSprites[globalSpriteIndex]!;
-		sprites[characterName].push(sprite);
-	}
-	return sprites;
+	const sprites = groupBy(
+		[...nameByIndex.entries()].map(
+			([globalSpriteIndex, characterName]): readonly [
+				CharacterName,
+				Sprite
+			] => {
+				const sprite = ungroupedSprites[globalSpriteIndex];
+				if (!sprite) {
+					throw new Error("Bad index.");
+				}
+				return [characterName, sprite];
+			}
+		),
+		([characterName]) => characterName,
+		([, sprite]) => sprite
+	);
+
+	return sprites as unknown as Sprites;
 }
 
 export function readSpritesBin(

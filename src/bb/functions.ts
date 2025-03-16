@@ -103,6 +103,13 @@ export function mapRecord<TKey extends string, TIn, TOut>(
 	) as Readonly<Record<TKey, TOut>>;
 }
 
+export function mapPartialRecord<TKey extends string, TIn, TOut>(
+	record: Partial<Readonly<Record<TKey, TIn>>>,
+	transform: (value: TIn, key: TKey) => TOut
+): Readonly<Partial<Record<TKey, TOut>>> {
+	return mapRecord(record as Record<TKey, TIn>, transform);
+}
+
 export function isDefined<T>(x: T | undefined): x is T {
 	return x !== undefined;
 }
@@ -157,4 +164,28 @@ export function curry<TFn extends (...args: readonly any[]) => unknown>(
 	return ((firstArg) =>
 		(...restArgs) =>
 			fn(firstArg, ...restArgs)) as Curried<TFn>;
+}
+
+type OneOrMore<T> = readonly [T, ...ReadonlyArray<T>];
+type MutableOneOrMore<T> = [T, ...Array<T>];
+export type Grouped<Key extends string | number | symbol, Value> = Partial<
+	Record<Key, OneOrMore<Value>>
+>;
+export function groupBy<Key extends string | number, Item, Value>(
+	items: ReadonlyArray<Item>,
+	keySelector: (item: Item) => Key,
+	valueSelector: (item: Item) => Value = (x) => x as unknown as Value
+): Grouped<Key, Value> {
+	const grouped: Partial<Record<Key, MutableOneOrMore<Value>>> = {};
+	for (const item of items) {
+		const key = keySelector(item);
+		const value = valueSelector(item);
+		const keyItems = grouped[key];
+		if (!keyItems) {
+			grouped[key] = [value];
+		} else {
+			keyItems.push(value);
+		}
+	}
+	return grouped as Grouped<Key, Value>;
 }
