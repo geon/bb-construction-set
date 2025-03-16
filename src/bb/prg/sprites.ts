@@ -4,6 +4,7 @@ import {
 	objectFromEntries,
 	range,
 	strictChunk,
+	sum,
 } from "../functions";
 import { PaletteIndex } from "../palette";
 import {
@@ -104,16 +105,25 @@ export function readSpritesBin(
 export function writeSpritesBin(
 	binFileContents: Uint8Array
 ): Record<SpriteDataSegmentName, Uint8Array> {
-	let nextOffset = 0;
 	return objectFromEntries(
 		spriteDataSegmentNames.map((segmentName) => {
-			const offset = nextOffset;
+			const offset = getSpriteDataSegmentOffsetInBin(segmentName);
 			const length = spriteDataSegmentLocations[segmentName].length;
-			nextOffset += length;
 			return [
 				segmentName,
 				new Uint8Array(binFileContents.buffer, offset, length),
 			];
 		})
+	);
+}
+
+function getSpriteDataSegmentOffsetInBin(
+	segmentName: SpriteDataSegmentName
+): number {
+	// Sum up the length of all segments before the wanted one.
+	return sum(
+		spriteDataSegmentNames
+			.slice(0, spriteDataSegmentNames.indexOf(segmentName))
+			.map((segmentName) => spriteDataSegmentLocations[segmentName].length)
 	);
 }
