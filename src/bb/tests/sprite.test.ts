@@ -6,11 +6,13 @@ import {
 	monsterSpriteColorsSegmentLocation,
 	spriteDataSegmentLocations,
 } from "../prg/data-locations";
+import { spriteColors } from "../sprite";
 
 test("readSprites snapshot", () => {
 	const prg = readFileSync(__dirname + "/decompressed-bb.prg").buffer;
 	const segments = getDataSegments(prg, spriteDataSegmentLocations);
-	const sprites = readSprites(segments);
+	const colorSegment = getDataSegment(prg, monsterSpriteColorsSegmentLocation);
+	const sprites = readSprites(segments, colorSegment, spriteColors.player);
 
 	expect(sprites).toMatchSnapshot();
 });

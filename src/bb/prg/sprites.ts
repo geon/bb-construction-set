@@ -5,6 +5,7 @@ import {
 	range,
 	strictChunk,
 } from "../functions";
+import { PaletteIndex } from "../palette";
 import {
 	Sprites,
 	characterNames,
@@ -21,7 +22,9 @@ import {
 import { DataSegment, uint8ArrayConcatenate } from "./io";
 
 export function readSprites(
-	spriteSegments: Record<SpriteDataSegmentName, DataSegment>
+	spriteSegments: Record<SpriteDataSegmentName, DataSegment>,
+	monsterColorSegment: DataSegment,
+	playerColor: PaletteIndex
 ): Sprites {
 	const nameByIndex = characterNames.flatMap((name) =>
 		Array<CharacterName>(spriteCounts[name]).fill(name as CharacterName)
@@ -48,6 +51,14 @@ export function readSprites(
 		([characterName]) => characterName,
 		([, sprite]) => sprite
 	) as unknown as Record<CharacterName, Sprite[]>;
+
+	const characterColors = [playerColor, ...monsterColorSegment.buffer];
+	const spriteColors = objectFromEntries(
+		characterNames.map((name, characterIndex) => [
+			name,
+			characterColors[characterIndex]! as PaletteIndex,
+		])
+	);
 
 	return mapRecord(sprites, (sprites, characterName) => ({
 		sprites,

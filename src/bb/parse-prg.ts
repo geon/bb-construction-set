@@ -2,15 +2,21 @@ import { CharBlock } from "./charset-char";
 import { strictChunk, unzipObject, zipObject } from "./functions";
 import { Level } from "./level";
 import { writeBgColors, readBgColors } from "./prg/bg-colors";
-import { Sprites } from "./sprite";
+import { spriteColors, Sprites } from "./sprite";
 import { readPlatformChars, writePlatformChars } from "./prg/charset-char";
-import { getDataSegments, DataSegment, getMutableDataSegments } from "./prg/io";
+import {
+	getDataSegments,
+	DataSegment,
+	getMutableDataSegments,
+	getDataSegment,
+} from "./prg/io";
 import {
 	itemDataSegmentLocations,
 	ItemDataSegmentName,
 	LevelDataSegmentName,
 	levelDataSegmentNames,
 	levelSegmentLocations,
+	monsterSpriteColorsSegmentLocation,
 	spriteDataSegmentLocations,
 	SpriteDataSegmentName,
 	spriteDataSegmentNames,
@@ -40,7 +46,11 @@ export function parsePrg(prg: ArrayBuffer): {
 	items: Record<ItemDataSegmentName, CharBlock[]>;
 } {
 	const levels = readLevels(getDataSegments(prg, levelSegmentLocations));
-	const sprites = readSprites(getDataSegments(prg, spriteDataSegmentLocations));
+	const sprites = readSprites(
+		getDataSegments(prg, spriteDataSegmentLocations),
+		getDataSegment(prg, monsterSpriteColorsSegmentLocation),
+		spriteColors.player
+	);
 	const items = readItems(getDataSegments(prg, itemDataSegmentLocations));
 
 	return { levels, sprites, items };
