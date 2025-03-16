@@ -27,7 +27,12 @@ export function isCharacterName(text: string): text is CharacterName {
 	return characterNames.includes(text as CharacterName);
 }
 
-export type Sprites = Record<CharacterName, Sprite[]>;
+export type Sprites = Record<
+	CharacterName,
+	{
+		readonly sprites: Sprite[];
+	}
+>;
 
 export const spriteCounts: Record<CharacterName, number> = {
 	player: 19,

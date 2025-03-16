@@ -199,7 +199,7 @@ export function drawSpritesToCanvas(
 	const numCharacters = characherSpriteGroups.length;
 	const spriteWidthPixels = spriteWidthBytes * 8;
 	const maxSpritesForCharacter = characherSpriteGroups.reduce(
-		(soFar, current) => Math.max(soFar, current.length),
+		(soFar, current) => Math.max(soFar, current.sprites.length),
 		0
 	);
 
@@ -212,7 +212,7 @@ export function drawSpritesToCanvas(
 
 	const image = new ImageData(spriteWidthPixels, spriteHeight);
 	for (const [spriteY, characterSprites] of characherSpriteGroups.entries()) {
-		for (const [spriteX, sprite] of characterSprites.entries()) {
+		for (const [spriteX, sprite] of characterSprites.sprites.entries()) {
 			const spritePalette = getSpritePalette(
 				Object.values(spriteColors)[spriteY]!
 			);

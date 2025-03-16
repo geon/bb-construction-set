@@ -1,4 +1,10 @@
-import { groupBy, objectFromEntries, range, strictChunk } from "../functions";
+import {
+	groupBy,
+	mapRecord,
+	objectFromEntries,
+	range,
+	strictChunk,
+} from "../functions";
 import {
 	Sprites,
 	characterNames,
@@ -41,9 +47,9 @@ export function readSprites(
 		),
 		([characterName]) => characterName,
 		([, sprite]) => sprite
-	);
+	) as unknown as Record<CharacterName, Sprite[]>;
 
-	return sprites as unknown as Sprites;
+	return mapRecord(sprites, (sprites) => ({ sprites }));
 }
 
 export function readSpritesBin(

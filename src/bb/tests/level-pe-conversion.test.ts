@@ -15,11 +15,11 @@ test("peFileDataToLevels & levelsToPeFileData", () => {
 	const generatedPeFileData = levelsToPeFileData({
 		levels,
 		// Dummy data, not tested.
-		sprites: mapRecord(spriteCounts, (count) =>
-			Array(count).fill({
+		sprites: mapRecord(spriteCounts, (count) => ({
+			sprites: Array(count).fill({
 				bitmap: Array(numSpriteBytes).fill(0),
-			})
-		) as Sprites,
+			}),
+		})) as Sprites,
 	});
 
 	// Dummy data, not tested.

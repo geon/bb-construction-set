@@ -222,7 +222,7 @@ export function spritesToPeSpriteSets(
 				(
 					monsterName
 				): PeFileData["spriteSets"][number]["sprites"][number][] => {
-					const sprites = inputSprites[monsterName]!;
+					const characterSprites = inputSprites[monsterName]!;
 					return [false, true]!.map(
 						(
 							facingLeft
@@ -238,7 +238,7 @@ export function spritesToPeSpriteSets(
 							multiColor2: 1,
 							expandX: false,
 							expandY: false,
-							bitmapData: sprites[
+							bitmapData: characterSprites.sprites[
 								facingLeft ? spriteLeftIndex[monsterName]! : 0
 							]!.bitmap.map(
 								(byte) =>
