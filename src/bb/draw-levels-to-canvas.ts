@@ -5,7 +5,6 @@ import { CharBlock, CharBlockIndex, CharsetChar } from "./charset-char";
 import {
 	CharacterName,
 	Sprites,
-	spriteColors,
 	spriteHeight,
 	spriteWidthBytes,
 } from "./sprite";
@@ -215,9 +214,7 @@ export function drawSpritesToCanvas(
 	const image = new ImageData(spriteWidthPixels, spriteHeight);
 	for (const [spriteY, characterSprites] of characherSpriteGroups.entries()) {
 		for (const [spriteX, sprite] of characterSprites.sprites.entries()) {
-			const spritePalette = getSpritePalette(
-				Object.values(spriteColors)[spriteY]!
-			);
+			const spritePalette = getSpritePalette(characterSprites.color);
 			for (let pixelY = 0; pixelY < spriteHeight; ++pixelY) {
 				for (let byteX = 0; byteX < spriteWidthBytes; ++byteX) {
 					const byte = sprite.bitmap[pixelY * spriteWidthBytes + byteX]!;
