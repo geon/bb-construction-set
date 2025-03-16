@@ -49,7 +49,10 @@ export function readSprites(
 		([, sprite]) => sprite
 	) as unknown as Record<CharacterName, Sprite[]>;
 
-	return mapRecord(sprites, (sprites) => ({ sprites }));
+	return mapRecord(sprites, (sprites, characterName) => ({
+		sprites,
+		color: spriteColors[characterName],
+	}));
 }
 
 export function readSpritesBin(

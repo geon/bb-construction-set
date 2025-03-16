@@ -31,6 +31,7 @@ export type Sprites = Record<
 	CharacterName,
 	{
 		readonly sprites: Sprite[];
+		readonly color: PaletteIndex;
 	}
 >;
 

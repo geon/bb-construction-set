@@ -3,6 +3,7 @@
 exports[`readSprites snapshot 1`] = `
 {
   "beluga": {
+    "color": 4,
     "sprites": [
       {
         "bitmap": [
@@ -811,6 +812,7 @@ exports[`readSprites snapshot 1`] = `
     ],
   },
   "bubbleBuster": {
+    "color": 12,
     "sprites": [
       {
         "bitmap": [
@@ -1619,6 +1621,7 @@ exports[`readSprites snapshot 1`] = `
     ],
   },
   "colley": {
+    "color": 5,
     "sprites": [
       {
         "bitmap": [
@@ -2427,6 +2430,7 @@ exports[`readSprites snapshot 1`] = `
     ],
   },
   "hullaballoon": {
+    "color": 13,
     "sprites": [
       {
         "bitmap": [
@@ -2967,6 +2971,7 @@ exports[`readSprites snapshot 1`] = `
     ],
   },
   "incendo": {
+    "color": 15,
     "sprites": [
       {
         "bitmap": [
@@ -3775,6 +3780,7 @@ exports[`readSprites snapshot 1`] = `
     ],
   },
   "player": {
+    "color": 5,
     "sprites": [
       {
         "bitmap": [
@@ -5052,6 +5058,7 @@ exports[`readSprites snapshot 1`] = `
     ],
   },
   "stoner": {
+    "color": 3,
     "sprites": [
       {
         "bitmap": [
@@ -5592,6 +5599,7 @@ exports[`readSprites snapshot 1`] = `
     ],
   },
   "superSocket": {
+    "color": 15,
     "sprites": [
       {
         "bitmap": [
@@ -5998,6 +6006,7 @@ exports[`readSprites snapshot 1`] = `
     ],
   },
   "willyWhistle": {
+    "color": 5,
     "sprites": [
       {
         "bitmap": [
