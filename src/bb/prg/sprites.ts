@@ -12,7 +12,6 @@ import {
 	CharacterName,
 	spriteCounts,
 	Sprite,
-	spriteColors,
 } from "../sprite";
 import {
 	spriteDataSegmentLocations,
@@ -68,9 +67,10 @@ export function readSprites(
 
 export function readSpritesBin(
 	spriteSegments: Record<SpriteDataSegmentName, DataSegment>,
-	monsterColorSegment: DataSegment
+	monsterColorSegment: DataSegment,
+	playerColor: PaletteIndex
 ): Uint8Array {
-	const characterColors = [spriteColors.player, ...monsterColorSegment.buffer];
+	const characterColors = [playerColor, ...monsterColorSegment.buffer];
 
 	const characterSpriteColors = characterNames
 		.map((name, characterIndex) => ({
@@ -91,7 +91,7 @@ export function readSpritesBin(
 				const multicolorBit = 0b10000000;
 				const color =
 					segmentName !== "characters"
-						? spriteColors.player
+						? playerColor
 						: characterSpriteColors[spriteIndex]!;
 				bufferCopy[paddingByteIndex] = multicolorBit | color;
 			}

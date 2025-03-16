@@ -6,6 +6,7 @@ import {
 import { readSpritesBin } from "./bb/prg/sprites";
 import { getDataSegment, getDataSegments } from "./bb/prg/io";
 import { attempt } from "./bb/functions";
+import { spriteColors } from "./bb/sprite";
 
 export type SpriteBinParsePrgResult = {
 	readonly fileName: string;
@@ -48,7 +49,11 @@ export function useSpriteBinParsePrg(): readonly [
 					prg,
 					monsterSpriteColorsSegmentLocation
 				);
-				const spriteBin = readSpritesBin(segments, monsterColorsSegment);
+				const spriteBin = readSpritesBin(
+					segments,
+					monsterColorsSegment,
+					spriteColors.player
+				);
 				return {
 					prg: new Uint8Array(prg),
 					spriteBin,

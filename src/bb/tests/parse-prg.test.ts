@@ -14,6 +14,7 @@ import {
 	spriteDataSegmentLocations,
 } from "../prg/data-locations";
 import { getDataSegments, getDataSegment } from "../prg/io";
+import { spriteColors } from "../sprite";
 
 test("readBubbleCurrentRectangles", () => {
 	const rectanglesOnly = knownGoodBubbleCurrentRectsForLevels
@@ -80,7 +81,8 @@ test("patchPrgSpritesBin", () => {
 	const spritesBin = writeSpritesBin(
 		readSpritesBin(
 			getDataSegments(prgFileContent.buffer, spriteDataSegmentLocations),
-			getDataSegment(prgFileContent.buffer, monsterSpriteColorsSegmentLocation)
+			getDataSegment(prgFileContent.buffer, monsterSpriteColorsSegmentLocation),
+			spriteColors.player
 		)
 	);
 

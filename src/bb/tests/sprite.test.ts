@@ -25,7 +25,11 @@ test("readSpritesBin snapshot", () => {
 		monsterSpriteColorsSegmentLocation
 	);
 
-	const sprites = readSpritesBin(segments, monsterColorsSegment);
+	const sprites = readSpritesBin(
+		segments,
+		monsterColorsSegment,
+		spriteColors.player
+	);
 
 	expect(sprites).toMatchSnapshot();
 });
