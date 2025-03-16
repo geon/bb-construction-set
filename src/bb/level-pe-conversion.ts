@@ -1,4 +1,4 @@
-import { isDefined, mapRecord, padRight } from "./functions";
+import { isDefined, mapRecord, objectFromEntries, padRight } from "./functions";
 import { BubbleCurrentDirection, createTiles, Level, Monster } from "./level";
 import { Bit, CharBitmap, createPeFileData, PeFileData } from "./pe-file";
 import {
@@ -641,4 +641,32 @@ export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 			),
 		};
 	});
+}
+
+export function getSpriteColorsFromPeFileData(
+	peFileData: PeFileData
+): Record<CharacterName, PaletteIndex> {
+	const spriteSet = peFileData.spriteSets[0];
+	if (!spriteSet) {
+		throw new Error("Missing sprite set.");
+	}
+
+	const spriteColorEntries = spriteSet?.sprites
+		.map((sprite): readonly [CharacterName, PaletteIndex] | undefined => {
+			const { monsterName, facingLeft } = parseSpriteUid(sprite.uid);
+			if (!isCharacterName(monsterName) || facingLeft) {
+				return undefined;
+			}
+			return [monsterName, sprite.colorSprite as PaletteIndex];
+		})
+		.filter(isDefined);
+
+	if (
+		new Set(spriteColorEntries.map(([name]) => name)).size !==
+		characterNames.length
+	) {
+		throw new Error("Missing colors for some sprites.");
+	}
+
+	return objectFromEntries(spriteColorEntries);
 }
