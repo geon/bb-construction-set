@@ -26,7 +26,10 @@ export function SpriteBinPatchDownloader({
 						getBlob={() => {
 							const prg = parsedPrgData.result.prg.buffer.slice(0);
 							try {
-								patchPrgSpritesBin(prg, parsedSpriteBinData.result.parsed);
+								patchPrgSpritesBin(
+									prg,
+									parsedSpriteBinData.result.parsed.spriteSegments
+								);
 								return new Blob([prg], {
 									type: "application/octet-stream",
 								});
