@@ -3,6 +3,7 @@ import { palette, PaletteIndex } from "./palette";
 import { Color, mixColors, black } from "./color";
 import { CharBlock, CharBlockIndex, CharsetChar } from "./charset-char";
 import {
+	CharacterName,
 	Sprites,
 	spriteColors,
 	spriteHeight,
@@ -11,6 +12,7 @@ import {
 
 export function drawLevelsToCanvas(
 	levels: readonly Level[],
+	spriteColors: Record<CharacterName, PaletteIndex>,
 	canvas: HTMLCanvasElement
 ) {
 	const ctx = canvas.getContext("2d");

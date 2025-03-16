@@ -9,6 +9,7 @@ import {
 	maxSidebars,
 	maxMonsters,
 } from "./bb/prg/data-locations";
+import { spriteColors } from "./bb/sprite";
 
 export function Levels(props: {
 	readonly fileName: string;
@@ -25,7 +26,7 @@ export function Levels(props: {
 				return;
 			}
 			try {
-				drawLevelsToCanvas(props.levels, levelsCanvasRef.current);
+				drawLevelsToCanvas(props.levels, spriteColors, levelsCanvasRef.current);
 				{
 					const platformCharsImage = drawPlatformCharsToCanvas(props.levels);
 					platformCharsCanvasRef.current.width = platformCharsImage.width;
