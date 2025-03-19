@@ -4,8 +4,8 @@ import { serializePeFileData } from "./bb/pe-file";
 import { BlobDownloadButton } from "./BlobDownloadButton";
 import { Levels } from "./Levels";
 import { ParsePrgResult } from "./useParsePrg";
-import { FileInput } from "./FileInput";
 import { mapRecord } from "./bb/functions";
+import { MinimalPrgSelector } from "./MinimalPrgSelector";
 
 export function PrgSelector({
 	parsedPrgData,
@@ -16,15 +16,7 @@ export function PrgSelector({
 }): ReactNode {
 	return (
 		<>
-			<h2>Select a prg-file</h2>
-			<p>
-				Select an <i>unpacked</i> c64 .prg-file containing Bubble Bobble. Most
-				.prg files you find will be <i>packed</i> and the c64 unpacks them on
-				startup.
-			</p>
-			<FileInput accept={["prg"]} onChange={setPrg}>
-				Choose file
-			</FileInput>
+			<MinimalPrgSelector setPrg={setPrg} />
 			{!parsedPrgData ? (
 				<p>No prg selected.</p>
 			) : parsedPrgData?.type !== "ok" ? (
