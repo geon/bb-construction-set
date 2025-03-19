@@ -23,8 +23,6 @@ export function PatchSprites({
 					parsedSpriteBinData={parsedSpriteBinData}
 					setSpriteBin={setSpriteBin}
 				/>
-			</Card>
-			<Card>
 				<SpriteBinPatchDownloader
 					parsedPrgData={parsedSpriteBinPrgData}
 					parsedSpriteBinData={parsedSpriteBinData}

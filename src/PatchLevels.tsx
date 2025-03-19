@@ -19,8 +19,6 @@ export function PatchLevels({
 			</Card>
 			<Card>
 				<PeSelector parsedPeData={parsedPeData} setPe={setPe} />
-			</Card>
-			<Card>
 				<PatchDownloader
 					parsedPrgData={parsedPrgData}
 					parsedPeData={parsedPeData}
