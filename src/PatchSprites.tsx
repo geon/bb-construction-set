@@ -8,20 +8,15 @@ import { SpriteBinParsePrgResult } from "./useSpriteBinParsePrg";
 
 export function PatchSprites({
 	parsedSpriteBinPrgData,
-	setPrg,
 }: {
 	readonly parsedSpriteBinPrgData: SpriteBinParsePrgResult | undefined;
-	readonly setPrg: (file: File | undefined) => Promise<void>;
 }): ReactNode {
 	const [parsedSpriteBinData, setSpriteBin] = useParseSpriteBin();
 	// const [parsedSpriteBinData, setSpriteBin] = useSpriteBin();
 	return (
 		<>
 			<Card>
-				<SpriteBinPrgSelector
-					parsedPrgData={parsedSpriteBinPrgData}
-					setPrg={setPrg}
-				/>
+				<SpriteBinPrgSelector parsedPrgData={parsedSpriteBinPrgData} />
 			</Card>
 			<Card>
 				<SpriteBinSelector

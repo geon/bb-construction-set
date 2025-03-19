@@ -1,18 +1,14 @@
 import { ReactNode } from "react";
 import { BlobDownloadButton } from "./BlobDownloadButton";
 import { SpriteBinParsePrgResult } from "./useSpriteBinParsePrg";
-import { MinimalPrgSelector } from "./MinimalPrgSelector";
 
 export function SpriteBinPrgSelector({
 	parsedPrgData,
-	setPrg,
 }: {
 	readonly parsedPrgData: SpriteBinParsePrgResult | undefined;
-	readonly setPrg: (file: File | undefined) => Promise<void>;
 }): ReactNode {
 	return (
 		<>
-			<MinimalPrgSelector setPrg={setPrg} />
 			{!parsedPrgData ? (
 				<p>No prg selected.</p>
 			) : parsedPrgData?.type !== "ok" ? (

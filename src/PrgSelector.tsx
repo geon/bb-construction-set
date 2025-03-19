@@ -5,18 +5,14 @@ import { BlobDownloadButton } from "./BlobDownloadButton";
 import { Levels } from "./Levels";
 import { ParsePrgResult } from "./useParsePrg";
 import { mapRecord } from "./bb/functions";
-import { MinimalPrgSelector } from "./MinimalPrgSelector";
 
 export function PrgSelector({
 	parsedPrgData,
-	setPrg,
 }: {
 	readonly parsedPrgData: ParsePrgResult | undefined;
-	readonly setPrg: (file: File | undefined) => Promise<void>;
 }): ReactNode {
 	return (
 		<>
-			<MinimalPrgSelector setPrg={setPrg} />
 			{!parsedPrgData ? (
 				<p>No prg selected.</p>
 			) : parsedPrgData?.type !== "ok" ? (

@@ -8,16 +8,14 @@ import { ParsePrgResult } from "./useParsePrg";
 
 export function PatchLevels({
 	parsedPrgData,
-	setPrg,
 }: {
 	readonly parsedPrgData: ParsePrgResult | undefined;
-	readonly setPrg: (file: File | undefined) => Promise<void>;
 }): ReactNode {
 	const [parsedPeData, setPe] = useParsePe();
 	return (
 		<>
 			<Card>
-				<PrgSelector parsedPrgData={parsedPrgData} setPrg={setPrg} />
+				<PrgSelector parsedPrgData={parsedPrgData} />
 			</Card>
 			<Card>
 				<PeSelector parsedPeData={parsedPeData} setPe={setPe} />
