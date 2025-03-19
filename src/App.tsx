@@ -2,6 +2,8 @@ import { TabBar } from "./TabBar";
 import { PatchLevels } from "./PatchLevels";
 import styled from "styled-components";
 import { PatchSprites } from "./PatchSprites";
+import { useParsePrg } from "./useParsePrg";
+import { useSpriteBinParsePrg } from "./useSpriteBinParsePrg";
 
 const Page = styled.div`
 	width: 600px;
@@ -11,6 +13,13 @@ const Page = styled.div`
 `;
 
 export function App() {
+	const [parsedPrgData, setPrgA] = useParsePrg();
+	const [parsedSpriteBinPrgData, setPrgB] = useSpriteBinParsePrg();
+	const setPrg = async (file: File | undefined): Promise<void> => {
+		setPrgA(file);
+		setPrgB(file);
+	};
+
 	return (
 		<Page>
 			<h1>BB Construction Set</h1>
@@ -26,11 +35,18 @@ export function App() {
 				tabs={{
 					patchLevels: {
 						title: "Patch Levels",
-						render: () => <PatchLevels />,
+						render: () => (
+							<PatchLevels parsedPrgData={parsedPrgData} setPrg={setPrg} />
+						),
 					},
 					patchSprites: {
 						title: "Patch Sprites",
-						render: () => <PatchSprites />,
+						render: () => (
+							<PatchSprites
+								parsedSpriteBinPrgData={parsedSpriteBinPrgData}
+								setPrg={setPrg}
+							/>
+						),
 					},
 				}}
 			/>

@@ -4,16 +4,24 @@ import { SpriteBinPatchDownloader } from "./SpriteBinPatchDownloader";
 import { SpriteBinSelector } from "./SpriteBinSelector";
 import { useParseSpriteBin } from "./useParseSpriteBin";
 import { SpriteBinPrgSelector } from "./SpriteBinPrgSelector";
-import { useSpriteBinParsePrg } from "./useSpriteBinParsePrg";
+import { SpriteBinParsePrgResult } from "./useSpriteBinParsePrg";
 
-export function PatchSprites(): ReactNode {
-	const [parsedPrgData, setPrg] = useSpriteBinParsePrg();
+export function PatchSprites({
+	parsedSpriteBinPrgData,
+	setPrg,
+}: {
+	readonly parsedSpriteBinPrgData: SpriteBinParsePrgResult | undefined;
+	readonly setPrg: (file: File | undefined) => Promise<void>;
+}): ReactNode {
 	const [parsedSpriteBinData, setSpriteBin] = useParseSpriteBin();
 	// const [parsedSpriteBinData, setSpriteBin] = useSpriteBin();
 	return (
 		<>
 			<Card>
-				<SpriteBinPrgSelector parsedPrgData={parsedPrgData} setPrg={setPrg} />
+				<SpriteBinPrgSelector
+					parsedPrgData={parsedSpriteBinPrgData}
+					setPrg={setPrg}
+				/>
 			</Card>
 			<Card>
 				<SpriteBinSelector
@@ -23,7 +31,7 @@ export function PatchSprites(): ReactNode {
 			</Card>
 			<Card>
 				<SpriteBinPatchDownloader
-					parsedPrgData={parsedPrgData}
+					parsedPrgData={parsedSpriteBinPrgData}
 					parsedSpriteBinData={parsedSpriteBinData}
 				/>
 			</Card>

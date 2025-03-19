@@ -4,10 +4,15 @@ import { PatchDownloader } from "./PatchDownloader";
 import { PeSelector } from "./PeSelector";
 import { PrgSelector } from "./PrgSelector";
 import { useParsePe } from "./useParsePe";
-import { useParsePrg } from "./useParsePrg";
+import { ParsePrgResult } from "./useParsePrg";
 
-export function PatchLevels(): ReactNode {
-	const [parsedPrgData, setPrg] = useParsePrg();
+export function PatchLevels({
+	parsedPrgData,
+	setPrg,
+}: {
+	readonly parsedPrgData: ParsePrgResult | undefined;
+	readonly setPrg: (file: File | undefined) => Promise<void>;
+}): ReactNode {
 	const [parsedPeData, setPe] = useParsePe();
 	return (
 		<>
