@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
 	monsterSpriteColorsSegmentLocation,
 	spriteDataSegmentLocations,
@@ -24,43 +24,44 @@ export type SpriteBinParsePrgResult = {
 			readonly error: string;
 	  }
 );
-export function useSpriteBinParsePrg(): readonly [
-	SpriteBinParsePrgResult | undefined,
-	(file: File | undefined) => Promise<void>
-] {
+export function useSpriteBinParsePrg(
+	file: File | undefined
+): SpriteBinParsePrgResult | undefined {
 	const [parsedPrgData, setParsedPrgData] = useState<
 		SpriteBinParsePrgResult | undefined
 	>(undefined);
 
-	const setPrg = async (file: File | undefined): Promise<void> => {
-		if (!file) {
-			setParsedPrgData(undefined);
-			return;
-		}
+	useEffect(() => {
+		(async () => {
+			if (!file) {
+				setParsedPrgData(undefined);
+				return;
+			}
 
-		const prg = await file.arrayBuffer();
+			const prg = await file.arrayBuffer();
 
-		setParsedPrgData({
-			fileName: file.name,
-			fileSize: file.size,
-			...attempt(() => {
-				const segments = getDataSegments(prg, spriteDataSegmentLocations);
-				const monsterColorsSegment = getDataSegment(
-					prg,
-					monsterSpriteColorsSegmentLocation
-				);
-				const spriteBin = readSpritesBin(
-					segments,
-					monsterColorsSegment,
-					spriteColors.player
-				);
-				return {
-					prg: new Uint8Array(prg),
-					spriteBin,
-				};
-			}),
-		});
-	};
+			setParsedPrgData({
+				fileName: file.name,
+				fileSize: file.size,
+				...attempt(() => {
+					const segments = getDataSegments(prg, spriteDataSegmentLocations);
+					const monsterColorsSegment = getDataSegment(
+						prg,
+						monsterSpriteColorsSegmentLocation
+					);
+					const spriteBin = readSpritesBin(
+						segments,
+						monsterColorsSegment,
+						spriteColors.player
+					);
+					return {
+						prg: new Uint8Array(prg),
+						spriteBin,
+					};
+				}),
+			});
+		})();
+	}, [file]);
 
-	return [parsedPrgData, setPrg] as const;
+	return parsedPrgData;
 }

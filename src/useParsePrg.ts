@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CharBlock } from "./bb/charset-char";
 import { Level } from "./bb/level";
 import { parsePrg } from "./bb/parse-prg";
@@ -24,34 +24,35 @@ export type ParsePrgResult = {
 			readonly error: string;
 	  }
 );
-export function useParsePrg(): readonly [
-	ParsePrgResult | undefined,
-	(file: File | undefined) => Promise<void>
-] {
+export function useParsePrg(
+	file: File | undefined
+): ParsePrgResult | undefined {
 	const [parsedPrgData, setParsedPrgData] = useState<
 		ParsePrgResult | undefined
 	>(undefined);
 
-	const setPrg = async (file: File | undefined): Promise<void> => {
-		if (!file) {
-			setParsedPrgData(undefined);
-			return;
-		}
+	useEffect(() => {
+		(async () => {
+			if (!file) {
+				setParsedPrgData(undefined);
+				return;
+			}
 
-		const buffer = await file.arrayBuffer();
+			const buffer = await file.arrayBuffer();
 
-		setParsedPrgData({
-			fileName: file.name,
-			fileSize: file.size,
-			...attempt(() => {
-				const parsed = parsePrg(buffer);
-				return {
-					prg: new Uint8Array(buffer),
-					...parsed,
-				};
-			}),
-		});
-	};
+			setParsedPrgData({
+				fileName: file.name,
+				fileSize: file.size,
+				...attempt(() => {
+					const parsed = parsePrg(buffer);
+					return {
+						prg: new Uint8Array(buffer),
+						...parsed,
+					};
+				}),
+			});
+		})();
+	}, [file]);
 
-	return [parsedPrgData, setPrg] as const;
+	return parsedPrgData;
 }

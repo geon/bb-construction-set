@@ -6,6 +6,7 @@ import { useParsePrg } from "./useParsePrg";
 import { useSpriteBinParsePrg } from "./useSpriteBinParsePrg";
 import { Card } from "./Card";
 import { MinimalPrgSelector } from "./MinimalPrgSelector";
+import { useState } from "react";
 
 const Page = styled.div`
 	width: 600px;
@@ -15,12 +16,10 @@ const Page = styled.div`
 `;
 
 export function App() {
-	const [parsedPrgData, setPrgA] = useParsePrg();
-	const [parsedSpriteBinPrgData, setPrgB] = useSpriteBinParsePrg();
-	const setPrg = async (file: File | undefined): Promise<void> => {
-		setPrgA(file);
-		setPrgB(file);
-	};
+	const [prg, setPrg] = useState<File | undefined>();
+
+	const parsedPrgData = useParsePrg(prg);
+	const parsedSpriteBinPrgData = useSpriteBinParsePrg(prg);
 
 	return (
 		<Page>
