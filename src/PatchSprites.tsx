@@ -4,13 +4,14 @@ import { SpriteBinPatchDownloader } from "./SpriteBinPatchDownloader";
 import { SpriteBinSelector } from "./SpriteBinSelector";
 import { useParseSpriteBin } from "./useParseSpriteBin";
 import { SpriteBinPrgSelector } from "./SpriteBinPrgSelector";
-import { SpriteBinParsePrgResult } from "./useSpriteBinParsePrg";
+import { useSpriteBinParsePrg } from "./useSpriteBinParsePrg";
 
 export function PatchSprites({
-	parsedSpriteBinPrgData,
+	prg,
 }: {
-	readonly parsedSpriteBinPrgData: SpriteBinParsePrgResult | undefined;
+	readonly prg: File | undefined;
 }): ReactNode {
+	const parsedSpriteBinPrgData = useSpriteBinParsePrg(prg);
 	const [parsedSpriteBinData, setSpriteBin] = useParseSpriteBin();
 	// const [parsedSpriteBinData, setSpriteBin] = useSpriteBin();
 	return (

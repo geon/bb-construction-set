@@ -2,8 +2,6 @@ import { TabBar } from "./TabBar";
 import { PatchLevels } from "./PatchLevels";
 import styled from "styled-components";
 import { PatchSprites } from "./PatchSprites";
-import { useParsePrg } from "./useParsePrg";
-import { useSpriteBinParsePrg } from "./useSpriteBinParsePrg";
 import { Card } from "./Card";
 import { MinimalPrgSelector } from "./MinimalPrgSelector";
 import { useState } from "react";
@@ -17,9 +15,6 @@ const Page = styled.div`
 
 export function App() {
 	const [prg, setPrg] = useState<File | undefined>();
-
-	const parsedPrgData = useParsePrg(prg);
-	const parsedSpriteBinPrgData = useSpriteBinParsePrg(prg);
 
 	return (
 		<Page>
@@ -39,13 +34,11 @@ export function App() {
 				tabs={{
 					patchLevels: {
 						title: "Patch Levels",
-						render: () => <PatchLevels parsedPrgData={parsedPrgData} />,
+						render: () => <PatchLevels prg={prg} />,
 					},
 					patchSprites: {
 						title: "Patch Sprites",
-						render: () => (
-							<PatchSprites parsedSpriteBinPrgData={parsedSpriteBinPrgData} />
-						),
+						render: () => <PatchSprites prg={prg} />,
 					},
 				}}
 			/>
