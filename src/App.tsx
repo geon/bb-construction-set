@@ -1,6 +1,5 @@
 import { TabBar } from "./TabBar";
 import { PatchLevels } from "./PatchLevels";
-import { ReformatPe } from "./ReformatPe";
 import styled from "styled-components";
 import { PatchSprites } from "./PatchSprites";
 
@@ -32,10 +31,6 @@ export function App() {
 					patchSprites: {
 						title: "Patch Sprites",
 						render: () => <PatchSprites />,
-					},
-					reformatLevels: {
-						title: "Reformat Pe",
-						render: () => <ReformatPe />,
 					},
 				}}
 			/>
