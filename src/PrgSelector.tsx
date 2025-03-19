@@ -20,9 +20,7 @@ export function PrgSelector({
 			<p>
 				Select an <i>unpacked</i> c64 .prg-file containing Bubble Bobble. Most
 				.prg files you find will be <i>packed</i> and the c64 unpacks them on
-				startup. You can use{" "}
-				<a href="https://csdb.dk/release/?id=235681">Unp64</a> to unpack some of
-				them.
+				startup.
 			</p>
 			<FileInput accept={["prg"]} onChange={setPrg}>
 				Choose file
