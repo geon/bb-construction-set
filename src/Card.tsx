@@ -10,6 +10,4 @@ export const Card = styled.div`
 	border-radius: 5px;
 
 	padding: 1em;
-
-	margin-top: 2em;
 `;

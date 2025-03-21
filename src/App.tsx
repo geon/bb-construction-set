@@ -11,6 +11,10 @@ const Page = styled.div`
 	margin: 0 auto;
 	padding: 1rem;
 	text-align: center;
+
+	display: flex;
+	flex-direction: column;
+	gap: 2em;
 `;
 
 export function App() {
