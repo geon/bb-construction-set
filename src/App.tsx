@@ -33,19 +33,21 @@ export function App() {
 			<Card>
 				<MinimalPrgSelector setPrg={setPrg} />
 			</Card>
-			<TabBar
-				initialTabId={"patchLevels"}
-				tabs={{
-					patchLevels: {
-						title: "Patch Levels",
-						render: () => <PatchLevels prg={prg} />,
-					},
-					patchSprites: {
-						title: "Patch Sprites",
-						render: () => <PatchSprites prg={prg} />,
-					},
-				}}
-			/>
+			{prg && (
+				<TabBar
+					initialTabId={"patchLevels"}
+					tabs={{
+						patchLevels: {
+							title: "Patch Levels",
+							render: () => <PatchLevels prg={prg} />,
+						},
+						patchSprites: {
+							title: "Patch Sprites",
+							render: () => <PatchSprites prg={prg} />,
+						},
+					}}
+				/>
+			)}
 		</Page>
 	);
 }
