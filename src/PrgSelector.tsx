@@ -13,9 +13,7 @@ export function PrgSelector({
 }): ReactNode {
 	return (
 		<>
-			{!parsedPrgData ? (
-				<p>No prg selected.</p>
-			) : parsedPrgData?.type !== "ok" ? (
+			{parsedPrgData?.type !== "ok" ? (
 				<p>Could not parse prg: {parsedPrgData?.error ?? "No reason."}</p>
 			) : (
 				<>
