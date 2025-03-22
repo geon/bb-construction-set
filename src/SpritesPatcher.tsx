@@ -21,6 +21,8 @@ export function SpritesPatcher({
 			<FileInput accept={["bin"]} onChange={setSpriteBin}>
 				Choose file
 			</FileInput>
+			<br />
+			<br />
 			{!parsedSpriteBinData ? (
 				<p>No bin selected.</p>
 			) : parsedSpriteBinData?.type !== "ok" ? (
