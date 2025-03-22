@@ -26,11 +26,11 @@ export function useParsePrg(file: ArrayBuffer): ParsePrgResult | undefined {
 
 	useEffect(() => {
 		(async () => {
-			const buffer = file;
+			const prg = file;
 
 			setParsedPrgData(
 				attempt(() => {
-					const parsed = parsePrg(buffer);
+					const parsed = parsePrg(prg);
 					return {
 						...parsed,
 					};
