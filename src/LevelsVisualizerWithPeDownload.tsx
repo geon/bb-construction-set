@@ -21,17 +21,13 @@ export function LevelsVisualizerWithPeDownload({
 			) : (
 				<>
 					<LevelsViewer
-						{...parsedPrgData}
 						levels={parsedPrgData.result.levels}
 						spriteColors={mapRecord(
 							parsedPrgData.result.sprites,
 							({ color }) => color
 						)}
 					/>
-					<LevelCharsViewer
-						{...parsedPrgData}
-						levels={parsedPrgData.result.levels}
-					/>
+					<LevelCharsViewer levels={parsedPrgData.result.levels} />
 					<br />
 					<br />
 					<BlobDownloadButton
