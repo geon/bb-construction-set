@@ -18,7 +18,7 @@ const segmentLabels: Record<LevelDataSegmentName, string> = {
 	windCurrents: "Wind Currents",
 };
 
-export function PatchDownloader({
+export function LevelsPatcher({
 	prg,
 	parsedPeData,
 }: {

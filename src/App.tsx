@@ -4,7 +4,7 @@ import { Card } from "./Card";
 import { MinimalPrgSelector } from "./MinimalPrgSelector";
 import { useState } from "react";
 import { LevelsVisualizerWithPeDownload } from "./LevelsVisualizerWithPeDownload";
-import { PatchDownloader } from "./PatchDownloader";
+import { LevelsPatcher } from "./LevelsPatcher";
 import { PeSelector } from "./PeSelector";
 import { useParsePe } from "./useParsePe";
 import { SpriteBinPatchDownloader } from "./SpriteBinPatchDownloader";
@@ -55,7 +55,7 @@ export function App() {
 										</Card>
 										<Card>
 											<PeSelector parsedPeData={parsedPeData} setPe={setPe} />
-											<PatchDownloader prg={prg} parsedPeData={parsedPeData} />
+											<LevelsPatcher prg={prg} parsedPeData={parsedPeData} />
 										</Card>
 									</>
 								);
