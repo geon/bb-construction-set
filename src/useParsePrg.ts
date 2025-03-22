@@ -6,10 +6,7 @@ import { Sprites } from "./bb/sprite";
 import { ItemDataSegmentName } from "./bb/prg/data-locations";
 import { attempt } from "./bb/functions";
 
-export type ParsePrgResult = {
-	readonly fileName: string;
-	readonly fileSize: number;
-} & (
+export type ParsePrgResult =
 	| {
 			readonly type: "ok";
 			readonly result: {
@@ -22,8 +19,7 @@ export type ParsePrgResult = {
 	| {
 			readonly type: "error";
 			readonly error: string;
-	  }
-);
+	  };
 export function useParsePrg(
 	file: File | undefined
 ): ParsePrgResult | undefined {
@@ -40,17 +36,15 @@ export function useParsePrg(
 
 			const buffer = await file.arrayBuffer();
 
-			setParsedPrgData({
-				fileName: file.name,
-				fileSize: file.size,
-				...attempt(() => {
+			setParsedPrgData(
+				attempt(() => {
 					const parsed = parsePrg(buffer);
 					return {
 						prg: new Uint8Array(buffer),
 						...parsed,
 					};
-				}),
-			});
+				})
+			);
 		})();
 	}, [file]);
 
