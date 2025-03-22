@@ -1,12 +1,14 @@
 import { ReactNode } from "react";
 import { BlobDownloadButton } from "./BlobDownloadButton";
-import { SpriteBinParsePrgResult } from "./useSpriteBinParsePrg";
+import { useSpriteBinParsePrg } from "./useSpriteBinParsePrg";
 
 export function SpriteBinPrgSelector({
-	parsedPrgData,
+	prg,
 }: {
-	readonly parsedPrgData: SpriteBinParsePrgResult | undefined;
+	readonly prg: ArrayBuffer;
 }): ReactNode {
+	const parsedPrgData = useSpriteBinParsePrg(prg);
+
 	return (
 		<>
 			{parsedPrgData?.type !== "ok" ? (
