@@ -127,7 +127,7 @@ export function objectFromEntries<
 	return Object.fromEntries(entries) as { [K in T[number] as K[0]]: K[1] };
 }
 
-export function attempt<T>(fn: () => T):
+export type Attempt<T> =
 	| {
 			readonly type: "ok";
 			readonly result: T;
@@ -135,7 +135,8 @@ export function attempt<T>(fn: () => T):
 	| {
 			readonly type: "error";
 			readonly error: string;
-	  } {
+	  };
+export function attempt<T>(fn: () => T): Attempt<T> {
 	try {
 		return {
 			type: "ok",
