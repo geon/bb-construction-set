@@ -48,14 +48,17 @@ export const TabBarStyle = styled.div`
 	}
 `;
 
-type Tab = {
+type Tab<TId extends string> = {
 	readonly title: string | ReactNode;
-	readonly render: () => ReactNode | ReadonlyArray<ReactNode>;
+	readonly render: (
+		tab: Tab<TId>,
+		id: TId
+	) => ReactNode | ReadonlyArray<ReactNode>;
 };
 
 export function TabBar<TId extends string, TInitialTabId extends TId>(props: {
 	readonly initialTabId: TInitialTabId;
-	readonly tabs: Record<TId, Tab>;
+	readonly tabs: Record<TId, Tab<TId>>;
 }): ReactNode {
 	const [activeTabId, setActiveTabId] = React.useState<TId>(props.initialTabId);
 	const activeTab = props.tabs[activeTabId];
@@ -75,7 +78,7 @@ export function TabBar<TId extends string, TInitialTabId extends TId>(props: {
 					);
 				})}
 			</TabBarStyle>
-			{activeTab.render()}
+			{activeTab.render(activeTab, activeTabId)}
 		</>
 	);
 }
