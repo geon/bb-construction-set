@@ -14,7 +14,7 @@ export function PeSelector({
 }): ReactNode {
 	return (
 		<>
-			<h2>Select a PETSCII Editor-file</h2>
+			<h2>Patch</h2>
 			<p>
 				Save the file generated above, then edit it in the{" "}
 				<a href="https://petscii.krissz.hu">PETSCII Editor web app</a>, save it
