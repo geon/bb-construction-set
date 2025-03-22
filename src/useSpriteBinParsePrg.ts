@@ -1,17 +1,11 @@
 import { useEffect, useState } from "react";
 import { readSpritesBin } from "./bb/prg/sprites";
-import { attempt } from "./bb/functions";
+import { Attempt, attempt } from "./bb/functions";
 import { parsePrgSpriteBin } from "./bb/parse-prg";
 
-export type SpriteBinParsePrgResult =
-	| {
-			readonly type: "ok";
-			readonly result: ReturnType<typeof readSpritesBin>;
-	  }
-	| {
-			readonly type: "error";
-			readonly error: string;
-	  };
+export type SpriteBinParsePrgResult = Attempt<
+	ReturnType<typeof readSpritesBin>
+>;
 export function useSpriteBinParsePrg(
 	prg: ArrayBuffer
 ): SpriteBinParsePrgResult | undefined {
