@@ -47,7 +47,13 @@ export function LevelsPatcher({
 				<a href="https://petscii.krissz.hu">PETSCII Editor web app</a>, save it
 				and select it here.
 			</p>
-			<FileInput accept={["pe"]} multiple onChange={setPe}>
+			<FileInput
+				accept={["pe"]}
+				multiple
+				onChange={async (files) =>
+					setPe(await Promise.all(files.map((file) => file.arrayBuffer())))
+				}
+			>
 				Choose files
 			</FileInput>
 			{!parsedPeData ? (
