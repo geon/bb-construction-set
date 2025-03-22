@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Levels } from "./Levels";
+import { LevelsViewer } from "./LevelsViewer";
 import { ParsePeResult } from "./useParsePe";
 import { FileInput } from "./FileInput";
 import { getSpriteColorsFromPeFileData } from "./bb/level-pe-conversion";
@@ -28,7 +28,7 @@ export function PeSelector({
 				<p>Could not parse pe: {parsedPeData?.error ?? "No reason."}</p>
 			) : (
 				<>
-					<Levels
+					<LevelsViewer
 						{...parsedPeData}
 						levels={parsedPeData.result.levels}
 						spriteColors={getSpriteColorsFromPeFileData(

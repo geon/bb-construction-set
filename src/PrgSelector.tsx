@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { levelsToPeFileData } from "./bb/level-pe-conversion";
 import { serializePeFileData } from "./bb/pe-file";
 import { BlobDownloadButton } from "./BlobDownloadButton";
-import { Levels } from "./Levels";
+import { LevelsViewer } from "./LevelsViewer";
 import { attempt, mapRecord } from "./bb/functions";
 import { parsePrg } from "./bb/parse-prg";
 
@@ -16,7 +16,7 @@ export function PrgSelector({ prg }: { readonly prg: ArrayBuffer }): ReactNode {
 				<p>Could not parse prg: {parsedPrgData.error ?? "No reason."}</p>
 			) : (
 				<>
-					<Levels
+					<LevelsViewer
 						{...parsedPrgData}
 						levels={parsedPrgData.result.levels}
 						spriteColors={mapRecord(

@@ -12,7 +12,7 @@ import {
 import { CharacterName } from "./bb/sprite";
 import { PaletteIndex } from "./bb/palette";
 
-export function Levels(props: {
+export function LevelsViewer(props: {
 	readonly levels: readonly Level[];
 	readonly spriteColors: Record<CharacterName, PaletteIndex>;
 }): React.ReactNode {
