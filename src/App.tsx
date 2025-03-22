@@ -5,8 +5,6 @@ import { MinimalPrgSelector } from "./MinimalPrgSelector";
 import { useState } from "react";
 import { LevelsVisualizerWithPeDownload } from "./LevelsVisualizerWithPeDownload";
 import { LevelsPatcher } from "./LevelsPatcher";
-import { PeSelector } from "./PeSelector";
-import { useParsePe } from "./useParsePe";
 import { SpritesPatcher } from "./SpritesPatcher";
 import { SpritesVisualizerWithBinDownload } from "./SpritesVisualizerWithBinDownload";
 import { SpriteBinSelector } from "./SpriteBinSelector";
@@ -46,7 +44,6 @@ export function App() {
 						patchLevels: {
 							title: "Levels",
 							render: (tab) => {
-								const [parsedPeData, setPe] = useParsePe();
 								return (
 									<>
 										<Card>
@@ -54,8 +51,7 @@ export function App() {
 											<LevelsVisualizerWithPeDownload prg={prg} />
 										</Card>
 										<Card>
-											<PeSelector parsedPeData={parsedPeData} setPe={setPe} />
-											<LevelsPatcher prg={prg} parsedPeData={parsedPeData} />
+											<LevelsPatcher prg={prg} />
 										</Card>
 									</>
 								);
