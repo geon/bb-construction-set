@@ -35,7 +35,7 @@ import { readTiles } from "./prg/tiles";
 import { writeMonsters, readMonsters } from "./prg/monsters";
 import { readSprites, readSpritesBin } from "./prg/sprites";
 import { readTileBitmaps } from "./prg/tile-bitmap";
-import { writeSymmetry, writeBitmaps, writeHoles } from "./tests/misc-patch";
+import { writeSymmetry, writeBitmaps, writeHoles } from "./misc-patch";
 import { readBubbleCurrentPerLineDefaults } from "./prg/bubble-current-per-line-defaults";
 import { shadowChars, ShadowStyle } from "./shadow-chars";
 import { ReadonlyUint8Array } from "./prg/types";

@@ -1,10 +1,6 @@
-import { zipObject, chunk } from "../functions";
-import {
-	Tiles,
-	levelIsSymmetric,
-	BubbleCurrentPerLineDefaults,
-} from "../level";
-import { maxAsymmetric } from "../prg/data-locations";
+import { zipObject, chunk } from "./functions";
+import { Tiles, levelIsSymmetric, BubbleCurrentPerLineDefaults } from "./level";
+import { maxAsymmetric } from "./prg/data-locations";
 
 export function writeHoles(
 	tileses: readonly Tiles[],
