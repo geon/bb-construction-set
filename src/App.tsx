@@ -1,10 +1,16 @@
 import { TabBar } from "./TabBar";
-import { PatchLevels } from "./PatchLevels";
 import styled from "styled-components";
-import { PatchSprites } from "./PatchSprites";
 import { Card } from "./Card";
 import { MinimalPrgSelector } from "./MinimalPrgSelector";
 import { useState } from "react";
+import { LevelsVisualizerWithPeDownload } from "./LevelsVisualizerWithPeDownload";
+import { PatchDownloader } from "./PatchDownloader";
+import { PeSelector } from "./PeSelector";
+import { useParsePe } from "./useParsePe";
+import { SpriteBinPatchDownloader } from "./SpriteBinPatchDownloader";
+import { SpriteBinPrgSelector } from "./SpriteBinPrgSelector";
+import { SpriteBinSelector } from "./SpriteBinSelector";
+import { useParseSpriteBin } from "./useParseSpriteBin";
 
 const Page = styled.div`
 	width: 600px;
@@ -39,11 +45,43 @@ export function App() {
 					tabs={{
 						patchLevels: {
 							title: "Levels",
-							render: () => <PatchLevels prg={prg} />,
+							render: () => {
+								const [parsedPeData, setPe] = useParsePe();
+								return (
+									<>
+										<Card>
+											<LevelsVisualizerWithPeDownload prg={prg} />
+										</Card>
+										<Card>
+											<PeSelector parsedPeData={parsedPeData} setPe={setPe} />
+											<PatchDownloader prg={prg} parsedPeData={parsedPeData} />
+										</Card>
+									</>
+								);
+							},
 						},
 						patchSprites: {
 							title: "Sprites",
-							render: () => <PatchSprites prg={prg} />,
+							render: () => {
+								const [parsedSpriteBinData, setSpriteBin] = useParseSpriteBin();
+								return (
+									<>
+										<Card>
+											<SpriteBinPrgSelector prg={prg} />
+										</Card>
+										<Card>
+											<SpriteBinSelector
+												parsedSpriteBinData={parsedSpriteBinData}
+												setSpriteBin={setSpriteBin}
+											/>
+											<SpriteBinPatchDownloader
+												prg={prg}
+												parsedSpriteBinData={parsedSpriteBinData}
+											/>
+										</Card>
+									</>
+								);
+							},
 						},
 					}}
 				/>
