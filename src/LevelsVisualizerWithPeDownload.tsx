@@ -16,7 +16,6 @@ export function LevelsVisualizerWithPeDownload({
 
 	return (
 		<>
-			<h2>Levels</h2>
 			{parsedPrgData.type !== "ok" ? (
 				<p>Could not parse prg: {parsedPrgData.error ?? "No reason."}</p>
 			) : (

@@ -45,11 +45,12 @@ export function App() {
 					tabs={{
 						patchLevels: {
 							title: "Levels",
-							render: () => {
+							render: (tab) => {
 								const [parsedPeData, setPe] = useParsePe();
 								return (
 									<>
 										<Card>
+											<h2>{tab.title}</h2>
 											<LevelsVisualizerWithPeDownload prg={prg} />
 										</Card>
 										<Card>
@@ -62,11 +63,12 @@ export function App() {
 						},
 						patchSprites: {
 							title: "Sprites",
-							render: () => {
+							render: (tab) => {
 								const [parsedSpriteBinData, setSpriteBin] = useParseSpriteBin();
 								return (
 									<>
 										<Card>
+											<h2>{tab.title}</h2>
 											<SpriteBinPrgSelector prg={prg} />
 										</Card>
 										<Card>
