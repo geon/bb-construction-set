@@ -19,19 +19,19 @@ export type ParseSpriteBinResult =
 	  };
 export function useParseSpriteBin(): readonly [
 	ParseSpriteBinResult | undefined,
-	(file: File | undefined) => Promise<void>
+	(file: ArrayBuffer | undefined) => Promise<void>
 ] {
 	const [parsedSpriteBinData, setParsedSpriteBinData] = useState<
 		ParseSpriteBinResult | undefined
 	>(undefined);
 
-	const setSpriteBin = async (file: File | undefined): Promise<void> => {
+	const setSpriteBin = async (file: ArrayBuffer | undefined): Promise<void> => {
 		if (!file) {
 			setParsedSpriteBinData(undefined);
 			return;
 		}
 
-		const buffer = await file.arrayBuffer();
+		const buffer = file;
 
 		setParsedSpriteBinData(
 			attempt(() => {
