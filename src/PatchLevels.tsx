@@ -16,10 +16,7 @@ export function PatchLevels({ prg }: { readonly prg: ArrayBuffer }): ReactNode {
 			</Card>
 			<Card>
 				<PeSelector parsedPeData={parsedPeData} setPe={setPe} />
-				<PatchDownloader
-					parsedPrgData={parsedPrgData}
-					parsedPeData={parsedPeData}
-				/>
+				<PatchDownloader prg={prg} parsedPeData={parsedPeData} />
 			</Card>
 		</>
 	);

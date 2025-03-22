@@ -2,7 +2,6 @@ import { ReactNode, useState } from "react";
 import { patchPrg } from "./bb/parse-prg";
 import { BlobDownloadButton } from "./BlobDownloadButton";
 import { ParsePeResult } from "./useParsePe";
-import { ParsePrgResult } from "./useParsePrg";
 import { LevelDataSegmentName } from "./bb/prg/data-locations";
 import { CheckboxList } from "./CheckboxList";
 
@@ -20,10 +19,10 @@ const segmentLabels: Record<LevelDataSegmentName, string> = {
 };
 
 export function PatchDownloader({
-	parsedPrgData,
+	prg,
 	parsedPeData,
 }: {
-	readonly parsedPrgData: ParsePrgResult | undefined;
+	readonly prg: ArrayBuffer;
 	readonly parsedPeData: ParsePeResult | undefined;
 }): ReactNode {
 	const [selectedSegments, setSelectedSegments] = useState(
@@ -39,9 +38,9 @@ export function PatchDownloader({
 	return (
 		<>
 			<h2>Patch</h2>
-			{!(parsedPrgData && parsedPeData) ? (
+			{!parsedPeData ? (
 				<p>Select both a prg and a pe file.</p>
-			) : !(parsedPrgData?.type == "ok" && parsedPeData?.type == "ok") ? (
+			) : !(parsedPeData?.type == "ok") ? (
 				<p>Select valid files.</p>
 			) : (
 				<>
@@ -52,7 +51,6 @@ export function PatchDownloader({
 					/>
 					<BlobDownloadButton
 						getBlob={() => {
-							const prg = parsedPrgData.result.prg.buffer;
 							try {
 								const patched = patchPrg(
 									prg,
