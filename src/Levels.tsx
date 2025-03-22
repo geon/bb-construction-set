@@ -13,8 +13,6 @@ import { CharacterName } from "./bb/sprite";
 import { PaletteIndex } from "./bb/palette";
 
 export function Levels(props: {
-	readonly fileName: string;
-	readonly fileSize: number;
 	readonly levels: readonly Level[];
 	readonly spriteColors: Record<CharacterName, PaletteIndex>;
 }): React.ReactNode {
