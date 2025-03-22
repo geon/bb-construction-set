@@ -7,10 +7,8 @@ export type ParseSpriteBinResult =
 	| {
 			readonly type: "ok";
 			readonly result: {
-				readonly parsed: {
-					readonly spriteSegments: Record<SpriteDataSegmentName, Uint8Array>;
-					readonly spriteColorsSegment: Uint8Array;
-				};
+				readonly spriteSegments: Record<SpriteDataSegmentName, Uint8Array>;
+				readonly spriteColorsSegment: Uint8Array;
 			};
 	  }
 	| {
@@ -36,9 +34,7 @@ export function useParseSpriteBin(): readonly [
 		setParsedSpriteBinData(
 			attempt(() => {
 				const parsed = writeSpritesBin(new Uint8Array(buffer));
-				return {
-					parsed,
-				};
+				return parsed;
 			})
 		);
 	};
