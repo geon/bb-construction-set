@@ -12,7 +12,6 @@ export type SpriteBinParsePrgResult =
 	| {
 			readonly type: "ok";
 			readonly result: {
-				readonly prg: Uint8Array;
 				readonly spriteBin: Uint8Array;
 			};
 	  }
@@ -44,7 +43,6 @@ export function useSpriteBinParsePrg(
 						spriteColors.player
 					);
 					return {
-						prg: new Uint8Array(prg),
 						spriteBin,
 					};
 				})

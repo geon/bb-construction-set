@@ -10,7 +10,6 @@ export type ParsePrgResult =
 	| {
 			readonly type: "ok";
 			readonly result: {
-				readonly prg: Uint8Array;
 				readonly levels: readonly Level[];
 				readonly sprites: Sprites;
 				readonly items: Record<ItemDataSegmentName, CharBlock[]>;
@@ -33,7 +32,6 @@ export function useParsePrg(file: ArrayBuffer): ParsePrgResult | undefined {
 				attempt(() => {
 					const parsed = parsePrg(buffer);
 					return {
-						prg: new Uint8Array(buffer),
 						...parsed,
 					};
 				})
