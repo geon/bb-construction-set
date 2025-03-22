@@ -1,12 +1,17 @@
 import { ReactNode, useState } from "react";
 import { patchPrg } from "./bb/parse-prg";
-import { useParsePe } from "./useParsePe";
 import { LevelDataSegmentName } from "./bb/prg/data-locations";
 import { CheckboxList } from "./CheckboxList";
-import { getSpriteColorsFromPeFileData } from "./bb/level-pe-conversion";
+import {
+	getSpriteColorsFromPeFileData,
+	peFileDataToLevels,
+} from "./bb/level-pe-conversion";
 import { FileInput } from "./FileInput";
 import { LevelCharsViewer } from "./LevelCharsViewer";
 import { LevelsViewer } from "./LevelsViewer";
+import { Attempt, attempt } from "./bb/functions";
+import { deserializePeFileData, PeFileData } from "./bb/pe-file";
+import { Level } from "./bb/level";
 
 const segmentLabels: Record<LevelDataSegmentName, string> = {
 	symmetry: "Symmetry",
@@ -28,7 +33,27 @@ export function LevelsPatcher({
 	readonly prg: ArrayBuffer;
 	readonly setPrg: (file: ArrayBuffer | undefined) => void;
 }): ReactNode {
-	const [parsedPeData, setPes] = useParsePe();
+	const [parsedPeData, setParsedPeData] = useState<
+		Attempt<{
+			readonly levels: readonly Level[];
+			readonly deserializedPeFileDatas: readonly PeFileData[];
+		}>
+	>();
+
+	const setPes = (pes: readonly ArrayBuffer[]) =>
+		setParsedPeData(
+			attempt(() => {
+				const deserializedPeFileDatas = pes.map((buffer) =>
+					deserializePeFileData(new TextDecoder("utf-8").decode(buffer))
+				);
+				const levels = deserializedPeFileDatas.flatMap(peFileDataToLevels);
+
+				return {
+					levels,
+					deserializedPeFileDatas,
+				};
+			})
+		);
 
 	const [selectedSegments, setSelectedSegments] = useState(
 		new Set<LevelDataSegmentName>([
