@@ -11,7 +11,6 @@ export function PatchSprites({
 	readonly prg: ArrayBuffer;
 }): ReactNode {
 	const [parsedSpriteBinData, setSpriteBin] = useParseSpriteBin();
-	// const [parsedSpriteBinData, setSpriteBin] = useSpriteBin();
 	return (
 		<>
 			<Card>
