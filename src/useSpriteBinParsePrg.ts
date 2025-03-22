@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
-import {
-	monsterSpriteColorsSegmentLocation,
-	spriteDataSegmentLocations,
-} from "./bb/prg/data-locations";
 import { readSpritesBin } from "./bb/prg/sprites";
-import { getDataSegment, getDataSegments } from "./bb/prg/io";
 import { attempt } from "./bb/functions";
-import { spriteColors } from "./bb/sprite";
+import { parsePrgSpriteBin } from "./bb/parse-prg";
 
 export type SpriteBinParsePrgResult =
 	| {
@@ -28,16 +23,7 @@ export function useSpriteBinParsePrg(
 		(async () => {
 			setParsedPrgData(
 				attempt(() => {
-					const segments = getDataSegments(prg, spriteDataSegmentLocations);
-					const monsterColorsSegment = getDataSegment(
-						prg,
-						monsterSpriteColorsSegmentLocation
-					);
-					const spriteBin = readSpritesBin(
-						segments,
-						monsterColorsSegment,
-						spriteColors.player
-					);
+					const spriteBin = parsePrgSpriteBin(prg);
 					return spriteBin;
 				})
 			);

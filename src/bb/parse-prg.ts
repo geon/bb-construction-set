@@ -33,7 +33,7 @@ import {
 } from "./prg/sidebar-chars";
 import { readTiles } from "./prg/tiles";
 import { writeMonsters, readMonsters } from "./prg/monsters";
-import { readSprites } from "./prg/sprites";
+import { readSprites, readSpritesBin } from "./prg/sprites";
 import { readTileBitmaps } from "./prg/tile-bitmap";
 import { writeSymmetry, writeBitmaps, writeHoles } from "./tests/misc-patch";
 import { readBubbleCurrentPerLineDefaults } from "./prg/bubble-current-per-line-defaults";
@@ -155,6 +155,20 @@ export function patchPrg(
 
 function mixByte(newByte: number, originalByte: number, mask: number): number {
 	return (newByte & mask) | (originalByte & ~mask);
+}
+
+export function parsePrgSpriteBin(prg: ArrayBuffer): Uint8Array {
+	const segments = getDataSegments(prg, spriteDataSegmentLocations);
+	const monsterColorsSegment = getDataSegment(
+		prg,
+		monsterSpriteColorsSegmentLocation
+	);
+	const spriteBin = readSpritesBin(
+		segments,
+		monsterColorsSegment,
+		spriteColors.player
+	);
+	return spriteBin;
 }
 
 export function patchPrgSpritesBin(
