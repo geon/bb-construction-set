@@ -20,14 +20,11 @@ export function PrgDownloader({
 				<a href="https://bitbucket.org/magli143/exomizer/wiki/downloads/exomizer-3.1.2.zip">
 					Exomizer
 				</a>
-				.
-			</p>
-			<p>
-				Drag an unpacked prg onto this{" "}
+				. Drag an unpacked prg onto this{" "}
 				<a href={new URL("/pack.bat", import.meta.url).href} download>
 					.bat-file
-				</a>{" "}
-				to pack it for execution.
+				</a>
+				, placed in the same folder as Exomizer to pack it for execution.
 			</p>
 			<BlobDownloadButton
 				getBlob={() =>
