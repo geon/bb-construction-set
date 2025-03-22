@@ -3,7 +3,7 @@ import { patchPrgSpritesBin } from "./bb/parse-prg";
 import { BlobDownloadButton } from "./BlobDownloadButton";
 import { ParseSpriteBinResult } from "./useParseSpriteBin";
 
-export function SpriteBinPatchDownloader({
+export function SpritesPatcher({
 	prg,
 	parsedSpriteBinData,
 }: {
