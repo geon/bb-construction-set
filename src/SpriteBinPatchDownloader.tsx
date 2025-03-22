@@ -24,14 +24,14 @@ export function SpriteBinPatchDownloader({
 				<>
 					<BlobDownloadButton
 						getBlob={() => {
-							const prg = parsedPrgData.result.prg.buffer.slice(0);
+							const prg = parsedPrgData.result.prg.buffer;
 							try {
-								patchPrgSpritesBin(
+								const patched = patchPrgSpritesBin(
 									prg,
 									parsedSpriteBinData.result.parsed.spriteSegments,
 									parsedSpriteBinData.result.parsed.spriteColorsSegment
 								);
-								return new Blob([prg], {
+								return new Blob([patched], {
 									type: "application/octet-stream",
 								});
 							} catch (error) {

@@ -105,8 +105,6 @@ test("patchPrgSpritesBin", () => {
 		__dirname + "/decompressed-bb.prg"
 	).buffer;
 
-	const patched = prgFileContent.slice();
-
 	const spritesBin = writeSpritesBin(
 		readSpritesBin(
 			getDataSegments(prgFileContent, spriteDataSegmentLocations),
@@ -115,8 +113,8 @@ test("patchPrgSpritesBin", () => {
 		)
 	);
 
-	patchPrgSpritesBin(
-		patched,
+	const patched = patchPrgSpritesBin(
+		prgFileContent,
 		spritesBin.spriteSegments,
 		spritesBin.spriteColorsSegment
 	);

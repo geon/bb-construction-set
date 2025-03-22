@@ -161,9 +161,11 @@ export function patchPrgSpritesBin(
 	prg: ArrayBuffer,
 	newSpriteSegments: Record<SpriteDataSegmentName, Uint8Array>,
 	newSpriteColorsSegment: Uint8Array
-) {
+): ArrayBuffer {
+	const patchedPrg = prg.slice();
+
 	const prgSpriteSegments = getMutableDataSegments(
-		prg,
+		patchedPrg,
 		spriteDataSegmentLocations
 	);
 
@@ -187,8 +189,10 @@ export function patchPrgSpritesBin(
 	}
 
 	const prgSpriteColorsSegment = getDataSegment(
-		prg,
+		patchedPrg,
 		monsterSpriteColorsSegmentLocation
 	);
 	prgSpriteColorsSegment.buffer.set(newSpriteColorsSegment.slice(0, -1));
+
+	return patchedPrg;
 }
