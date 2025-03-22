@@ -1,12 +1,12 @@
 import { PaletteIndex } from "./palette";
+import { Tuple } from "./tuple";
 
 export const spriteWidthBytes = 3;
 export const spriteHeight = 21;
 export const numSpriteBytes = spriteWidthBytes * spriteHeight;
 
 export interface Sprite {
-	// Should be exactly numSpriteBytes long.
-	readonly bitmap: Array<number>;
+	readonly bitmap: Tuple<number, 63>;
 }
 
 export const characterNames = [
