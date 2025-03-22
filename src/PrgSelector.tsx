@@ -5,6 +5,7 @@ import { BlobDownloadButton } from "./BlobDownloadButton";
 import { LevelsViewer } from "./LevelsViewer";
 import { attempt, mapRecord } from "./bb/functions";
 import { parsePrg } from "./bb/parse-prg";
+import { LevelCharsViewer } from "./LevelCharsViewer";
 
 export function PrgSelector({ prg }: { readonly prg: ArrayBuffer }): ReactNode {
 	const parsedPrgData = attempt(() => parsePrg(prg));
@@ -23,6 +24,10 @@ export function PrgSelector({ prg }: { readonly prg: ArrayBuffer }): ReactNode {
 							parsedPrgData.result.sprites,
 							({ color }) => color
 						)}
+					/>
+					<LevelCharsViewer
+						{...parsedPrgData}
+						levels={parsedPrgData.result.levels}
 					/>
 					<br />
 					<br />

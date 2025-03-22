@@ -3,6 +3,7 @@ import { LevelsViewer } from "./LevelsViewer";
 import { ParsePeResult } from "./useParsePe";
 import { FileInput } from "./FileInput";
 import { getSpriteColorsFromPeFileData } from "./bb/level-pe-conversion";
+import { LevelCharsViewer } from "./LevelCharsViewer";
 
 export function PeSelector({
 	parsedPeData,
@@ -34,6 +35,10 @@ export function PeSelector({
 						spriteColors={getSpriteColorsFromPeFileData(
 							parsedPeData.result.deserializedPeFileDatas[0]!
 						)}
+					/>
+					<LevelCharsViewer
+						{...parsedPeData}
+						levels={parsedPeData.result.levels}
 					/>
 				</>
 			)}
