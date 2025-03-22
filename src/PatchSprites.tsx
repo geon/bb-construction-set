@@ -9,7 +9,7 @@ import { useSpriteBinParsePrg } from "./useSpriteBinParsePrg";
 export function PatchSprites({
 	prg,
 }: {
-	readonly prg: ArrayBuffer | undefined;
+	readonly prg: ArrayBuffer;
 }): ReactNode {
 	const parsedSpriteBinPrgData = useSpriteBinParsePrg(prg);
 	const [parsedSpriteBinData, setSpriteBin] = useParseSpriteBin();

@@ -6,11 +6,7 @@ import { PrgSelector } from "./PrgSelector";
 import { useParsePe } from "./useParsePe";
 import { useParsePrg } from "./useParsePrg";
 
-export function PatchLevels({
-	prg,
-}: {
-	readonly prg: ArrayBuffer | undefined;
-}): ReactNode {
+export function PatchLevels({ prg }: { readonly prg: ArrayBuffer }): ReactNode {
 	const parsedPrgData = useParsePrg(prg);
 	const [parsedPeData, setPe] = useParsePe();
 	return (
