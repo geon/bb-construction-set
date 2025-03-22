@@ -28,7 +28,7 @@ export function LevelsPatcher({
 	readonly prg: ArrayBuffer;
 	readonly setPrg: (file: ArrayBuffer | undefined) => void;
 }): ReactNode {
-	const [parsedPeData, setPe] = useParsePe();
+	const [parsedPeData, setPes] = useParsePe();
 
 	const [selectedSegments, setSelectedSegments] = useState(
 		new Set<LevelDataSegmentName>([
@@ -51,7 +51,7 @@ export function LevelsPatcher({
 				accept={["pe"]}
 				multiple
 				onChange={async (files) =>
-					setPe(await Promise.all(files.map((file) => file.arrayBuffer())))
+					setPes(await Promise.all(files.map((file) => file.arrayBuffer())))
 				}
 			>
 				Choose files
@@ -87,7 +87,7 @@ export function LevelsPatcher({
 								"retroForge"
 							);
 							setPrg(patched);
-							setPe([]);
+							setPes([]);
 						}}
 					>
 						Apply Patch
