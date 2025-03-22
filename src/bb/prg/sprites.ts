@@ -14,6 +14,7 @@ import {
 	spriteCounts,
 	Sprite,
 } from "../sprite";
+import { Tuple } from "../tuple";
 import {
 	spriteDataSegmentLocations,
 	SpriteDataSegmentName,
@@ -33,7 +34,9 @@ export function readSprites(
 	const ungroupedSprites = strictChunk(
 		[...spriteSegments.characters.buffer],
 		64
-	).map((bitmap): Sprite => ({ bitmap: bitmap.slice(0, 63) }));
+	).map(
+		(bitmap): Sprite => ({ bitmap: bitmap.slice(0, 63) as Tuple<number, 63> })
+	);
 
 	const sprites = groupBy(
 		[...nameByIndex.entries()].map(
