@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { FileInput } from "./FileInput";
 
-export function MinimalPrgSelector({
+export function PrgSelector({
 	setPrg,
 }: {
 	readonly setPrg: (file: ArrayBuffer | undefined) => void;
