@@ -21,7 +21,7 @@ export type SpriteBinParsePrgResult =
 			readonly error: string;
 	  };
 export function useSpriteBinParsePrg(
-	file: File | undefined
+	file: ArrayBuffer | undefined
 ): SpriteBinParsePrgResult | undefined {
 	const [parsedPrgData, setParsedPrgData] = useState<
 		SpriteBinParsePrgResult | undefined
@@ -34,7 +34,7 @@ export function useSpriteBinParsePrg(
 				return;
 			}
 
-			const prg = await file.arrayBuffer();
+			const prg = file;
 
 			setParsedPrgData(
 				attempt(() => {

@@ -9,7 +9,7 @@ import { useParsePrg } from "./useParsePrg";
 export function PatchLevels({
 	prg,
 }: {
-	readonly prg: File | undefined;
+	readonly prg: ArrayBuffer | undefined;
 }): ReactNode {
 	const parsedPrgData = useParsePrg(prg);
 	const [parsedPeData, setPe] = useParsePe();

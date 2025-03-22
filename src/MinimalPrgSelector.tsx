@@ -4,7 +4,7 @@ import { FileInput } from "./FileInput";
 export function MinimalPrgSelector({
 	setPrg,
 }: {
-	readonly setPrg: (file: File | undefined) => void;
+	readonly setPrg: (file: ArrayBuffer | undefined) => void;
 }): ReactNode {
 	return (
 		<>
@@ -14,7 +14,10 @@ export function MinimalPrgSelector({
 				.prg files you find will be <i>packed</i> and the c64 unpacks them on
 				startup.
 			</p>
-			<FileInput accept={["prg"]} onChange={setPrg}>
+			<FileInput
+				accept={["prg"]}
+				onChange={async (file) => setPrg(await file?.arrayBuffer())}
+			>
 				Choose file
 			</FileInput>
 		</>

@@ -21,7 +21,7 @@ export type ParsePrgResult =
 			readonly error: string;
 	  };
 export function useParsePrg(
-	file: File | undefined
+	file: ArrayBuffer | undefined
 ): ParsePrgResult | undefined {
 	const [parsedPrgData, setParsedPrgData] = useState<
 		ParsePrgResult | undefined
@@ -34,7 +34,7 @@ export function useParsePrg(
 				return;
 			}
 
-			const buffer = await file.arrayBuffer();
+			const buffer = file;
 
 			setParsedPrgData(
 				attempt(() => {

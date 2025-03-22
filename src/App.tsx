@@ -18,7 +18,7 @@ const Page = styled.div`
 `;
 
 export function App() {
-	const [prg, setPrg] = useState<File | undefined>();
+	const [prg, setPrg] = useState<ArrayBuffer | undefined>();
 
 	return (
 		<Page>
