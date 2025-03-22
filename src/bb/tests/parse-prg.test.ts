@@ -1,6 +1,11 @@
 import { expect, test } from "vitest";
 import { readFileSync } from "fs";
-import { parsePrg, patchPrg, patchPrgSpritesBin } from "../parse-prg";
+import {
+	parsePrg,
+	parsePrgSpriteBin,
+	patchPrg,
+	patchPrgSpritesBin,
+} from "../parse-prg";
 import {
 	bubbleCurrentRectangleToBytes,
 	bytesToBubbleCurrentRectangle,
@@ -105,13 +110,7 @@ test("patchPrgSpritesBin", () => {
 		__dirname + "/decompressed-bb.prg"
 	).buffer;
 
-	const spritesBin = writeSpritesBin(
-		readSpritesBin(
-			getDataSegments(prgFileContent, spriteDataSegmentLocations),
-			getDataSegment(prgFileContent, monsterSpriteColorsSegmentLocation),
-			spriteColors.player
-		)
-	);
+	const spritesBin = writeSpritesBin(parsePrgSpriteBin(prgFileContent));
 
 	const patched = patchPrgSpritesBin(
 		prgFileContent,
