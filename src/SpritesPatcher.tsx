@@ -28,14 +28,6 @@ export function SpritesPatcher({
 			) : parsedSpriteBinData?.type !== "ok" ? (
 				<p>Could not parse bin: {parsedSpriteBinData?.error ?? "No reason."}</p>
 			) : (
-				<></>
-			)}
-
-			{!parsedSpriteBinData ? (
-				<p>Select both a prg and a pe file.</p>
-			) : !(parsedSpriteBinData?.type == "ok") ? (
-				<p>Select valid files.</p>
-			) : (
 				<>
 					<button
 						onClick={() => {

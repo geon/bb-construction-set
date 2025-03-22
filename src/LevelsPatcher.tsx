@@ -67,15 +67,6 @@ export function LevelsPatcher({
 						{...parsedPeData}
 						levels={parsedPeData.result.levels}
 					/>
-				</>
-			)}
-
-			{!parsedPeData ? (
-				<p>Select both a prg and a pe file.</p>
-			) : !(parsedPeData?.type == "ok") ? (
-				<p>Select valid files.</p>
-			) : (
-				<>
 					<CheckboxList
 						options={segmentLabels}
 						selected={selectedSegments}
