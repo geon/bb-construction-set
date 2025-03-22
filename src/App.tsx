@@ -1,7 +1,7 @@
 import { TabBar } from "./TabBar";
 import styled from "styled-components";
 import { Card } from "./Card";
-import { MinimalPrgSelector } from "./MinimalPrgSelector";
+import { PrgSelector } from "./PrgSelector";
 import { useState } from "react";
 import { LevelsVisualizerWithPeDownload } from "./LevelsVisualizerWithPeDownload";
 import { LevelsPatcher } from "./LevelsPatcher";
@@ -27,11 +27,7 @@ export function App() {
 		<Page>
 			<h1>BB Construction Set</h1>
 			<Card>
-				{prg ? (
-					<PrgDownloader prg={prg} />
-				) : (
-					<MinimalPrgSelector setPrg={setPrg} />
-				)}
+				{prg ? <PrgDownloader prg={prg} /> : <PrgSelector setPrg={setPrg} />}
 			</Card>
 			{prg && (
 				<TabBar
