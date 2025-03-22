@@ -7,8 +7,6 @@ import { LevelsVisualizerWithPeDownload } from "./LevelsVisualizerWithPeDownload
 import { LevelsPatcher } from "./LevelsPatcher";
 import { SpritesPatcher } from "./SpritesPatcher";
 import { SpritesVisualizerWithBinDownload } from "./SpritesVisualizerWithBinDownload";
-import { SpriteBinSelector } from "./SpriteBinSelector";
-import { useParseSpriteBin } from "./useParseSpriteBin";
 
 const Page = styled.div`
 	width: 600px;
@@ -60,7 +58,6 @@ export function App() {
 						patchSprites: {
 							title: "Sprites",
 							render: (tab) => {
-								const [parsedSpriteBinData, setSpriteBin] = useParseSpriteBin();
 								return (
 									<>
 										<Card>
@@ -68,14 +65,7 @@ export function App() {
 											<SpritesVisualizerWithBinDownload prg={prg} />
 										</Card>
 										<Card>
-											<SpriteBinSelector
-												parsedSpriteBinData={parsedSpriteBinData}
-												setSpriteBin={setSpriteBin}
-											/>
-											<SpritesPatcher
-												prg={prg}
-												parsedSpriteBinData={parsedSpriteBinData}
-											/>
+											<SpritesPatcher prg={prg} />
 										</Card>
 									</>
 								);
