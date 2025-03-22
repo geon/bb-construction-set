@@ -13,7 +13,6 @@ export function SpritesPatcher({
 
 	return (
 		<>
-			<h2>Select a SpritePad bin-file</h2>
 			<p>
 				Save the file generated above, then edit it in SpritePad, save it and
 				select it here.
@@ -29,7 +28,6 @@ export function SpritesPatcher({
 				<></>
 			)}
 
-			<h2>Patch</h2>
 			{!parsedSpriteBinData ? (
 				<p>Select both a prg and a pe file.</p>
 			) : !(parsedSpriteBinData?.type == "ok") ? (

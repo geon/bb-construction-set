@@ -41,7 +41,6 @@ export function LevelsPatcher({
 
 	return (
 		<>
-			<h2>Patch</h2>
 			<p>
 				Save the file generated above, then edit it in the{" "}
 				<a href="https://petscii.krissz.hu">PETSCII Editor web app</a>, save it
@@ -70,7 +69,6 @@ export function LevelsPatcher({
 				</>
 			)}
 
-			<h2>Patch</h2>
 			{!parsedPeData ? (
 				<p>Select both a prg and a pe file.</p>
 			) : !(parsedPeData?.type == "ok") ? (

@@ -49,6 +49,7 @@ export function App() {
 											<LevelsVisualizerWithPeDownload prg={prg} />
 										</Card>
 										<Card>
+											<h2>Patch</h2>
 											<LevelsPatcher prg={prg} />
 										</Card>
 									</>
@@ -65,6 +66,7 @@ export function App() {
 											<SpritesVisualizerWithBinDownload prg={prg} />
 										</Card>
 										<Card>
+											<h2>Patch</h2>
 											<SpritesPatcher prg={prg} />
 										</Card>
 									</>
