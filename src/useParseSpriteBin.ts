@@ -3,10 +3,7 @@ import { writeSpritesBin } from "./bb/prg/sprites";
 import { SpriteDataSegmentName } from "./bb/prg/data-locations";
 import { attempt } from "./bb/functions";
 
-export type ParseSpriteBinResult = {
-	readonly fileName: string;
-	readonly fileSize: number;
-} & (
+export type ParseSpriteBinResult =
 	| {
 			readonly type: "ok";
 			readonly result: {
@@ -19,8 +16,7 @@ export type ParseSpriteBinResult = {
 	| {
 			readonly type: "error";
 			readonly error: string;
-	  }
-);
+	  };
 export function useParseSpriteBin(): readonly [
 	ParseSpriteBinResult | undefined,
 	(file: File | undefined) => Promise<void>
@@ -37,16 +33,14 @@ export function useParseSpriteBin(): readonly [
 
 		const buffer = await file.arrayBuffer();
 
-		setParsedSpriteBinData({
-			fileName: file.name,
-			fileSize: file.size,
-			...attempt(() => {
+		setParsedSpriteBinData(
+			attempt(() => {
 				const parsed = writeSpritesBin(new Uint8Array(buffer));
 				return {
 					parsed,
 				};
-			}),
-		});
+			})
+		);
 	};
 
 	return [parsedSpriteBinData, setSpriteBin];

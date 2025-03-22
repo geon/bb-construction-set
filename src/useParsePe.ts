@@ -2,12 +2,9 @@ import { useState } from "react";
 import { Level } from "./bb/level";
 import { peFileDataToLevels } from "./bb/level-pe-conversion";
 import { deserializePeFileData, PeFileData } from "./bb/pe-file";
-import { attempt, sum } from "./bb/functions";
+import { attempt } from "./bb/functions";
 
-export type ParsePeResult = {
-	readonly fileName: string;
-	readonly fileSize: number;
-} & (
+export type ParsePeResult =
 	| {
 			readonly type: "ok";
 			readonly result: {
@@ -18,8 +15,7 @@ export type ParsePeResult = {
 	| {
 			readonly type: "error";
 			readonly error: string;
-	  }
-);
+	  };
 export function useParsePe(): readonly [
 	ParsePeResult | undefined,
 	(pes: readonly File[]) => Promise<void>
@@ -36,10 +32,8 @@ export function useParsePe(): readonly [
 
 		const buffers = await Promise.all(pes.map((pe) => pe.arrayBuffer()));
 
-		setParsedPeData({
-			fileName: pes.map((pe) => pe.name).join(", "),
-			fileSize: sum(pes.map((pe) => pe.size)),
-			...attempt(() => {
+		setParsedPeData(
+			attempt(() => {
 				const deserializedPeFileDatas = buffers.map((pe) => {
 					return deserializePeFileData(new TextDecoder("utf-8").decode(pe));
 				});
@@ -50,8 +44,8 @@ export function useParsePe(): readonly [
 					levels,
 					deserializedPeFileDatas,
 				};
-			}),
-		});
+			})
+		);
 	};
 
 	return [parsedPeData, setPe];
