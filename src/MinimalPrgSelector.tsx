@@ -10,9 +10,9 @@ export function MinimalPrgSelector({
 		<>
 			<h2>Select a prg-file</h2>
 			<p>
-				Select an <i>unpacked</i> c64 .prg-file containing Bubble Bobble. Most
-				.prg files you find will be <i>packed</i> and the c64 unpacks them on
-				startup.
+				Select an <i>unpacked</i> c64 prg-file containing Bubble Bobble. Most
+				prg-files you find will be <i>packed</i> and the c64 unpacks them on
+				startup. Such packed prg:s can't be used.
 			</p>
 			<FileInput
 				accept={["prg"]}
