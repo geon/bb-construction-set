@@ -48,7 +48,7 @@ export function App() {
 										</Card>
 										<Card>
 											<h2>Patch</h2>
-											<LevelsPatcher prg={prg} />
+											<LevelsPatcher prg={prg} setPrg={setPrg} />
 										</Card>
 									</>
 								);
@@ -65,7 +65,7 @@ export function App() {
 										</Card>
 										<Card>
 											<h2>Patch</h2>
-											<SpritesPatcher prg={prg} />
+											<SpritesPatcher prg={prg} setPrg={setPrg} />
 										</Card>
 									</>
 								);
