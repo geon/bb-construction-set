@@ -8,7 +8,7 @@ import { LevelsPatcher } from "./LevelsPatcher";
 import { PeSelector } from "./PeSelector";
 import { useParsePe } from "./useParsePe";
 import { SpriteBinPatchDownloader } from "./SpriteBinPatchDownloader";
-import { SpriteBinPrgSelector } from "./SpriteBinPrgSelector";
+import { SpritesVisualizerWithBinDownload } from "./SpritesVisualizerWithBinDownload";
 import { SpriteBinSelector } from "./SpriteBinSelector";
 import { useParseSpriteBin } from "./useParseSpriteBin";
 
@@ -69,7 +69,7 @@ export function App() {
 									<>
 										<Card>
 											<h2>{tab.title}</h2>
-											<SpriteBinPrgSelector prg={prg} />
+											<SpritesVisualizerWithBinDownload prg={prg} />
 										</Card>
 										<Card>
 											<SpriteBinSelector

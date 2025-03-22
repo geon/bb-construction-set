@@ -3,7 +3,7 @@ import { BlobDownloadButton } from "./BlobDownloadButton";
 import { attempt } from "./bb/functions";
 import { parsePrgSpriteBin } from "./bb/parse-prg";
 
-export function SpriteBinPrgSelector({
+export function SpritesVisualizerWithBinDownload({
 	prg,
 }: {
 	readonly prg: ArrayBuffer;
