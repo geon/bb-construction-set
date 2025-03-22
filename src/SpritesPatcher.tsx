@@ -18,7 +18,10 @@ export function SpritesPatcher({
 				Save the file generated above, then edit it in SpritePad, save it and
 				select it here.
 			</p>
-			<FileInput accept={["bin"]} onChange={setSpriteBin}>
+			<FileInput
+				accept={["bin"]}
+				onChange={async (file) => setSpriteBin(await file?.arrayBuffer())}
+			>
 				Choose file
 			</FileInput>
 			<br />
