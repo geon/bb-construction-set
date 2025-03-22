@@ -7,7 +7,7 @@ import { LevelsVisualizerWithPeDownload } from "./LevelsVisualizerWithPeDownload
 import { LevelsPatcher } from "./LevelsPatcher";
 import { PeSelector } from "./PeSelector";
 import { useParsePe } from "./useParsePe";
-import { SpriteBinPatchDownloader } from "./SpriteBinPatchDownloader";
+import { SpritesPatcher } from "./SpritesPatcher";
 import { SpritesVisualizerWithBinDownload } from "./SpritesVisualizerWithBinDownload";
 import { SpriteBinSelector } from "./SpriteBinSelector";
 import { useParseSpriteBin } from "./useParseSpriteBin";
@@ -76,7 +76,7 @@ export function App() {
 												parsedSpriteBinData={parsedSpriteBinData}
 												setSpriteBin={setSpriteBin}
 											/>
-											<SpriteBinPatchDownloader
+											<SpritesPatcher
 												prg={prg}
 												parsedSpriteBinData={parsedSpriteBinData}
 											/>
