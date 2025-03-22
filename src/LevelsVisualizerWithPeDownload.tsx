@@ -7,7 +7,11 @@ import { attempt, mapRecord } from "./bb/functions";
 import { parsePrg } from "./bb/parse-prg";
 import { LevelCharsViewer } from "./LevelCharsViewer";
 
-export function PrgSelector({ prg }: { readonly prg: ArrayBuffer }): ReactNode {
+export function LevelsVisualizerWithPeDownload({
+	prg,
+}: {
+	readonly prg: ArrayBuffer;
+}): ReactNode {
 	const parsedPrgData = attempt(() => parsePrg(prg));
 
 	return (

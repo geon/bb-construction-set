@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { Card } from "./Card";
 import { PatchDownloader } from "./PatchDownloader";
 import { PeSelector } from "./PeSelector";
-import { PrgSelector } from "./PrgSelector";
+import { LevelsVisualizerWithPeDownload } from "./LevelsVisualizerWithPeDownload";
 import { useParsePe } from "./useParsePe";
 
 export function PatchLevels({ prg }: { readonly prg: ArrayBuffer }): ReactNode {
@@ -10,7 +10,7 @@ export function PatchLevels({ prg }: { readonly prg: ArrayBuffer }): ReactNode {
 	return (
 		<>
 			<Card>
-				<PrgSelector prg={prg} />
+				<LevelsVisualizerWithPeDownload prg={prg} />
 			</Card>
 			<Card>
 				<PeSelector parsedPeData={parsedPeData} setPe={setPe} />
