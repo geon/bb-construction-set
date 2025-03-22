@@ -62,11 +62,13 @@ test("First few levels bubble current rectangles.", () => {
 });
 
 test("patchPrg", () => {
-	const prgFileContent = readFileSync(__dirname + "/decompressed-bb.prg");
+	const prgFileContent = readFileSync(
+		__dirname + "/decompressed-bb.prg"
+	).buffer;
 
-	const patched = prgFileContent.buffer.slice();
+	const patched = prgFileContent.slice();
 
-	const { levels } = parsePrg(prgFileContent.buffer);
+	const { levels } = parsePrg(prgFileContent);
 	patchPrg(patched, levels, undefined, "originalC64");
 
 	// Just comparing the ArrayBuffers is super slow and fails.
@@ -74,14 +76,16 @@ test("patchPrg", () => {
 });
 
 test("spritesBin color", () => {
-	const prgFileContent = readFileSync(__dirname + "/decompressed-bb.prg");
+	const prgFileContent = readFileSync(
+		__dirname + "/decompressed-bb.prg"
+	).buffer;
 
 	const prgSpriteSegments = getDataSegments(
-		prgFileContent.buffer,
+		prgFileContent,
 		spriteDataSegmentLocations
 	);
 	const prgSpriteColorSegment = getDataSegment(
-		prgFileContent.buffer,
+		prgFileContent,
 		monsterSpriteColorsSegmentLocation
 	);
 	const spritesBin = writeSpritesBin(
@@ -99,14 +103,16 @@ test("spritesBin color", () => {
 });
 
 test("patchPrgSpritesBin", () => {
-	const prgFileContent = readFileSync(__dirname + "/decompressed-bb.prg");
+	const prgFileContent = readFileSync(
+		__dirname + "/decompressed-bb.prg"
+	).buffer;
 
-	const patched = prgFileContent.buffer.slice();
+	const patched = prgFileContent.slice();
 
 	const spritesBin = writeSpritesBin(
 		readSpritesBin(
-			getDataSegments(prgFileContent.buffer, spriteDataSegmentLocations),
-			getDataSegment(prgFileContent.buffer, monsterSpriteColorsSegmentLocation),
+			getDataSegments(prgFileContent, spriteDataSegmentLocations),
+			getDataSegment(prgFileContent, monsterSpriteColorsSegmentLocation),
 			spriteColors.player
 		)
 	);
