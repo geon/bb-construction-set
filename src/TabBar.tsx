@@ -58,6 +58,7 @@ export function TabBar<TId extends string, TInitialTabId extends TId>(props: {
 	readonly tabs: Record<TId, Tab>;
 }): ReactNode {
 	const [activeTabId, setActiveTabId] = React.useState<TId>(props.initialTabId);
+	const activeTab = props.tabs[activeTabId];
 
 	return (
 		<>
@@ -74,7 +75,7 @@ export function TabBar<TId extends string, TInitialTabId extends TId>(props: {
 					);
 				})}
 			</TabBarStyle>
-			{props.tabs[activeTabId].render()}
+			{activeTab.render()}
 		</>
 	);
 }
