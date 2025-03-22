@@ -11,9 +11,7 @@ import { spriteColors } from "./bb/sprite";
 export type SpriteBinParsePrgResult =
 	| {
 			readonly type: "ok";
-			readonly result: {
-				readonly spriteBin: Uint8Array;
-			};
+			readonly result: ReturnType<typeof readSpritesBin>;
 	  }
 	| {
 			readonly type: "error";
@@ -40,9 +38,7 @@ export function useSpriteBinParsePrg(
 						monsterColorsSegment,
 						spriteColors.player
 					);
-					return {
-						spriteBin,
-					};
+					return spriteBin;
 				})
 			);
 		})();

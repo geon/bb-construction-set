@@ -15,7 +15,7 @@ export function SpriteBinPrgSelector({
 				<>
 					<BlobDownloadButton
 						getBlob={() =>
-							new Blob([parsedPrgData.result.spriteBin], {
+							new Blob([parsedPrgData.result], {
 								type: "application/json",
 							})
 						}
