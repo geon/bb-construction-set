@@ -18,26 +18,23 @@ export type ParsePeResult =
 	  };
 export function useParsePe(): readonly [
 	ParsePeResult | undefined,
-	(pes: readonly File[]) => Promise<void>
+	(pes: readonly ArrayBuffer[]) => Promise<void>
 ] {
 	const [parsedPeData, setParsedPeData] = useState<ParsePeResult | undefined>(
 		undefined
 	);
 
-	const setPe = async (pes: readonly File[]): Promise<void> => {
+	const setPe = async (pes: readonly ArrayBuffer[]): Promise<void> => {
 		if (!pes.length) {
 			setParsedPeData(undefined);
 			return;
 		}
 
-		const buffers = await Promise.all(pes.map((pe) => pe.arrayBuffer()));
-
 		setParsedPeData(
 			attempt(() => {
-				const deserializedPeFileDatas = buffers.map((pe) => {
-					return deserializePeFileData(new TextDecoder("utf-8").decode(pe));
-				});
-
+				const deserializedPeFileDatas = pes.map((buffer) =>
+					deserializePeFileData(new TextDecoder("utf-8").decode(buffer))
+				);
 				const levels = deserializedPeFileDatas.flatMap(peFileDataToLevels);
 
 				return {
