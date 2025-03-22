@@ -7,6 +7,7 @@ import { LevelsVisualizerWithPeDownload } from "./LevelsVisualizerWithPeDownload
 import { LevelsPatcher } from "./LevelsPatcher";
 import { SpritesPatcher } from "./SpritesPatcher";
 import { SpritesVisualizerWithBinDownload } from "./SpritesVisualizerWithBinDownload";
+import { PrgDownloader } from "./PrgDownloader";
 
 const Page = styled.div`
 	width: 600px;
@@ -25,15 +26,12 @@ export function App() {
 	return (
 		<Page>
 			<h1>BB Construction Set</h1>
-			<p>
-				Drag an unpacked prg onto this{" "}
-				<a href={new URL("/pack.bat", import.meta.url).href} download>
-					.bat-file
-				</a>{" "}
-				to pack it for execution.
-			</p>
 			<Card>
-				<MinimalPrgSelector setPrg={setPrg} />
+				{prg ? (
+					<PrgDownloader prg={prg} />
+				) : (
+					<MinimalPrgSelector setPrg={setPrg} />
+				)}
 			</Card>
 			{prg && (
 				<TabBar
