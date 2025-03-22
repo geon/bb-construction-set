@@ -4,15 +4,13 @@ import { PatchDownloader } from "./PatchDownloader";
 import { PeSelector } from "./PeSelector";
 import { PrgSelector } from "./PrgSelector";
 import { useParsePe } from "./useParsePe";
-import { useParsePrg } from "./useParsePrg";
 
 export function PatchLevels({ prg }: { readonly prg: ArrayBuffer }): ReactNode {
-	const parsedPrgData = useParsePrg(prg);
 	const [parsedPeData, setPe] = useParsePe();
 	return (
 		<>
 			<Card>
-				<PrgSelector parsedPrgData={parsedPrgData} />
+				<PrgSelector prg={prg} />
 			</Card>
 			<Card>
 				<PeSelector parsedPeData={parsedPeData} setPe={setPe} />

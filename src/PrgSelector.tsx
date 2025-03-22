@@ -3,14 +3,12 @@ import { levelsToPeFileData } from "./bb/level-pe-conversion";
 import { serializePeFileData } from "./bb/pe-file";
 import { BlobDownloadButton } from "./BlobDownloadButton";
 import { Levels } from "./Levels";
-import { ParsePrgResult } from "./useParsePrg";
+import { useParsePrg } from "./useParsePrg";
 import { mapRecord } from "./bb/functions";
 
-export function PrgSelector({
-	parsedPrgData,
-}: {
-	readonly parsedPrgData: ParsePrgResult | undefined;
-}): ReactNode {
+export function PrgSelector({ prg }: { readonly prg: ArrayBuffer }): ReactNode {
+	const parsedPrgData = useParsePrg(prg);
+
 	return (
 		<>
 			<h2>Current prg-file levels</h2>
