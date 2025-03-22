@@ -48,15 +48,14 @@ export const TabBarStyle = styled.div`
 	}
 `;
 
+type Tab = {
+	readonly title: string | ReactNode;
+	readonly render: () => ReactNode | ReadonlyArray<ReactNode>;
+};
+
 export function TabBar<TId extends string, TInitialTabId extends TId>(props: {
 	readonly initialTabId: TInitialTabId;
-	readonly tabs: Record<
-		TId,
-		{
-			readonly title: string | ReactNode;
-			readonly render: () => ReactNode | ReadonlyArray<ReactNode>;
-		}
-	>;
+	readonly tabs: Record<TId, Tab>;
 }): ReactNode {
 	const [activeTabId, setActiveTabId] = React.useState<TId>(props.initialTabId);
 
