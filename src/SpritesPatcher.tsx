@@ -37,6 +37,7 @@ export function SpritesPatcher({
 								parsedSpriteBinData.result.parsed.spriteColorsSegment
 							);
 							setPrg(patched);
+							setSpriteBin(undefined);
 						}}
 					>
 						Apply Patch

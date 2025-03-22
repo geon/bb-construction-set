@@ -81,6 +81,7 @@ export function LevelsPatcher({
 								"retroForge"
 							);
 							setPrg(patched);
+							setPe([]);
 						}}
 					>
 						Apply Patch
