@@ -1,6 +1,5 @@
 import { ReactNode, useState } from "react";
 import { patchPrg } from "./bb/parse-prg";
-import { BlobDownloadButton } from "./BlobDownloadButton";
 import { useParsePe } from "./useParsePe";
 import { LevelDataSegmentName } from "./bb/prg/data-locations";
 import { CheckboxList } from "./CheckboxList";
@@ -24,8 +23,10 @@ const segmentLabels: Record<LevelDataSegmentName, string> = {
 
 export function LevelsPatcher({
 	prg,
+	setPrg,
 }: {
 	readonly prg: ArrayBuffer;
+	readonly setPrg: (file: ArrayBuffer | undefined) => void;
 }): ReactNode {
 	const [parsedPeData, setPe] = useParsePe();
 
@@ -80,26 +81,19 @@ export function LevelsPatcher({
 						selected={selectedSegments}
 						setSelected={setSelectedSegments}
 					/>
-					<BlobDownloadButton
-						getBlob={() => {
-							try {
-								const patched = patchPrg(
-									prg,
-									parsedPeData.result.levels,
-									selectedSegments,
-									"retroForge"
-								);
-								return new Blob([patched], {
-									type: "application/octet-stream",
-								});
-							} catch (error) {
-								// setPatchError(error.message);
-								throw error;
-							}
+					<button
+						onClick={() => {
+							const patched = patchPrg(
+								prg,
+								parsedPeData.result.levels,
+								selectedSegments,
+								"retroForge"
+							);
+							setPrg(patched);
 						}}
-						label="Download patched prg"
-						fileName="custom bubble bobble.prg"
-					/>
+					>
+						Apply Patch
+					</button>
 				</>
 			)}
 		</>

@@ -1,13 +1,14 @@
 import { ReactNode } from "react";
 import { patchPrgSpritesBin } from "./bb/parse-prg";
-import { BlobDownloadButton } from "./BlobDownloadButton";
 import { useParseSpriteBin } from "./useParseSpriteBin";
 import { FileInput } from "./FileInput";
 
 export function SpritesPatcher({
 	prg,
+	setPrg,
 }: {
 	readonly prg: ArrayBuffer;
+	readonly setPrg: (file: ArrayBuffer | undefined) => void;
 }): ReactNode {
 	const [parsedSpriteBinData, setSpriteBin] = useParseSpriteBin();
 
@@ -34,25 +35,18 @@ export function SpritesPatcher({
 				<p>Select valid files.</p>
 			) : (
 				<>
-					<BlobDownloadButton
-						getBlob={() => {
-							try {
-								const patched = patchPrgSpritesBin(
-									prg,
-									parsedSpriteBinData.result.parsed.spriteSegments,
-									parsedSpriteBinData.result.parsed.spriteColorsSegment
-								);
-								return new Blob([patched], {
-									type: "application/octet-stream",
-								});
-							} catch (error) {
-								// setPatchError(error.message);
-								throw error;
-							}
+					<button
+						onClick={() => {
+							const patched = patchPrgSpritesBin(
+								prg,
+								parsedSpriteBinData.result.parsed.spriteSegments,
+								parsedSpriteBinData.result.parsed.spriteColorsSegment
+							);
+							setPrg(patched);
 						}}
-						label="Download patched prg"
-						fileName="custom bubble bobble.prg"
-					/>
+					>
+						Apply Patch
+					</button>
 				</>
 			)}
 		</>
