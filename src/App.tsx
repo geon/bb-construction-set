@@ -38,11 +38,11 @@ export function App() {
 					initialTabId={"patchLevels"}
 					tabs={{
 						patchLevels: {
-							title: "Patch Levels",
+							title: "Levels",
 							render: () => <PatchLevels prg={prg} />,
 						},
 						patchSprites: {
-							title: "Patch Sprites",
+							title: "Sprites",
 							render: () => <PatchSprites prg={prg} />,
 						},
 					}}
