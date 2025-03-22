@@ -36,8 +36,8 @@ export function SpritesPatcher({
 						onClick={() => {
 							const patched = patchPrgSpritesBin(
 								prg,
-								parsedSpriteBinData.result.parsed.spriteSegments,
-								parsedSpriteBinData.result.parsed.spriteColorsSegment
+								parsedSpriteBinData.result.spriteSegments,
+								parsedSpriteBinData.result.spriteColorsSegment
 							);
 							setPrg(patched);
 							setSpriteBin(undefined);
