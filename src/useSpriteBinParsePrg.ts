@@ -20,14 +20,12 @@ export function useSpriteBinParsePrg(
 	>(undefined);
 
 	useEffect(() => {
-		(async () => {
-			setParsedPrgData(
-				attempt(() => {
-					const spriteBin = parsePrgSpriteBin(prg);
-					return spriteBin;
-				})
-			);
-		})();
+		setParsedPrgData(
+			attempt(() => {
+				const spriteBin = parsePrgSpriteBin(prg);
+				return spriteBin;
+			})
+		);
 	}, [prg]);
 
 	return parsedPrgData;

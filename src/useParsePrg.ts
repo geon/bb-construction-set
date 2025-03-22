@@ -17,16 +17,14 @@ export function useParsePrg(prg: ArrayBuffer): ParsePrgResult | undefined {
 	>(undefined);
 
 	useEffect(() => {
-		(async () => {
-			setParsedPrgData(
-				attempt(() => {
-					const parsed = parsePrg(prg);
-					return {
-						...parsed,
-					};
-				})
-			);
-		})();
+		setParsedPrgData(
+			attempt(() => {
+				const parsed = parsePrg(prg);
+				return {
+					...parsed,
+				};
+			})
+		);
 	}, [prg]);
 
 	return parsedPrgData;
