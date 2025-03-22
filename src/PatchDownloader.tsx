@@ -52,15 +52,15 @@ export function PatchDownloader({
 					/>
 					<BlobDownloadButton
 						getBlob={() => {
-							const prg = parsedPrgData.result.prg.buffer.slice(0);
+							const prg = parsedPrgData.result.prg.buffer;
 							try {
-								patchPrg(
+								const patched = patchPrg(
 									prg,
 									parsedPeData.result.levels,
 									selectedSegments,
 									"retroForge"
 								);
-								return new Blob([prg], {
+								return new Blob([patched], {
 									type: "application/octet-stream",
 								});
 							} catch (error) {

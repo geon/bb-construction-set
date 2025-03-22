@@ -66,10 +66,8 @@ test("patchPrg", () => {
 		__dirname + "/decompressed-bb.prg"
 	).buffer;
 
-	const patched = prgFileContent.slice();
-
 	const { levels } = parsePrg(prgFileContent);
-	patchPrg(patched, levels, undefined, "originalC64");
+	const patched = patchPrg(prgFileContent, levels, undefined, "originalC64");
 
 	// Just comparing the ArrayBuffers is super slow and fails.
 	expect(Buffer.from(patched)).toStrictEqual(Buffer.from(prgFileContent));

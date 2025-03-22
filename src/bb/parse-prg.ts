@@ -129,8 +129,10 @@ export function patchPrg(
 	levels: readonly Level[],
 	segmentsToPatch: Set<LevelDataSegmentName> | undefined,
 	shadowStyle: ShadowStyle
-) {
-	const prgSegments = getMutableDataSegments(prg, levelSegmentLocations);
+): ArrayBuffer {
+	const patchedPrg = prg.slice();
+
+	const prgSegments = getMutableDataSegments(patchedPrg, levelSegmentLocations);
 	const newSegments = levelsToSegments(prgSegments, levels, shadowStyle);
 
 	for (const segmentName of segmentsToPatch ?? levelDataSegmentNames) {
@@ -147,6 +149,8 @@ export function patchPrg(
 			)
 		);
 	}
+
+	return patchedPrg;
 }
 
 function mixByte(newByte: number, originalByte: number, mask: number): number {
