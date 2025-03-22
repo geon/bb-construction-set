@@ -19,15 +19,13 @@ export type ParsePrgResult =
 			readonly type: "error";
 			readonly error: string;
 	  };
-export function useParsePrg(file: ArrayBuffer): ParsePrgResult | undefined {
+export function useParsePrg(prg: ArrayBuffer): ParsePrgResult | undefined {
 	const [parsedPrgData, setParsedPrgData] = useState<
 		ParsePrgResult | undefined
 	>(undefined);
 
 	useEffect(() => {
 		(async () => {
-			const prg = file;
-
 			setParsedPrgData(
 				attempt(() => {
 					const parsed = parsePrg(prg);
@@ -37,7 +35,7 @@ export function useParsePrg(file: ArrayBuffer): ParsePrgResult | undefined {
 				})
 			);
 		})();
-	}, [file]);
+	}, [prg]);
 
 	return parsedPrgData;
 }

@@ -20,7 +20,7 @@ export type SpriteBinParsePrgResult =
 			readonly error: string;
 	  };
 export function useSpriteBinParsePrg(
-	file: ArrayBuffer
+	prg: ArrayBuffer
 ): SpriteBinParsePrgResult | undefined {
 	const [parsedPrgData, setParsedPrgData] = useState<
 		SpriteBinParsePrgResult | undefined
@@ -28,8 +28,6 @@ export function useSpriteBinParsePrg(
 
 	useEffect(() => {
 		(async () => {
-			const prg = file;
-
 			setParsedPrgData(
 				attempt(() => {
 					const segments = getDataSegments(prg, spriteDataSegmentLocations);
@@ -48,7 +46,7 @@ export function useSpriteBinParsePrg(
 				})
 			);
 		})();
-	}, [file]);
+	}, [prg]);
 
 	return parsedPrgData;
 }
