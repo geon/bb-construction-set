@@ -165,7 +165,8 @@ function getCharPalette(level: Level): [Color, Color, Color, Color] {
 		palette[0],
 		palette[level.bgColorDark],
 		palette[level.bgColorLight],
-		{ r: 255, g: 0, b: 255 },
+		// The color ram gets cleared to green at the beginning of the game.
+		palette[5],
 	];
 }
 
