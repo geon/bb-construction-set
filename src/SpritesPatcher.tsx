@@ -1,7 +1,8 @@
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { patchPrgSpritesBin } from "./bb/parse-prg";
-import { useParseSpriteBin } from "./useParseSpriteBin";
 import { FileInput } from "./FileInput";
+import { Attempt, attempt } from "./bb/functions";
+import { writeSpritesBin } from "./bb/prg/sprites";
 
 export function SpritesPatcher({
 	prg,
@@ -10,7 +11,18 @@ export function SpritesPatcher({
 	readonly prg: ArrayBuffer;
 	readonly setPrg: (file: ArrayBuffer | undefined) => void;
 }): ReactNode {
-	const [parsedSpriteBinData, setSpriteBin] = useParseSpriteBin();
+	const [parsedSpriteBinData, setParsedSpriteBinData] = useState<
+		Attempt<ReturnType<typeof writeSpritesBin>> | undefined
+	>(undefined);
+
+	const setSpriteBin = (buffer: ArrayBuffer | undefined) =>
+		setParsedSpriteBinData(
+			buffer &&
+				attempt(() => {
+					const parsed = writeSpritesBin(new Uint8Array(buffer));
+					return parsed;
+				})
+		);
 
 	return (
 		<>
