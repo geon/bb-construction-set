@@ -20,20 +20,13 @@ export type ParsePrgResult =
 			readonly type: "error";
 			readonly error: string;
 	  };
-export function useParsePrg(
-	file: ArrayBuffer | undefined
-): ParsePrgResult | undefined {
+export function useParsePrg(file: ArrayBuffer): ParsePrgResult | undefined {
 	const [parsedPrgData, setParsedPrgData] = useState<
 		ParsePrgResult | undefined
 	>(undefined);
 
 	useEffect(() => {
 		(async () => {
-			if (!file) {
-				setParsedPrgData(undefined);
-				return;
-			}
-
 			const buffer = file;
 
 			setParsedPrgData(
