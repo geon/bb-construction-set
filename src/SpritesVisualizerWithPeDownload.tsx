@@ -27,9 +27,9 @@ export function SpritesVisualizerWithPeDownload({
 							blob: new Blob([parsedPrgData.result], {
 								type: "application/json",
 							}),
+							fileName: "bubble bobble c64 - all sprites.bin",
 						})}
 						label="Download SpritePad bin-file."
-						fileName="bubble bobble c64 - all sprites.bin"
 					/>
 				</>
 			)}

@@ -31,9 +31,9 @@ export function PrgDownloader({
 					blob: new Blob([prg], {
 						type: "application/octet-stream",
 					}),
+					fileName: "custom bubble bobble.prg",
 				})}
 				label="Save prg"
-				fileName="custom bubble bobble.prg"
 			/>
 		</>
 	);
