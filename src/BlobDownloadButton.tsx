@@ -1,3 +1,5 @@
+import { InputWithSizeMeta, makeZip } from "client-zip";
+
 export function BlobDownloadButton(props: {
 	getBlob: () => {
 		readonly fileName: string;
@@ -6,10 +8,10 @@ export function BlobDownloadButton(props: {
 				readonly blob: Blob;
 		  }
 		| {
-				readonly parts: {
+				readonly parts: readonly {
 					readonly fileName: string;
 					readonly blob: Blob;
-				};
+				}[];
 		  }
 	);
 	label: string;
@@ -21,7 +23,16 @@ export function BlobDownloadButton(props: {
 				const { blob, fileName } = !("parts" in result)
 					? result
 					: {
-							blob: await new Response(makeZip(result.blobs)).blob(),
+							blob: await new Response(
+								makeZip(
+									result.parts.map(
+										(x): InputWithSizeMeta => ({
+											input: x.blob,
+											name: x.fileName,
+										})
+									)
+								)
+							).blob(),
 							fileName: result.fileName,
 					  };
 
