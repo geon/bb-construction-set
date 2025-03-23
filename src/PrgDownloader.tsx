@@ -27,11 +27,11 @@ export function PrgDownloader({
 				, placed in the same folder as Exomizer to pack it for execution.
 			</p>
 			<BlobDownloadButton
-				getBlob={() =>
-					new Blob([prg], {
+				getBlob={() => ({
+					blob: new Blob([prg], {
 						type: "application/octet-stream",
-					})
-				}
+					}),
+				})}
 				label="Save prg"
 				fileName="custom bubble bobble.prg"
 			/>

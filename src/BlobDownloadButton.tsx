@@ -1,5 +1,7 @@
 export function BlobDownloadButton(props: {
-	getBlob: () => Blob;
+	getBlob: () => {
+		readonly blob: Blob;
+	};
 	label: string;
 	fileName: string;
 }) {
@@ -7,7 +9,7 @@ export function BlobDownloadButton(props: {
 		<button
 			onClick={() => {
 				const fileName = props.fileName;
-				const blob = props.getBlob();
+				const { blob } = props.getBlob();
 
 				var link = document.createElement("a");
 				link.download = fileName;

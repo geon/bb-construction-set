@@ -23,11 +23,11 @@ export function SpritesVisualizerWithBinDownload({
 					<br />
 					<br />
 					<BlobDownloadButton
-						getBlob={() =>
-							new Blob([parsedPrgData.result], {
+						getBlob={() => ({
+							blob: new Blob([parsedPrgData.result], {
 								type: "application/json",
-							})
-						}
+							}),
+						})}
 						label="Download SpritePad bin-file."
 						fileName="bubble bobble c64 - all sprites.bin"
 					/>

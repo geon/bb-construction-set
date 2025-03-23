@@ -31,14 +31,14 @@ export function LevelsVisualizerWithPeDownload({
 					<br />
 					<br />
 					<BlobDownloadButton
-						getBlob={() =>
-							new Blob(
+						getBlob={() => ({
+							blob: new Blob(
 								[serializePeFileData(levelsToPeFileData(parsedPrgData.result))],
 								{
 									type: "application/json",
 								}
-							)
-						}
+							),
+						})}
 						label="Download PETSCII Editor file"
 						fileName="bubble bobble c64 - all levels.pe"
 					/>
