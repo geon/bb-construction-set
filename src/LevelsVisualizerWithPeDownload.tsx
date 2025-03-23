@@ -32,17 +32,13 @@ export function LevelsVisualizerWithPeDownload({
 					<br />
 					<BlobDownloadButton
 						getBlob={() => {
+							const blob = new Blob(
+								[serializePeFileData(levelsToPeFileData(parsedPrgData.result))],
+								{ type: "application/json" }
+							);
+
 							return {
-								blob: new Blob(
-									[
-										serializePeFileData(
-											levelsToPeFileData(parsedPrgData.result)
-										),
-									],
-									{
-										type: "application/json",
-									}
-								),
+								blob,
 								fileName: "bubble bobble c64 - all levels.pe",
 							};
 						}}
