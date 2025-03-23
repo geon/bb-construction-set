@@ -38,9 +38,9 @@ export function LevelsVisualizerWithPeDownload({
 									type: "application/json",
 								}
 							),
+							fileName: "bubble bobble c64 - all levels.pe",
 						})}
 						label="Download PETSCII Editor file"
-						fileName="bubble bobble c64 - all levels.pe"
 					/>
 				</>
 			)}
