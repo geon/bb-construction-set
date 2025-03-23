@@ -7,10 +7,11 @@ export function BlobDownloadButton(props: {
 		<button
 			onClick={() => {
 				const fileName = props.fileName;
+				const blob = props.getBlob();
 
 				var link = document.createElement("a");
 				link.download = fileName;
-				link.href = URL.createObjectURL(props.getBlob());
+				link.href = URL.createObjectURL(blob);
 				link.click();
 			}}
 		>
