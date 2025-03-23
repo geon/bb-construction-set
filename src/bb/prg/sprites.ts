@@ -13,7 +13,11 @@ import {
 	CharacterName,
 	spriteCounts,
 	Sprite,
+	SpriteGroupName,
 	getCharacterOffsetInSprites,
+	spriteGroupLocations,
+	SpriteGroup,
+	isCharacterName,
 } from "../sprite";
 import { Tuple } from "../tuple";
 import {
@@ -143,4 +147,51 @@ function getSpriteDataSegmentOffsetInBin(
 			.slice(0, spriteDataSegmentNames.indexOf(segmentName))
 			.map((segmentName) => spriteDataSegmentLocations[segmentName].length)
 	);
+}
+
+export function readSpriteGroups(
+	spriteSegments: Record<SpriteDataSegmentName, DataSegment>,
+	monsterColorSegment: DataSegment,
+	playerColor: PaletteIndex
+): Record<SpriteGroupName, SpriteGroup> {
+	const characterColors = [
+		playerColor,
+		...monsterColorSegment.buffer,
+	] as PaletteIndex[];
+
+	const characterSpriteColors = objectFromEntries(
+		characterNames.map((name, characterIndex) => [
+			name,
+			characterColors[characterIndex]!,
+		])
+	);
+
+	const spritesBySegment = mapRecord(spriteSegments, (segment, _segmentName) =>
+		strictChunk([...new Uint8Array(segment.buffer)], 64)
+			.map((withPadding) => withPadding.slice(0, -1) as Tuple<number, 63>)
+			.map((bitmap): Sprite => ({ bitmap }))
+	);
+
+	const spriteGroups = mapRecord(
+		spriteGroupLocations,
+		(location, groupName): SpriteGroup => {
+			const color = isCharacterName(groupName)
+				? characterSpriteColors[groupName]
+				: playerColor;
+
+			return {
+				sprites: range(0, location.length).map((index): Sprite => {
+					const sprite =
+						spritesBySegment[location.segmentName][location.startIndex + index];
+					if (!sprite) {
+						throw new Error(`Missing sprite ${index} in group ${groupName}.`);
+					}
+					return sprite;
+				}),
+				color,
+			};
+		}
+	);
+
+	return spriteGroups;
 }

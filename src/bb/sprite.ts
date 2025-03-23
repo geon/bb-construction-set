@@ -1,5 +1,6 @@
-import { objectFromEntries, sum } from "./functions";
+import { sum } from "./functions";
 import { PaletteIndex } from "./palette";
+import { SpriteDataSegmentName } from "./prg/data-locations";
 import { Tuple } from "./tuple";
 
 export const spriteWidthBytes = 3;
@@ -82,3 +83,111 @@ export function getCharacterOffsetInSprites(
 			.map((characterName) => spriteCounts[characterName])
 	);
 }
+
+export const spriteGroupNames = [
+	...characterNames,
+	"playerInBubble",
+	"bossFacingLeft",
+	"bossFacingRight",
+	"bossInBubble",
+	"bonusCupCake",
+	"bonusMelon",
+	"bonusDiamond",
+] as const;
+
+export type SpriteGroupName = (typeof spriteGroupNames)[number];
+
+export const spriteGroupLocations: Record<
+	SpriteGroupName,
+	{
+		segmentName: SpriteDataSegmentName;
+		startIndex: number;
+		length: number;
+	}
+> = {
+	player: {
+		segmentName: "characters",
+		startIndex: getCharacterOffsetInSprites("player"),
+		length: spriteCounts.player,
+	},
+	bubbleBuster: {
+		segmentName: "characters",
+		startIndex: getCharacterOffsetInSprites("bubbleBuster"),
+		length: spriteCounts.bubbleBuster,
+	},
+	incendo: {
+		segmentName: "characters",
+		startIndex: getCharacterOffsetInSprites("incendo"),
+		length: spriteCounts.incendo,
+	},
+	colley: {
+		segmentName: "characters",
+		startIndex: getCharacterOffsetInSprites("colley"),
+		length: spriteCounts.colley,
+	},
+	hullaballoon: {
+		segmentName: "characters",
+		startIndex: getCharacterOffsetInSprites("hullaballoon"),
+		length: spriteCounts.hullaballoon,
+	},
+	beluga: {
+		segmentName: "characters",
+		startIndex: getCharacterOffsetInSprites("beluga"),
+		length: spriteCounts.beluga,
+	},
+	willyWhistle: {
+		segmentName: "characters",
+		startIndex: getCharacterOffsetInSprites("willyWhistle"),
+		length: spriteCounts.willyWhistle,
+	},
+	stoner: {
+		segmentName: "characters",
+		startIndex: getCharacterOffsetInSprites("stoner"),
+		length: spriteCounts.stoner,
+	},
+	superSocket: {
+		segmentName: "characters",
+		startIndex: getCharacterOffsetInSprites("superSocket"),
+		length: spriteCounts.superSocket,
+	},
+	playerInBubble: {
+		segmentName: "playerInBubble",
+		startIndex: 0,
+		length: 8,
+	},
+	bossFacingLeft: {
+		segmentName: "bossA",
+		startIndex: 0,
+		length: 9,
+	},
+	bossInBubble: {
+		segmentName: "bossA",
+		startIndex: 9,
+		length: 9,
+	},
+	bossFacingRight: {
+		segmentName: "bossB",
+		startIndex: 0,
+		length: 9,
+	},
+	bonusCupCake: {
+		segmentName: "bonusCupCake",
+		startIndex: 0,
+		length: 4,
+	},
+	bonusMelon: {
+		segmentName: "bonusMelon",
+		startIndex: 0,
+		length: 4,
+	},
+	bonusDiamond: {
+		segmentName: "bonusDiamond",
+		startIndex: 0,
+		length: 2,
+	},
+};
+
+export type SpriteGroup = {
+	readonly sprites: Sprite[];
+	readonly color: PaletteIndex;
+};
