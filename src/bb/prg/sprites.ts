@@ -13,6 +13,7 @@ import {
 	CharacterName,
 	spriteCounts,
 	Sprite,
+	getCharacterOffsetInSprites,
 } from "../sprite";
 import { Tuple } from "../tuple";
 import {
@@ -141,14 +142,5 @@ function getSpriteDataSegmentOffsetInBin(
 		spriteDataSegmentNames
 			.slice(0, spriteDataSegmentNames.indexOf(segmentName))
 			.map((segmentName) => spriteDataSegmentLocations[segmentName].length)
-	);
-}
-
-function getCharacterOffsetInSprites(characterName: CharacterName): number {
-	// Sum up the length of all segments before the wanted one.
-	return sum(
-		characterNames
-			.slice(0, characterNames.indexOf(characterName))
-			.map((characterName) => spriteCounts[characterName])
 	);
 }
