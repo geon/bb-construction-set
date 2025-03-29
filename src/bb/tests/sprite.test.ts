@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { readSprites, readSpritesBin } from "../prg/sprites";
+import { readSpriteGroups, readSprites, readSpritesBin } from "../prg/sprites";
 import { getDataSegments, getDataSegment } from "../prg/io";
 import { readFileSync } from "fs";
 import {
@@ -26,9 +26,7 @@ test("readSpritesBin snapshot", () => {
 	);
 
 	const sprites = readSpritesBin(
-		segments,
-		monsterColorsSegment,
-		spriteColors.player
+		readSpriteGroups(segments, monsterColorsSegment, spriteColors.player)
 	);
 
 	expect(sprites).toMatchSnapshot();

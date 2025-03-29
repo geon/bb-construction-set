@@ -18,6 +18,7 @@ import {
 	spriteGroupLocations,
 	SpriteGroup,
 	isCharacterName,
+	SpriteGroupLocation,
 } from "../sprite";
 import { Tuple } from "../tuple";
 import {
@@ -25,7 +26,7 @@ import {
 	SpriteDataSegmentName,
 	spriteDataSegmentNames,
 } from "./data-locations";
-import { DataSegment, uint8ArrayConcatenate } from "./io";
+import { DataSegment } from "./io";
 
 export function readSprites(
 	spriteSegments: Record<SpriteDataSegmentName, DataSegment>,
@@ -75,40 +76,47 @@ export function readSprites(
 }
 
 export function readSpritesBin(
-	spriteSegments: Record<SpriteDataSegmentName, DataSegment>,
-	monsterColorSegment: DataSegment,
-	playerColor: PaletteIndex
+	spriteGroups: Record<SpriteGroupName, SpriteGroup>
 ): Uint8Array {
-	const characterColors = [playerColor, ...monsterColorSegment.buffer];
+	const spriteGroupNamesBySegment = groupBy(
+		Object.entries(spriteGroupLocations) as [
+			SpriteGroupName,
+			SpriteGroupLocation
+		][],
+		([, { segmentName }]) => segmentName,
+		([spriteGroupName]) => spriteGroupName
+	);
 
-	const characterSpriteColors = characterNames
-		.map((name, characterIndex) => ({
-			count: spriteCounts[name],
-			color: characterColors[characterIndex]!,
-		}))
-		.map((charcater) => Array<number>(charcater.count).fill(charcater.color))
-		.flat();
-
-	return uint8ArrayConcatenate(
-		spriteDataSegmentNames.map((segmentName) => {
-			// Not doing Object.entries(dataSegments) to avoid accidentally goint out of sync with writeSpritesBin.
-			const segment = spriteSegments[segmentName];
-			const bufferCopy = new Uint8Array(segment.buffer).slice();
-
-			for (const spriteIndex of range(0, bufferCopy.length / 64)) {
-				const paddingByteIndex = (spriteIndex + 1) * 64 - 1;
-				const multicolorBit = 0b10000000;
-				const color =
-					segmentName !== "characters"
-						? playerColor
-						: characterSpriteColors[spriteIndex]!;
-				bufferCopy[paddingByteIndex] = multicolorBit | color;
+	return new Uint8Array(
+		spriteDataSegmentNames.flatMap((segmentName): number[] => {
+			const spriteGroupNamesInSegment = spriteGroupNamesBySegment[segmentName];
+			if (!spriteGroupNamesInSegment) {
+				throw new Error("No spriteGroupsInSegment " + segmentName);
 			}
 
-			return bufferCopy;
+			const multicolorBit = 0b10000000;
+			return spriteGroupNamesInSegment.flatMap((spriteGroupName): number[] => {
+				const spriteGroup = spriteGroups[spriteGroupName];
+				return spriteGroup.sprites.flatMap((sprite): number[] => [
+					...sprite.bitmap,
+					multicolorBit | spriteGroup.color,
+				]);
+			});
 		})
 	);
 }
+
+// function spriteGroupToBinFile(spriteGroup: SpriteGroup): Uint8Array {
+// 	return uint8ArrayConcatenate(
+// 		spriteGroup.sprites.map((sprite) =>
+// 			spriteToBinFile(sprite, spriteGroup.color)
+// 		)
+// 	);
+// }
+
+// function spriteToBinFile(sprite: Sprite, color: PaletteIndex): Uint8Array {
+// 	return new Uint8Array([...sprite.bitmap, multicolorBit | color]);
+// }
 
 export function writeSpritesBin(binFileContents: Uint8Array): {
 	readonly spriteSegments: Record<SpriteDataSegmentName, Uint8Array>;

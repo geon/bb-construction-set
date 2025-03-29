@@ -13,7 +13,11 @@ import {
 import { deserializePeFileData } from "../pe-file";
 import { peFileDataToLevels } from "../level-pe-conversion";
 import { knownGoodBubbleCurrentRectsForLevels } from "./knownGoodBubbleCurrentRectsForLevels";
-import { readSpritesBin, writeSpritesBin } from "../prg/sprites";
+import {
+	readSpriteGroups,
+	readSpritesBin,
+	writeSpritesBin,
+} from "../prg/sprites";
 import {
 	monsterSpriteColorsSegmentLocation,
 	spriteDataSegmentLocations,
@@ -93,9 +97,11 @@ test("spritesBin color", () => {
 	);
 	const spritesBin = writeSpritesBin(
 		readSpritesBin(
-			prgSpriteSegments,
-			prgSpriteColorSegment,
-			spriteColors.player
+			readSpriteGroups(
+				prgSpriteSegments,
+				prgSpriteColorSegment,
+				spriteColors.player
+			)
 		)
 	);
 
