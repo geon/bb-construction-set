@@ -214,9 +214,9 @@ export function drawSpritesToCanvas(
 	ctx.fill();
 
 	const image = new ImageData(spriteWidthPixels, spriteHeight);
-	for (const [spriteY, characterSprites] of characherSpriteGroups.entries()) {
-		for (const [spriteX, sprite] of characterSprites.sprites.entries()) {
-			const spritePalette = getSpritePalette(characterSprites.color);
+	for (const [spriteY, spriteGroup] of characherSpriteGroups.entries()) {
+		for (const [spriteX, sprite] of spriteGroup.sprites.entries()) {
+			const spritePalette = getSpritePalette(spriteGroup.color);
 			for (let pixelY = 0; pixelY < spriteHeight; ++pixelY) {
 				for (let byteX = 0; byteX < spriteWidthBytes; ++byteX) {
 					const byte = sprite.bitmap[pixelY * spriteWidthBytes + byteX]!;
