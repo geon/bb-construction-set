@@ -4,7 +4,8 @@ import { Color, mixColors, black } from "./color";
 import { CharBlock, CharBlockIndex, CharsetChar } from "./charset-char";
 import {
 	CharacterName,
-	Sprites,
+	SpriteGroup,
+	SpriteGroupName,
 	spriteHeight,
 	spriteWidthBytes,
 } from "./sprite";
@@ -189,7 +190,7 @@ function drawChar(
 }
 
 export function drawSpritesToCanvas(
-	sprites: Sprites,
+	sprites: Record<SpriteGroupName, SpriteGroup>,
 	canvas: HTMLCanvasElement
 ) {
 	const ctx = canvas.getContext("2d");
