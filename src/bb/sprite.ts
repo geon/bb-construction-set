@@ -116,13 +116,15 @@ export const spriteGroupMultiWidths: Record<SpriteGroupName, number> = {
 	bonusDiamond: 2,
 };
 
+export type SpriteGroupLocation = {
+	segmentName: SpriteDataSegmentName;
+	startIndex: number;
+	length: number;
+};
+
 export const spriteGroupLocations: Record<
 	SpriteGroupName,
-	{
-		segmentName: SpriteDataSegmentName;
-		startIndex: number;
-		length: number;
-	}
+	SpriteGroupLocation
 > = {
 	player: {
 		segmentName: "characters",
