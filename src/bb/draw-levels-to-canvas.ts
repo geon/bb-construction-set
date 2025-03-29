@@ -190,7 +190,7 @@ function drawChar(
 }
 
 export function drawSpritesToCanvas(
-	sprites: Record<SpriteGroupName, SpriteGroup>,
+	spriteGroups: Record<SpriteGroupName, SpriteGroup>,
 	canvas: HTMLCanvasElement
 ) {
 	const ctx = canvas.getContext("2d");
@@ -198,7 +198,7 @@ export function drawSpritesToCanvas(
 		return;
 	}
 
-	const characherSpriteGroups = Object.values(sprites);
+	const characherSpriteGroups = Object.values(spriteGroups);
 	const numCharacters = characherSpriteGroups.length;
 	const spriteWidthPixels = spriteWidthBytes * 8;
 	const maxSpritesForCharacter = characherSpriteGroups.reduce(
