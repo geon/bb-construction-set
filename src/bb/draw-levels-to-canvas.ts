@@ -199,7 +199,7 @@ export function drawSpritesToCanvas(
 	}
 
 	const characherSpriteGroups = Object.values(spriteGroups);
-	const numCharacters = characherSpriteGroups.length;
+	const numSpriteRows = characherSpriteGroups.length;
 	const spriteWidthPixels = spriteWidthBytes * 8;
 	const maxSpritesForCharacter = characherSpriteGroups.reduce(
 		(soFar, current) => Math.max(soFar, current.sprites.length),
@@ -207,7 +207,7 @@ export function drawSpritesToCanvas(
 	);
 
 	canvas.width = spriteWidthPixels * maxSpritesForCharacter;
-	canvas.height = spriteHeight * numCharacters;
+	canvas.height = spriteHeight * numSpriteRows;
 
 	ctx.fillStyle = "black";
 	ctx.rect(0, 0, canvas.width, canvas.height);
