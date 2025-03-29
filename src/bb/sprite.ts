@@ -97,6 +97,25 @@ export const spriteGroupNames = [
 
 export type SpriteGroupName = (typeof spriteGroupNames)[number];
 
+export const spriteGroupMultiWidths: Record<SpriteGroupName, number> = {
+	player: 1,
+	bubbleBuster: 1,
+	incendo: 1,
+	colley: 1,
+	hullaballoon: 1,
+	beluga: 1,
+	willyWhistle: 1,
+	stoner: 1,
+	superSocket: 1,
+	playerInBubble: 2,
+	bossFacingLeft: 3,
+	bossInBubble: 3,
+	bossFacingRight: 3,
+	bonusCupCake: 2,
+	bonusMelon: 2,
+	bonusDiamond: 2,
+};
+
 export const spriteGroupLocations: Record<
 	SpriteGroupName,
 	{

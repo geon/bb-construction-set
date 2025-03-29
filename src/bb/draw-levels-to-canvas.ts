@@ -5,10 +5,13 @@ import { CharBlock, CharBlockIndex, CharsetChar } from "./charset-char";
 import {
 	CharacterName,
 	SpriteGroup,
+	spriteGroupMultiWidths,
 	SpriteGroupName,
+	spriteGroupNames,
 	spriteHeight,
 	spriteWidthBytes,
 } from "./sprite";
+import { strictChunk, sum } from "./functions";
 
 export function drawLevelsToCanvas(
 	levels: readonly Level[],
@@ -199,7 +202,9 @@ export function drawSpritesToCanvas(
 	}
 
 	const characherSpriteGroups = Object.values(spriteGroups);
-	const numSpriteRows = characherSpriteGroups.length;
+	const numSpriteRows = sum(
+		spriteGroupNames.map((x) => spriteGroupMultiWidths[x])
+	);
 	const spriteWidthPixels = spriteWidthBytes * 8;
 	const maxSpritesForCharacter = characherSpriteGroups.reduce(
 		(soFar, current) => Math.max(soFar, current.sprites.length),
@@ -214,29 +219,41 @@ export function drawSpritesToCanvas(
 	ctx.fill();
 
 	const image = new ImageData(spriteWidthPixels, spriteHeight);
-	for (const [spriteY, spriteGroup] of characherSpriteGroups.entries()) {
-		for (const [spriteX, sprite] of spriteGroup.sprites.entries()) {
-			const spritePalette = getSpritePalette(spriteGroup.color);
-			for (let pixelY = 0; pixelY < spriteHeight; ++pixelY) {
-				for (let byteX = 0; byteX < spriteWidthBytes; ++byteX) {
-					const byte = sprite.bitmap[pixelY * spriteWidthBytes + byteX]!;
-					for (let pixelX = 0; pixelX < 4; ++pixelX) {
-						const color = spritePalette[(byte >> ((3 - pixelX) * 2)) & 0b11]!;
+	let spriteY = -1;
+	for (const [spriteGroupName, spriteGroup] of Object.entries(spriteGroups) as [
+		SpriteGroupName,
+		SpriteGroup
+	][]) {
+		for (const spriteChunk of spriteGroupMultiWidths[spriteGroupName] === 1
+			? [spriteGroup.sprites]
+			: strictChunk(
+					spriteGroup.sprites,
+					spriteGroupMultiWidths[spriteGroupName]
+			  )) {
+			++spriteY;
+			for (const [spriteX, sprite] of spriteChunk.entries()) {
+				const spritePalette = getSpritePalette(spriteGroup.color);
+				for (let pixelY = 0; pixelY < spriteHeight; ++pixelY) {
+					for (let byteX = 0; byteX < spriteWidthBytes; ++byteX) {
+						const byte = sprite.bitmap[pixelY * spriteWidthBytes + byteX]!;
+						for (let pixelX = 0; pixelX < 4; ++pixelX) {
+							const color = spritePalette[(byte >> ((3 - pixelX) * 2)) & 0b11]!;
 
-						// Double width pixels.
-						const pixelIndex =
-							pixelY * spriteWidthPixels + byteX * 8 + pixelX * 2;
-						plotPixel(image, pixelIndex, color);
-						plotPixel(image, pixelIndex + 1, color);
+							// Double width pixels.
+							const pixelIndex =
+								pixelY * spriteWidthPixels + byteX * 8 + pixelX * 2;
+							plotPixel(image, pixelIndex, color);
+							plotPixel(image, pixelIndex + 1, color);
+						}
 					}
 				}
-			}
 
-			ctx.putImageData(
-				image,
-				spriteX * spriteWidthPixels,
-				spriteY * spriteHeight
-			);
+				ctx.putImageData(
+					image,
+					spriteX * spriteWidthPixels,
+					spriteY * spriteHeight
+				);
+			}
 		}
 	}
 }
