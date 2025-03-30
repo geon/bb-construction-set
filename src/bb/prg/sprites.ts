@@ -129,7 +129,8 @@ export function writeSpritesBin(binFileContents: Uint8Array): {
 			.slice(1)
 			.map((name) => {
 				const offset = getCharacterOffsetInSprites(name);
-				return characterSprites[offset]![63] & 0b00001111;
+				const sprite = characterSprites[offset];
+				return sprite![63] & 0b00001111;
 			})
 	);
 
