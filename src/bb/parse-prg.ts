@@ -34,7 +34,7 @@ import {
 import { readTiles } from "./prg/tiles";
 import { writeMonsters, readMonsters } from "./prg/monsters";
 import {
-	readSpriteGroups,
+	parseSpriteGroupsFromPrg,
 	readSprites,
 	convertSpriteGroupsToBinFile,
 } from "./prg/sprites";
@@ -168,7 +168,11 @@ export function parsePrgSpriteBin(prg: ArrayBuffer): Uint8Array {
 		monsterSpriteColorsSegmentLocation
 	);
 	const spriteBin = convertSpriteGroupsToBinFile(
-		readSpriteGroups(segments, monsterColorsSegment, spriteColors.player)
+		parseSpriteGroupsFromPrg(
+			segments,
+			monsterColorsSegment,
+			spriteColors.player
+		)
 	);
 	return spriteBin;
 }

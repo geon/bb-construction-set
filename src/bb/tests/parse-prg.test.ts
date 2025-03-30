@@ -14,7 +14,7 @@ import { deserializePeFileData } from "../pe-file";
 import { peFileDataToLevels } from "../level-pe-conversion";
 import { knownGoodBubbleCurrentRectsForLevels } from "./knownGoodBubbleCurrentRectsForLevels";
 import {
-	readSpriteGroups,
+	parseSpriteGroupsFromPrg,
 	convertSpriteGroupsToBinFile,
 	writeSpritesBin,
 } from "../prg/sprites";
@@ -97,7 +97,7 @@ test("spritesBin color", () => {
 	);
 	const spritesBin = writeSpritesBin(
 		convertSpriteGroupsToBinFile(
-			readSpriteGroups(
+			parseSpriteGroupsFromPrg(
 				prgSpriteSegments,
 				prgSpriteColorSegment,
 				spriteColors.player

@@ -3,7 +3,7 @@ import { BlobDownloadButton } from "./BlobDownloadButton";
 import { attempt } from "./bb/functions";
 import { parsePrgSpriteBin } from "./bb/parse-prg";
 import { SpritesViewer } from "./SpritesViewer";
-import { readSpriteGroups } from "./bb/prg/sprites";
+import { parseSpriteGroupsFromPrg } from "./bb/prg/sprites";
 import { getDataSegment, getDataSegments } from "./bb/prg/io";
 import {
 	monsterSpriteColorsSegmentLocation,
@@ -18,7 +18,7 @@ export function SpritesVisualizerWithBinDownload({
 }): ReactNode {
 	const parsedPrgData = attempt(() => parsePrgSpriteBin(prg));
 
-	const spriteGroups = readSpriteGroups(
+	const spriteGroups = parseSpriteGroupsFromPrg(
 		getDataSegments(prg, spriteDataSegmentLocations),
 		getDataSegment(prg, monsterSpriteColorsSegmentLocation),
 		spriteColors.player

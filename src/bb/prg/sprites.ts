@@ -164,7 +164,7 @@ function getSpriteDataSegmentOffsetInBin(
 	);
 }
 
-export function readSpriteGroups(
+export function parseSpriteGroupsFromPrg(
 	spriteSegments: Record<SpriteDataSegmentName, DataSegment>,
 	monsterColorSegment: DataSegment,
 	playerColor: PaletteIndex
