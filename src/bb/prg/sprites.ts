@@ -16,6 +16,7 @@ import {
 	SpriteGroup,
 	isCharacterName,
 	SpriteGroupLocation,
+	spriteColors,
 } from "../sprite";
 import { Tuple } from "../tuple";
 import {
@@ -69,10 +70,9 @@ export function convertSpriteGroupsToBinFile(
 // 	return new Uint8Array([...sprite.bitmap, multicolorBit | color]);
 // }
 
-export function parseSpriteBuffersFromBin(binFileContents: Uint8Array): {
-	readonly spriteSegments: Record<SpriteDataSegmentName, Uint8Array>;
-	readonly spriteColorsSegment: Uint8Array;
-} {
+export function parseSpriteGroupsFromBin(
+	binFileContents: Uint8Array
+): Record<SpriteGroupName, SpriteGroup> {
 	const spriteSegments = mapRecord(
 		spriteDataSegmentLocations,
 		({ length }, segmentName) => {
@@ -98,10 +98,11 @@ export function parseSpriteBuffersFromBin(binFileContents: Uint8Array): {
 			})
 	);
 
-	return {
+	return _parseSpriteGroupsFromBuffers(
 		spriteSegments,
 		spriteColorsSegment,
-	};
+		spriteColors.player
+	);
 }
 
 function getSpriteDataSegmentOffsetInBin(

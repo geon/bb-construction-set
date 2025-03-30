@@ -13,17 +13,7 @@ import {
 import { deserializePeFileData } from "../pe-file";
 import { peFileDataToLevels } from "../level-pe-conversion";
 import { knownGoodBubbleCurrentRectsForLevels } from "./knownGoodBubbleCurrentRectsForLevels";
-import {
-	parseSpriteGroupsFromPrg,
-	convertSpriteGroupsToBinFile,
-	parseSpriteBuffersFromBin,
-} from "../prg/sprites";
-import {
-	monsterSpriteColorsSegmentLocation,
-	spriteDataSegmentLocations,
-} from "../prg/data-locations";
-import { getDataSegments, getDataSegment } from "../prg/io";
-import { spriteColors } from "../sprite";
+import { parseSpriteGroupsFromBin } from "../prg/sprites";
 
 test("readBubbleCurrentRectangles", () => {
 	const rectanglesOnly = knownGoodBubbleCurrentRectsForLevels
@@ -82,49 +72,16 @@ test("patchPrg", () => {
 	expect(Buffer.from(patched)).toStrictEqual(Buffer.from(prgFileContent));
 });
 
-test("spritesBin color", () => {
-	const prgFileContent = readFileSync(
-		__dirname + "/decompressed-bb.prg"
-	).buffer;
-
-	const prgSpriteSegments = getDataSegments(
-		prgFileContent,
-		spriteDataSegmentLocations
-	);
-	const prgSpriteColorSegment = getDataSegment(
-		prgFileContent,
-		monsterSpriteColorsSegmentLocation
-	);
-	const spritesBin = parseSpriteBuffersFromBin(
-		convertSpriteGroupsToBinFile(
-			parseSpriteGroupsFromPrg(
-				prgSpriteSegments,
-				prgSpriteColorSegment,
-				spriteColors.player
-			)
-		)
-	);
-
-	// Just comparing the ArrayBuffers is super slow and fails.
-	expect(Buffer.from(spritesBin.spriteColorsSegment)).toStrictEqual(
-		Buffer.from(prgSpriteColorSegment.buffer)
-	);
-});
-
 test("patchPrgSpritesBin", () => {
 	const prgFileContent = readFileSync(
 		__dirname + "/decompressed-bb.prg"
 	).buffer;
 
-	const spritesBin = parseSpriteBuffersFromBin(
+	const spritesBin = parseSpriteGroupsFromBin(
 		parsePrgSpriteBin(prgFileContent)
 	);
 
-	const patched = patchPrgSpritesBin(
-		prgFileContent,
-		spritesBin.spriteSegments,
-		spritesBin.spriteColorsSegment
-	);
+	const patched = patchPrgSpritesBin(prgFileContent, spritesBin);
 
 	// Just comparing the ArrayBuffers is super slow and fails.
 	expect(Buffer.from(patched)).toStrictEqual(Buffer.from(prgFileContent));

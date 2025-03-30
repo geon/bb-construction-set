@@ -1,8 +1,15 @@
 import { CharBlock } from "./charset-char";
-import { strictChunk, unzipObject, zipObject } from "./functions";
+import { groupBy, unzipObject, zipObject } from "./functions";
 import { Level } from "./level";
 import { writeBgColors, readBgColors } from "./prg/bg-colors";
-import { spriteColors, SpriteGroup, SpriteGroupName } from "./sprite";
+import {
+	characterNames,
+	spriteColors,
+	SpriteGroup,
+	SpriteGroupLocation,
+	spriteGroupLocations,
+	SpriteGroupName,
+} from "./sprite";
 import { readPlatformChars, writePlatformChars } from "./prg/charset-char";
 import {
 	getDataSegments,
@@ -178,8 +185,7 @@ export function parsePrgSpriteBin(prg: ArrayBuffer): Uint8Array {
 
 export function patchPrgSpritesBin(
 	prg: ArrayBuffer,
-	newSpriteSegments: Record<SpriteDataSegmentName, Uint8Array>,
-	newSpriteColorsSegment: Uint8Array
+	spriteGroups: Record<SpriteGroupName, SpriteGroup>
 ): ArrayBuffer {
 	const patchedPrg = prg.slice();
 
@@ -188,30 +194,46 @@ export function patchPrgSpritesBin(
 		spriteDataSegmentLocations
 	);
 
+	const spriteGroupNamesBySegment = groupBy(
+		Object.entries(spriteGroupLocations) as [
+			SpriteGroupName,
+			SpriteGroupLocation
+		][],
+		([, { segmentName }]) => segmentName,
+		([spriteGroupName]) => spriteGroupName
+	) as unknown as Record<SpriteDataSegmentName, SpriteGroupName[]>;
+
+	if (
+		Object.keys(spriteGroupNamesBySegment).length !==
+		spriteDataSegmentNames.length
+	) {
+		throw new Error("Missing keys in spriteGroupNamesBySegment");
+	}
+
 	for (const segmentName of spriteDataSegmentNames) {
-		// Not sure if the padding byte is garbage or important, so skip it.
-		// If it turns out to just be garbage, we can just write the whole segment in one go:
-		// prgSegments[segmentName].buffer.set(newSegments[segmentName]);
+		const spriteGroupNames = spriteGroupNamesBySegment[segmentName];
 
-		const bytesToWrite = strictChunk(
-			[...newSpriteSegments[segmentName].entries()],
-			// Split into sprites: 63 bytes + 1 byte padding.
-			64
-		)
-			// Remove the padding byte.
-			.map((sprite) => sprite.slice(0, -1))
-			.flat();
+		const sprites = spriteGroupNames.flatMap(
+			(name) => spriteGroups[name].sprites
+		);
 
-		for (const [index, byte] of bytesToWrite) {
-			prgSpriteSegments[segmentName].buffer[index] = byte;
+		for (const [index, sprite] of sprites.entries()) {
+			prgSpriteSegments[segmentName].buffer.set(sprite.bitmap, index * 64);
 		}
 	}
+
+	const spriteColorsSegment = new Uint8Array(
+		characterNames
+			// The player color is not included in the segment.
+			.slice(1)
+			.map((name) => spriteGroups[name].color)
+	);
 
 	const prgSpriteColorsSegment = getDataSegment(
 		patchedPrg,
 		monsterSpriteColorsSegmentLocation
 	);
-	prgSpriteColorsSegment.buffer.set(newSpriteColorsSegment.slice(0, -1));
+	prgSpriteColorsSegment.buffer.set(spriteColorsSegment.slice(0, -1));
 
 	return patchedPrg;
 }

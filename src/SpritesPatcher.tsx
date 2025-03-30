@@ -2,7 +2,7 @@ import { ReactNode, useState } from "react";
 import { patchPrgSpritesBin } from "./bb/parse-prg";
 import { FileInput } from "./FileInput";
 import { Attempt, attempt } from "./bb/functions";
-import { parseSpriteBuffersFromBin } from "./bb/prg/sprites";
+import { parseSpriteGroupsFromBin } from "./bb/prg/sprites";
 
 export function SpritesPatcher({
 	prg,
@@ -12,14 +12,14 @@ export function SpritesPatcher({
 	readonly setPrg: (file: ArrayBuffer | undefined) => void;
 }): ReactNode {
 	const [parsedSpriteBinData, setParsedSpriteBinData] = useState<
-		Attempt<ReturnType<typeof parseSpriteBuffersFromBin>> | undefined
+		Attempt<ReturnType<typeof parseSpriteGroupsFromBin>> | undefined
 	>(undefined);
 
 	const setSpriteBin = (buffer: ArrayBuffer | undefined) =>
 		setParsedSpriteBinData(
 			buffer &&
 				attempt(() => {
-					const parsed = parseSpriteBuffersFromBin(new Uint8Array(buffer));
+					const parsed = parseSpriteGroupsFromBin(new Uint8Array(buffer));
 					return parsed;
 				})
 		);
@@ -48,8 +48,7 @@ export function SpritesPatcher({
 						onClick={() => {
 							const patched = patchPrgSpritesBin(
 								prg,
-								parsedSpriteBinData.result.spriteSegments,
-								parsedSpriteBinData.result.spriteColorsSegment
+								parsedSpriteBinData.result
 							);
 							setPrg(patched);
 							setSpriteBin(undefined);
