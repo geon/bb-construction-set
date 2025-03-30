@@ -130,7 +130,12 @@ export function writeSpritesBin(binFileContents: Uint8Array): {
 			.map((name) => {
 				const offset = getCharacterOffsetInSprites(name);
 				const sprite = characterSprites[offset];
-				return sprite![63] & 0b00001111;
+				if (!sprite) {
+					throw new Error(
+						`Missing first sprite of ${name} at offset ${offset}.`
+					);
+				}
+				return sprite[63] & 0b00001111;
 			})
 	);
 
