@@ -24,6 +24,7 @@ import {
 	spriteDataSegmentNames,
 } from "./data-locations";
 import { DataSegment } from "./io";
+import { ReadonlyUint8Array } from "./types";
 
 export function convertSpriteGroupsToBinFile(
 	spriteGroups: Record<SpriteGroupName, SpriteGroup>
@@ -119,9 +120,21 @@ export function parseSpriteGroupsFromPrg(
 	monsterColorSegment: DataSegment,
 	playerColor: PaletteIndex
 ): Record<SpriteGroupName, SpriteGroup> {
+	return _parseSpriteGroupsFromBuffers(
+		mapRecord(spriteSegments, (x) => x.buffer),
+		monsterColorSegment.buffer,
+		playerColor
+	);
+}
+
+function _parseSpriteGroupsFromBuffers(
+	spriteSegments: Record<SpriteDataSegmentName, ReadonlyUint8Array>,
+	monsterColorSegment: ReadonlyUint8Array,
+	playerColor: PaletteIndex
+): Record<SpriteGroupName, SpriteGroup> {
 	const characterColors = [
 		playerColor,
-		...monsterColorSegment.buffer,
+		...monsterColorSegment,
 	] as PaletteIndex[];
 
 	const characterSpriteColors = objectFromEntries(
@@ -132,7 +145,7 @@ export function parseSpriteGroupsFromPrg(
 	);
 
 	const spritesBySegment = mapRecord(spriteSegments, (segment, _segmentName) =>
-		strictChunk([...new Uint8Array(segment.buffer)], 64)
+		strictChunk([...segment], 64)
 			.map((withPadding) => withPadding.slice(0, -1) as Tuple<number, 63>)
 			.map((bitmap): Sprite => ({ bitmap }))
 	);
