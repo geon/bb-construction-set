@@ -187,12 +187,17 @@ export function readSpriteGroups(
 			.map((bitmap): Sprite => ({ bitmap }))
 	);
 
+	const hardCodedGroupColors: Partial<Record<SpriteGroupName, PaletteIndex>> = {
+		bonusDiamond: 3,
+		bonusCupCake: 8,
+	};
+
 	const spriteGroups = mapRecord(
 		spriteGroupLocations,
 		(location, groupName): SpriteGroup => {
 			const color = isCharacterName(groupName)
 				? characterSpriteColors[groupName]
-				: playerColor;
+				: hardCodedGroupColors[groupName] ?? playerColor;
 
 			return {
 				sprites: range(0, location.length).map((index): Sprite => {
