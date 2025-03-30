@@ -127,8 +127,10 @@ export function writeSpritesBin(binFileContents: Uint8Array): {
 		characterNames
 			// The player color is not included in the segment.
 			.slice(1)
-			.map((name) => getCharacterOffsetInSprites(name))
-			.map((offset) => characterSprites[offset]![63] & 0b00001111)
+			.map((name) => {
+				const offset = getCharacterOffsetInSprites(name);
+				return characterSprites[offset]![63] & 0b00001111;
+			})
 	);
 
 	return {
