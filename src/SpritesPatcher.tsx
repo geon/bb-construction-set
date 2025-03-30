@@ -3,6 +3,7 @@ import { patchPrgSpritesBin } from "./bb/parse-prg";
 import { FileInput } from "./FileInput";
 import { Attempt, attempt } from "./bb/functions";
 import { parseSpriteGroupsFromBin } from "./bb/prg/sprites";
+import { SpritesViewer } from "./SpritesViewer";
 
 export function SpritesPatcher({
 	prg,
@@ -44,6 +45,9 @@ export function SpritesPatcher({
 				<p>Could not parse bin: {parsedSpriteBinData?.error ?? "No reason."}</p>
 			) : (
 				<>
+					<SpritesViewer spriteGroups={parsedSpriteBinData.result} />
+					<br />
+					<br />
 					<button
 						onClick={() => {
 							const patched = patchPrgSpritesBin(
