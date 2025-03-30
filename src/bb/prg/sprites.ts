@@ -129,7 +129,6 @@ export function writeSpritesBin(binFileContents: Uint8Array): {
 			.slice(1)
 			.map((name) => getCharacterOffsetInSprites(name))
 			.map((offset) => characterSprites[offset]![63] & 0b00001111)
-			.flat()
 	);
 
 	return {
