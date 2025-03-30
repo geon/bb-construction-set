@@ -8,10 +8,7 @@ import {
 } from "../functions";
 import { PaletteIndex } from "../palette";
 import {
-	Sprites,
 	characterNames,
-	CharacterName,
-	spriteCounts,
 	Sprite,
 	SpriteGroupName,
 	getCharacterOffsetInSprites,
@@ -27,53 +24,6 @@ import {
 	spriteDataSegmentNames,
 } from "./data-locations";
 import { DataSegment } from "./io";
-
-export function readSprites(
-	spriteSegments: Record<SpriteDataSegmentName, DataSegment>,
-	monsterColorSegment: DataSegment,
-	playerColor: PaletteIndex
-): Sprites {
-	const nameByIndex = characterNames.flatMap((name) =>
-		Array<CharacterName>(spriteCounts[name]).fill(name as CharacterName)
-	);
-
-	const ungroupedSprites = strictChunk(
-		[...spriteSegments.characters.buffer],
-		64
-	).map(
-		(bitmap): Sprite => ({ bitmap: bitmap.slice(0, 63) as Tuple<number, 63> })
-	);
-
-	const sprites = groupBy(
-		[...nameByIndex.entries()].map(
-			([globalSpriteIndex, characterName]): readonly [
-				CharacterName,
-				Sprite
-			] => {
-				const sprite = ungroupedSprites[globalSpriteIndex];
-				if (!sprite) {
-					throw new Error("Bad index.");
-				}
-				return [characterName, sprite];
-			}
-		),
-		([characterName]) => characterName,
-		([, sprite]) => sprite
-	) as unknown as Record<CharacterName, Sprite[]>;
-
-	const characterColors = [playerColor, ...monsterColorSegment.buffer];
-	const spriteColors = objectFromEntries(
-		characterNames.map((name, characterIndex) => [
-			name,
-			characterColors[characterIndex]! as PaletteIndex,
-		])
-	);
-
-	return mapRecord(sprites, (sprites, characterName) => ({
-		sprites,
-		color: spriteColors[characterName],
-	}));
-}
 
 export function convertSpriteGroupsToBinFile(
 	spriteGroups: Record<SpriteGroupName, SpriteGroup>

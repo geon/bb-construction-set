@@ -2,7 +2,7 @@ import { CharBlock } from "./charset-char";
 import { strictChunk, unzipObject, zipObject } from "./functions";
 import { Level } from "./level";
 import { writeBgColors, readBgColors } from "./prg/bg-colors";
-import { spriteColors, Sprites } from "./sprite";
+import { spriteColors, SpriteGroup, SpriteGroupName } from "./sprite";
 import { readPlatformChars, writePlatformChars } from "./prg/charset-char";
 import {
 	getDataSegments,
@@ -35,7 +35,6 @@ import { readTiles } from "./prg/tiles";
 import { writeMonsters, readMonsters } from "./prg/monsters";
 import {
 	parseSpriteGroupsFromPrg,
-	readSprites,
 	convertSpriteGroupsToBinFile,
 } from "./prg/sprites";
 import { readTileBitmaps } from "./prg/tile-bitmap";
@@ -46,11 +45,11 @@ import { ReadonlyUint8Array } from "./prg/types";
 
 export function parsePrg(prg: ArrayBuffer): {
 	levels: readonly Level[];
-	sprites: Sprites;
+	sprites: Record<SpriteGroupName, SpriteGroup>;
 	items: Record<ItemDataSegmentName, CharBlock[]>;
 } {
 	const levels = readLevels(getDataSegments(prg, levelSegmentLocations));
-	const sprites = readSprites(
+	const sprites = parseSpriteGroupsFromPrg(
 		getDataSegments(prg, spriteDataSegmentLocations),
 		getDataSegment(prg, monsterSpriteColorsSegmentLocation),
 		spriteColors.player
