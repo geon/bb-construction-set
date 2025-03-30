@@ -33,7 +33,11 @@ import {
 } from "./prg/sidebar-chars";
 import { readTiles } from "./prg/tiles";
 import { writeMonsters, readMonsters } from "./prg/monsters";
-import { readSpriteGroups, readSprites, readSpritesBin } from "./prg/sprites";
+import {
+	readSpriteGroups,
+	readSprites,
+	convertSpriteGroupsToBinFile,
+} from "./prg/sprites";
 import { readTileBitmaps } from "./prg/tile-bitmap";
 import { writeSymmetry, writeBitmaps, writeHoles } from "./misc-patch";
 import { readBubbleCurrentPerLineDefaults } from "./prg/bubble-current-per-line-defaults";
@@ -163,7 +167,7 @@ export function parsePrgSpriteBin(prg: ArrayBuffer): Uint8Array {
 		prg,
 		monsterSpriteColorsSegmentLocation
 	);
-	const spriteBin = readSpritesBin(
+	const spriteBin = convertSpriteGroupsToBinFile(
 		readSpriteGroups(segments, monsterColorsSegment, spriteColors.player)
 	);
 	return spriteBin;

@@ -15,7 +15,7 @@ import { peFileDataToLevels } from "../level-pe-conversion";
 import { knownGoodBubbleCurrentRectsForLevels } from "./knownGoodBubbleCurrentRectsForLevels";
 import {
 	readSpriteGroups,
-	readSpritesBin,
+	convertSpriteGroupsToBinFile,
 	writeSpritesBin,
 } from "../prg/sprites";
 import {
@@ -96,7 +96,7 @@ test("spritesBin color", () => {
 		monsterSpriteColorsSegmentLocation
 	);
 	const spritesBin = writeSpritesBin(
-		readSpritesBin(
+		convertSpriteGroupsToBinFile(
 			readSpriteGroups(
 				prgSpriteSegments,
 				prgSpriteColorSegment,

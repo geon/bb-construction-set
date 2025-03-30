@@ -75,7 +75,7 @@ export function readSprites(
 	}));
 }
 
-export function readSpritesBin(
+export function convertSpriteGroupsToBinFile(
 	spriteGroups: Record<SpriteGroupName, SpriteGroup>
 ): Uint8Array {
 	const spriteGroupNamesBySegment = groupBy(
