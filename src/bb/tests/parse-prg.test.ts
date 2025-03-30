@@ -16,7 +16,7 @@ import { knownGoodBubbleCurrentRectsForLevels } from "./knownGoodBubbleCurrentRe
 import {
 	parseSpriteGroupsFromPrg,
 	convertSpriteGroupsToBinFile,
-	writeSpritesBin,
+	parseSpriteBuffersFromBin,
 } from "../prg/sprites";
 import {
 	monsterSpriteColorsSegmentLocation,
@@ -95,7 +95,7 @@ test("spritesBin color", () => {
 		prgFileContent,
 		monsterSpriteColorsSegmentLocation
 	);
-	const spritesBin = writeSpritesBin(
+	const spritesBin = parseSpriteBuffersFromBin(
 		convertSpriteGroupsToBinFile(
 			parseSpriteGroupsFromPrg(
 				prgSpriteSegments,
@@ -116,7 +116,9 @@ test("patchPrgSpritesBin", () => {
 		__dirname + "/decompressed-bb.prg"
 	).buffer;
 
-	const spritesBin = writeSpritesBin(parsePrgSpriteBin(prgFileContent));
+	const spritesBin = parseSpriteBuffersFromBin(
+		parsePrgSpriteBin(prgFileContent)
+	);
 
 	const patched = patchPrgSpritesBin(
 		prgFileContent,

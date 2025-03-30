@@ -69,7 +69,7 @@ export function convertSpriteGroupsToBinFile(
 // 	return new Uint8Array([...sprite.bitmap, multicolorBit | color]);
 // }
 
-export function writeSpritesBin(binFileContents: Uint8Array): {
+export function parseSpriteBuffersFromBin(binFileContents: Uint8Array): {
 	readonly spriteSegments: Record<SpriteDataSegmentName, Uint8Array>;
 	readonly spriteColorsSegment: Uint8Array;
 } {
