@@ -159,7 +159,7 @@ export const itemDataSegmentLocations: Readonly<
 > = {
 	bubbleBlow: {
 		startAddress: 0x8000,
-		length: (4 * 8 * 144) / 4,
+		length: 4 * 8 * 36,
 	},
 	bubblePop: {
 		startAddress: 0x8980,
@@ -208,11 +208,11 @@ export const itemDataSegmentLocations: Readonly<
 	//  (4x4 chars, but only 12 chars are stored.)
 	largeLightning: {
 		startAddress: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3 + 10 + 9 + 57),
-		length: 4 * 8 * 6,
+		length: 4 * 8 * 5,
 	},
 	bonusRoundCircles: {
 		startAddress:
-			0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3 + 10 + 9 + 57 + 6),
-		length: 4 * 8 * 2,
+			0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3 + 10 + 9 + 57 + 5),
+		length: 4 * 8 * 3,
 	},
 };
