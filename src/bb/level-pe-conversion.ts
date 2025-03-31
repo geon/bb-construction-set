@@ -6,6 +6,7 @@ import {
 	Sprites,
 	characterNames,
 	isCharacterName,
+	spriteColors,
 	spriteLeftIndex,
 } from "./sprite";
 import { CharsetChar, CharsetCharLine } from "./charset-char";
@@ -648,7 +649,8 @@ export function getSpriteColorsFromPeFileData(
 ): Record<CharacterName, PaletteIndex> {
 	const spriteSet = peFileData.spriteSets[0];
 	if (!spriteSet) {
-		throw new Error("Missing sprite set.");
+		console.warn("Missing sprite set.");
+		return spriteColors;
 	}
 
 	const spriteColorEntries = spriteSet?.sprites
