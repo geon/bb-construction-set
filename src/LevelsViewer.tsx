@@ -18,11 +18,11 @@ export function LevelsViewer(props: {
 				return;
 			}
 			try {
-				drawLevelsToCanvas(
-					props.levels,
-					props.spriteColors,
-					levelsCanvasRef.current
-				);
+				const imageData = drawLevelsToCanvas(props.levels, props.spriteColors);
+				levelsCanvasRef.current.width = imageData.width;
+				levelsCanvasRef.current.height = imageData.height;
+				const ctx = levelsCanvasRef.current.getContext("2d");
+				ctx && ctx.putImageData(imageData, 0, 0);
 			} catch (error) {
 				if (error instanceof Error) {
 					setError(error.message);

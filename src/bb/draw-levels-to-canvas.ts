@@ -16,17 +16,9 @@ import { strictChunk, sum } from "./functions";
 
 export function drawLevelsToCanvas(
 	levels: readonly Level[],
-	spriteColors: Record<CharacterName, PaletteIndex>,
-	canvas: HTMLCanvasElement
-) {
-	const ctx = canvas.getContext("2d");
-	if (!ctx) {
-		return;
-	}
-
-	canvas.width = levelWidth * 10;
-	canvas.height = levelHeight * 10;
-	clearCanvas(canvas);
+	spriteColors: Record<CharacterName, PaletteIndex>
+): ImageData {
+	const image = new ImageData(levelWidth * 10, levelHeight * 10);
 
 	outerLoop: for (let levelY = 0; levelY < 10; ++levelY) {
 		for (let levelX = 0; levelX < 10; ++levelX) {
@@ -36,11 +28,16 @@ export function drawLevelsToCanvas(
 				break outerLoop;
 			}
 
-			const image = drawLevelThumbnail(level, spriteColors);
-
-			ctx.putImageData(image, levelX * levelWidth, levelY * levelHeight);
+			blitImageData(
+				image,
+				drawLevelThumbnail(level, spriteColors),
+				levelX * levelWidth,
+				levelY * levelHeight
+			);
 		}
 	}
+
+	return image;
 }
 
 function drawLevelThumbnail(
