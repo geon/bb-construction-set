@@ -1,9 +1,10 @@
 import { useRef, useEffect, useState } from "react";
 import { drawItemsToCanvas } from "./bb/draw-levels-to-canvas";
 import { CharBlock } from "./bb/charset-char";
+import { ItemDataSegmentName } from "./bb/prg/data-locations";
 
 export function ItemsViewer(props: {
-	readonly items: CharBlock[];
+	readonly itemGroups: Record<ItemDataSegmentName, CharBlock[]>;
 }): React.ReactNode {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const [error, setError] = useState<string | undefined>();
@@ -13,7 +14,7 @@ export function ItemsViewer(props: {
 			return;
 		}
 		try {
-			const imageData = drawItemsToCanvas(props.items);
+			const imageData = drawItemsToCanvas(props.itemGroups);
 			canvasRef.current.width = imageData.width;
 			canvasRef.current.height = imageData.height;
 			const ctx = canvasRef.current.getContext("2d");
@@ -24,7 +25,7 @@ export function ItemsViewer(props: {
 			}
 			throw error;
 		}
-	}, [props.items, canvasRef.current]);
+	}, [props.itemGroups, canvasRef.current]);
 
 	return error ? <p>{error}</p> : <canvas ref={canvasRef} />;
 }

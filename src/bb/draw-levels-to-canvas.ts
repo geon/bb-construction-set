@@ -11,6 +11,7 @@ import {
 	spriteHeight,
 	spriteWidthBytes,
 } from "./sprite";
+import { ItemDataSegmentName } from "./prg/data-locations";
 import { strictChunk, sum } from "./functions";
 
 export function drawLevelsToCanvas(
@@ -267,25 +268,43 @@ function getSpritePalette(color: PaletteIndex): [Color, Color, Color, Color] {
 	];
 }
 
-export function drawItemsToCanvas(items: readonly CharBlock[]): ImageData {
-	const numItemsX = 16;
-	const numItemsY = Math.ceil(items.length / numItemsX);
+export function drawItemsToCanvas(
+	itemGroups: Record<ItemDataSegmentName, CharBlock[]>
+): ImageData {
+	const numItemsX = 12;
+	const numItemsY = sum(
+		Object.values(itemGroups).map(
+			(items) => Math.ceil(items.length / numItemsX) + 1
+		)
+	);
 
 	const width = 2 * 8 * numItemsX;
 	const height = 2 * 8 * numItemsY;
 
 	const image = new ImageData(width, height);
 
-	outerLoop: for (let itemY = 0; itemY < numItemsY; ++itemY) {
-		for (let levelX = 0; levelX < numItemsX; ++levelX) {
-			const itemIndex = itemY * numItemsX + levelX;
-			const item = items[itemIndex];
-			if (!item) {
-				break outerLoop;
-			}
+	let lastMaxItemY = 0;
+	for (const items of Object.values(itemGroups)) {
+		const numItemsY = Math.ceil(items.length / numItemsX);
 
-			blitImageData(image, drawItem(item), levelX * (2 * 8), itemY * (2 * 8));
+		outerLoop: for (let itemY = 0; itemY < numItemsY; ++itemY) {
+			for (let levelX = 0; levelX < numItemsX; ++levelX) {
+				const itemIndex = itemY * numItemsX + levelX;
+				const item = items[itemIndex];
+				if (!item) {
+					break outerLoop;
+				}
+
+				blitImageData(
+					image,
+					drawItem(item),
+					levelX * (2 * 8),
+					(lastMaxItemY + itemY) * (2 * 8)
+				);
+			}
 		}
+
+		lastMaxItemY += numItemsY + 1;
 	}
 
 	return image;

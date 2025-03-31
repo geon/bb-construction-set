@@ -16,9 +16,7 @@ export function ItemsVisualizerWithCtmDownload({
 				<p>Could not parse prg: {parsedPrgData.error ?? "No reason."}</p>
 			) : (
 				<>
-					<ItemsViewer
-						items={Object.values(parsedPrgData.result.items).flat()}
-					/>
+					<ItemsViewer itemGroups={parsedPrgData.result.items} />
 				</>
 			)}
 		</>
