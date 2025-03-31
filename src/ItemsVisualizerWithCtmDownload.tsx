@@ -1,7 +1,8 @@
 import { ReactNode } from "react";
 import { attempt } from "./bb/functions";
 import { parsePrg } from "./bb/parse-prg";
-import { ItemsViewer } from "./ItemsViewer";
+import { ImageDataCanvas } from "./ImageDataCanvas";
+import { drawItemsToCanvas } from "./bb/draw-levels-to-canvas";
 
 export function ItemsVisualizerWithCtmDownload({
 	prg,
@@ -16,7 +17,9 @@ export function ItemsVisualizerWithCtmDownload({
 				<p>Could not parse prg: {parsedPrgData.error ?? "No reason."}</p>
 			) : (
 				<>
-					<ItemsViewer itemGroups={parsedPrgData.result.items} />
+					<ImageDataCanvas
+						imageData={drawItemsToCanvas(parsedPrgData.result.items)}
+					/>
 				</>
 			)}
 		</>

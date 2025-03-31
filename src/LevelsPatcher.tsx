@@ -7,11 +7,14 @@ import {
 	peFileDataToLevels,
 } from "./bb/level-pe-conversion";
 import { FileInput } from "./FileInput";
-import { LevelCharsViewer } from "./LevelCharsViewer";
-import { LevelsViewer } from "./LevelsViewer";
 import { Attempt, attempt } from "./bb/functions";
 import { deserializePeFileData, PeFileData } from "./bb/pe-file";
 import { Level } from "./bb/level";
+import {
+	drawLevelsToCanvas,
+	drawPlatformCharsToCanvas,
+} from "./bb/draw-levels-to-canvas";
+import { ImageDataCanvas } from "./ImageDataCanvas";
 
 const segmentLabels: Record<LevelDataSegmentName, string> = {
 	symmetry: "Symmetry",
@@ -87,16 +90,16 @@ export function LevelsPatcher({
 				<p>Could not parse pe: {parsedPeData?.error ?? "No reason."}</p>
 			) : (
 				<>
-					<LevelsViewer
-						{...parsedPeData}
-						levels={parsedPeData.result.levels}
-						spriteColors={getSpriteColorsFromPeFileData(
-							parsedPeData.result.deserializedPeFileDatas[0]!
+					<ImageDataCanvas
+						imageData={drawLevelsToCanvas(
+							parsedPeData.result.levels,
+							getSpriteColorsFromPeFileData(
+								parsedPeData.result.deserializedPeFileDatas[0]!
+							)
 						)}
 					/>
-					<LevelCharsViewer
-						{...parsedPeData}
-						levels={parsedPeData.result.levels}
+					<ImageDataCanvas
+						imageData={drawPlatformCharsToCanvas(parsedPeData.result.levels)}
 					/>
 					<CheckboxList
 						options={segmentLabels}

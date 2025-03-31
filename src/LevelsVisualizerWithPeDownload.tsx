@@ -2,10 +2,13 @@ import { ReactNode } from "react";
 import { levelsToPeFileData } from "./bb/level-pe-conversion";
 import { serializePeFileData } from "./bb/pe-file";
 import { BlobDownloadButton } from "./BlobDownloadButton";
-import { LevelsViewer } from "./LevelsViewer";
 import { attempt, mapRecord } from "./bb/functions";
 import { parsePrg } from "./bb/parse-prg";
-import { LevelCharsViewer } from "./LevelCharsViewer";
+import {
+	drawLevelsToCanvas,
+	drawPlatformCharsToCanvas,
+} from "./bb/draw-levels-to-canvas";
+import { ImageDataCanvas } from "./ImageDataCanvas";
 
 export function LevelsVisualizerWithPeDownload({
 	prg,
@@ -20,14 +23,15 @@ export function LevelsVisualizerWithPeDownload({
 				<p>Could not parse prg: {parsedPrgData.error ?? "No reason."}</p>
 			) : (
 				<>
-					<LevelsViewer
-						levels={parsedPrgData.result.levels}
-						spriteColors={mapRecord(
-							parsedPrgData.result.sprites,
-							({ color }) => color
+					<ImageDataCanvas
+						imageData={drawLevelsToCanvas(
+							parsedPrgData.result.levels,
+							mapRecord(parsedPrgData.result.sprites, ({ color }) => color)
 						)}
 					/>
-					<LevelCharsViewer levels={parsedPrgData.result.levels} />
+					<ImageDataCanvas
+						imageData={drawPlatformCharsToCanvas(parsedPrgData.result.levels)}
+					/>
 					<br />
 					<br />
 					<BlobDownloadButton
