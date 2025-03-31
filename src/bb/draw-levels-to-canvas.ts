@@ -271,8 +271,8 @@ export function drawItemsToCanvas(items: readonly CharBlock[]): ImageData {
 	const numItemsX = 16;
 	const numItemsY = Math.ceil(items.length / numItemsX);
 
-	const width = 3 * 8 * numItemsX;
-	const height = 3 * 8 * numItemsY;
+	const width = 2 * 8 * numItemsX;
+	const height = 2 * 8 * numItemsY;
 
 	const image = new ImageData(width, height);
 
