@@ -28,7 +28,6 @@ export function drawLevelsToCanvas(
 	canvas.height = levelHeight * 10;
 	clearCanvas(canvas);
 
-	const image = new ImageData(levelWidth, levelHeight);
 	outerLoop: for (let levelY = 0; levelY < 10; ++levelY) {
 		for (let levelX = 0; levelX < 10; ++levelX) {
 			const levelIndex = levelY * 10 + levelX;
@@ -37,7 +36,7 @@ export function drawLevelsToCanvas(
 				break outerLoop;
 			}
 
-			drawLevelThumbnail(image, level, spriteColors);
+			const image = drawLevelThumbnail(level, spriteColors);
 
 			ctx.putImageData(image, levelX * levelWidth, levelY * levelHeight);
 		}
@@ -45,10 +44,11 @@ export function drawLevelsToCanvas(
 }
 
 function drawLevelThumbnail(
-	image: ImageData,
 	level: Level,
 	spriteColors: Record<CharacterName, PaletteIndex>
-) {
+): ImageData {
+	const image = new ImageData(levelWidth, levelHeight);
+
 	// Fill with background color.
 	const bgColor = palette[0];
 	for (let tileY = 0; tileY < levelHeight; ++tileY) {
@@ -106,6 +106,8 @@ function drawLevelThumbnail(
 			);
 		}
 	}
+
+	return image;
 }
 
 function drawTiles(
