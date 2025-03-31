@@ -284,34 +284,41 @@ export function drawItemsToCanvas(items: readonly CharBlock[]): ImageData {
 				break outerLoop;
 			}
 
-			for (let charBlockY = 0; charBlockY < 2; ++charBlockY) {
-				for (let charBlockX = 0; charBlockX < 2; ++charBlockX) {
-					const backgroundColor =
-						charBlockX % 2 ^ charBlockY % 2
-							? palette[0]
-							: { r: 20, g: 30, b: 30 }; // Alternating black and dark gray.
-
-					const charPalette = [
-						backgroundColor,
-						palette[9], // Brown
-						palette[1], // White
-						palette[5], // Green
-					] as const;
-
-					const char = item[(charBlockY * 2 + charBlockX) as CharBlockIndex];
-
-					blitImageData(
-						image,
-						drawChar(char, charPalette),
-						levelX * (2 * 8) + charBlockX * 8,
-						itemY * (2 * 8) + charBlockY * 8
-					);
-				}
-			}
+			drawItem(item, image, levelX, itemY);
 		}
 	}
 
 	return image;
+}
+
+function drawItem(
+	item: [CharsetChar, CharsetChar, CharsetChar, CharsetChar],
+	image: ImageData,
+	levelX: number,
+	itemY: number
+): void {
+	for (let charBlockY = 0; charBlockY < 2; ++charBlockY) {
+		for (let charBlockX = 0; charBlockX < 2; ++charBlockX) {
+			const backgroundColor =
+				charBlockX % 2 ^ charBlockY % 2 ? palette[0] : { r: 20, g: 30, b: 30 }; // Alternating black and dark gray.
+
+			const charPalette = [
+				backgroundColor,
+				palette[9], // Brown
+				palette[1], // White
+				palette[5], // Green
+			] as const;
+
+			const char = item[(charBlockY * 2 + charBlockX) as CharBlockIndex];
+
+			blitImageData(
+				image,
+				drawChar(char, charPalette),
+				levelX * (2 * 8) + charBlockX * 8,
+				itemY * (2 * 8) + charBlockY * 8
+			);
+		}
+	}
 }
 
 // Just like ctx.putImageData
