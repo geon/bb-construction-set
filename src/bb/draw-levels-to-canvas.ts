@@ -37,65 +37,73 @@ export function drawLevelsToCanvas(
 				break outerLoop;
 			}
 
-			// Fill with background color.
-			const bgColor = palette[0];
-			for (let tileY = 0; tileY < levelHeight; ++tileY) {
-				for (let tileX = 0; tileX < levelWidth; ++tileX) {
-					const tileIndex = tileY * levelWidth + tileX;
-					image.data[tileIndex * 4 + 0] = bgColor.r;
-					image.data[tileIndex * 4 + 1] = bgColor.g;
-					image.data[tileIndex * 4 + 2] = bgColor.b;
-					image.data[tileIndex * 4 + 3] = 255;
-				}
-			}
-
-			// Draw shadows.
-			const shadowColor = palette[level.bgColorDark];
-			// The shadows use only the dark background color, and black.
-			drawTiles(image, level.tiles, mixColors([shadowColor, black, black]), 1);
-			drawTiles(
-				image,
-				level.tiles,
-				mixColors([shadowColor, black, black]),
-				levelWidth
-			);
-			drawTiles(
-				image,
-				level.tiles,
-				mixColors([shadowColor, black]),
-				levelWidth + 1
-			);
-
-			// Draw level.
-			const charPalette = getCharPalette(level);
-			drawTiles(
-				image,
-				level.tiles,
-				// The platforms use only the 3 background colors.
-				mixColors(
-					level.platformChar.lines
-						.flatMap((pixels) => pixels)
-						.map((pixel) => charPalette[pixel])
-				),
-				0
-			);
-
-			for (const monster of level.monsters) {
-				const pixelIndex =
-					Math.floor((monster.spawnPoint.y - 41) / 8) * 32 +
-					Math.floor((monster.spawnPoint.x - 20) / 8);
-
-				// Monsters are 2x2 chars large.
-				for (const offset of [0, 1, 32, 33]) {
-					plotPixel(
-						image,
-						pixelIndex + offset,
-						palette[Object.values(spriteColors)[monster.type + 1]!]
-					);
-				}
-			}
+			drawLevelThumbnail(image, level, spriteColors);
 
 			ctx.putImageData(image, levelX * levelWidth, levelY * levelHeight);
+		}
+	}
+}
+
+function drawLevelThumbnail(
+	image: ImageData,
+	level: Level,
+	spriteColors: Record<CharacterName, PaletteIndex>
+) {
+	// Fill with background color.
+	const bgColor = palette[0];
+	for (let tileY = 0; tileY < levelHeight; ++tileY) {
+		for (let tileX = 0; tileX < levelWidth; ++tileX) {
+			const tileIndex = tileY * levelWidth + tileX;
+			image.data[tileIndex * 4 + 0] = bgColor.r;
+			image.data[tileIndex * 4 + 1] = bgColor.g;
+			image.data[tileIndex * 4 + 2] = bgColor.b;
+			image.data[tileIndex * 4 + 3] = 255;
+		}
+	}
+
+	// Draw shadows.
+	const shadowColor = palette[level.bgColorDark];
+	// The shadows use only the dark background color, and black.
+	drawTiles(image, level.tiles, mixColors([shadowColor, black, black]), 1);
+	drawTiles(
+		image,
+		level.tiles,
+		mixColors([shadowColor, black, black]),
+		levelWidth
+	);
+	drawTiles(
+		image,
+		level.tiles,
+		mixColors([shadowColor, black]),
+		levelWidth + 1
+	);
+
+	// Draw level.
+	const charPalette = getCharPalette(level);
+	drawTiles(
+		image,
+		level.tiles,
+		// The platforms use only the 3 background colors.
+		mixColors(
+			level.platformChar.lines
+				.flatMap((pixels) => pixels)
+				.map((pixel) => charPalette[pixel])
+		),
+		0
+	);
+
+	for (const monster of level.monsters) {
+		const pixelIndex =
+			Math.floor((monster.spawnPoint.y - 41) / 8) * 32 +
+			Math.floor((monster.spawnPoint.x - 20) / 8);
+
+		// Monsters are 2x2 chars large.
+		for (const offset of [0, 1, 32, 33]) {
+			plotPixel(
+				image,
+				pixelIndex + offset,
+				palette[Object.values(spriteColors)[monster.type + 1]!]
+			);
 		}
 	}
 }
