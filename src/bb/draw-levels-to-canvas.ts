@@ -284,7 +284,7 @@ export function drawItemsToCanvas(items: readonly CharBlock[]): ImageData {
 				break outerLoop;
 			}
 
-			drawItem(item, image, levelX, itemY);
+			blitImageData(image, drawItem(item), levelX * (2 * 8), itemY * (2 * 8));
 		}
 	}
 
@@ -292,11 +292,10 @@ export function drawItemsToCanvas(items: readonly CharBlock[]): ImageData {
 }
 
 function drawItem(
-	item: [CharsetChar, CharsetChar, CharsetChar, CharsetChar],
-	image: ImageData,
-	levelX: number,
-	itemY: number
-): void {
+	item: [CharsetChar, CharsetChar, CharsetChar, CharsetChar]
+): ImageData {
+	const image = new ImageData(16, 16);
+
 	for (let charBlockY = 0; charBlockY < 2; ++charBlockY) {
 		for (let charBlockX = 0; charBlockX < 2; ++charBlockX) {
 			const backgroundColor =
@@ -314,11 +313,13 @@ function drawItem(
 			blitImageData(
 				image,
 				drawChar(char, charPalette),
-				levelX * (2 * 8) + charBlockX * 8,
-				itemY * (2 * 8) + charBlockY * 8
+				charBlockX * 8,
+				charBlockY * 8
 			);
 		}
 	}
+
+	return image;
 }
 
 // Just like ctx.putImageData
