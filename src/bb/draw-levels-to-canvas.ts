@@ -317,10 +317,10 @@ export function drawItemsToCanvas(items: readonly CharBlock[]): ImageData {
 // Just like ctx.putImageData
 function blitImageData(to: ImageData, from: ImageData, dx: number, dy: number) {
 	for (let y = 0; y < from.height; ++y) {
-		for (let x = 0; x < from.height; ++x) {
+		for (let x = 0; x < from.width; ++x) {
 			for (let channel = 0; channel < 4; ++channel) {
-				to.data[((y + dy) * to.height + (x + dx)) * 4 + channel] =
-					from.data[(y * from.height + x) * 4 + channel]!;
+				to.data[((y + dy) * to.width + (x + dx)) * 4 + channel] =
+					from.data[(y * from.width + x) * 4 + channel]!;
 			}
 		}
 	}
