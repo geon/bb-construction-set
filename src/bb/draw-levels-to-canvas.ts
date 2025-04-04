@@ -13,6 +13,7 @@ import {
 } from "./sprite";
 import { ItemDataSegmentName } from "./prg/data-locations";
 import { mapRecord, strictChunk, sum } from "./functions";
+import { ReadonlyTuple } from "./tuple";
 
 export function drawLevelsToCanvas(
 	levels: readonly Level[],
@@ -331,12 +332,13 @@ function drawCharblock(item: CharBlock): ImageData {
 
 	for (let charBlockY = 0; charBlockY < 2; ++charBlockY) {
 		for (let charBlockX = 0; charBlockX < 2; ++charBlockX) {
-			const charPalette = [
+			type CharPalette = ReadonlyTuple<Color, 4>;
+			const charPalette: CharPalette = [
 				palette[0], //black
 				palette[9], // Brown
 				palette[1], // White
 				palette[5], // Green
-			] as const;
+			];
 
 			const char = item[(charBlockY * 2 + charBlockX) as CharBlockIndex];
 
