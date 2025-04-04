@@ -18,3 +18,13 @@ type _ReadonlyTupleOf<
 	N extends number,
 	R extends readonly unknown[]
 > = R["length"] extends N ? R : _ReadonlyTupleOf<T, N, readonly [T, ...R]>;
+
+export function assertTuple<T, N extends number>(
+	array: T[],
+	n: N
+): Tuple<T, N> {
+	if (array.length !== n) {
+		throw new Error(`Bad length. Wanted: ${n} Actual: ${array.length}`);
+	}
+	return array as Tuple<T, N>;
+}

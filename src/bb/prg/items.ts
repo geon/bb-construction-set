@@ -3,6 +3,7 @@ import { mapRecord, strictChunk } from "../functions";
 import { linesPerChar } from "./charset-char";
 import { ItemDataSegmentName } from "./data-locations";
 import { DataSegment } from "./io";
+import { assertTuple } from "../tuple";
 
 export function readItems(
 	dataSegments: Record<ItemDataSegmentName, DataSegment>
@@ -11,7 +12,7 @@ export function readItems(
 		strictChunk(
 			strictChunk([...x.buffer], linesPerChar).map(
 				(char): CharsetChar => ({
-					lines: char.map(parseCharsetCharLine) as CharsetChar["lines"],
+					lines: assertTuple(char.map(parseCharsetCharLine), 8),
 				})
 			),
 			4
