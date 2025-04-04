@@ -12,7 +12,7 @@ import {
 	spriteWidthBytes,
 } from "./sprite";
 import { ItemDataSegmentName } from "./prg/data-locations";
-import { strictChunk, sum } from "./functions";
+import { mapRecord, strictChunk, sum } from "./functions";
 
 export function drawLevelsToCanvas(
 	levels: readonly Level[],
@@ -291,20 +291,25 @@ export function drawItemsToCanvas(
 	const image = new ImageData(width, height);
 
 	let lastMaxItemY = 0;
-	for (const items of Object.values(itemGroups)) {
-		const numItemsY = Math.ceil(items.length / numItemsX);
+
+	const itemImageGroups = mapRecord(itemGroups, (itemGroup) =>
+		itemGroup.map((item) => drawItem(item))
+	);
+
+	for (const itemImages of Object.values(itemImageGroups)) {
+		const numItemsY = Math.ceil(itemImages.length / numItemsX);
 
 		outerLoop: for (let itemY = 0; itemY < numItemsY; ++itemY) {
 			for (let levelX = 0; levelX < numItemsX; ++levelX) {
 				const itemIndex = itemY * numItemsX + levelX;
-				const item = items[itemIndex];
-				if (!item) {
+				const itemImage = itemImages[itemIndex];
+				if (!itemImage) {
 					break outerLoop;
 				}
 
 				blitImageData(
 					image,
-					drawItem(item),
+					itemImage,
 					levelX * (2 * 8),
 					(lastMaxItemY + itemY) * (2 * 8)
 				);
