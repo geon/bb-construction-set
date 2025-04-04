@@ -10,10 +10,9 @@ export function readItems(
 	return mapRecord(dataSegments, (x, segmentName) =>
 		strictChunk(
 			strictChunk([...x.buffer], linesPerChar).map(
-				(char): CharsetChar =>
-					({
-						lines: char.map(parseCharsetCharLine),
-					} as CharsetChar)
+				(char): CharsetChar => ({
+					lines: char.map(parseCharsetCharLine) as CharsetChar["lines"],
+				})
 			),
 			4
 		).map(segmentName === "largeLightning" ? (x) => x : unshuffleCharBlock)
