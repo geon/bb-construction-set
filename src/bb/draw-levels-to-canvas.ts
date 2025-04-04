@@ -297,7 +297,7 @@ export function drawItemsToCanvas(
 	let lastMaxItemY = 0;
 
 	const itemImageGroups = mapRecord(itemGroups, (itemGroup) =>
-		itemGroup.map((item) => drawItem(item))
+		itemGroup.map((item) => drawCharblock(item))
 	);
 
 	for (const itemImages of Object.values(itemImageGroups)) {
@@ -326,7 +326,7 @@ export function drawItemsToCanvas(
 	return image;
 }
 
-function drawItem(item: CharBlock): ImageData {
+function drawCharblock(item: CharBlock): ImageData {
 	const image = new ImageData(16, 16);
 
 	for (let charBlockY = 0; charBlockY < 2; ++charBlockY) {
