@@ -322,9 +322,7 @@ export function drawItemsToCanvas(
 	return image;
 }
 
-function drawItem(
-	item: [CharsetChar, CharsetChar, CharsetChar, CharsetChar]
-): ImageData {
+function drawItem(item: CharBlock): ImageData {
 	const image = new ImageData(16, 16);
 
 	for (let charBlockY = 0; charBlockY < 2; ++charBlockY) {
