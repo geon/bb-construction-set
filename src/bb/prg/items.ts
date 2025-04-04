@@ -7,7 +7,7 @@ import { DataSegment } from "./io";
 export function readItems(
 	dataSegments: Record<ItemDataSegmentName, DataSegment>
 ): Record<ItemDataSegmentName, CharBlock[]> {
-	return mapRecord(dataSegments, (x) =>
+	return mapRecord(dataSegments, (x, segmentName) =>
 		strictChunk(
 			strictChunk([...x.buffer], linesPerChar).map(
 				(char) =>
@@ -16,7 +16,7 @@ export function readItems(
 					} as CharsetChar)
 			),
 			4
-		).map(unshuffleCharBlock)
+		).map(segmentName === "largeLightning" ? (x) => x : unshuffleCharBlock)
 	);
 }
 
