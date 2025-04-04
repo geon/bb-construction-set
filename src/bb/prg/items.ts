@@ -10,7 +10,7 @@ export function readItems(
 	return mapRecord(dataSegments, (x, segmentName) =>
 		strictChunk(
 			strictChunk([...x.buffer], linesPerChar).map(
-				(char) =>
+				(char): CharsetChar =>
 					({
 						lines: char.map(parseCharsetCharLine),
 					} as CharsetChar)
