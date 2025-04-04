@@ -298,7 +298,14 @@ export function drawItemsToCanvas(
 	let lastMaxItemY = 0;
 
 	const itemImageGroups = mapRecord(itemGroups, (itemGroup) =>
-		itemGroup.map((item) => drawCharblock(item))
+		itemGroup.map((item) =>
+			drawCharblock(item, [
+				palette[0], //black
+				palette[9], // Brown
+				palette[1], // White
+				palette[5], // Green
+			])
+		)
 	);
 
 	for (const itemImages of Object.values(itemImageGroups)) {
@@ -327,19 +334,12 @@ export function drawItemsToCanvas(
 	return image;
 }
 
-function drawCharblock(item: CharBlock): ImageData {
+type CharPalette = ReadonlyTuple<Color, 4>;
+function drawCharblock(item: CharBlock, charPalette: CharPalette): ImageData {
 	const image = new ImageData(16, 16);
 
 	for (let charBlockY = 0; charBlockY < 2; ++charBlockY) {
 		for (let charBlockX = 0; charBlockX < 2; ++charBlockX) {
-			type CharPalette = ReadonlyTuple<Color, 4>;
-			const charPalette: CharPalette = [
-				palette[0], //black
-				palette[9], // Brown
-				palette[1], // White
-				palette[5], // Green
-			];
-
 			const char = item[(charBlockY * 2 + charBlockX) as CharBlockIndex];
 
 			blitImageData(
