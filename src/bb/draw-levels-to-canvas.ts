@@ -149,6 +149,8 @@ export function drawPlatformCharsToCanvas(levels: readonly Level[]): ImageData {
 				break outerLoop;
 			}
 
+			const levelImage = new ImageData(4 * 8, 4 * 8);
+
 			const charPalette = getCharPalette(level);
 			for (let sidebarY = 0; sidebarY < 4; ++sidebarY) {
 				for (let sidebarX = 0; sidebarX < 4; ++sidebarX) {
@@ -160,13 +162,15 @@ export function drawPlatformCharsToCanvas(levels: readonly Level[]): ImageData {
 							: level.platformChar;
 
 					blitImageData(
-						image,
+						levelImage,
 						drawChar(char, charPalette),
-						levelX * 32 + sidebarX * 8,
-						levelY * 32 + sidebarY * 8
+						sidebarX * 8,
+						sidebarY * 8
 					);
 				}
 			}
+
+			blitImageData(image, levelImage, levelX * 32, levelY * 32);
 		}
 	}
 	return image;
