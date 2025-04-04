@@ -331,11 +331,8 @@ function drawCharblock(item: CharBlock): ImageData {
 
 	for (let charBlockY = 0; charBlockY < 2; ++charBlockY) {
 		for (let charBlockX = 0; charBlockX < 2; ++charBlockX) {
-			const backgroundColor =
-				charBlockX % 2 ^ charBlockY % 2 ? palette[0] : { r: 20, g: 30, b: 30 }; // Alternating black and dark gray.
-
 			const charPalette = [
-				backgroundColor,
+				palette[0], //black
 				palette[9], // Brown
 				palette[1], // White
 				palette[5], // Green
