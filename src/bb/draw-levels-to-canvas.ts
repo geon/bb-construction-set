@@ -288,8 +288,8 @@ export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
 		)
 	);
 
-	const width = 2 * 8 * numItemsX;
-	const height = 2 * 8 * numItemsY;
+	const width = 8 * (2 * numItemsX);
+	const height = 8 * (2 * numItemsY);
 
 	const image = new ImageData(width, height);
 
