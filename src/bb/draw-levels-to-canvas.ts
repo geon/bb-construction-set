@@ -12,7 +12,7 @@ import {
 	spriteWidthBytes,
 } from "./sprite";
 import { Item, ItemGroups } from "./prg/items";
-import { mapRecord, strictChunk, sum } from "./functions";
+import { chunk, mapRecord, strictChunk, sum } from "./functions";
 import { ReadonlyTuple } from "./tuple";
 
 export function drawLevelsToCanvas(
@@ -282,18 +282,6 @@ function getSpritePalette(color: PaletteIndex): [Color, Color, Color, Color] {
 
 export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
 	const numItemsX = 12;
-	const numItemsY = sum(
-		Object.values(itemGroups).map(
-			(items) => Math.ceil(items.length / numItemsX) + 1
-		)
-	);
-
-	const width = 8 * (2 * numItemsX);
-	const height = 8 * (2 * numItemsY);
-
-	const image = new ImageData(width, height);
-
-	let lastMaxItemY = 0;
 
 	const itemImageGroups = mapRecord(itemGroups, (itemGroup) =>
 		itemGroup.map((item) =>
@@ -306,30 +294,19 @@ export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
 		)
 	);
 
-	for (const itemImages of Object.values(itemImageGroups)) {
-		const numItemsY = Math.ceil(itemImages.length / numItemsX);
-
-		outerLoop: for (let itemY = 0; itemY < numItemsY; ++itemY) {
-			for (let levelX = 0; levelX < numItemsX; ++levelX) {
-				const itemIndex = itemY * numItemsX + levelX;
-				const itemImage = itemImages[itemIndex];
-				if (!itemImage) {
-					break outerLoop;
-				}
-
-				blitImageData(
-					image,
-					itemImage,
-					levelX * (2 * 8),
-					(lastMaxItemY + itemY) * (2 * 8)
-				);
-			}
-		}
-
-		lastMaxItemY += numItemsY + 1;
-	}
-
-	return image;
+	return imageDataConcatenate(
+		Object.values(itemImageGroups).map((itemImages) =>
+			imageDataConcatenate(
+				chunk(itemImages, numItemsX).map((row) =>
+					imageDataConcatenate(row, "row", 0)
+				),
+				"column",
+				0
+			)
+		),
+		"column",
+		2 * 8
+	);
 }
 
 type CharPalette = ReadonlyTuple<Color, 4>;
@@ -364,4 +341,42 @@ function blitImageData(to: ImageData, from: ImageData, dx: number, dy: number) {
 			}
 		}
 	}
+}
+
+function imageDataConcatenate(
+	images: ReadonlyArray<ImageData>,
+	direction: "row" | "column",
+	gap: number
+): ImageData {
+	const directionSizeSelector = (x: ImageData) =>
+		x[({ row: "width", column: "height" } as const)[direction]];
+	const orthogonalSizeSelector = (x: ImageData) =>
+		x[({ row: "height", column: "width" } as const)[direction]];
+
+	const sumGap = gap * (images.length - 1);
+
+	const totalDirectionSize = sum(images.map(directionSizeSelector)) + sumGap;
+	const maxOrthogonalSize = Math.max(...images.map(orthogonalSizeSelector));
+
+	const result = new ImageData(
+		...(
+			{
+				row: [totalDirectionSize, maxOrthogonalSize],
+				column: [maxOrthogonalSize, totalDirectionSize],
+			} as const
+		)[direction]
+	);
+
+	let offset = 0;
+	for (const image of images) {
+		blitImageData(
+			result,
+			image,
+			direction === "row" ? offset : 0,
+			direction === "column" ? offset : 0
+		);
+		offset += directionSizeSelector(image) + gap;
+	}
+
+	return result;
 }
