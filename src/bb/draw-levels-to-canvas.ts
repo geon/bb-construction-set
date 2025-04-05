@@ -336,8 +336,8 @@ type CharPalette = ReadonlyTuple<Color, 4>;
 function drawCharblock(item: Item, charPalette: CharPalette): ImageData {
 	const image = new ImageData(16, 16);
 
-	for (const [charBlockY, row] of item.entries()) {
-		for (const [charBlockX, char] of row.entries()) {
+	for (const [charBlockX, column] of item.entries()) {
+		for (const [charBlockY, char] of column.entries()) {
 			blitImageData(
 				image,
 				drawChar(char, charPalette),

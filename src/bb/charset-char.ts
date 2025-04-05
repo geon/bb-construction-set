@@ -17,4 +17,4 @@ export function parseCharsetCharLine(byte: number): CharsetCharLine {
 	];
 }
 
-export type RowCharBlock = ReadonlyTuple<ReadonlyTuple<CharsetChar, 2>, 2>;
+export type ColumnCharBlock = ReadonlyTuple<ReadonlyTuple<CharsetChar, 2>, 2>;
