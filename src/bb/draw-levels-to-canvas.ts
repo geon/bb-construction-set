@@ -284,7 +284,7 @@ export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
 	const numItemsX = 12;
 
 	const itemImageGroups = mapRecord(itemGroups, (itemGroup) =>
-		itemGroup.map((item) =>
+		itemGroup.items.map((item) =>
 			drawCharblock(item, [
 				palette[0], //black
 				palette[9], // Brown
@@ -315,7 +315,7 @@ function drawCharblock(
 	charPalette: CharPalette
 ): ImageData {
 	// The chars are column-order just like in the game.
-	const image = new ImageData(item[0]!.length * 8, item.length * 8);
+	const image = new ImageData(item.length * 8, item[0]!.length * 8);
 
 	for (const [charBlockX, column] of item.entries()) {
 		for (const [charBlockY, char] of column.entries()) {
