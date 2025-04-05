@@ -1,5 +1,4 @@
 import {
-	CharBlock,
 	CharsetChar,
 	parseCharsetCharLine,
 	ColumnCharBlock,
@@ -17,7 +16,7 @@ export type ItemGroups = Record<ItemDataSegmentName, readonly Item[]>;
 export function readItems(
 	dataSegments: Record<ItemDataSegmentName, DataSegment>
 ): ItemGroups {
-	return mapRecord(dataSegments, (x, segmentName) =>
+	return mapRecord(dataSegments, (x) =>
 		strictChunk(
 			strictChunk([...x.buffer], linesPerChar).map(
 				(char): CharsetChar => ({
@@ -25,17 +24,11 @@ export function readItems(
 				})
 			),
 			4
+		).map(
+			([topLeft, bottomLeft, topRight, BottomRight]): ColumnCharBlock => [
+				[topLeft, bottomLeft],
+				[topRight, BottomRight],
+			]
 		)
-			.map(segmentName === "largeLightning" ? (x) => x : unshuffleCharBlock)
-			.map(
-				([topLeft, topRight, bottomLeft, BottomRight]): ColumnCharBlock => [
-					[topLeft, bottomLeft],
-					[topRight, BottomRight],
-				]
-			)
 	);
-}
-
-function unshuffleCharBlock(block: CharBlock): CharBlock {
-	return [block[0], block[2], block[1], block[3]];
 }
