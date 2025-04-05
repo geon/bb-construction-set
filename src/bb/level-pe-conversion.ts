@@ -9,7 +9,7 @@ import {
 	spriteColors,
 	spriteLeftIndex,
 } from "./sprite";
-import { CharsetChar, CharsetCharLine } from "./charset-char";
+import { CharsetChar, CharsetCharColor, CharsetCharLine } from "./charset-char";
 import { c64BuiltinCharsets } from "./c64-builtin-charsets";
 import { PaletteIndex } from "./palette";
 import { shadowChars, ShadowStyle } from "./shadow-chars";
@@ -557,13 +557,12 @@ export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 			(bitmap) =>
 				({
 					lines: bitmap.map(
-						(line) =>
-							[
-								(line >> 6) & 0b11,
-								(line >> 4) & 0b11,
-								(line >> 2) & 0b11,
-								(line >> 0) & 0b11,
-							] as CharsetCharLine
+						(line): CharsetCharLine => [
+							((line >> 6) & 0b11) as CharsetCharColor,
+							((line >> 4) & 0b11) as CharsetCharColor,
+							((line >> 2) & 0b11) as CharsetCharColor,
+							((line >> 0) & 0b11) as CharsetCharColor,
+						]
 					),
 				} as CharsetChar)
 		)
