@@ -28,3 +28,19 @@ export function assertTuple<T, N extends number>(
 	}
 	return array as ReadonlyTuple<T, N>;
 }
+
+type TOfTuple<TTuple> = TTuple extends ReadonlyTuple<infer T, number>
+	? T
+	: never;
+type NOfTuple<TTuple extends ReadonlyArray<unknown>> = TTuple["length"];
+
+// Just a typed wrapper.
+export function mapTuple<TTuple extends ReadonlyTuple<unknown, number>, TOut>(
+	tuple: TTuple,
+	fn: (value: TOfTuple<TTuple>) => TOut
+): ReadonlyTuple<TOut, NOfTuple<typeof tuple>> {
+	return assertTuple(
+		(tuple as ReadonlyArray<TOfTuple<TTuple>>).map(fn),
+		tuple.length as NOfTuple<typeof tuple>
+	);
+}

@@ -5,7 +5,7 @@ import {
 	CharsetCharColor,
 } from "../internal-data-formats/charset-char";
 import { CharBitmap } from "../pe/pe-file";
-import { assertTuple, ReadonlyTuple } from "../tuple";
+import { assertTuple, mapTuple, ReadonlyTuple } from "../tuple";
 import { DataSegment } from "./io";
 
 export const shadowChars = {
@@ -140,16 +140,13 @@ export type ShadowStyle = keyof typeof shadowChars;
 
 export function peCharToLevelChar(char: CharBitmap): CharsetChar {
 	return {
-		lines: assertTuple(
-			char.map(byteToBits).map((line) =>
-				assertTuple(
-					strictChunk(line, 2).map(
-						(bits) => bitsToByte(bits) as CharsetCharColor
-					),
-					4
-				)
-			),
-			8
+		lines: mapTuple(mapTuple(char, byteToBits), (line) =>
+			assertTuple(
+				strictChunk(line, 2).map(
+					(bits) => bitsToByte(bits) as CharsetCharColor
+				),
+				4
+			)
 		),
 	};
 }

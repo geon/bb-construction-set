@@ -27,7 +27,7 @@ import {
 import { c64BuiltinCharsets } from "./c64-builtin-charsets";
 import { PaletteIndex } from "../internal-data-formats/palette";
 import { ShadowStyle } from "../prg/shadow-chars";
-import { assertTuple } from "../tuple";
+import { mapTuple } from "../tuple";
 import { Sprite } from "../internal-data-formats/sprite";
 import { CharName } from "../game-definitions/char-name";
 import { levelToCharNames } from "../internal-data-formats/level";
@@ -518,16 +518,14 @@ export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 	const charsets = peFileData.charsets.map((peCharset) =>
 		peCharset.bitmaps.map(
 			(bitmap): CharsetChar => ({
-				lines: assertTuple(
-					bitmap.map(
-						(line): CharsetCharLine => [
-							((line >> 6) & 0b11) as CharsetCharColor,
-							((line >> 4) & 0b11) as CharsetCharColor,
-							((line >> 2) & 0b11) as CharsetCharColor,
-							((line >> 0) & 0b11) as CharsetCharColor,
-						]
-					),
-					8
+				lines: mapTuple(
+					bitmap,
+					(line): CharsetCharLine => [
+						((line >> 6) & 0b11) as CharsetCharColor,
+						((line >> 4) & 0b11) as CharsetCharColor,
+						((line >> 2) & 0b11) as CharsetCharColor,
+						((line >> 0) & 0b11) as CharsetCharColor,
+					]
 				),
 			})
 		)

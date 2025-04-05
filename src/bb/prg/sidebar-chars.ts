@@ -4,7 +4,7 @@ import {
 } from "../internal-data-formats/charset-char";
 import { isDefined, padRight, strictChunk } from "../functions";
 import { Level } from "../internal-data-formats/level";
-import { assertTuple } from "../tuple";
+import { mapTuple } from "../tuple";
 import { maxSidebars, levelSegmentLocations } from "./data-locations";
 import { ReadonlyUint8Array } from "../types";
 
@@ -15,7 +15,7 @@ export function readSidebarChars(
 	const linesPerChar = 8;
 	const allSidebarCharBlocks = strictChunk(
 		strictChunk([...sidebarCharsBytes], linesPerChar).map((char) => ({
-			lines: assertTuple(char.map(parseCharsetCharLine), 8),
+			lines: mapTuple(char, parseCharsetCharLine),
 		})),
 		4
 	);

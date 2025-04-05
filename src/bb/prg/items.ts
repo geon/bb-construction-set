@@ -7,7 +7,7 @@ import { ReadonlyTuple } from "../tuple";
 import { linesPerChar } from "./charset-char";
 import { ItemDataSegmentName } from "../game-definitions/item-segment-name";
 import { DataSegment } from "./io";
-import { assertTuple } from "../tuple";
+import { mapTuple } from "../tuple";
 
 export const itemGroupMeta = {
 	bubbleBlow: {
@@ -124,7 +124,7 @@ export function readItems(
 				strictChunk(
 					strictChunk([...dataSegment.buffer], linesPerChar).map(
 						(char): CharsetChar => ({
-							lines: assertTuple(char.map(parseCharsetCharLine), 8),
+							lines: mapTuple(char, parseCharsetCharLine),
 						})
 					),
 					itemGroupMeta[segmentName].height
