@@ -38,6 +38,38 @@ export function LevelsPatcher({
 }): ReactNode {
 	const [pes, setPes] = useState<readonly ArrayBuffer[] | undefined>();
 
+	return (
+		<>
+			<p>
+				Save the file generated above, then edit it in the{" "}
+				<a href="https://petscii.krissz.hu">PETSCII Editor web app</a>, save it
+				and select it here.
+			</p>
+			<FileInput
+				accept={["pe"]}
+				multiple
+				onChange={async (files) =>
+					setPes(await Promise.all(files.map((file) => file.arrayBuffer())))
+				}
+			>
+				Choose files
+			</FileInput>
+			<Patcher prg={prg} setPrg={setPrg} pes={pes} setPes={setPes} />
+		</>
+	);
+}
+
+function Patcher({
+	prg,
+	setPrg,
+	pes,
+	setPes,
+}: {
+	readonly prg: ArrayBuffer;
+	readonly setPrg: (file: ArrayBuffer | undefined) => void;
+	readonly pes: readonly ArrayBuffer[] | undefined;
+	readonly setPes: (pes: readonly ArrayBuffer[] | undefined) => void;
+}): JSX.Element {
 	const parsedPeData =
 		pes &&
 		attempt(() => {
@@ -69,55 +101,37 @@ export function LevelsPatcher({
 	const colors =
 		(peColors && getSpriteColorsFromPeFileSpriteSet(peColors)) ?? spriteColors;
 
-	return (
+	return !parsedPeData ? (
+		<p>No pe selected.</p>
+	) : parsedPeData?.type !== "ok" ? (
+		<p>Could not parse pe: {parsedPeData?.error ?? "No reason."}</p>
+	) : (
 		<>
-			<p>
-				Save the file generated above, then edit it in the{" "}
-				<a href="https://petscii.krissz.hu">PETSCII Editor web app</a>, save it
-				and select it here.
-			</p>
-			<FileInput
-				accept={["pe"]}
-				multiple
-				onChange={async (files) =>
-					setPes(await Promise.all(files.map((file) => file.arrayBuffer())))
-				}
+			<ImageDataCanvas
+				imageData={drawLevelsToCanvas(parsedPeData.result.levels, colors)}
+			/>
+			<ImageDataCanvas
+				imageData={drawPlatformCharsToCanvas(parsedPeData.result.levels)}
+			/>
+			<CheckboxList
+				options={segmentLabels}
+				selected={selectedSegments}
+				setSelected={setSelectedSegments}
+			/>
+			<button
+				onClick={() => {
+					const patched = patchPrg(
+						prg,
+						parsedPeData.result.levels,
+						selectedSegments,
+						"retroForge"
+					);
+					setPrg(patched);
+					setPes(undefined);
+				}}
 			>
-				Choose files
-			</FileInput>
-			{!parsedPeData ? (
-				<p>No pe selected.</p>
-			) : parsedPeData?.type !== "ok" ? (
-				<p>Could not parse pe: {parsedPeData?.error ?? "No reason."}</p>
-			) : (
-				<>
-					<ImageDataCanvas
-						imageData={drawLevelsToCanvas(parsedPeData.result.levels, colors)}
-					/>
-					<ImageDataCanvas
-						imageData={drawPlatformCharsToCanvas(parsedPeData.result.levels)}
-					/>
-					<CheckboxList
-						options={segmentLabels}
-						selected={selectedSegments}
-						setSelected={setSelectedSegments}
-					/>
-					<button
-						onClick={() => {
-							const patched = patchPrg(
-								prg,
-								parsedPeData.result.levels,
-								selectedSegments,
-								"retroForge"
-							);
-							setPrg(patched);
-							setPes(undefined);
-						}}
-					>
-						Apply Patch
-					</button>
-				</>
-			)}
+				Apply Patch
+			</button>
 		</>
 	);
 }
