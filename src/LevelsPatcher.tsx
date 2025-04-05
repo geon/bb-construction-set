@@ -3,7 +3,7 @@ import { patchPrg } from "./bb/parse-prg";
 import { LevelDataSegmentName } from "./bb/prg/data-locations";
 import { CheckboxList } from "./CheckboxList";
 import {
-	getSpriteColorsFromPeFileData,
+	getSpriteColorsFromPeFileSpriteSet,
 	peFileDataToLevels,
 } from "./bb/level-pe-conversion";
 import { FileInput } from "./FileInput";
@@ -15,6 +15,7 @@ import {
 	drawPlatformCharsToCanvas,
 } from "./bb/draw-levels-to-canvas";
 import { ImageDataCanvas } from "./ImageDataCanvas";
+import { spriteColors } from "./bb/sprite";
 
 const segmentLabels: Record<LevelDataSegmentName, string> = {
 	symmetry: "Symmetry",
@@ -69,6 +70,13 @@ export function LevelsPatcher({
 		])
 	);
 
+	const peColors =
+		parsedPeData?.type !== "ok"
+			? undefined
+			: parsedPeData?.result.deserializedPeFileDatas[0]?.spriteSets[0];
+	const colors =
+		(peColors && getSpriteColorsFromPeFileSpriteSet(peColors)) ?? spriteColors;
+
 	return (
 		<>
 			<p>
@@ -92,12 +100,7 @@ export function LevelsPatcher({
 			) : (
 				<>
 					<ImageDataCanvas
-						imageData={drawLevelsToCanvas(
-							parsedPeData.result.levels,
-							getSpriteColorsFromPeFileData(
-								parsedPeData.result.deserializedPeFileDatas[0]!
-							)
-						)}
+						imageData={drawLevelsToCanvas(parsedPeData.result.levels, colors)}
 					/>
 					<ImageDataCanvas
 						imageData={drawPlatformCharsToCanvas(parsedPeData.result.levels)}

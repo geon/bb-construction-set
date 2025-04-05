@@ -6,7 +6,6 @@ import {
 	Sprites,
 	characterNames,
 	isCharacterName,
-	spriteColors,
 	spriteLeftIndex,
 } from "./sprite";
 import { CharsetChar, CharsetCharColor, CharsetCharLine } from "./charset-char";
@@ -636,15 +635,9 @@ export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 	});
 }
 
-export function getSpriteColorsFromPeFileData(
-	peFileData: PeFileData
+export function getSpriteColorsFromPeFileSpriteSet(
+	spriteSet: PeFileData["spriteSets"][number]
 ): Record<CharacterName, PaletteIndex> {
-	const spriteSet = peFileData.spriteSets[0];
-	if (!spriteSet) {
-		console.warn("Missing sprite set.");
-		return spriteColors;
-	}
-
 	const spriteColorEntries = spriteSet?.sprites
 		.map((sprite): readonly [CharacterName, PaletteIndex] | undefined => {
 			const { monsterName, facingLeft } = parseSpriteUid(sprite.uid);
