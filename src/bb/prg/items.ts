@@ -10,7 +10,7 @@ import { ItemDataSegmentName } from "./data-locations";
 import { DataSegment } from "./io";
 import { assertTuple } from "../tuple";
 
-export type ItemGroups = Record<ItemDataSegmentName, RowCharBlock[]>;
+export type ItemGroups = Record<ItemDataSegmentName, readonly RowCharBlock[]>;
 
 export function readItems(
 	dataSegments: Record<ItemDataSegmentName, DataSegment>
