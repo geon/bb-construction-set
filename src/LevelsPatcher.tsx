@@ -88,6 +88,10 @@ function Patcher({
 		return <p>No pe selected.</p>;
 	}
 
+	if (parsedPeData?.type !== "ok") {
+		return <p>Could not parse pe: {parsedPeData?.error ?? "No reason."}</p>;
+	}
+
 	const [selectedSegments, setSelectedSegments] = useState(
 		new Set<LevelDataSegmentName>([
 			"bgColors",
@@ -105,9 +109,7 @@ function Patcher({
 	const colors =
 		(peColors && getSpriteColorsFromPeFileSpriteSet(peColors)) ?? spriteColors;
 
-	return parsedPeData?.type !== "ok" ? (
-		<p>Could not parse pe: {parsedPeData?.error ?? "No reason."}</p>
-	) : (
+	return (
 		<>
 			<ImageDataCanvas
 				imageData={drawLevelsToCanvas(parsedPeData.result.levels, colors)}
