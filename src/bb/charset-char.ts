@@ -10,9 +10,9 @@ export type CharBlockIndex = 0 | 1 | 2 | 3;
 
 export function parseCharsetCharLine(byte: number): CharsetCharLine {
 	return [
-		(byte >> 6) & 0b11,
-		(byte >> 4) & 0b11,
-		(byte >> 2) & 0b11,
-		(byte >> 0) & 0b11,
-	] as CharsetCharLine;
+		((byte >> 6) & 0b11) as CharsetCharColor,
+		((byte >> 4) & 0b11) as CharsetCharColor,
+		((byte >> 2) & 0b11) as CharsetCharColor,
+		((byte >> 0) & 0b11) as CharsetCharColor,
+	];
 }
