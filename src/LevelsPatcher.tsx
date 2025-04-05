@@ -84,6 +84,10 @@ function Patcher({
 			};
 		});
 
+	if (!parsedPeData) {
+		return <p>No pe selected.</p>;
+	}
+
 	const [selectedSegments, setSelectedSegments] = useState(
 		new Set<LevelDataSegmentName>([
 			"bgColors",
@@ -101,9 +105,7 @@ function Patcher({
 	const colors =
 		(peColors && getSpriteColorsFromPeFileSpriteSet(peColors)) ?? spriteColors;
 
-	return !parsedPeData ? (
-		<p>No pe selected.</p>
-	) : parsedPeData?.type !== "ok" ? (
+	return parsedPeData?.type !== "ok" ? (
 		<p>Could not parse pe: {parsedPeData?.error ?? "No reason."}</p>
 	) : (
 		<>
