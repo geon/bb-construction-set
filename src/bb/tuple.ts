@@ -10,7 +10,7 @@ type _TupleOf<T, N extends number, R extends unknown[]> = R["length"] extends N
 
 export type ReadonlyTuple<T, N extends number> = N extends N
 	? number extends N
-		? T[]
+		? readonly T[]
 		: _ReadonlyTupleOf<T, N, []>
 	: never;
 type _ReadonlyTupleOf<
