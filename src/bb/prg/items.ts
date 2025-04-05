@@ -18,17 +18,15 @@ export function readItems(
 ): ItemGroups {
 	return mapRecord(dataSegments, (x) =>
 		strictChunk(
-			strictChunk([...x.buffer], linesPerChar).map(
-				(char): CharsetChar => ({
-					lines: assertTuple(char.map(parseCharsetCharLine), 8),
-				})
+			strictChunk(
+				strictChunk([...x.buffer], linesPerChar).map(
+					(char): CharsetChar => ({
+						lines: assertTuple(char.map(parseCharsetCharLine), 8),
+					})
+				),
+				2
 			),
-			4
-		).map(
-			([topLeft, bottomLeft, topRight, BottomRight]): ColumnCharBlock => [
-				[topLeft, bottomLeft],
-				[topRight, BottomRight],
-			]
+			2
 		)
 	);
 }
