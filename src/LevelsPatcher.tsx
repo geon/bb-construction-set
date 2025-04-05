@@ -103,11 +103,10 @@ function Patcher({
 	);
 
 	const peColors =
-		parsedPeData?.type !== "ok"
-			? undefined
-			: parsedPeData?.result.deserializedPeFileDatas[0]?.spriteSets[0];
-	const colors =
-		(peColors && getSpriteColorsFromPeFileSpriteSet(peColors)) ?? spriteColors;
+		parsedPeData.result.deserializedPeFileDatas[0]?.spriteSets[0];
+	const colors = peColors
+		? getSpriteColorsFromPeFileSpriteSet(peColors)
+		: spriteColors;
 
 	return (
 		<>
