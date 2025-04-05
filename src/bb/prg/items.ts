@@ -10,7 +10,12 @@ export type Item<Height extends number, Width extends number> =
 	// The chars are column-order just like in the game.
 	ReadonlyTuple<ReadonlyTuple<CharsetChar, Height>, Width>;
 
-export type ItemGroups = Record<ItemDataSegmentName, readonly Item<2, 2>[]>;
+type ItemGroup<Height extends number, Width extends number> = readonly Item<
+	Height,
+	Width
+>[];
+
+export type ItemGroups = Record<ItemDataSegmentName, ItemGroup<2, 2>>;
 
 export function readItems(
 	dataSegments: Record<ItemDataSegmentName, DataSegment>
