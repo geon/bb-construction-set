@@ -1,7 +1,7 @@
 import { Level, levelHeight, levelWidth, numTiles, Tiles } from "./level";
 import { palette, PaletteIndex } from "./palette";
 import { Color, mixColors, black } from "./color";
-import { CharBlockIndex, CharsetChar, RowCharBlock } from "./charset-char";
+import { CharBlockIndex, CharsetChar } from "./charset-char";
 import {
 	CharacterName,
 	SpriteGroup,
@@ -11,7 +11,7 @@ import {
 	spriteHeight,
 	spriteWidthBytes,
 } from "./sprite";
-import { ItemGroups } from "./prg/items";
+import { Item, ItemGroups } from "./prg/items";
 import { mapRecord, strictChunk, sum } from "./functions";
 import { ReadonlyTuple } from "./tuple";
 
@@ -333,10 +333,7 @@ export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
 }
 
 type CharPalette = ReadonlyTuple<Color, 4>;
-function drawCharblock(
-	item: RowCharBlock,
-	charPalette: CharPalette
-): ImageData {
+function drawCharblock(item: Item, charPalette: CharPalette): ImageData {
 	const image = new ImageData(16, 16);
 
 	for (const [charBlockY, row] of item.entries()) {
