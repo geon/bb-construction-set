@@ -43,19 +43,20 @@ export function LevelsPatcher({
 		}>
 	>();
 
-	const setPes = (pes: readonly ArrayBuffer[]) =>
+	const setPes = (pes: readonly ArrayBuffer[] | undefined) =>
 		setParsedPeData(
-			attempt(() => {
-				const deserializedPeFileDatas = pes.map((buffer) =>
-					deserializePeFileData(new TextDecoder("utf-8").decode(buffer))
-				);
-				const levels = deserializedPeFileDatas.flatMap(peFileDataToLevels);
+			pes &&
+				attempt(() => {
+					const deserializedPeFileDatas = pes.map((buffer) =>
+						deserializePeFileData(new TextDecoder("utf-8").decode(buffer))
+					);
+					const levels = deserializedPeFileDatas.flatMap(peFileDataToLevels);
 
-				return {
-					levels,
-					deserializedPeFileDatas,
-				};
-			})
+					return {
+						levels,
+						deserializedPeFileDatas,
+					};
+				})
 		);
 
 	const [selectedSegments, setSelectedSegments] = useState(
@@ -115,7 +116,7 @@ export function LevelsPatcher({
 								"retroForge"
 							);
 							setPrg(patched);
-							setPes([]);
+							setPes(undefined);
 						}}
 					>
 						Apply Patch
