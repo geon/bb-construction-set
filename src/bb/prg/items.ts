@@ -1,17 +1,16 @@
-import {
-	CharsetChar,
-	parseCharsetCharLine,
-	ColumnCharBlock,
-} from "../charset-char";
+import { CharsetChar, parseCharsetCharLine } from "../charset-char";
 import { mapRecord, strictChunk } from "../functions";
+import { ReadonlyTuple } from "../tuple";
 import { linesPerChar } from "./charset-char";
 import { ItemDataSegmentName } from "./data-locations";
 import { DataSegment } from "./io";
 import { assertTuple } from "../tuple";
 
-export type Item = ColumnCharBlock;
+export type Item<Height extends number, Width extends number> =
+	// The chars are column-order just like in the game.
+	ReadonlyTuple<ReadonlyTuple<CharsetChar, Height>, Width>;
 
-export type ItemGroups = Record<ItemDataSegmentName, readonly Item[]>;
+export type ItemGroups = Record<ItemDataSegmentName, readonly Item<2, 2>[]>;
 
 export function readItems(
 	dataSegments: Record<ItemDataSegmentName, DataSegment>

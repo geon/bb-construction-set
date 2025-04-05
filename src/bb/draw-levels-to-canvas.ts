@@ -333,8 +333,12 @@ export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
 }
 
 type CharPalette = ReadonlyTuple<Color, 4>;
-function drawCharblock(item: Item, charPalette: CharPalette): ImageData {
-	const image = new ImageData(16, 16);
+function drawCharblock(
+	item: Item<number, number>,
+	charPalette: CharPalette
+): ImageData {
+	// The chars are column-order just like in the game.
+	const image = new ImageData(item[0]!.length * 8, item.length * 8);
 
 	for (const [charBlockX, column] of item.entries()) {
 		for (const [charBlockY, char] of column.entries()) {
