@@ -1,4 +1,3 @@
-import { CharBlock } from "./charset-char";
 import { groupBy, unzipObject, zipObject } from "./functions";
 import { Level } from "./level";
 import { writeBgColors, readBgColors } from "./prg/bg-colors";
@@ -19,7 +18,6 @@ import {
 } from "./prg/io";
 import {
 	itemDataSegmentLocations,
-	ItemDataSegmentName,
 	LevelDataSegmentName,
 	levelDataSegmentNames,
 	levelSegmentLocations,
@@ -28,7 +26,7 @@ import {
 	SpriteDataSegmentName,
 	spriteDataSegmentNames,
 } from "./prg/data-locations";
-import { readItems } from "./prg/items";
+import { readItems, ItemGroups } from "./prg/items";
 import {
 	readBubbleCurrentRectangles,
 	writeBubbleCurrentRectangles,
@@ -53,7 +51,7 @@ import { ReadonlyUint8Array } from "./prg/types";
 export function parsePrg(prg: ArrayBuffer): {
 	levels: readonly Level[];
 	sprites: Record<SpriteGroupName, SpriteGroup>;
-	items: Record<ItemDataSegmentName, CharBlock[]>;
+	items: ItemGroups;
 } {
 	const levels = readLevels(getDataSegments(prg, levelSegmentLocations));
 	const sprites = parseSpriteGroupsFromPrg(

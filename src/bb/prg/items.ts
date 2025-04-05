@@ -5,9 +5,11 @@ import { ItemDataSegmentName } from "./data-locations";
 import { DataSegment } from "./io";
 import { assertTuple } from "../tuple";
 
+export type ItemGroups = Record<ItemDataSegmentName, CharBlock[]>;
+
 export function readItems(
 	dataSegments: Record<ItemDataSegmentName, DataSegment>
-): Record<ItemDataSegmentName, CharBlock[]> {
+): ItemGroups {
 	return mapRecord(dataSegments, (x, segmentName) =>
 		strictChunk(
 			strictChunk([...x.buffer], linesPerChar).map(

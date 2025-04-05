@@ -11,7 +11,7 @@ import {
 	spriteHeight,
 	spriteWidthBytes,
 } from "./sprite";
-import { ItemDataSegmentName } from "./prg/data-locations";
+import { ItemGroups } from "./prg/items";
 import { mapRecord, strictChunk, sum } from "./functions";
 import { ReadonlyTuple } from "./tuple";
 
@@ -280,9 +280,7 @@ function getSpritePalette(color: PaletteIndex): [Color, Color, Color, Color] {
 	];
 }
 
-export function drawItemsToCanvas(
-	itemGroups: Record<ItemDataSegmentName, CharBlock[]>
-): ImageData {
+export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
 	const numItemsX = 12;
 	const numItemsY = sum(
 		Object.values(itemGroups).map(
