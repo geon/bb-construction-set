@@ -16,3 +16,5 @@ export function parseCharsetCharLine(byte: number): CharsetCharLine {
 		((byte >> 0) & 0b11) as CharsetCharColor,
 	];
 }
+
+export type RowCharBlock = ReadonlyTuple<ReadonlyTuple<CharsetChar, 2>, 2>;

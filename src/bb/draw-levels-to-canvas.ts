@@ -1,7 +1,7 @@
 import { Level, levelHeight, levelWidth, numTiles, Tiles } from "./level";
 import { palette, PaletteIndex } from "./palette";
 import { Color, mixColors, black } from "./color";
-import { CharBlock, CharBlockIndex, CharsetChar } from "./charset-char";
+import { CharBlockIndex, CharsetChar, RowCharBlock } from "./charset-char";
 import {
 	CharacterName,
 	SpriteGroup,
@@ -333,13 +333,14 @@ export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
 }
 
 type CharPalette = ReadonlyTuple<Color, 4>;
-function drawCharblock(item: CharBlock, charPalette: CharPalette): ImageData {
+function drawCharblock(
+	item: RowCharBlock,
+	charPalette: CharPalette
+): ImageData {
 	const image = new ImageData(16, 16);
 
-	for (let charBlockY = 0; charBlockY < 2; ++charBlockY) {
-		for (let charBlockX = 0; charBlockX < 2; ++charBlockX) {
-			const char = item[(charBlockY * 2 + charBlockX) as CharBlockIndex];
-
+	for (const [charBlockY, row] of item.entries()) {
+		for (const [charBlockX, char] of row.entries()) {
 			blitImageData(
 				image,
 				drawChar(char, charPalette),

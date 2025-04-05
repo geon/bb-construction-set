@@ -1,11 +1,16 @@
-import { CharBlock, CharsetChar, parseCharsetCharLine } from "../charset-char";
+import {
+	CharBlock,
+	CharsetChar,
+	parseCharsetCharLine,
+	RowCharBlock,
+} from "../charset-char";
 import { mapRecord, strictChunk } from "../functions";
 import { linesPerChar } from "./charset-char";
 import { ItemDataSegmentName } from "./data-locations";
 import { DataSegment } from "./io";
 import { assertTuple } from "../tuple";
 
-export type ItemGroups = Record<ItemDataSegmentName, CharBlock[]>;
+export type ItemGroups = Record<ItemDataSegmentName, RowCharBlock[]>;
 
 export function readItems(
 	dataSegments: Record<ItemDataSegmentName, DataSegment>
@@ -18,7 +23,14 @@ export function readItems(
 				})
 			),
 			4
-		).map(segmentName === "largeLightning" ? (x) => x : unshuffleCharBlock)
+		)
+			.map(segmentName === "largeLightning" ? (x) => x : unshuffleCharBlock)
+			.map(
+				([topLeft, topRight, bottomLeft, BottomRight]): RowCharBlock => [
+					[topLeft, topRight],
+					[bottomLeft, BottomRight],
+				]
+			)
 	);
 }
 
