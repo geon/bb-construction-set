@@ -1,6 +1,7 @@
 import { CharBlock, parseCharsetCharLine } from "../charset-char";
-import { chunk, isDefined, padRight } from "../functions";
+import { isDefined, padRight, strictChunk } from "../functions";
 import { Level } from "../level";
+import { assertTuple } from "../tuple";
 import { maxSidebars, levelSegmentLocations } from "./data-locations";
 import { ReadonlyUint8Array } from "./types";
 
@@ -9,12 +10,12 @@ export function readSidebarChars(
 	sidebarCharsIndexBytes: ReadonlyUint8Array
 ) {
 	const linesPerChar = 8;
-	const allSidebarCharBlocks = chunk(
-		chunk([...sidebarCharsBytes], linesPerChar).map((char) => ({
-			lines: char.map(parseCharsetCharLine),
+	const allSidebarCharBlocks = strictChunk(
+		strictChunk([...sidebarCharsBytes], linesPerChar).map((char) => ({
+			lines: assertTuple(char.map(parseCharsetCharLine), 8),
 		})),
 		4
-	) as CharBlock[];
+	);
 
 	const mask = levelSegmentLocations.sidebarCharsIndex.mask;
 	if (mask === undefined) {

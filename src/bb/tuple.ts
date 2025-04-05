@@ -22,9 +22,9 @@ type _ReadonlyTupleOf<
 export function assertTuple<T, N extends number>(
 	array: T[],
 	n: N
-): Tuple<T, N> {
+): ReadonlyTuple<T, N> {
 	if (array.length !== n) {
 		throw new Error(`Bad length. Wanted: ${n} Actual: ${array.length}`);
 	}
-	return array as Tuple<T, N>;
+	return array as ReadonlyTuple<T, N>;
 }
