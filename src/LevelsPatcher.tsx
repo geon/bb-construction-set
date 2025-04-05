@@ -104,14 +104,14 @@ function Patcher({
 
 	const peColors =
 		parsedPeData.result.deserializedPeFileDatas[0]?.spriteSets[0];
-	const colors = peColors
-		? getSpriteColorsFromPeFileSpriteSet(peColors)
-		: spriteColors;
 
 	return (
 		<>
 			<ImageDataCanvas
-				imageData={drawLevelsToCanvas(parsedPeData.result.levels, colors)}
+				imageData={drawLevelsToCanvas(
+					parsedPeData.result.levels,
+					peColors ? getSpriteColorsFromPeFileSpriteSet(peColors) : spriteColors
+				)}
 			/>
 			<ImageDataCanvas
 				imageData={drawPlatformCharsToCanvas(parsedPeData.result.levels)}
