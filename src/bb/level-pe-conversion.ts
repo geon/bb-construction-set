@@ -13,6 +13,7 @@ import { CharsetChar, CharsetCharColor, CharsetCharLine } from "./charset-char";
 import { c64BuiltinCharsets } from "./c64-builtin-charsets";
 import { PaletteIndex } from "./palette";
 import { shadowChars, ShadowStyle } from "./shadow-chars";
+import { assertTuple } from "./tuple";
 
 const emptyChar: CharBitmap = [0, 0, 0, 0, 0, 0, 0, 0];
 
@@ -554,9 +555,9 @@ function isBitSet(byte: number, index: number): Bit {
 export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 	const charsets = peFileData.charsets.map((peCharset) =>
 		peCharset.bitmaps.map(
-			(bitmap) =>
-				({
-					lines: bitmap.map(
+			(bitmap): CharsetChar => ({
+				lines: assertTuple(
+					bitmap.map(
 						(line): CharsetCharLine => [
 							((line >> 6) & 0b11) as CharsetCharColor,
 							((line >> 4) & 0b11) as CharsetCharColor,
@@ -564,7 +565,9 @@ export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 							((line >> 0) & 0b11) as CharsetCharColor,
 						]
 					),
-				} as CharsetChar)
+					8
+				),
+			})
 		)
 	);
 
