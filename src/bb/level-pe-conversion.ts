@@ -133,7 +133,7 @@ export function levelsToPeScreensAndCharsets(
 				multiColor2: level.bgColorLight,
 				bitmaps: makeCharsetBitmaps(level, shadowStyle),
 			})),
-		]!,
+		],
 		screens: levels.map((level, levelIndex): PeFileData["screens"][number] => {
 			const sizeX = 81;
 			const sizeY = 25;
@@ -229,7 +229,7 @@ export function spritesToPeSpriteSets(
 					monsterName
 				): PeFileData["spriteSets"][number]["sprites"][number][] => {
 					const characterSprites = inputSprites[monsterName]!;
-					return [false, true]!.map(
+					return [false, true].map(
 						(
 							facingLeft
 						): PeFileData["spriteSets"][number]["sprites"][number] => ({
@@ -246,19 +246,16 @@ export function spritesToPeSpriteSets(
 							expandY: false,
 							bitmapData: characterSprites.sprites[
 								facingLeft ? spriteLeftIndex[monsterName]! : 0
-							]!.bitmap.map(
-								(byte) =>
-									[
-										isBitSet(byte, 0),
-										isBitSet(byte, 1),
-										isBitSet(byte, 2),
-										isBitSet(byte, 3),
-										isBitSet(byte, 4),
-										isBitSet(byte, 5),
-										isBitSet(byte, 6),
-										isBitSet(byte, 7),
-									]!
-							),
+							]!.bitmap.map((byte) => [
+								isBitSet(byte, 0),
+								isBitSet(byte, 1),
+								isBitSet(byte, 2),
+								isBitSet(byte, 3),
+								isBitSet(byte, 4),
+								isBitSet(byte, 5),
+								isBitSet(byte, 6),
+								isBitSet(byte, 7),
+							]),
 						})
 					);
 				}
@@ -266,7 +263,7 @@ export function spritesToPeSpriteSets(
 			undoStack: [],
 			redoStack: [],
 		},
-	]!;
+	];
 
 	return peFileData;
 }
@@ -402,7 +399,7 @@ function makeLevelCharAndColorData(
 		}
 	}
 	// Draw bubble current rectangles.
-	const platformAndSidebarChars = new Set([1, 16, 17, 32, 33]!);
+	const platformAndSidebarChars = new Set([1, 16, 17, 32, 33]);
 	if (level.bubbleCurrentRectangles.type === "rectangles") {
 		for (const rectangle of level.bubbleCurrentRectangles.rectangles) {
 			if (rectangle.type === "rectangle") {
@@ -484,24 +481,17 @@ function makeLevelCharAndColorData(
 	} else {
 		for (const rectangle of level.bubbleCurrentRectangles.rectangles) {
 			if (rectangle.type === "symmetry") {
-				print([charToCharsetIndex("S")]!);
+				print([charToCharsetIndex("S")]);
 			} else {
-				print(
-					[
-						rectangle.direction + 12,
-						charToCharsetIndex(" "),
-						...Array.from(
-							[
-								rectangle.left,
-								rectangle.top,
-								rectangle.width,
-								rectangle.height,
-							]!
-								.map((num) => num.toString())
-								.join(" ")
-						).map(charToCharsetIndex),
-					]!
-				);
+				print([
+					rectangle.direction + 12,
+					charToCharsetIndex(" "),
+					...Array.from(
+						[rectangle.left, rectangle.top, rectangle.width, rectangle.height]
+							.map((num) => num.toString())
+							.join(" ")
+					).map(charToCharsetIndex),
+				]);
 			}
 		}
 	}
@@ -522,7 +512,7 @@ function makeCharsetBitmaps(
 			...shadowChars[shadowStyle]!,
 			...Array<CharBitmap>(4).fill(emptyChar),
 			...Object.values(bubbleCurrentChars),
-		]!,
+		],
 		// `charset.length` should be exactly 256.
 		256,
 		emptyChar
@@ -539,7 +529,7 @@ function makeCharsetBitmaps(
 	for (const index of currentIndices.slice(0, -2)) {
 		charset[index]! = c64BuiltinCharsets.uppercase[index]!;
 	}
-	for (const [index, value] of [3, 19]!.entries()) {
+	for (const [index, value] of [3, 19].entries()) {
 		charset[currentIndices[currentIndices.length - 2]! + index]! =
 			c64BuiltinCharsets.uppercase[value]!;
 	}
@@ -573,13 +563,13 @@ export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 								(line >> 4) & 0b11,
 								(line >> 2) & 0b11,
 								(line >> 0) & 0b11,
-							]! as CharsetCharLine
+							] as CharsetCharLine
 					),
 				} as CharsetChar)
 		)
 	);
 
-	const solidTiles = new Set([1, 16, 17, 32, 33]!);
+	const solidTiles = new Set([1, 16, 17, 32, 33]);
 	return peFileData.screens.map((screen): Level => {
 		const tiles = createTiles();
 		for (const [tileY, row] of tiles.entries()) {
@@ -612,7 +602,7 @@ export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 			})
 			.filter(isDefined);
 
-		const arrowChars = new Set([12, 13, 14, 15]!);
+		const arrowChars = new Set([12, 13, 14, 15]);
 		return {
 			tiles,
 			bgColorLight: screen.multiColor2 as PaletteIndex,
@@ -633,7 +623,7 @@ export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 				type: "rectangles",
 				rectangles: [
 					// TODO: Find rectangles in charData.
-				]!,
+				],
 			},
 			bubbleCurrentPerLineDefaults: screen.charData.map((row) =>
 				arrowChars.has(row[33]!)
