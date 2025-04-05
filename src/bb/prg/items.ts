@@ -36,7 +36,7 @@ export type Item<Height extends number, Width extends number> =
 	// The chars are column-order just like in the game.
 	ReadonlyTuple<ReadonlyTuple<CharsetChar, Height>, Width>;
 
-type ItemGroup<Width extends number, Height extends number> = {
+export type ItemGroup<Width extends number, Height extends number> = {
 	items: ReadonlyArray<Item<Height, Width>>;
 	masks?: ReadonlyArray<Item<Height, Width>>;
 };

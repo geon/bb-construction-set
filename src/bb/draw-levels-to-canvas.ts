@@ -11,8 +11,8 @@ import {
 	spriteHeight,
 	spriteWidthBytes,
 } from "./sprite";
-import { Item, ItemGroups } from "./prg/items";
-import { chunk, mapRecord, strictChunk, sum } from "./functions";
+import { Item, ItemGroup, ItemGroups } from "./prg/items";
+import { chunk, mapRecord, strictChunk, sum, zipObject } from "./functions";
 import { ReadonlyTuple } from "./tuple";
 
 export function drawLevelsToCanvas(
@@ -125,11 +125,16 @@ function drawTiles(
 	}
 }
 
-function plotPixel(image: ImageData, pixelIndex: number, color: Color) {
+function plotPixel(
+	image: ImageData,
+	pixelIndex: number,
+	color: Color,
+	alpha: number = 255
+) {
 	image.data[pixelIndex * 4 + 0] = color.r;
 	image.data[pixelIndex * 4 + 1] = color.g;
 	image.data[pixelIndex * 4 + 2] = color.b;
-	image.data[pixelIndex * 4 + 3] = 255;
+	image.data[pixelIndex * 4 + 3] = alpha;
 }
 
 export function clearCanvas(canvas: HTMLCanvasElement) {
@@ -189,17 +194,24 @@ function getCharPalette(level: Level): [Color, Color, Color, Color] {
 
 function drawChar(
 	char: CharsetChar,
-	charPalette: readonly [Color, Color, Color, Color]
+	charPalette: readonly [Color, Color, Color, Color],
+	mask?: CharsetChar
 ) {
 	const image = new ImageData(8, 8);
 
 	for (const [charY, line] of char.lines.entries()) {
 		for (const [charX, colorIndex] of line.entries()) {
+			const masked = mask?.lines?.[charY]?.[charX];
+			if (masked !== undefined && !(masked === 0b11 || masked === 0b00)) {
+				throw new Error("Invalid mask pixel");
+			}
+			const alpha = masked ? 0 : 255;
+
 			const color = charPalette[colorIndex];
 			// Double width pixels.
 			const pixelIndex = charY * 8 + charX * 2;
-			plotPixel(image, pixelIndex, color);
-			plotPixel(image, pixelIndex + 1, color);
+			plotPixel(image, pixelIndex, color, alpha);
+			plotPixel(image, pixelIndex + 1, color, alpha);
 		}
 	}
 	return image;
@@ -283,14 +295,22 @@ function getSpritePalette(color: PaletteIndex): [Color, Color, Color, Color] {
 export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
 	const numItemsX = 12;
 
-	const itemImageGroups = mapRecord(itemGroups, ({ items }) => {
-		return items.map((item) =>
-			drawCharblock(item, [
-				palette[0], //black
-				palette[9], // Brown
-				palette[1], // White
-				palette[5], // Green
-			])
+	const itemImageGroups = mapRecord(itemGroups, (itemGroup) => {
+		const maskedItems = zipObject(itemGroup as ItemGroup<number, number>).map(
+			({ items: charblock, masks: mask }) => ({ charblock, mask })
+		);
+
+		return maskedItems.map((maskedItem) =>
+			drawCharblock(
+				maskedItem.charblock,
+				[
+					palette[0], //black
+					palette[9], // Brown
+					palette[1], // White
+					palette[5], // Green
+				],
+				maskedItem.mask
+			)
 		);
 	});
 
@@ -312,7 +332,8 @@ export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
 type CharPalette = ReadonlyTuple<Color, 4>;
 function drawCharblock(
 	item: Item<number, number>,
-	charPalette: CharPalette
+	charPalette: CharPalette,
+	mask?: Item<number, number>
 ): ImageData {
 	// The chars are column-order just like in the game.
 	const image = new ImageData(item.length * 8, item[0]!.length * 8);
@@ -321,7 +342,7 @@ function drawCharblock(
 		for (const [charBlockY, char] of column.entries()) {
 			blitImageData(
 				image,
-				drawChar(char, charPalette),
+				drawChar(char, charPalette, mask?.[charBlockX]?.[charBlockY]),
 				charBlockX * 8,
 				charBlockY * 8
 			);
