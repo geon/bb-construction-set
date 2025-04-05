@@ -298,10 +298,10 @@ export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
 		Object.values(itemImageGroups).map((itemImages) =>
 			imageDataConcatenate(
 				chunk(itemImages, numItemsX).map((row) =>
-					imageDataConcatenate(row, "row", 0)
+					imageDataConcatenate(row, "row", 8)
 				),
 				"column",
-				0
+				8
 			)
 		),
 		"column",
