@@ -16,10 +16,10 @@ export type ItemGroups = Record<ItemDataSegmentName, readonly Item[]>;
 export function readItems(
 	dataSegments: Record<ItemDataSegmentName, DataSegment>
 ): ItemGroups {
-	return mapRecord(dataSegments, (x) =>
+	return mapRecord(dataSegments, (dataSegment) =>
 		strictChunk(
 			strictChunk(
-				strictChunk([...x.buffer], linesPerChar).map(
+				strictChunk([...dataSegment.buffer], linesPerChar).map(
 					(char): CharsetChar => ({
 						lines: assertTuple(char.map(parseCharsetCharLine), 8),
 					})
