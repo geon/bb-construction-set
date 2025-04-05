@@ -34,7 +34,7 @@ export function LevelsPatcher({
 	setPrg,
 }: {
 	readonly prg: ArrayBuffer;
-	readonly setPrg: (file: ArrayBuffer | undefined) => void;
+	readonly setPrg: (file: ArrayBuffer) => void;
 }): ReactNode {
 	const [pes, setPes] = useState<readonly ArrayBuffer[] | undefined>();
 
@@ -66,7 +66,7 @@ function Patcher({
 	setPes,
 }: {
 	readonly prg: ArrayBuffer;
-	readonly setPrg: (file: ArrayBuffer | undefined) => void;
+	readonly setPrg: (file: ArrayBuffer) => void;
 	readonly pes: readonly ArrayBuffer[] | undefined;
 	readonly setPes: (pes: readonly ArrayBuffer[] | undefined) => void;
 }): JSX.Element {
