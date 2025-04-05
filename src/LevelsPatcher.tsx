@@ -7,9 +7,8 @@ import {
 	peFileDataToLevels,
 } from "./bb/level-pe-conversion";
 import { FileInput } from "./FileInput";
-import { Attempt, attempt } from "./bb/functions";
-import { deserializePeFileData, PeFileData } from "./bb/pe-file";
-import { Level } from "./bb/level";
+import { attempt } from "./bb/functions";
+import { deserializePeFileData } from "./bb/pe-file";
 import {
 	drawLevelsToCanvas,
 	drawPlatformCharsToCanvas,
@@ -37,28 +36,21 @@ export function LevelsPatcher({
 	readonly prg: ArrayBuffer;
 	readonly setPrg: (file: ArrayBuffer | undefined) => void;
 }): ReactNode {
-	const [parsedPeData, setParsedPeData] = useState<
-		Attempt<{
-			readonly levels: readonly Level[];
-			readonly deserializedPeFileDatas: readonly PeFileData[];
-		}>
-	>();
+	const [pes, setPes] = useState<readonly ArrayBuffer[] | undefined>();
 
-	const setPes = (pes: readonly ArrayBuffer[] | undefined) =>
-		setParsedPeData(
-			pes &&
-				attempt(() => {
-					const deserializedPeFileDatas = pes.map((buffer) =>
-						deserializePeFileData(new TextDecoder("utf-8").decode(buffer))
-					);
-					const levels = deserializedPeFileDatas.flatMap(peFileDataToLevels);
+	const parsedPeData =
+		pes &&
+		attempt(() => {
+			const deserializedPeFileDatas = pes.map((buffer) =>
+				deserializePeFileData(new TextDecoder("utf-8").decode(buffer))
+			);
+			const levels = deserializedPeFileDatas.flatMap(peFileDataToLevels);
 
-					return {
-						levels,
-						deserializedPeFileDatas,
-					};
-				})
-		);
+			return {
+				levels,
+				deserializedPeFileDatas,
+			};
+		});
 
 	const [selectedSegments, setSelectedSegments] = useState(
 		new Set<LevelDataSegmentName>([
