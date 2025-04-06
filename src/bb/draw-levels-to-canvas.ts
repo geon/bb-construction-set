@@ -348,19 +348,21 @@ export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
 	);
 
 	const numCharsX = (3 + 1) * 4 - 1;
-	return imageDataConcatenate(
-		Object.values(
-			mapRecord(itemImageGroups, (itemImages, groupName) =>
-				imageDataConcatenate(
-					chunk(
-						itemImages,
-						Math.ceil(numCharsX / (itemGroupMeta[groupName].width + 1))
-					).map((row) => imageDataConcatenate(row, "row", 8)),
-					"column",
-					8
-				)
+	const renderedItemGroups = mapRecord(
+		itemImageGroups,
+		(itemImages, groupName) =>
+			imageDataConcatenate(
+				chunk(
+					itemImages,
+					Math.ceil(numCharsX / (itemGroupMeta[groupName].width + 1))
+				).map((row) => imageDataConcatenate(row, "row", 8)),
+				"column",
+				8
 			)
-		),
+	);
+
+	return imageDataConcatenate(
+		Object.values(renderedItemGroups),
 		"column",
 		2 * 8
 	);
