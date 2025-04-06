@@ -142,7 +142,7 @@ export function clearCanvas(canvas: HTMLCanvasElement) {
 }
 
 export function drawPlatformCharsToCanvas(levels: readonly Level[]): ImageData {
-	const gap = 0;
+	const gap = 10;
 	return imageDataConcatenate(
 		chunk(levels, 10).map((row) =>
 			imageDataConcatenate(row.map(drawLevelPlatformChars), "row", gap)
