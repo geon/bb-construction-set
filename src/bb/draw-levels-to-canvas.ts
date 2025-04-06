@@ -26,26 +26,19 @@ export function drawLevelsToCanvas(
 	levels: readonly Level[],
 	spriteColors: Record<CharacterName, PaletteIndex>
 ): ImageData {
-	const image = new ImageData(levelWidth * 10, levelHeight * 10);
+	const gap = 0;
 
-	outerLoop: for (let levelY = 0; levelY < 10; ++levelY) {
-		for (let levelX = 0; levelX < 10; ++levelX) {
-			const levelIndex = levelY * 10 + levelX;
-			const level = levels[levelIndex];
-			if (!level) {
-				break outerLoop;
-			}
-
-			blitImageData(
-				image,
-				drawLevelThumbnail(level, spriteColors),
-				levelX * levelWidth,
-				levelY * levelHeight
-			);
-		}
-	}
-
-	return image;
+	return imageDataConcatenate(
+		chunk(levels, 10).map((row) =>
+			imageDataConcatenate(
+				row.map((level) => drawLevelThumbnail(level, spriteColors)),
+				"row",
+				gap
+			)
+		),
+		"column",
+		gap
+	);
 }
 
 function drawLevelThumbnail(
