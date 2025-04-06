@@ -375,12 +375,15 @@ export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
 			],
 			[
 				renderedItemGroups.bubblePop,
-				renderedItemGroups.lightning,
 				renderedItemGroups.fire,
 				renderedItemGroups.baronVonBlubba,
 				renderedItemGroups.stonerWeapon,
 				renderedItemGroups.drunkAndInvaderWeapon,
-				renderedItemGroups.incendoWeapon,
+				imageDataConcatenate(
+					[renderedItemGroups.incendoWeapon, renderedItemGroups.lightning],
+					"row",
+					8
+				),
 			],
 			[
 				renderedItemGroups.items,
