@@ -315,13 +315,15 @@ export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
 	});
 
 	return imageDataConcatenate(
-		Object.values(itemImageGroups).map((itemImages) =>
-			imageDataConcatenate(
-				chunk(itemImages, numItemsX).map((row) =>
-					imageDataConcatenate(row, "row", 8)
-				),
-				"column",
-				8
+		Object.values(
+			mapRecord(itemImageGroups, (itemImages) =>
+				imageDataConcatenate(
+					chunk(itemImages, numItemsX).map((row) =>
+						imageDataConcatenate(row, "row", 8)
+					),
+					"column",
+					8
+				)
 			)
 		),
 		"column",
