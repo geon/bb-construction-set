@@ -11,9 +11,16 @@ import {
 	spriteHeight,
 	spriteWidthBytes,
 } from "./sprite";
-import { Item, itemGroupMeta, ItemGroups } from "./prg/items";
-import { chunk, mapRecord, strictChunk, sum, zipObject } from "./functions";
-import { ReadonlyTuple } from "./tuple";
+import { Item, ItemGroup, itemGroupMeta, ItemGroups } from "./prg/items";
+import {
+	chunk,
+	mapRecord,
+	range,
+	strictChunk,
+	sum,
+	zipObject,
+} from "./functions";
+import { assertTuple, ReadonlyTuple } from "./tuple";
 
 export function drawLevelsToCanvas(
 	levels: readonly Level[],
@@ -293,24 +300,52 @@ function getSpritePalette(color: PaletteIndex): [Color, Color, Color, Color] {
 }
 
 export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
-	const itemImageGroups = mapRecord(itemGroups, (itemGroup) => {
-		const maskedItems = zipObject(itemGroup).map(
-			({ items: charblock, masks: mask }) => ({ charblock, mask })
-		);
+	const sharedBubbleMask = assertTuple(
+		itemGroups.bubbleBlow.masks?.slice(8) ?? [],
+		4
+	);
 
-		return maskedItems.map((maskedItem) =>
-			drawCharblock(
-				maskedItem.charblock,
-				[
-					palette[0], //black
-					palette[9], // Brown
-					palette[1], // White
-					palette[5], // Green
-				],
-				maskedItem.mask
-			)
-		);
-	});
+	const itemImageGroups = mapRecord(
+		mapRecord(itemGroups, (itemGroup, groupName): ItemGroup<number, number> => {
+			const masks = (() => {
+				switch (groupName) {
+					case "specialBubbles":
+						return range(0, 3).flatMap(() => sharedBubbleMask);
+					case "extendBubbles":
+						return range(0, 5).flatMap(() => sharedBubbleMask);
+					case "stonerWeapon":
+						return [sharedBubbleMask[0], sharedBubbleMask[2]];
+					default:
+						return undefined;
+				}
+			})();
+
+			return masks
+				? {
+						items: itemGroup.items,
+						masks,
+				  }
+				: itemGroup;
+		}),
+		(itemGroup) => {
+			const maskedItems = zipObject(itemGroup).map(
+				({ items: charblock, masks: mask }) => ({ charblock, mask })
+			);
+
+			return maskedItems.map((maskedItem) =>
+				drawCharblock(
+					maskedItem.charblock,
+					[
+						palette[0], //black
+						palette[9], // Brown
+						palette[1], // White
+						palette[5], // Green
+					],
+					maskedItem.mask
+				)
+			);
+		}
+	);
 
 	const numCharsX = (3 + 1) * 4 - 1;
 	return imageDataConcatenate(
