@@ -11,7 +11,7 @@ import {
 	spriteHeight,
 	spriteWidthBytes,
 } from "./sprite";
-import { Item, ItemGroup, itemGroupMeta, ItemGroups } from "./prg/items";
+import { Item, itemGroupMeta, ItemGroups } from "./prg/items";
 import { chunk, mapRecord, strictChunk, sum, zipObject } from "./functions";
 import { ReadonlyTuple } from "./tuple";
 
@@ -294,7 +294,7 @@ function getSpritePalette(color: PaletteIndex): [Color, Color, Color, Color] {
 
 export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
 	const itemImageGroups = mapRecord(itemGroups, (itemGroup) => {
-		const maskedItems = zipObject(itemGroup as ItemGroup<number, number>).map(
+		const maskedItems = zipObject(itemGroup).map(
 			({ items: charblock, masks: mask }) => ({ charblock, mask })
 		);
 

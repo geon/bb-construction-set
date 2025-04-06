@@ -30,8 +30,6 @@ export const itemGroupMeta = {
 	}
 >;
 
-type ItemGroupMeta = typeof itemGroupMeta;
-
 export type Item<Height extends number, Width extends number> =
 	// The chars are column-order just like in the game.
 	ReadonlyTuple<ReadonlyTuple<CharsetChar, Height>, Width>;
@@ -41,10 +39,7 @@ export type ItemGroup<Width extends number, Height extends number> = {
 	masks?: ReadonlyArray<Item<Height, Width>>;
 };
 export type ItemGroups = {
-	readonly [Key in ItemDataSegmentName]: ItemGroup<
-		ItemGroupMeta[Key]["width"],
-		ItemGroupMeta[Key]["height"]
-	>;
+	readonly [Key in ItemDataSegmentName]: ItemGroup<number, number>;
 };
 
 export function readItems(
@@ -74,5 +69,5 @@ export function readItems(
 						items,
 				  };
 		}
-	) as ItemGroups;
+	);
 }
