@@ -347,14 +347,19 @@ export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
 		}
 	);
 
-	const numCharsX = (3 + 1) * 4 - 1;
 	const renderedItemGroups = mapRecord(
 		itemImageGroups,
 		(itemImages, groupName) =>
 			imageDataConcatenate(
 				chunk(
 					itemImages,
-					Math.ceil(numCharsX / (itemGroupMeta[groupName].width + 1))
+					{
+						bubbleBlow: 4,
+						bubblePop: 4,
+						specialBubbles: 4,
+						extendBubbles: 4,
+						items: Math.ceil(Math.sqrt(itemImageGroups.items.length)),
+					}[groupName as string] ?? 1000
 				).map((row) => imageDataConcatenate(row, "row", 8)),
 				"column",
 				8
