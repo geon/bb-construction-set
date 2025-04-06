@@ -142,28 +142,14 @@ export function clearCanvas(canvas: HTMLCanvasElement) {
 }
 
 export function drawPlatformCharsToCanvas(levels: readonly Level[]): ImageData {
-	const width = 4 * 8 * 10;
-	const height = 4 * 8 * 10;
-
-	const image = new ImageData(width, height);
-
-	outerLoop: for (let levelY = 0; levelY < 10; ++levelY) {
-		for (let levelX = 0; levelX < 10; ++levelX) {
-			const levelIndex = levelY * 10 + levelX;
-			const level = levels[levelIndex];
-			if (!level) {
-				break outerLoop;
-			}
-
-			blitImageData(
-				image,
-				drawLevelPlatformChars(level),
-				levelX * 32,
-				levelY * 32
-			);
-		}
-	}
-	return image;
+	const gap = 0;
+	return imageDataConcatenate(
+		chunk(levels, 10).map((row) =>
+			imageDataConcatenate(row.map(drawLevelPlatformChars), "row", gap)
+		),
+		"column",
+		gap
+	);
 }
 
 function drawLevelPlatformChars(level: Level): ImageData {
