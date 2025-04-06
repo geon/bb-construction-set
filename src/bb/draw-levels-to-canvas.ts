@@ -11,7 +11,7 @@ import {
 	spriteHeight,
 	spriteWidthBytes,
 } from "./sprite";
-import { Item, ItemGroup, itemGroupMeta, ItemGroups } from "./prg/items";
+import { Item, ItemGroup, ItemGroups } from "./prg/items";
 import {
 	chunk,
 	mapRecord,
@@ -367,9 +367,29 @@ export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
 	);
 
 	return imageDataConcatenate(
-		Object.values(renderedItemGroups),
-		"column",
-		2 * 8
+		[
+			[
+				renderedItemGroups.bubbleBlow,
+				renderedItemGroups.specialBubbles,
+				renderedItemGroups.extendBubbles,
+			],
+			[
+				renderedItemGroups.bubblePop,
+				renderedItemGroups.lightning,
+				renderedItemGroups.fire,
+				renderedItemGroups.baronVonBlubba,
+				renderedItemGroups.stonerWeapon,
+				renderedItemGroups.drunkAndInvaderWeapon,
+				renderedItemGroups.incendoWeapon,
+			],
+			[
+				renderedItemGroups.items,
+				renderedItemGroups.bonusRoundCircles,
+				renderedItemGroups.largeLightning,
+			],
+		].map((chunk) => imageDataConcatenate(chunk, "column", 3 * 8)),
+		"row",
+		4 * 8
 	);
 }
 
