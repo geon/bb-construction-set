@@ -155,31 +155,39 @@ export function drawPlatformCharsToCanvas(levels: readonly Level[]): ImageData {
 				break outerLoop;
 			}
 
-			const levelImage = new ImageData(4 * 8, 4 * 8);
-
-			const charPalette = getCharPalette(level);
-			for (let sidebarY = 0; sidebarY < 4; ++sidebarY) {
-				for (let sidebarX = 0; sidebarX < 4; ++sidebarX) {
-					const char =
-						level.sidebarChars && sidebarX < 2
-							? level.sidebarChars[
-									((sidebarY % 2) * 2 + sidebarX) as CharBlockIndex
-							  ]
-							: level.platformChar;
-
-					blitImageData(
-						levelImage,
-						drawChar(char, charPalette),
-						sidebarX * 8,
-						sidebarY * 8
-					);
-				}
-			}
-
-			blitImageData(image, levelImage, levelX * 32, levelY * 32);
+			blitImageData(
+				image,
+				drawLevelPlatformChars(level),
+				levelX * 32,
+				levelY * 32
+			);
 		}
 	}
 	return image;
+}
+
+function drawLevelPlatformChars(level: Level): ImageData {
+	const levelImage = new ImageData(4 * 8, 4 * 8);
+
+	const charPalette = getCharPalette(level);
+	for (let sidebarY = 0; sidebarY < 4; ++sidebarY) {
+		for (let sidebarX = 0; sidebarX < 4; ++sidebarX) {
+			const char =
+				level.sidebarChars && sidebarX < 2
+					? level.sidebarChars[
+							((sidebarY % 2) * 2 + sidebarX) as CharBlockIndex
+					  ]
+					: level.platformChar;
+
+			blitImageData(
+				levelImage,
+				drawChar(char, charPalette),
+				sidebarX * 8,
+				sidebarY * 8
+			);
+		}
+	}
+	return levelImage;
 }
 
 function getCharPalette(level: Level): [Color, Color, Color, Color] {
