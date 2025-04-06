@@ -283,16 +283,16 @@ function getSpritePalette(color: PaletteIndex): [Color, Color, Color, Color] {
 export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
 	const numItemsX = 12;
 
-	const itemImageGroups = mapRecord(itemGroups, (itemGroup) =>
-		itemGroup.items.map((item) =>
+	const itemImageGroups = mapRecord(itemGroups, (itemGroup) => {
+		return itemGroup.items.map((item) =>
 			drawCharblock(item, [
 				palette[0], //black
 				palette[9], // Brown
 				palette[1], // White
 				palette[5], // Green
 			])
-		)
-	);
+		);
+	});
 
 	return imageDataConcatenate(
 		Object.values(itemImageGroups).map((itemImages) =>
