@@ -11,7 +11,7 @@ import {
 	spriteHeight,
 	spriteWidthBytes,
 } from "./sprite";
-import { Item, ItemGroup, ItemGroups } from "./prg/items";
+import { Item, ItemGroup, itemGroupMeta, ItemGroups } from "./prg/items";
 import { chunk, mapRecord, strictChunk, sum, zipObject } from "./functions";
 import { ReadonlyTuple } from "./tuple";
 
@@ -293,8 +293,6 @@ function getSpritePalette(color: PaletteIndex): [Color, Color, Color, Color] {
 }
 
 export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
-	const numItemsX = 12;
-
 	const itemImageGroups = mapRecord(itemGroups, (itemGroup) => {
 		const maskedItems = zipObject(itemGroup as ItemGroup<number, number>).map(
 			({ items: charblock, masks: mask }) => ({ charblock, mask })
@@ -314,13 +312,15 @@ export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
 		);
 	});
 
+	const numCharsX = (3 + 1) * 4 - 1;
 	return imageDataConcatenate(
 		Object.values(
-			mapRecord(itemImageGroups, (itemImages) =>
+			mapRecord(itemImageGroups, (itemImages, groupName) =>
 				imageDataConcatenate(
-					chunk(itemImages, numItemsX).map((row) =>
-						imageDataConcatenate(row, "row", 8)
-					),
+					chunk(
+						itemImages,
+						Math.ceil(numCharsX / (itemGroupMeta[groupName].width + 1))
+					).map((row) => imageDataConcatenate(row, "row", 8)),
 					"column",
 					8
 				)
