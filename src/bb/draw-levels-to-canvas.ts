@@ -8,19 +8,11 @@ import {
 	SpriteGroup,
 	spriteGroupMultiWidths,
 	SpriteGroupName,
-	spriteGroupNames,
 	spriteHeight,
 	spriteWidthBytes,
 } from "./sprite";
 import { Item, ItemGroup, ItemGroups } from "./prg/items";
-import {
-	chunk,
-	mapRecord,
-	range,
-	strictChunk,
-	sum,
-	zipObject,
-} from "./functions";
+import { chunk, mapRecord, range, sum, zipObject } from "./functions";
 import { assertTuple, ReadonlyTuple } from "./tuple";
 
 export function drawLevelsToCanvas(
@@ -216,47 +208,75 @@ function drawChar(
 export function drawSpritesToCanvas(
 	spriteGroups: Record<SpriteGroupName, SpriteGroup>
 ): ImageData {
-	const characherSpriteGroups = Object.values(spriteGroups);
-	const numSpriteRows = sum(
-		spriteGroupNames.map((x) => spriteGroupMultiWidths[x])
-	);
-	const spriteWidthPixels = spriteWidthBytes * 8;
-	const maxSpritesForCharacter = characherSpriteGroups.reduce(
-		(soFar, current) => Math.max(soFar, current.sprites.length),
-		0
-	);
+	const spriteImageGroups = mapRecord(spriteGroups, (spriteGroup) => {
+		return spriteGroup.sprites.map((sprite) =>
+			drawSprite(sprite, getSpritePalette(spriteGroup.color))
+		);
+	});
 
-	const image = new ImageData(
-		spriteWidthPixels * maxSpritesForCharacter,
-		spriteHeight * numSpriteRows
-	);
-
-	let spriteY = -1;
-	for (const [spriteGroupName, spriteGroup] of Object.entries(spriteGroups) as [
-		SpriteGroupName,
-		SpriteGroup
-	][]) {
-		for (const spriteChunk of spriteGroupMultiWidths[spriteGroupName] === 1
-			? [spriteGroup.sprites]
-			: strictChunk(
-					spriteGroup.sprites,
-					spriteGroupMultiWidths[spriteGroupName]
-			  )) {
-			++spriteY;
-			for (const [spriteX, sprite] of spriteChunk.entries()) {
-				const spritePalette = getSpritePalette(spriteGroup.color);
-
-				blitImageData(
-					image,
-					drawSprite(sprite, spritePalette),
-					spriteX * spriteWidthPixels,
-					spriteY * spriteHeight
+	const renderedSpriteGroups = mapRecord(
+		spriteImageGroups,
+		(spriteImages, groupName) => {
+			if (groupName === "playerInBubble") {
+				return imageDataConcatenate(
+					chunk(spriteImages, 4).map((multi) => drawGrid(multi, 2)),
+					"row",
+					8
 				);
 			}
-		}
-	}
 
-	return image;
+			const multiWidth = spriteGroupMultiWidths[groupName];
+			const gap = multiWidth === 1 ? 8 : 0;
+			return imageDataConcatenate(
+				chunk(spriteImages, multiWidth === 1 ? 4 : multiWidth).map((row) =>
+					imageDataConcatenate(row, "row", gap)
+				),
+				"column",
+				gap
+			);
+		}
+	);
+
+	return imageDataConcatenate(
+		[
+			[
+				renderedSpriteGroups.player,
+				renderedSpriteGroups.bubbleBuster,
+				renderedSpriteGroups.stoner,
+				renderedSpriteGroups.beluga,
+			],
+			[
+				renderedSpriteGroups.hullaballoon,
+				renderedSpriteGroups.colley,
+				renderedSpriteGroups.incendo,
+				renderedSpriteGroups.willyWhistle,
+				renderedSpriteGroups.superSocket,
+			],
+			[
+				renderedSpriteGroups.playerInBubble,
+				imageDataConcatenate(
+					[
+						renderedSpriteGroups.bossFacingLeft,
+						renderedSpriteGroups.bossFacingRight,
+					],
+					"row",
+					8 * 3
+				),
+				renderedSpriteGroups.bossInBubble,
+				imageDataConcatenate(
+					[
+						renderedSpriteGroups.bonusCupCake,
+						renderedSpriteGroups.bonusMelon,
+						renderedSpriteGroups.bonusDiamond,
+					],
+					"row",
+					8
+				),
+			],
+		].map((chunk) => imageDataConcatenate(chunk, "column", 3 * 8)),
+		"row",
+		3 * 8
+	);
 }
 
 function drawSprite(
