@@ -255,10 +255,8 @@ export function drawSpritesToCanvas(
 			for (const [spriteX, sprite] of spriteChunk.entries()) {
 				const spritePalette = getSpritePalette(spriteGroup.color);
 
-				const image = drawSprite(sprite, spritePalette);
-
 				ctx.putImageData(
-					image,
+					drawSprite(sprite, spritePalette),
 					spriteX * spriteWidthPixels,
 					spriteY * spriteHeight
 				);
