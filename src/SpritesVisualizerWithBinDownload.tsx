@@ -2,7 +2,6 @@ import { ReactNode } from "react";
 import { BlobDownloadButton } from "./BlobDownloadButton";
 import { attempt } from "./bb/functions";
 import { parsePrgSpriteBin } from "./bb/parse-prg";
-import { SpritesViewer } from "./SpritesViewer";
 import { parseSpriteGroupsFromPrg } from "./bb/prg/sprites";
 import { getDataSegment, getDataSegments } from "./bb/prg/io";
 import {
@@ -10,6 +9,8 @@ import {
 	spriteDataSegmentLocations,
 } from "./bb/prg/data-locations";
 import { spriteColors } from "./bb/sprite";
+import { ImageDataCanvas } from "./ImageDataCanvas";
+import { drawSpritesToCanvas } from "./bb/draw-levels-to-canvas";
 
 export function SpritesVisualizerWithBinDownload({
 	prg,
@@ -30,7 +31,7 @@ export function SpritesVisualizerWithBinDownload({
 				<p>Could not parse prg: {parsedPrgData.error ?? "No reason."}</p>
 			) : (
 				<>
-					<SpritesViewer spriteGroups={spriteGroups} />
+					<ImageDataCanvas imageData={drawSpritesToCanvas(spriteGroups)} />
 					<br />
 					<br />
 					<BlobDownloadButton

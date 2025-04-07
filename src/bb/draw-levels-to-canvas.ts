@@ -215,14 +215,8 @@ function drawChar(
 }
 
 export function drawSpritesToCanvas(
-	spriteGroups: Record<SpriteGroupName, SpriteGroup>,
-	canvas: HTMLCanvasElement
-) {
-	const ctx = canvas.getContext("2d");
-	if (!ctx) {
-		return;
-	}
-
+	spriteGroups: Record<SpriteGroupName, SpriteGroup>
+): ImageData {
 	const characherSpriteGroups = Object.values(spriteGroups);
 	const numSpriteRows = sum(
 		spriteGroupNames.map((x) => spriteGroupMultiWidths[x])
@@ -237,13 +231,6 @@ export function drawSpritesToCanvas(
 		spriteWidthPixels * maxSpritesForCharacter,
 		spriteHeight * numSpriteRows
 	);
-
-	canvas.width = image.width;
-	canvas.height = image.height;
-
-	ctx.fillStyle = "black";
-	ctx.rect(0, 0, canvas.width, canvas.height);
-	ctx.fill();
 
 	let spriteY = -1;
 	for (const [spriteGroupName, spriteGroup] of Object.entries(spriteGroups) as [
@@ -270,7 +257,7 @@ export function drawSpritesToCanvas(
 		}
 	}
 
-	ctx.putImageData(image, 0, 0);
+	return image;
 }
 
 function drawSprite(
