@@ -233,8 +233,13 @@ export function drawSpritesToCanvas(
 		0
 	);
 
-	canvas.width = spriteWidthPixels * maxSpritesForCharacter;
-	canvas.height = spriteHeight * numSpriteRows;
+	const image = new ImageData(
+		spriteWidthPixels * maxSpritesForCharacter,
+		spriteHeight * numSpriteRows
+	);
+
+	canvas.width = image.width;
+	canvas.height = image.height;
 
 	ctx.fillStyle = "black";
 	ctx.rect(0, 0, canvas.width, canvas.height);
@@ -255,7 +260,8 @@ export function drawSpritesToCanvas(
 			for (const [spriteX, sprite] of spriteChunk.entries()) {
 				const spritePalette = getSpritePalette(spriteGroup.color);
 
-				ctx.putImageData(
+				blitImageData(
+					image,
 					drawSprite(sprite, spritePalette),
 					spriteX * spriteWidthPixels,
 					spriteY * spriteHeight
@@ -263,6 +269,8 @@ export function drawSpritesToCanvas(
 			}
 		}
 	}
+
+	ctx.putImageData(image, 0, 0);
 }
 
 function drawSprite(
