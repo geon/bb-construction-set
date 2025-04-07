@@ -29,15 +29,9 @@ export function drawLevelsToCanvas(
 ): ImageData {
 	const gap = 10;
 
-	return imageDataConcatenate(
-		chunk(levels, 10).map((row) =>
-			imageDataConcatenate(
-				row.map((level) => drawLevelThumbnail(level, spriteColors)),
-				"row",
-				gap
-			)
-		),
-		"column",
+	return drawGrid(
+		levels.map((level) => drawLevelThumbnail(level, spriteColors)),
+		10,
 		gap
 	);
 }
@@ -149,6 +143,18 @@ export function drawPlatformCharsToCanvas(levels: readonly Level[]): ImageData {
 	);
 }
 
+function drawGrid(
+	images: readonly ImageData[],
+	rowWidth: number,
+	gap: number = 0
+): ImageData {
+	return imageDataConcatenate(
+		chunk(images, rowWidth).map((row) => imageDataConcatenate(row, "row", gap)),
+		"column",
+		gap
+	);
+}
+
 function drawLevelPlatformChars(level: Level): ImageData {
 	const charPalette = getCharPalette(level);
 
@@ -163,19 +169,12 @@ function drawLevelPlatformChars(level: Level): ImageData {
 		[ur, br],
 	];
 
-	return imageDataConcatenate(
-		range(0, 2).map(() =>
-			imageDataConcatenate(
-				[
-					drawCharblock(sidebarChars, charPalette),
-					drawCharblock(platformChars, charPalette),
-				],
-				"row",
-				0
-			)
-		),
-		"column",
-		0
+	const sidebarImage = drawCharblock(sidebarChars, charPalette);
+	const platformImage = drawCharblock(platformChars, charPalette);
+
+	return drawGrid(
+		[sidebarImage, platformImage, sidebarImage, platformImage],
+		2
 	);
 }
 
@@ -343,18 +342,15 @@ export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
 	const renderedItemGroups = mapRecord(
 		itemImageGroups,
 		(itemImages, groupName) =>
-			imageDataConcatenate(
-				chunk(
-					itemImages,
-					{
-						bubbleBlow: 4,
-						bubblePop: 4,
-						specialBubbles: 4,
-						extendBubbles: 4,
-						items: Math.ceil(Math.sqrt(itemImageGroups.items.length)),
-					}[groupName as string] ?? 1000
-				).map((row) => imageDataConcatenate(row, "row", 8)),
-				"column",
+			drawGrid(
+				itemImages,
+				{
+					bubbleBlow: 4,
+					bubblePop: 4,
+					specialBubbles: 4,
+					extendBubbles: 4,
+					items: Math.ceil(Math.sqrt(itemImageGroups.items.length)),
+				}[groupName as string] ?? 1000,
 				8
 			)
 	);
