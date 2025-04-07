@@ -239,7 +239,6 @@ export function drawSpritesToCanvas(
 	ctx.rect(0, 0, canvas.width, canvas.height);
 	ctx.fill();
 
-	const image = new ImageData(spriteWidthPixels, spriteHeight);
 	let spriteY = -1;
 	for (const [spriteGroupName, spriteGroup] of Object.entries(spriteGroups) as [
 		SpriteGroupName,
@@ -253,6 +252,8 @@ export function drawSpritesToCanvas(
 			  )) {
 			++spriteY;
 			for (const [spriteX, sprite] of spriteChunk.entries()) {
+				const image = new ImageData(spriteWidthPixels, spriteHeight);
+
 				const spritePalette = getSpritePalette(spriteGroup.color);
 				for (let pixelY = 0; pixelY < spriteHeight; ++pixelY) {
 					for (let byteX = 0; byteX < spriteWidthBytes; ++byteX) {
