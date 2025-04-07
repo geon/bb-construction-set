@@ -137,10 +137,6 @@ function plotPixel(
 	image.data[pixelIndex * 4 + 3] = alpha;
 }
 
-export function clearCanvas(canvas: HTMLCanvasElement) {
-	canvas.getContext("2d")?.clearRect(0, 0, canvas.width, canvas.height);
-}
-
 export function drawPlatformCharsToCanvas(levels: readonly Level[]): ImageData {
 	const gap = 10;
 	return imageDataConcatenate(
