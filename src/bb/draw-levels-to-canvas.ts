@@ -1,7 +1,7 @@
 import { Level, levelHeight, levelWidth, numTiles, Tiles } from "./level";
 import { palette, PaletteIndex } from "./palette";
 import { Color, mixColors, black } from "./color";
-import { CharBlockIndex, CharsetChar } from "./charset-char";
+import { CharsetChar } from "./charset-char";
 import {
 	CharacterName,
 	SpriteGroup,
@@ -149,27 +149,33 @@ export function drawPlatformCharsToCanvas(levels: readonly Level[]): ImageData {
 }
 
 function drawLevelPlatformChars(level: Level): ImageData {
-	const levelImage = new ImageData(4 * 8, 4 * 8);
-
 	const charPalette = getCharPalette(level);
-	for (let sidebarY = 0; sidebarY < 4; ++sidebarY) {
-		for (let sidebarX = 0; sidebarX < 4; ++sidebarX) {
-			const char =
-				level.sidebarChars && sidebarX < 2
-					? level.sidebarChars[
-							((sidebarY % 2) * 2 + sidebarX) as CharBlockIndex
-					  ]
-					: level.platformChar;
 
-			blitImageData(
-				levelImage,
-				drawChar(char, charPalette),
-				sidebarX * 8,
-				sidebarY * 8
-			);
-		}
-	}
-	return levelImage;
+	const platformChars = [
+		[level.platformChar, level.platformChar],
+		[level.platformChar, level.platformChar],
+	];
+
+	const [ul, ur, bl, br] = level.sidebarChars ?? platformChars.flat();
+	const sidebarChars = [
+		[ul, bl],
+		[ur, br],
+	];
+
+	return imageDataConcatenate(
+		range(0, 2).map(() =>
+			imageDataConcatenate(
+				[
+					drawCharblock(sidebarChars, charPalette),
+					drawCharblock(platformChars, charPalette),
+				],
+				"row",
+				0
+			)
+		),
+		"column",
+		0
+	);
 }
 
 function getCharPalette(level: Level): [Color, Color, Color, Color] {
