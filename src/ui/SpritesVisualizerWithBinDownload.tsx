@@ -10,7 +10,7 @@ import {
 } from "../bb/prg/data-locations";
 import { spriteColors } from "../bb/sprite";
 import { ImageDataCanvas } from "./ImageDataCanvas";
-import { drawSpritesToCanvas } from "../bb/draw-levels-to-canvas";
+import { drawSpritesToCanvas } from "../bb/image-data/draw-levels-to-canvas";
 
 export function SpritesVisualizerWithBinDownload({
 	prg,

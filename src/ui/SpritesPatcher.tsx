@@ -3,7 +3,7 @@ import { patchPrgSpritesBin } from "../bb/prg/parse-prg";
 import { FileInput } from "./FileInput";
 import { Attempt, attempt } from "../bb/functions";
 import { parseSpriteGroupsFromBin } from "../bb/prg/sprites";
-import { drawSpritesToCanvas } from "../bb/draw-levels-to-canvas";
+import { drawSpritesToCanvas } from "../bb/image-data/draw-levels-to-canvas";
 import { ImageDataCanvas } from "./ImageDataCanvas";
 
 export function SpritesPatcher({

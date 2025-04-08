@@ -7,7 +7,7 @@ import { parsePrg } from "../bb/prg/parse-prg";
 import {
 	drawLevelsToCanvas,
 	drawPlatformCharsToCanvas,
-} from "../bb/draw-levels-to-canvas";
+} from "../bb/image-data/draw-levels-to-canvas";
 import { ImageDataCanvas } from "./ImageDataCanvas";
 
 export function LevelsVisualizerWithPeDownload({

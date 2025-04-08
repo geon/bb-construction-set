@@ -12,7 +12,7 @@ import { deserializePeFileData } from "../bb/pe/pe-file";
 import {
 	drawLevelsToCanvas,
 	drawPlatformCharsToCanvas,
-} from "../bb/draw-levels-to-canvas";
+} from "../bb/image-data/draw-levels-to-canvas";
 import { ImageDataCanvas } from "./ImageDataCanvas";
 import { spriteColors } from "../bb/sprite";
 

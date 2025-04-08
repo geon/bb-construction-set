@@ -4,10 +4,10 @@ import {
 	levelWidth,
 	numTiles,
 	Tiles,
-} from "./internal-data-formats/level";
-import { palette, PaletteIndex } from "./internal-data-formats/palette";
-import { Color, mixColors, black } from "./internal-data-formats/color";
-import { CharsetChar } from "./internal-data-formats/charset-char";
+} from "../internal-data-formats/level";
+import { palette, PaletteIndex } from "../internal-data-formats/palette";
+import { Color, mixColors, black } from "../internal-data-formats/color";
+import { CharsetChar } from "../internal-data-formats/charset-char";
 import {
 	Sprite,
 	SpriteGroup,
@@ -15,11 +15,11 @@ import {
 	SpriteGroupName,
 	spriteHeight,
 	spriteWidthBytes,
-} from "./sprite";
-import { CharacterName } from "./game-definitions/character-name";
-import { Item, ItemGroup, ItemGroups } from "./prg/items";
-import { chunk, mapRecord, range, sum, zipObject } from "./functions";
-import { assertTuple, ReadonlyTuple } from "./tuple";
+} from "../sprite";
+import { CharacterName } from "../game-definitions/character-name";
+import { Item, ItemGroup, ItemGroups } from "../prg/items";
+import { chunk, mapRecord, range, sum, zipObject } from "../functions";
+import { assertTuple, ReadonlyTuple } from "../tuple";
 
 export function drawLevelsToCanvas(
 	levels: readonly Level[],
