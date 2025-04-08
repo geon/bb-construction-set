@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { Color, hexToRgb, mixColors } from "../internal-data-formats/color";
+import { Color, hexToRgb, mixColors } from "../color";
 
 test("hexToRgb", () => {
 	const color: Color = {
