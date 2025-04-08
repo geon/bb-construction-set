@@ -22,6 +22,7 @@ const Page = styled.div`
 `;
 
 export function App() {
+	// TODO: Store the internal format, as well as the original prg, and patch on save.
 	const [prg, setPrg] = useState<ArrayBuffer | undefined>();
 
 	return (
