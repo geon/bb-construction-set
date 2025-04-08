@@ -1,5 +1,5 @@
 import { sum } from "../functions";
-import { spriteCounts } from "../sprite";
+import { characterNames, spriteCounts } from "../sprite";
 
 export const maxAsymmetric = 45;
 export const maxSidebars = 59;
@@ -134,7 +134,7 @@ export const spriteDataSegmentLocations: Readonly<
 };
 export const monsterSpriteColorsSegmentLocation: SegmentLocation = {
 	startAddress: 0xab63,
-	length: 8,
+	length: characterNames.slice(1).length, // 8. The player color is not included.
 };
 
 export const itemDataSegmentNames = [
