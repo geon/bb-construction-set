@@ -4,7 +4,7 @@ import {
 	deserializePeFileData,
 	PeFileData,
 	serializePeFileData,
-} from "../pe-file";
+} from "../pe/pe-file";
 
 test("deserializePeFileData", () => {
 	const peFileDataFromPeFile = deserializePeFileData(

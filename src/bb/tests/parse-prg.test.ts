@@ -10,8 +10,8 @@ import {
 	bubbleCurrentRectangleToBytes,
 	bytesToBubbleCurrentRectangle,
 } from "../prg/bubble-current-rectangles";
-import { deserializePeFileData } from "../pe-file";
-import { peFileDataToLevels } from "../level-pe-conversion";
+import { deserializePeFileData } from "../pe/pe-file";
+import { peFileDataToLevels } from "../pe/level-pe-conversion";
 import { knownGoodBubbleCurrentRectsForLevels } from "./knownGoodBubbleCurrentRectsForLevels";
 import { parseSpriteGroupsFromBin } from "../prg/sprites";
 

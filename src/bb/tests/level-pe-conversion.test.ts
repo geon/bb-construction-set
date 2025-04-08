@@ -1,6 +1,9 @@
 import { test } from "vitest";
-import { levelsToPeFileData, peFileDataToLevels } from "../level-pe-conversion";
-import { deserializePeFileData } from "../pe-file";
+import {
+	levelsToPeFileData,
+	peFileDataToLevels,
+} from "../pe/level-pe-conversion";
+import { deserializePeFileData } from "../pe/pe-file";
 import { readFileSync } from "fs";
 import { numSpriteBytes, spriteCounts, Sprites } from "../sprite";
 import { mapRecord } from "../functions";

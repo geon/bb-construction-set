@@ -1,4 +1,4 @@
-import { CharBitmap } from "./pe-file";
+import { CharBitmap } from "./pe/pe-file";
 
 export const shadowChars = {
 	originalC64: [

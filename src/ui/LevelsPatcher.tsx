@@ -5,10 +5,10 @@ import { CheckboxList } from "./CheckboxList";
 import {
 	getSpriteColorsFromPeFileSpriteSet,
 	peFileDataToLevels,
-} from "../bb/level-pe-conversion";
+} from "../bb/pe/level-pe-conversion";
 import { FileInput } from "./FileInput";
 import { attempt } from "../bb/functions";
-import { deserializePeFileData } from "../bb/pe-file";
+import { deserializePeFileData } from "../bb/pe/pe-file";
 import {
 	drawLevelsToCanvas,
 	drawPlatformCharsToCanvas,

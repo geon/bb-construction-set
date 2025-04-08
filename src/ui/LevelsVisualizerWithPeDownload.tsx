@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
-import { levelsToPeFileData } from "../bb/level-pe-conversion";
-import { serializePeFileData } from "../bb/pe-file";
+import { levelsToPeFileData } from "../bb/pe/level-pe-conversion";
+import { serializePeFileData } from "../bb/pe/pe-file";
 import { BlobDownloadButton } from "./BlobDownloadButton";
 import { attempt, mapRecord } from "../bb/functions";
 import { parsePrg } from "../bb/parse-prg";

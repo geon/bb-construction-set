@@ -1,26 +1,31 @@
-import { isDefined, mapRecord, objectFromEntries, padRight } from "./functions";
+import {
+	isDefined,
+	mapRecord,
+	objectFromEntries,
+	padRight,
+} from "../functions";
 import {
 	BubbleCurrentDirection,
 	createTiles,
 	Level,
 	Monster,
-} from "./internal-data-formats/level";
+} from "../internal-data-formats/level";
 import { Bit, CharBitmap, createPeFileData, PeFileData } from "./pe-file";
-import { Sprites, spriteLeftIndex } from "./sprite";
+import { Sprites, spriteLeftIndex } from "../sprite";
 import {
 	CharacterName,
 	characterNames,
 	isCharacterName,
-} from "./game-definitions/character-name";
+} from "../game-definitions/character-name";
 import {
 	CharsetChar,
 	CharsetCharColor,
 	CharsetCharLine,
-} from "./internal-data-formats/charset-char";
+} from "../internal-data-formats/charset-char";
 import { c64BuiltinCharsets } from "./c64-builtin-charsets";
-import { PaletteIndex } from "./internal-data-formats/palette";
-import { shadowChars, ShadowStyle } from "./shadow-chars";
-import { assertTuple } from "./tuple";
+import { PaletteIndex } from "../internal-data-formats/palette";
+import { shadowChars, ShadowStyle } from "../shadow-chars";
+import { assertTuple } from "../tuple";
 
 const emptyChar: CharBitmap = [0, 0, 0, 0, 0, 0, 0, 0];
 
