@@ -110,6 +110,7 @@ function Patcher({
 			<ImageDataCanvas
 				imageData={drawLevelsToCanvas(
 					parsedPeData.result.levels,
+					// TODO: Just don't. We are not interested in the pe sprites. Take the colors from the current prg instead.
 					peSpriteSet
 						? getSpriteColorsFromPeFileSpriteSet(peSpriteSet)
 						: spriteColors
