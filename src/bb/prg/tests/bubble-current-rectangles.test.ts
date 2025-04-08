@@ -6,11 +6,11 @@ import {
 	readBubbleCurrentRectangles,
 	readBubbleCurrentRectanglesForLevel,
 	writeBubbleCurrentRectangles,
-} from "../prg/bubble-current-rectangles";
-import { getDataSegments } from "../prg/io";
+} from "../bubble-current-rectangles";
+import { getDataSegments } from "../io";
 import { readFileSync } from "fs";
-import { ReadonlyUint8Array } from "../types";
-import { levelSegmentLocations } from "../prg/data-locations";
+import { ReadonlyUint8Array } from "../../types";
+import { levelSegmentLocations } from "../data-locations";
 
 test("readBubbleCurrentRectangles snapshot", () => {
 	const dataSegments = getDataSegments(

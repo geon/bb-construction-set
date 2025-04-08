@@ -1,9 +1,9 @@
 import { expect, test } from "vitest";
-import { readBubbleCurrentPerLineDefaults } from "../prg/bubble-current-per-line-defaults";
-import { getDataSegments } from "../prg/io";
+import { readBubbleCurrentPerLineDefaults } from "../bubble-current-per-line-defaults";
+import { getDataSegments } from "../io";
 import { readFileSync } from "fs";
-import { readTileBitmaps } from "../prg/tile-bitmap";
-import { levelSegmentLocations } from "../prg/data-locations";
+import { readTileBitmaps } from "../tile-bitmap";
+import { levelSegmentLocations } from "../data-locations";
 
 test("readBubbleCurrentPerLineDefaults snapshot", () => {
 	const dataSegments = getDataSegments(

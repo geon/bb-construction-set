@@ -2,14 +2,14 @@ import { expect, test } from "vitest";
 import {
 	parseSpriteGroupsFromPrg,
 	convertSpriteGroupsToBinFile,
-} from "../prg/sprites";
-import { getDataSegments, getDataSegment } from "../prg/io";
+} from "../sprites";
+import { getDataSegments, getDataSegment } from "../io";
 import { readFileSync } from "fs";
 import {
 	monsterSpriteColorsSegmentLocation,
 	spriteDataSegmentLocations,
-} from "../prg/data-locations";
-import { spriteColors } from "../sprite";
+} from "../data-locations";
+import { spriteColors } from "../../sprite";
 
 test("readSpritesBin snapshot", () => {
 	const prg = readFileSync(__dirname + "/decompressed-bb.prg").buffer;

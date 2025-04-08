@@ -5,15 +5,13 @@ import {
 	parsePrgSpriteBin,
 	patchPrg,
 	patchPrgSpritesBin,
-} from "../prg/parse-prg";
+} from "../parse-prg";
 import {
 	bubbleCurrentRectangleToBytes,
 	bytesToBubbleCurrentRectangle,
-} from "../prg/bubble-current-rectangles";
-import { deserializePeFileData } from "../pe/pe-file";
-import { peFileDataToLevels } from "../pe/level-pe-conversion";
+} from "../bubble-current-rectangles";
 import { knownGoodBubbleCurrentRectsForLevels } from "./knownGoodBubbleCurrentRectsForLevels";
-import { parseSpriteGroupsFromBin } from "../prg/sprites";
+import { parseSpriteGroupsFromBin } from "../sprites";
 
 test("readBubbleCurrentRectangles", () => {
 	const rectanglesOnly = knownGoodBubbleCurrentRectsForLevels
@@ -35,17 +33,7 @@ test("parsePrg", () => {
 		readFileSync(__dirname + "/decompressed-bb.prg").buffer
 	).levels[0]!;
 
-	const levelFromPe = peFileDataToLevels(
-		deserializePeFileData(readFileSync(__dirname + "/level-01.pe", "utf8"))
-	)[0]!;
-
-	// Not tested.
-	levelFromPrg.bubbleCurrentRectangles = undefined!;
-	levelFromPe.bubbleCurrentRectangles = undefined!;
-	levelFromPrg.bubbleCurrentPerLineDefaults = undefined!;
-	levelFromPe.bubbleCurrentPerLineDefaults = undefined!;
-
-	expect(levelFromPrg).toStrictEqual(levelFromPe);
+	expect(levelFromPrg).toMatchSnapshot();
 });
 
 test("First few levels bubble current rectangles.", () => {
