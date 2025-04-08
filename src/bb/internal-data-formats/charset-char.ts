@@ -1,4 +1,4 @@
-import { ReadonlyTuple } from "./tuple";
+import { ReadonlyTuple } from "../tuple";
 
 export type CharsetCharColor = 0 | 1 | 2 | 3;
 export type CharsetCharLine = ReadonlyTuple<CharsetCharColor, 4>;

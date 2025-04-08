@@ -1,4 +1,7 @@
-import { BubbleCurrentDirection, BubbleCurrentPerLineDefaults } from "../level";
+import {
+	BubbleCurrentDirection,
+	BubbleCurrentPerLineDefaults,
+} from "../internal-data-formats/level";
 import { isBitSet } from "./bit-twiddling";
 import { TileBitmap } from "./tile-bitmap";
 import { ReadonlyUint8Array } from "./types";

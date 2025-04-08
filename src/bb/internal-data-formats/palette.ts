@@ -1,5 +1,5 @@
 import { Color, hexToRgb } from "./color";
-import { Tuple } from "./tuple";
+import { Tuple } from "../tuple";
 
 type Palette = Tuple<Color, 16>;
 

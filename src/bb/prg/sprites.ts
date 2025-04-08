@@ -6,7 +6,7 @@ import {
 	strictChunk,
 	sum,
 } from "../functions";
-import { PaletteIndex } from "../palette";
+import { PaletteIndex } from "../internal-data-formats/palette";
 import {
 	characterNames,
 	Sprite,

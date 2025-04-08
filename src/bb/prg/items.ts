@@ -1,4 +1,7 @@
-import { CharsetChar, parseCharsetCharLine } from "../charset-char";
+import {
+	CharsetChar,
+	parseCharsetCharLine,
+} from "../internal-data-formats/charset-char";
 import { mapRecord, strictChunk } from "../functions";
 import { ReadonlyTuple } from "../tuple";
 import { linesPerChar } from "./charset-char";

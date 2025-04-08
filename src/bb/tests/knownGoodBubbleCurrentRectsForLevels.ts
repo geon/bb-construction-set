@@ -1,4 +1,4 @@
-import { BubbleCurrentRectangles } from "../level";
+import { BubbleCurrentRectangles } from "../internal-data-formats/level";
 
 // Read from emulator by stepping and and inspecting registers in debugger.
 export const knownGoodBubbleCurrentRectsForLevels: BubbleCurrentRectangles[] = [

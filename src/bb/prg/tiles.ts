@@ -1,4 +1,9 @@
-import { createTiles, levelWidth, levelHeight, Tiles } from "../level";
+import {
+	createTiles,
+	levelWidth,
+	levelHeight,
+	Tiles,
+} from "../internal-data-formats/level";
 import { byteToBits, isBitSet } from "./bit-twiddling";
 import { TileBitmap } from "./tile-bitmap";
 import { ReadonlyUint8Array } from "./types";

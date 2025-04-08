@@ -1,6 +1,9 @@
-import { CharBlock, parseCharsetCharLine } from "../charset-char";
+import {
+	CharBlock,
+	parseCharsetCharLine,
+} from "../internal-data-formats/charset-char";
 import { isDefined, padRight, strictChunk } from "../functions";
-import { Level } from "../level";
+import { Level } from "../internal-data-formats/level";
 import { assertTuple } from "../tuple";
 import { maxSidebars, levelSegmentLocations } from "./data-locations";
 import { ReadonlyUint8Array } from "./types";

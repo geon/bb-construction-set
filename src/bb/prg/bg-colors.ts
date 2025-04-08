@@ -1,5 +1,5 @@
 import { zipObject } from "../functions";
-import { PaletteIndex } from "../palette";
+import { PaletteIndex } from "../internal-data-formats/palette";
 import { ReadonlyUint8Array } from "./types";
 
 export function readBgColors(bytes: ReadonlyUint8Array): {

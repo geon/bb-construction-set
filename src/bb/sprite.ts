@@ -1,5 +1,5 @@
 import { sum } from "./functions";
-import { PaletteIndex } from "./palette";
+import { PaletteIndex } from "./internal-data-formats/palette";
 import { SpriteDataSegmentName } from "./prg/data-locations";
 import { Tuple } from "./tuple";
 

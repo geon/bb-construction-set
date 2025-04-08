@@ -1,6 +1,6 @@
-import { parseCharsetCharLine } from "../charset-char";
+import { parseCharsetCharLine } from "../internal-data-formats/charset-char";
 import { chunk } from "../functions";
-import { Level } from "../level";
+import { Level } from "../internal-data-formats/level";
 import { assertTuple } from "../tuple";
 import { ReadonlyUint8Array } from "./types";
 

@@ -1,5 +1,5 @@
 import { groupBy, unzipObject, zipObject } from "./functions";
-import { Level } from "./level";
+import { Level } from "./internal-data-formats/level";
 import { writeBgColors, readBgColors } from "./prg/bg-colors";
 import {
 	characterNames,

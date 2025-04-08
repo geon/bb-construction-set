@@ -1,5 +1,10 @@
 import { isDefined, mapRecord, objectFromEntries, padRight } from "./functions";
-import { BubbleCurrentDirection, createTiles, Level, Monster } from "./level";
+import {
+	BubbleCurrentDirection,
+	createTiles,
+	Level,
+	Monster,
+} from "./internal-data-formats/level";
 import { Bit, CharBitmap, createPeFileData, PeFileData } from "./pe-file";
 import {
 	CharacterName,
@@ -8,9 +13,13 @@ import {
 	isCharacterName,
 	spriteLeftIndex,
 } from "./sprite";
-import { CharsetChar, CharsetCharColor, CharsetCharLine } from "./charset-char";
+import {
+	CharsetChar,
+	CharsetCharColor,
+	CharsetCharLine,
+} from "./internal-data-formats/charset-char";
 import { c64BuiltinCharsets } from "./c64-builtin-charsets";
-import { PaletteIndex } from "./palette";
+import { PaletteIndex } from "./internal-data-formats/palette";
 import { shadowChars, ShadowStyle } from "./shadow-chars";
 import { assertTuple } from "./tuple";
 

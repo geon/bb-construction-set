@@ -4,7 +4,7 @@ import {
 	BubbleCurrentRectangleOrSymmetry,
 	BubbleCurrentRectangle,
 	BubbleCurrentDirection,
-} from "../level";
+} from "../internal-data-formats/level";
 import { isBitSet } from "./bit-twiddling";
 import { uint8ArrayConcatenate } from "./io";
 import { ReadonlyUint8Array } from "./types";

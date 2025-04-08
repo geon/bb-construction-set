@@ -1,7 +1,13 @@
-import { Level, levelHeight, levelWidth, numTiles, Tiles } from "./level";
-import { palette, PaletteIndex } from "./palette";
-import { Color, mixColors, black } from "./color";
-import { CharsetChar } from "./charset-char";
+import {
+	Level,
+	levelHeight,
+	levelWidth,
+	numTiles,
+	Tiles,
+} from "./internal-data-formats/level";
+import { palette, PaletteIndex } from "./internal-data-formats/palette";
+import { Color, mixColors, black } from "./internal-data-formats/color";
+import { CharsetChar } from "./internal-data-formats/charset-char";
 import {
 	CharacterName,
 	Sprite,

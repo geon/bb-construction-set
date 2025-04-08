@@ -1,7 +1,7 @@
 import { CharBlock } from "./charset-char";
 import { CharsetChar } from "./charset-char";
 import { PaletteIndex } from "./palette";
-import { Tuple } from "./tuple";
+import { Tuple } from "../tuple";
 
 export const levelWidth = 32;
 export const levelHeight = 25;

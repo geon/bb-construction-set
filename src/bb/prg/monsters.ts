@@ -1,4 +1,4 @@
-import { Monster } from "../level";
+import { Monster } from "../internal-data-formats/level";
 import { isBitSet } from "./bit-twiddling";
 import { bytesPerMonster, maxMonsters } from "./data-locations";
 import { ReadonlyUint8Array } from "./types";
