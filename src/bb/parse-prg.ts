@@ -231,7 +231,7 @@ export function patchPrgSpritesBin(
 		patchedPrg,
 		monsterSpriteColorsSegmentLocation
 	);
-	prgSpriteColorsSegment.buffer.set(spriteColorsSegment.slice(0, -1));
+	prgSpriteColorsSegment.buffer.set(spriteColorsSegment);
 
 	return patchedPrg;
 }
