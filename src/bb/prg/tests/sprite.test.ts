@@ -9,7 +9,6 @@ import {
 	monsterSpriteColorsSegmentLocation,
 	spriteDataSegmentLocations,
 } from "../data-locations";
-import { spriteColors } from "../../sprite";
 
 test("readSpritesBin snapshot", () => {
 	const prg = readFileSync(__dirname + "/decompressed-bb.prg").buffer;
@@ -20,11 +19,7 @@ test("readSpritesBin snapshot", () => {
 	);
 
 	const sprites = convertSpriteGroupsToBinFile(
-		parseSpriteGroupsFromPrg(
-			segments,
-			monsterColorsSegment,
-			spriteColors.player
-		)
+		parseSpriteGroupsFromPrg(segments, monsterColorsSegment)
 	);
 
 	expect(sprites).toMatchSnapshot();

@@ -8,7 +8,6 @@ import {
 	monsterSpriteColorsSegmentLocation,
 	spriteDataSegmentLocations,
 } from "../bb/prg/data-locations";
-import { spriteColors } from "../bb/sprite";
 import { ImageDataCanvas } from "./ImageDataCanvas";
 import { drawSpritesToCanvas } from "../bb/image-data/draw-levels-to-canvas";
 
@@ -21,8 +20,7 @@ export function SpritesVisualizerWithBinDownload({
 
 	const spriteGroups = parseSpriteGroupsFromPrg(
 		getDataSegments(prg, spriteDataSegmentLocations),
-		getDataSegment(prg, monsterSpriteColorsSegmentLocation),
-		spriteColors.player
+		getDataSegment(prg, monsterSpriteColorsSegmentLocation)
 	);
 
 	return (

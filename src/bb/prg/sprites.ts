@@ -29,6 +29,8 @@ import {
 import { DataSegment } from "./io";
 import { ReadonlyUint8Array } from "../types";
 
+const hardcodedPlayerColor = spriteColors.player;
+
 export function convertSpriteGroupsToBinFile(
 	spriteGroups: Record<SpriteGroupName, SpriteGroup>
 ): Uint8Array {
@@ -100,11 +102,7 @@ export function parseSpriteGroupsFromBin(
 			})
 	);
 
-	return _parseSpriteGroupsFromBuffers(
-		spriteSegments,
-		spriteColorsSegment,
-		spriteColors.player
-	);
+	return _parseSpriteGroupsFromBuffers(spriteSegments, spriteColorsSegment);
 }
 
 function getSpriteDataSegmentOffsetInBin(
@@ -120,23 +118,20 @@ function getSpriteDataSegmentOffsetInBin(
 
 export function parseSpriteGroupsFromPrg(
 	spriteSegments: Record<SpriteDataSegmentName, DataSegment>,
-	monsterColorSegment: DataSegment,
-	playerColor: PaletteIndex
+	monsterColorSegment: DataSegment
 ): Record<SpriteGroupName, SpriteGroup> {
 	return _parseSpriteGroupsFromBuffers(
 		mapRecord(spriteSegments, (x) => x.buffer),
-		monsterColorSegment.buffer,
-		playerColor
+		monsterColorSegment.buffer
 	);
 }
 
 function _parseSpriteGroupsFromBuffers(
 	spriteSegments: Record<SpriteDataSegmentName, ReadonlyUint8Array>,
-	monsterColorSegment: ReadonlyUint8Array,
-	playerColor: PaletteIndex
+	monsterColorSegment: ReadonlyUint8Array
 ): Record<SpriteGroupName, SpriteGroup> {
 	const characterColors = [
-		playerColor,
+		hardcodedPlayerColor,
 		...monsterColorSegment,
 	] as PaletteIndex[];
 
@@ -163,7 +158,7 @@ function _parseSpriteGroupsFromBuffers(
 		(location, groupName): SpriteGroup => {
 			const color = isCharacterName(groupName)
 				? characterSpriteColors[groupName]
-				: hardCodedGroupColors[groupName] ?? playerColor;
+				: hardCodedGroupColors[groupName] ?? hardcodedPlayerColor;
 
 			return {
 				sprites: range(0, location.length).map((index): Sprite => {

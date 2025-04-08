@@ -2,7 +2,6 @@ import { groupBy, unzipObject, zipObject } from "../functions";
 import { Level } from "../internal-data-formats/level";
 import { writeBgColors, readBgColors } from "./bg-colors";
 import {
-	spriteColors,
 	SpriteGroup,
 	SpriteGroupLocation,
 	spriteGroupLocations,
@@ -60,8 +59,7 @@ export function parsePrg(prg: ArrayBuffer): {
 	const levels = readLevels(getDataSegments(prg, levelSegmentLocations));
 	const sprites = parseSpriteGroupsFromPrg(
 		getDataSegments(prg, spriteDataSegmentLocations),
-		getDataSegment(prg, monsterSpriteColorsSegmentLocation),
-		spriteColors.player
+		getDataSegment(prg, monsterSpriteColorsSegmentLocation)
 	);
 	const items = readItems(getDataSegments(prg, itemDataSegmentLocations));
 
@@ -176,11 +174,7 @@ export function parsePrgSpriteBin(prg: ArrayBuffer): Uint8Array {
 		monsterSpriteColorsSegmentLocation
 	);
 	const spriteBin = convertSpriteGroupsToBinFile(
-		parseSpriteGroupsFromPrg(
-			segments,
-			monsterColorsSegment,
-			spriteColors.player
-		)
+		parseSpriteGroupsFromPrg(segments, monsterColorsSegment)
 	);
 	return spriteBin;
 }
