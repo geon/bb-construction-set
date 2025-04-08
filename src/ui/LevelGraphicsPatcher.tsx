@@ -1,16 +1,14 @@
 import { ReactNode, useState } from "react";
-import {
-	getSpriteColorsFromPeFileSpriteSet,
-	peFileDataToLevels,
-} from "../bb/pe/level-pe-conversion";
+import { patchPrg } from "../bb/prg/parse-prg";
+import { LevelDataSegmentName } from "../bb/game-definitions/level-segment-name";
+import { peFileDataToLevels } from "../bb/pe/level-pe-conversion";
 import { FileInput } from "./FileInput";
 import { attempt } from "../bb/functions";
 import { deserializePeFileData } from "../bb/pe/pe-file";
-import { drawLevelsToCanvas } from "../bb/image-data/draw-levels-to-canvas";
+import { drawPlatformCharsToCanvas } from "../bb/image-data/draw-levels-to-canvas";
 import { ImageDataCanvas } from "./ImageDataCanvas";
-import { spriteColors } from "../bb/sprite";
 
-export function LevelsPatcher({
+export function LevelGraphicsPatcher({
 	prg,
 	setPrg,
 }: {
@@ -41,7 +39,10 @@ export function LevelsPatcher({
 }
 
 function Patcher({
+	prg,
+	setPrg,
 	pes,
+	setPes,
 }: {
 	readonly prg: ArrayBuffer;
 	readonly setPrg: (file: ArrayBuffer) => void;
@@ -70,20 +71,31 @@ function Patcher({
 		return <p>Could not parse pe: {parsedPeData?.error ?? "No reason."}</p>;
 	}
 
-	const peSpriteSet =
-		parsedPeData.result.deserializedPeFileDatas[0]?.spriteSets[0];
-
 	return (
 		<>
 			<ImageDataCanvas
-				imageData={drawLevelsToCanvas(
-					parsedPeData.result.levels,
-					// TODO: Just don't. We are not interested in the pe sprites. Take the colors from the current prg instead.
-					peSpriteSet
-						? getSpriteColorsFromPeFileSpriteSet(peSpriteSet)
-						: spriteColors
-				)}
+				imageData={drawPlatformCharsToCanvas(parsedPeData.result.levels)}
 			/>
+			<button
+				onClick={() => {
+					const patched = patchPrg(
+						prg,
+						parsedPeData.result.levels,
+						new Set<LevelDataSegmentName>([
+							"bgColors",
+							"platformChars",
+							"sidebarChars",
+							"sidebarCharsIndex",
+							"shadowChars",
+						]),
+						"retroForge"
+					);
+					setPrg(patched);
+					setPes(undefined);
+				}}
+			>
+				Apply Patch
+			</button>
 		</>
 	);
 }

@@ -9,6 +9,8 @@ import { SpritesPatcher } from "./SpritesPatcher";
 import { SpritesVisualizerWithBinDownload } from "./SpritesVisualizerWithBinDownload";
 import { PrgDownloader } from "./PrgDownloader";
 import { ItemsVisualizerWithCtmDownload } from "./ItemsVisualizerWithCtmDownload";
+import { LevelGraphicsVisualizerWithPeDownload } from "./LevelGraphicsVisualizerWithPeDownload";
+import { LevelGraphicsPatcher } from "./LevelGraphicsPatcher";
 
 const Page = styled.div`
 	width: 600px;
@@ -47,6 +49,23 @@ export function App() {
 										<Card>
 											<h2>Patch</h2>
 											<LevelsPatcher prg={prg} setPrg={setPrg} />
+										</Card>
+									</>
+								);
+							},
+						},
+						patchLevelGraphics: {
+							title: "Level Graphics",
+							render: (tab) => {
+								return (
+									<>
+										<Card>
+											<h2>{tab.title}</h2>
+											<LevelGraphicsVisualizerWithPeDownload prg={prg} />
+										</Card>
+										<Card>
+											<h2>Patch</h2>
+											<LevelGraphicsPatcher prg={prg} setPrg={setPrg} />
 										</Card>
 									</>
 								);

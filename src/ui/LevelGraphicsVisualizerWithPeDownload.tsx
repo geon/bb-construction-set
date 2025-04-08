@@ -2,12 +2,12 @@ import { ReactNode } from "react";
 import { levelsToPeFileData } from "../bb/pe/level-pe-conversion";
 import { serializePeFileData } from "../bb/pe/pe-file";
 import { BlobDownloadButton } from "./BlobDownloadButton";
-import { attempt, mapRecord } from "../bb/functions";
+import { attempt } from "../bb/functions";
 import { parsePrg } from "../bb/prg/parse-prg";
-import { drawLevelsToCanvas } from "../bb/image-data/draw-levels-to-canvas";
+import { drawPlatformCharsToCanvas } from "../bb/image-data/draw-levels-to-canvas";
 import { ImageDataCanvas } from "./ImageDataCanvas";
 
-export function LevelsVisualizerWithPeDownload({
+export function LevelGraphicsVisualizerWithPeDownload({
 	prg,
 }: {
 	readonly prg: ArrayBuffer;
@@ -21,10 +21,7 @@ export function LevelsVisualizerWithPeDownload({
 			) : (
 				<>
 					<ImageDataCanvas
-						imageData={drawLevelsToCanvas(
-							parsedPrgData.result.levels,
-							mapRecord(parsedPrgData.result.sprites, ({ color }) => color)
-						)}
+						imageData={drawPlatformCharsToCanvas(parsedPrgData.result.levels)}
 					/>
 					<br />
 					<br />
