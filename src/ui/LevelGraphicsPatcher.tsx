@@ -1,32 +1,14 @@
 import { ReactNode, useState } from "react";
 import { patchPrg } from "../bb/prg/parse-prg";
 import { LevelDataSegmentName } from "../bb/game-definitions/level-segment-name";
-import { CheckboxList } from "./CheckboxList";
-import {
-	getSpriteColorsFromPeFileSpriteSet,
-	peFileDataToLevels,
-} from "../bb/pe/level-pe-conversion";
+import { peFileDataToLevels } from "../bb/pe/level-pe-conversion";
 import { FileInput } from "./FileInput";
 import { attempt } from "../bb/functions";
 import { deserializePeFileData } from "../bb/pe/pe-file";
-import { drawLevelsToCanvas } from "../bb/image-data/draw-levels-to-canvas";
+import { drawPlatformCharsToCanvas } from "../bb/image-data/draw-levels-to-canvas";
 import { ImageDataCanvas } from "./ImageDataCanvas";
-import { spriteColors } from "../bb/sprite";
 
-const segmentLabels: Record<LevelDataSegmentName, string> = {
-	symmetry: "Symmetry",
-	bitmaps: "Platforms",
-	platformChars: "Platform Chars",
-	bgColors: "Colors",
-	shadowChars: "Shadow Chars",
-	sidebarCharsIndex: "Side Border Char Indices",
-	sidebarChars: "Side Border Chars",
-	holeMetadata: "Hole Metadata",
-	monsters: "Monsters",
-	windCurrents: "Wind Currents",
-};
-
-export function LevelsPatcher({
+export function LevelGraphicsPatcher({
 	prg,
 	setPrg,
 }: {
@@ -89,41 +71,23 @@ function Patcher({
 		return <p>Could not parse pe: {parsedPeData?.error ?? "No reason."}</p>;
 	}
 
-	const [selectedSegments, setSelectedSegments] = useState(
-		new Set<LevelDataSegmentName>([
-			"bgColors",
-			"platformChars",
-			"sidebarChars",
-			"sidebarCharsIndex",
-			"shadowChars",
-		])
-	);
-
-	const peSpriteSet =
-		parsedPeData.result.deserializedPeFileDatas[0]?.spriteSets[0];
-
 	return (
 		<>
 			<ImageDataCanvas
-				imageData={drawLevelsToCanvas(
-					parsedPeData.result.levels,
-					// TODO: Just don't. We are not interested in the pe sprites. Take the colors from the current prg instead.
-					peSpriteSet
-						? getSpriteColorsFromPeFileSpriteSet(peSpriteSet)
-						: spriteColors
-				)}
-			/>
-			<CheckboxList
-				options={segmentLabels}
-				selected={selectedSegments}
-				setSelected={setSelectedSegments}
+				imageData={drawPlatformCharsToCanvas(parsedPeData.result.levels)}
 			/>
 			<button
 				onClick={() => {
 					const patched = patchPrg(
 						prg,
 						parsedPeData.result.levels,
-						selectedSegments,
+						new Set<LevelDataSegmentName>([
+							"bgColors",
+							"platformChars",
+							"sidebarChars",
+							"sidebarCharsIndex",
+							"shadowChars",
+						]),
 						"retroForge"
 					);
 					setPrg(patched);
