@@ -1,6 +1,6 @@
 import { ReactNode, useState } from "react";
 import { patchPrg } from "../bb/parse-prg";
-import { LevelDataSegmentName } from "../bb/prg/data-locations";
+import { LevelDataSegmentName } from "../bb/game-definitions/level-segment-name";
 import { CheckboxList } from "./CheckboxList";
 import {
 	getSpriteColorsFromPeFileSpriteSet,

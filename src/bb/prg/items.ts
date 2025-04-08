@@ -5,7 +5,7 @@ import {
 import { mapRecord, strictChunk } from "../functions";
 import { ReadonlyTuple } from "../tuple";
 import { linesPerChar } from "./charset-char";
-import { ItemDataSegmentName } from "./data-locations";
+import { ItemDataSegmentName } from "../game-definitions/item-segment-name";
 import { DataSegment } from "./io";
 import { assertTuple } from "../tuple";
 

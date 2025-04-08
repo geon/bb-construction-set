@@ -8,22 +8,24 @@ import {
 } from "../functions";
 import { PaletteIndex } from "../internal-data-formats/palette";
 import {
-	characterNames,
 	Sprite,
 	SpriteGroupName,
 	getCharacterOffsetInSprites,
 	spriteGroupLocations,
 	SpriteGroup,
-	isCharacterName,
 	SpriteGroupLocation,
 	spriteColors,
 } from "../sprite";
-import { Tuple } from "../tuple";
 import {
-	spriteDataSegmentLocations,
+	characterNames,
+	isCharacterName,
+} from "../game-definitions/character-name";
+import { Tuple } from "../tuple";
+import { spriteDataSegmentLocations } from "./data-locations";
+import {
 	SpriteDataSegmentName,
 	spriteDataSegmentNames,
-} from "./data-locations";
+} from "../game-definitions/sprite-segment-name";
 import { DataSegment } from "./io";
 import { ReadonlyUint8Array } from "./types";
 

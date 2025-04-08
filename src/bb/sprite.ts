@@ -1,7 +1,11 @@
 import { sum } from "./functions";
 import { PaletteIndex } from "./internal-data-formats/palette";
-import { SpriteDataSegmentName } from "./prg/data-locations";
+import { SpriteDataSegmentName } from "./game-definitions/sprite-segment-name";
 import { Tuple } from "./tuple";
+import {
+	CharacterName,
+	characterNames,
+} from "./game-definitions/character-name";
 
 export const spriteWidthBytes = 3;
 export const spriteHeight = 21;
@@ -9,24 +13,6 @@ export const numSpriteBytes = spriteWidthBytes * spriteHeight;
 
 export interface Sprite {
 	readonly bitmap: Tuple<number, 63>;
-}
-
-export const characterNames = [
-	"player",
-	"bubbleBuster",
-	"incendo",
-	"colley",
-	"hullaballoon",
-	"beluga",
-	"willyWhistle",
-	"stoner",
-	"superSocket",
-] as const;
-
-export type CharacterName = (typeof characterNames)[number];
-
-export function isCharacterName(text: string): text is CharacterName {
-	return characterNames.includes(text as CharacterName);
 }
 
 export type Sprites = Record<

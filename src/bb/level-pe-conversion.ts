@@ -6,13 +6,12 @@ import {
 	Monster,
 } from "./internal-data-formats/level";
 import { Bit, CharBitmap, createPeFileData, PeFileData } from "./pe-file";
+import { Sprites, spriteLeftIndex } from "./sprite";
 import {
 	CharacterName,
-	Sprites,
 	characterNames,
 	isCharacterName,
-	spriteLeftIndex,
-} from "./sprite";
+} from "./game-definitions/character-name";
 import {
 	CharsetChar,
 	CharsetCharColor,

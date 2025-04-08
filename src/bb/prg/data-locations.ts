@@ -1,5 +1,9 @@
 import { sum } from "../functions";
-import { characterNames, spriteCounts } from "../sprite";
+import { spriteCounts } from "../sprite";
+import { characterNames } from "../game-definitions/character-name";
+import { ItemDataSegmentName } from "../game-definitions/item-segment-name";
+import { SpriteDataSegmentName } from "../game-definitions/sprite-segment-name";
+import { LevelDataSegmentName } from "../game-definitions/level-segment-name";
 
 export const maxAsymmetric = 45;
 export const maxSidebars = 59;
@@ -18,20 +22,6 @@ const bitmapArrayByteLength = 46 * (100 + maxAsymmetric);
 
 const monsterArrayAddress = 0xae51;
 const windCurrentsArrayAddress = 0xb695;
-
-export const levelDataSegmentNames = [
-	"symmetry",
-	"sidebarCharsIndex",
-	"bitmaps",
-	"platformChars",
-	"bgColors",
-	"sidebarChars",
-	"holeMetadata",
-	"monsters",
-	"windCurrents",
-	"shadowChars",
-] as const;
-export type LevelDataSegmentName = (typeof levelDataSegmentNames)[number];
 
 export interface SegmentLocation {
 	readonly startAddress: number;
@@ -100,16 +90,6 @@ export const levelSegmentLocations: Readonly<
 	},
 };
 
-export const spriteDataSegmentNames = [
-	"characters",
-	"playerInBubble",
-	"bossA",
-	"bossB",
-	"bonusCupCake",
-	"bonusMelon",
-	"bonusDiamond",
-] as const;
-export type SpriteDataSegmentName = (typeof spriteDataSegmentNames)[number];
 export const spriteDataSegmentLocations: Readonly<
 	Record<SpriteDataSegmentName, SegmentLocation>
 > = {
@@ -137,23 +117,6 @@ export const monsterSpriteColorsSegmentLocation: SegmentLocation = {
 	length: characterNames.slice(1).length, // 8. The player color is not included.
 };
 
-export const itemDataSegmentNames = [
-	"bubbleBlow",
-	"bubblePop",
-	// "rest",
-	"baronVonBlubba",
-	"specialBubbles",
-	"lightning",
-	"fire",
-	"extendBubbles",
-	"stonerWeapon",
-	"drunkAndInvaderWeapon",
-	"incendoWeapon",
-	"items",
-	"largeLightning",
-	"bonusRoundCircles",
-] as const;
-export type ItemDataSegmentName = (typeof itemDataSegmentNames)[number];
 export const itemDataSegmentLocations: Readonly<
 	Record<ItemDataSegmentName, SegmentLocation>
 > = {

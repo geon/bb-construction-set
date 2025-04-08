@@ -9,7 +9,6 @@ import { palette, PaletteIndex } from "./internal-data-formats/palette";
 import { Color, mixColors, black } from "./internal-data-formats/color";
 import { CharsetChar } from "./internal-data-formats/charset-char";
 import {
-	CharacterName,
 	Sprite,
 	SpriteGroup,
 	spriteGroupMultiWidths,
@@ -17,6 +16,7 @@ import {
 	spriteHeight,
 	spriteWidthBytes,
 } from "./sprite";
+import { CharacterName } from "./game-definitions/character-name";
 import { Item, ItemGroup, ItemGroups } from "./prg/items";
 import { chunk, mapRecord, range, sum, zipObject } from "./functions";
 import { assertTuple, ReadonlyTuple } from "./tuple";

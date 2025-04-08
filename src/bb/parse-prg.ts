@@ -2,13 +2,13 @@ import { groupBy, unzipObject, zipObject } from "./functions";
 import { Level } from "./internal-data-formats/level";
 import { writeBgColors, readBgColors } from "./prg/bg-colors";
 import {
-	characterNames,
 	spriteColors,
 	SpriteGroup,
 	SpriteGroupLocation,
 	spriteGroupLocations,
 	SpriteGroupName,
 } from "./sprite";
+import { characterNames } from "./game-definitions/character-name";
 import { readPlatformChars, writePlatformChars } from "./prg/charset-char";
 import {
 	getDataSegments,
@@ -18,14 +18,18 @@ import {
 } from "./prg/io";
 import {
 	itemDataSegmentLocations,
-	LevelDataSegmentName,
-	levelDataSegmentNames,
 	levelSegmentLocations,
 	monsterSpriteColorsSegmentLocation,
 	spriteDataSegmentLocations,
+} from "./prg/data-locations";
+import {
+	LevelDataSegmentName,
+	levelDataSegmentNames,
+} from "./game-definitions/level-segment-name";
+import {
 	SpriteDataSegmentName,
 	spriteDataSegmentNames,
-} from "./prg/data-locations";
+} from "./game-definitions/sprite-segment-name";
 import { readItems, ItemGroups } from "./prg/items";
 import {
 	readBubbleCurrentRectangles,
