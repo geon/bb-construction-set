@@ -1,6 +1,6 @@
 import { curry, mapRecord } from "../functions";
 import { SegmentLocation } from "./data-locations";
-import { ReadonlyUint8Array } from "./types";
+import { ReadonlyUint8Array } from "../types";
 
 function getPrgStartAddress(prg: ArrayBuffer): number {
 	// The prg contains a little endian 16 bit header with the start address. The rest is the raw data.

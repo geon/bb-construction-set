@@ -1,5 +1,5 @@
-import { isBitSet, mirrorBits } from "./bit-twiddling";
-import { ReadonlyUint8Array } from "./types";
+import { isBitSet, mirrorBits } from "../bit-twiddling";
+import { ReadonlyUint8Array } from "../types";
 
 export type TileBitmap = {
 	readonly isSymmetric: boolean;

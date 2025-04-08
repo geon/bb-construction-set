@@ -1,7 +1,7 @@
 import { Monster } from "../internal-data-formats/level";
-import { isBitSet } from "./bit-twiddling";
+import { isBitSet } from "../bit-twiddling";
 import { bytesPerMonster, maxMonsters } from "./data-locations";
-import { ReadonlyUint8Array } from "./types";
+import { ReadonlyUint8Array } from "../types";
 
 export function readMonsters(monsterBytes: ReadonlyUint8Array) {
 	const monstersForAllLevels: Monster[][] = [];

@@ -5,9 +5,9 @@ import {
 	BubbleCurrentRectangle,
 	BubbleCurrentDirection,
 } from "../internal-data-formats/level";
-import { isBitSet } from "./bit-twiddling";
+import { isBitSet } from "../bit-twiddling";
 import { uint8ArrayConcatenate } from "./io";
-import { ReadonlyUint8Array } from "./types";
+import { ReadonlyUint8Array } from "../types";
 
 export function readBubbleCurrentRectangles(
 	bubbleCurrentRectangleBytes: ReadonlyUint8Array

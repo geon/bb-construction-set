@@ -27,7 +27,7 @@ import {
 	spriteDataSegmentNames,
 } from "../game-definitions/sprite-segment-name";
 import { DataSegment } from "./io";
-import { ReadonlyUint8Array } from "./types";
+import { ReadonlyUint8Array } from "../types";
 
 export function convertSpriteGroupsToBinFile(
 	spriteGroups: Record<SpriteGroupName, SpriteGroup>

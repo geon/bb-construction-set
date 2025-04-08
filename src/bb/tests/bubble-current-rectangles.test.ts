@@ -9,7 +9,7 @@ import {
 } from "../prg/bubble-current-rectangles";
 import { getDataSegments } from "../prg/io";
 import { readFileSync } from "fs";
-import { ReadonlyUint8Array } from "../prg/types";
+import { ReadonlyUint8Array } from "../types";
 import { levelSegmentLocations } from "../prg/data-locations";
 
 test("readBubbleCurrentRectangles snapshot", () => {

@@ -6,7 +6,7 @@ import { isDefined, padRight, strictChunk } from "../functions";
 import { Level } from "../internal-data-formats/level";
 import { assertTuple } from "../tuple";
 import { maxSidebars, levelSegmentLocations } from "./data-locations";
-import { ReadonlyUint8Array } from "./types";
+import { ReadonlyUint8Array } from "../types";
 
 export function readSidebarChars(
 	sidebarCharsBytes: ReadonlyUint8Array,

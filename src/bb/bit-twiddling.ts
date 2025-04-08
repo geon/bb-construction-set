@@ -1,5 +1,5 @@
-import { sum } from "../functions";
-import { Tuple } from "../tuple";
+import { sum } from "./functions";
+import { Tuple } from "./tuple";
 
 export function isBitSet(byte: number, bitIndex: number): boolean {
 	return !!(byte & (0b10000000 >> bitIndex));

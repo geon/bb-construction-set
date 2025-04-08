@@ -50,7 +50,7 @@ import { readTileBitmaps } from "./prg/tile-bitmap";
 import { writeSymmetry, writeBitmaps, writeHoles } from "./misc-patch";
 import { readBubbleCurrentPerLineDefaults } from "./prg/bubble-current-per-line-defaults";
 import { shadowChars, ShadowStyle } from "./shadow-chars";
-import { ReadonlyUint8Array } from "./prg/types";
+import { ReadonlyUint8Array } from "./types";
 
 export function parsePrg(prg: ArrayBuffer): {
 	levels: readonly Level[];

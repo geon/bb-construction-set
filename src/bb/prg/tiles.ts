@@ -4,9 +4,9 @@ import {
 	levelHeight,
 	Tiles,
 } from "../internal-data-formats/level";
-import { byteToBits, isBitSet } from "./bit-twiddling";
+import { byteToBits, isBitSet } from "../bit-twiddling";
 import { TileBitmap } from "./tile-bitmap";
-import { ReadonlyUint8Array } from "./types";
+import { ReadonlyUint8Array } from "../types";
 
 export function readTiles(
 	holeMetadataBytes: ReadonlyUint8Array,

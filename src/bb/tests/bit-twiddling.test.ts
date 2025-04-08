@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { mirrorBits } from "../prg/bit-twiddling";
+import { mirrorBits } from "../bit-twiddling";
 
 test("byteToBits", () => {
 	expect(mirrorBits(mirrorBits(123))).toBe(123);
