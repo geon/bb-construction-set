@@ -5,7 +5,7 @@ import {
 	parsePrgSpriteBin,
 	patchPrg,
 	patchPrgSpritesBin,
-} from "../parse-prg";
+} from "../prg/parse-prg";
 import {
 	bubbleCurrentRectangleToBytes,
 	bytesToBubbleCurrentRectangle,

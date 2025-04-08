@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { attempt } from "../bb/functions";
-import { parsePrg } from "../bb/parse-prg";
+import { parsePrg } from "../bb/prg/parse-prg";
 import { ImageDataCanvas } from "./ImageDataCanvas";
 import { drawItemsToCanvas } from "../bb/draw-levels-to-canvas";
 

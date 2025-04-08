@@ -1,5 +1,5 @@
 import { ReactNode, useState } from "react";
-import { patchPrg } from "../bb/parse-prg";
+import { patchPrg } from "../bb/prg/parse-prg";
 import { LevelDataSegmentName } from "../bb/game-definitions/level-segment-name";
 import { CheckboxList } from "./CheckboxList";
 import {

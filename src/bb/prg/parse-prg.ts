@@ -1,56 +1,56 @@
-import { groupBy, unzipObject, zipObject } from "./functions";
-import { Level } from "./internal-data-formats/level";
-import { writeBgColors, readBgColors } from "./prg/bg-colors";
+import { groupBy, unzipObject, zipObject } from "../functions";
+import { Level } from "../internal-data-formats/level";
+import { writeBgColors, readBgColors } from "./bg-colors";
 import {
 	spriteColors,
 	SpriteGroup,
 	SpriteGroupLocation,
 	spriteGroupLocations,
 	SpriteGroupName,
-} from "./sprite";
-import { characterNames } from "./game-definitions/character-name";
-import { readPlatformChars, writePlatformChars } from "./prg/charset-char";
+} from "../sprite";
+import { characterNames } from "../game-definitions/character-name";
+import { readPlatformChars, writePlatformChars } from "./charset-char";
 import {
 	getDataSegments,
 	DataSegment,
 	getMutableDataSegments,
 	getDataSegment,
-} from "./prg/io";
+} from "./io";
 import {
 	itemDataSegmentLocations,
 	levelSegmentLocations,
 	monsterSpriteColorsSegmentLocation,
 	spriteDataSegmentLocations,
-} from "./prg/data-locations";
+} from "./data-locations";
 import {
 	LevelDataSegmentName,
 	levelDataSegmentNames,
-} from "./game-definitions/level-segment-name";
+} from "../game-definitions/level-segment-name";
 import {
 	SpriteDataSegmentName,
 	spriteDataSegmentNames,
-} from "./game-definitions/sprite-segment-name";
-import { readItems, ItemGroups } from "./prg/items";
+} from "../game-definitions/sprite-segment-name";
+import { readItems, ItemGroups } from "./items";
 import {
 	readBubbleCurrentRectangles,
 	writeBubbleCurrentRectangles,
-} from "./prg/bubble-current-rectangles";
+} from "./bubble-current-rectangles";
 import {
 	writeSidebarChars,
 	readSidebarChars,
 	writeSidebarCharsIndex,
-} from "./prg/sidebar-chars";
-import { readTiles } from "./prg/tiles";
-import { writeMonsters, readMonsters } from "./prg/monsters";
+} from "./sidebar-chars";
+import { readTiles } from "./tiles";
+import { writeMonsters, readMonsters } from "./monsters";
 import {
 	parseSpriteGroupsFromPrg,
 	convertSpriteGroupsToBinFile,
-} from "./prg/sprites";
-import { readTileBitmaps } from "./prg/tile-bitmap";
+} from "./sprites";
+import { readTileBitmaps } from "./tile-bitmap";
 import { writeSymmetry, writeBitmaps, writeHoles } from "./misc-patch";
-import { readBubbleCurrentPerLineDefaults } from "./prg/bubble-current-per-line-defaults";
+import { readBubbleCurrentPerLineDefaults } from "./bubble-current-per-line-defaults";
 import { shadowChars, ShadowStyle } from "./shadow-chars";
-import { ReadonlyUint8Array } from "./types";
+import { ReadonlyUint8Array } from "../types";
 
 export function parsePrg(prg: ArrayBuffer): {
 	levels: readonly Level[];

@@ -24,7 +24,7 @@ import {
 } from "../internal-data-formats/charset-char";
 import { c64BuiltinCharsets } from "./c64-builtin-charsets";
 import { PaletteIndex } from "../internal-data-formats/palette";
-import { shadowChars, ShadowStyle } from "../shadow-chars";
+import { shadowChars, ShadowStyle } from "../prg/shadow-chars";
 import { assertTuple } from "../tuple";
 
 const emptyChar: CharBitmap = [0, 0, 0, 0, 0, 0, 0, 0];

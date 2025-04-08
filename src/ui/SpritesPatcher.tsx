@@ -1,5 +1,5 @@
 import { ReactNode, useState } from "react";
-import { patchPrgSpritesBin } from "../bb/parse-prg";
+import { patchPrgSpritesBin } from "../bb/prg/parse-prg";
 import { FileInput } from "./FileInput";
 import { Attempt, attempt } from "../bb/functions";
 import { parseSpriteGroupsFromBin } from "../bb/prg/sprites";

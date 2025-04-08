@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { BlobDownloadButton } from "./BlobDownloadButton";
 import { attempt } from "../bb/functions";
-import { parsePrgSpriteBin } from "../bb/parse-prg";
+import { parsePrgSpriteBin } from "../bb/prg/parse-prg";
 import { parseSpriteGroupsFromPrg } from "../bb/prg/sprites";
 import { getDataSegment, getDataSegments } from "../bb/prg/io";
 import {
