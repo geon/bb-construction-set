@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
-import { attempt } from "./bb/functions";
-import { parsePrg } from "./bb/parse-prg";
+import { attempt } from "../bb/functions";
+import { parsePrg } from "../bb/parse-prg";
 import { ImageDataCanvas } from "./ImageDataCanvas";
-import { drawItemsToCanvas } from "./bb/draw-levels-to-canvas";
+import { drawItemsToCanvas } from "../bb/draw-levels-to-canvas";
 
 export function ItemsVisualizerWithCtmDownload({
 	prg,

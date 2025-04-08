@@ -1,16 +1,16 @@
 import { ReactNode } from "react";
 import { BlobDownloadButton } from "./BlobDownloadButton";
-import { attempt } from "./bb/functions";
-import { parsePrgSpriteBin } from "./bb/parse-prg";
-import { parseSpriteGroupsFromPrg } from "./bb/prg/sprites";
-import { getDataSegment, getDataSegments } from "./bb/prg/io";
+import { attempt } from "../bb/functions";
+import { parsePrgSpriteBin } from "../bb/parse-prg";
+import { parseSpriteGroupsFromPrg } from "../bb/prg/sprites";
+import { getDataSegment, getDataSegments } from "../bb/prg/io";
 import {
 	monsterSpriteColorsSegmentLocation,
 	spriteDataSegmentLocations,
-} from "./bb/prg/data-locations";
-import { spriteColors } from "./bb/sprite";
+} from "../bb/prg/data-locations";
+import { spriteColors } from "../bb/sprite";
 import { ImageDataCanvas } from "./ImageDataCanvas";
-import { drawSpritesToCanvas } from "./bb/draw-levels-to-canvas";
+import { drawSpritesToCanvas } from "../bb/draw-levels-to-canvas";
 
 export function SpritesVisualizerWithBinDownload({
 	prg,

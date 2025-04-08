@@ -1,9 +1,9 @@
 import { ReactNode, useState } from "react";
-import { patchPrgSpritesBin } from "./bb/parse-prg";
+import { patchPrgSpritesBin } from "../bb/parse-prg";
 import { FileInput } from "./FileInput";
-import { Attempt, attempt } from "./bb/functions";
-import { parseSpriteGroupsFromBin } from "./bb/prg/sprites";
-import { drawSpritesToCanvas } from "./bb/draw-levels-to-canvas";
+import { Attempt, attempt } from "../bb/functions";
+import { parseSpriteGroupsFromBin } from "../bb/prg/sprites";
+import { drawSpritesToCanvas } from "../bb/draw-levels-to-canvas";
 import { ImageDataCanvas } from "./ImageDataCanvas";
 
 export function SpritesPatcher({

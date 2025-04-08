@@ -1,20 +1,20 @@
 import { ReactNode, useState } from "react";
-import { patchPrg } from "./bb/parse-prg";
-import { LevelDataSegmentName } from "./bb/prg/data-locations";
+import { patchPrg } from "../bb/parse-prg";
+import { LevelDataSegmentName } from "../bb/prg/data-locations";
 import { CheckboxList } from "./CheckboxList";
 import {
 	getSpriteColorsFromPeFileSpriteSet,
 	peFileDataToLevels,
-} from "./bb/level-pe-conversion";
+} from "../bb/level-pe-conversion";
 import { FileInput } from "./FileInput";
-import { attempt } from "./bb/functions";
-import { deserializePeFileData } from "./bb/pe-file";
+import { attempt } from "../bb/functions";
+import { deserializePeFileData } from "../bb/pe-file";
 import {
 	drawLevelsToCanvas,
 	drawPlatformCharsToCanvas,
-} from "./bb/draw-levels-to-canvas";
+} from "../bb/draw-levels-to-canvas";
 import { ImageDataCanvas } from "./ImageDataCanvas";
-import { spriteColors } from "./bb/sprite";
+import { spriteColors } from "../bb/sprite";
 
 const segmentLabels: Record<LevelDataSegmentName, string> = {
 	symmetry: "Symmetry",

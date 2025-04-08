@@ -1,13 +1,13 @@
 import { ReactNode } from "react";
-import { levelsToPeFileData } from "./bb/level-pe-conversion";
-import { serializePeFileData } from "./bb/pe-file";
+import { levelsToPeFileData } from "../bb/level-pe-conversion";
+import { serializePeFileData } from "../bb/pe-file";
 import { BlobDownloadButton } from "./BlobDownloadButton";
-import { attempt, mapRecord } from "./bb/functions";
-import { parsePrg } from "./bb/parse-prg";
+import { attempt, mapRecord } from "../bb/functions";
+import { parsePrg } from "../bb/parse-prg";
 import {
 	drawLevelsToCanvas,
 	drawPlatformCharsToCanvas,
-} from "./bb/draw-levels-to-canvas";
+} from "../bb/draw-levels-to-canvas";
 import { ImageDataCanvas } from "./ImageDataCanvas";
 
 export function LevelsVisualizerWithPeDownload({
