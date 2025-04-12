@@ -41,8 +41,10 @@ export function App() {
 									<>
 										<Card>
 											<h2>{tab.title}</h2>
-											<LevelsVisualizerWithPeDownload prg={prg} />
-											{/* <LevelsPatcher prg={prg} setPrg={setPrg} /> */}
+											<LevelsVisualizerWithPeDownload
+												prg={prg}
+												setPrg={setPrg}
+											/>
 										</Card>
 									</>
 								);
