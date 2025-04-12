@@ -1,8 +1,11 @@
 import { ReactNode } from "react";
 import { BlobDownloadButton } from "./BlobDownloadButton";
 import { attempt } from "../bb/functions";
-import { parsePrgSpriteBin } from "../bb/prg/parse-prg";
-import { parseSpriteGroupsFromPrg } from "../bb/prg/sprites";
+import { parsePrgSpriteBin, patchPrgSpritesBin } from "../bb/prg/parse-prg";
+import {
+	parseSpriteGroupsFromBin,
+	parseSpriteGroupsFromPrg,
+} from "../bb/prg/sprites";
 import { getDataSegment, getDataSegments } from "../bb/prg/io";
 import {
 	monsterSpriteColorsSegmentLocation,
@@ -10,11 +13,14 @@ import {
 } from "../bb/prg/data-locations";
 import { ImageDataCanvas } from "./ImageDataCanvas";
 import { drawSpritesToCanvas } from "../bb/image-data/draw-levels-to-canvas";
+import { FileInput } from "./FileInput";
 
 export function SpritesVisualizerWithBinDownload({
 	prg,
+	setPrg,
 }: {
 	readonly prg: ArrayBuffer;
+	readonly setPrg: (file: ArrayBuffer | undefined) => void;
 }): ReactNode {
 	const parsedPrgData = attempt(() => parsePrgSpriteBin(prg));
 
@@ -43,6 +49,37 @@ export function SpritesVisualizerWithBinDownload({
 					/>
 				</>
 			)}
+			<p>
+				Save the file generated above, then edit it in SpritePad, save it and
+				select it here.
+			</p>
+			<FileInput
+				accept={["bin"]}
+				onChange={async (file) => {
+					const buffer = await file?.arrayBuffer();
+
+					const parsedSpriteBinData =
+						buffer &&
+						attempt(() => {
+							const parsed = parseSpriteGroupsFromBin(new Uint8Array(buffer));
+							return parsed;
+						});
+
+					if (parsedSpriteBinData?.type !== "ok") {
+						alert(
+							`Could not parse bin: ${
+								parsedSpriteBinData?.error ?? "No reason."
+							}`
+						);
+						return;
+					}
+
+					const patched = patchPrgSpritesBin(prg, parsedSpriteBinData.result);
+					setPrg(patched);
+				}}
+			>
+				Choose file
+			</FileInput>
 		</>
 	);
 }
