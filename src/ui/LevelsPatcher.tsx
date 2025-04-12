@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 import { patchPrg } from "../bb/prg/parse-prg";
 import { LevelDataSegmentName } from "../bb/game-definitions/level-segment-name";
 import { peFileDataToLevels } from "../bb/pe/level-pe-conversion";
@@ -13,8 +13,6 @@ export function LevelsPatcher({
 	readonly prg: ArrayBuffer;
 	readonly setPrg: (file: ArrayBuffer) => void;
 }): ReactNode {
-	const [pes, setPes] = useState<readonly ArrayBuffer[] | undefined>();
-
 	return (
 		<>
 			<p>
@@ -25,54 +23,31 @@ export function LevelsPatcher({
 			<FileInput
 				accept={["pe"]}
 				multiple
-				onChange={async (files) =>
-					setPes(await Promise.all(files.map((file) => file.arrayBuffer())))
-				}
-			>
-				Choose files
-			</FileInput>
-			<Patcher prg={prg} setPrg={setPrg} pes={pes} setPes={setPes} />
-		</>
-	);
-}
+				onChange={async (files) => {
+					const pes = await Promise.all(
+						files.map((file) => file.arrayBuffer())
+					);
 
-function Patcher({
-	prg,
-	setPrg,
-	pes,
-	setPes,
-}: {
-	readonly prg: ArrayBuffer;
-	readonly setPrg: (file: ArrayBuffer) => void;
-	readonly pes: readonly ArrayBuffer[] | undefined;
-	readonly setPes: (pes: readonly ArrayBuffer[] | undefined) => void;
-}): JSX.Element {
-	const parsedPeData =
-		pes &&
-		attempt(() => {
-			const deserializedPeFileDatas = pes.map((buffer) =>
-				deserializePeFileData(new TextDecoder("utf-8").decode(buffer))
-			);
-			const levels = deserializedPeFileDatas.flatMap(peFileDataToLevels);
+					const parsedPeData =
+						pes &&
+						attempt(() => {
+							const deserializedPeFileDatas = pes.map((buffer) =>
+								deserializePeFileData(new TextDecoder("utf-8").decode(buffer))
+							);
+							const levels =
+								deserializedPeFileDatas.flatMap(peFileDataToLevels);
 
-			return {
-				levels,
-				deserializedPeFileDatas,
-			};
-		});
+							return {
+								levels,
+								deserializedPeFileDatas,
+							};
+						});
 
-	if (!parsedPeData) {
-		return <p>No pe selected.</p>;
-	}
+					if (parsedPeData?.type !== "ok") {
+						alert(`Could not parse pe: ${parsedPeData?.error ?? "No reason."}`);
+						return;
+					}
 
-	if (parsedPeData?.type !== "ok") {
-		return <p>Could not parse pe: {parsedPeData?.error ?? "No reason."}</p>;
-	}
-
-	return (
-		<>
-			<button
-				onClick={() => {
 					const patched = patchPrg(
 						prg,
 						parsedPeData.result.levels,
@@ -86,11 +61,10 @@ function Patcher({
 						"retroForge"
 					);
 					setPrg(patched);
-					setPes(undefined);
 				}}
 			>
-				Apply Patch
-			</button>
+				Choose files
+			</FileInput>
 		</>
 	);
 }
