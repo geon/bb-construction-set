@@ -1,7 +1,6 @@
 import { ReactNode, useState } from "react";
 import { patchPrg } from "../bb/prg/parse-prg";
 import { LevelDataSegmentName } from "../bb/game-definitions/level-segment-name";
-import { CheckboxList } from "./CheckboxList";
 import {
 	getSpriteColorsFromPeFileSpriteSet,
 	peFileDataToLevels,
@@ -12,19 +11,6 @@ import { deserializePeFileData } from "../bb/pe/pe-file";
 import { drawLevelsToCanvas } from "../bb/image-data/draw-levels-to-canvas";
 import { ImageDataCanvas } from "./ImageDataCanvas";
 import { spriteColors } from "../bb/sprite";
-
-const segmentLabels: Record<LevelDataSegmentName, string> = {
-	symmetry: "Symmetry",
-	bitmaps: "Platforms",
-	platformChars: "Platform Chars",
-	bgColors: "Colors",
-	shadowChars: "Shadow Chars",
-	sidebarCharsIndex: "Side Border Char Indices",
-	sidebarChars: "Side Border Chars",
-	holeMetadata: "Hole Metadata",
-	monsters: "Monsters",
-	windCurrents: "Wind Currents",
-};
 
 export function LevelsPatcher({
 	prg,
@@ -89,16 +75,6 @@ function Patcher({
 		return <p>Could not parse pe: {parsedPeData?.error ?? "No reason."}</p>;
 	}
 
-	const [selectedSegments, setSelectedSegments] = useState(
-		new Set<LevelDataSegmentName>([
-			"bgColors",
-			"platformChars",
-			"sidebarChars",
-			"sidebarCharsIndex",
-			"shadowChars",
-		])
-	);
-
 	const peSpriteSet =
 		parsedPeData.result.deserializedPeFileDatas[0]?.spriteSets[0];
 
@@ -113,17 +89,18 @@ function Patcher({
 						: spriteColors
 				)}
 			/>
-			<CheckboxList
-				options={segmentLabels}
-				selected={selectedSegments}
-				setSelected={setSelectedSegments}
-			/>
 			<button
 				onClick={() => {
 					const patched = patchPrg(
 						prg,
 						parsedPeData.result.levels,
-						selectedSegments,
+						new Set<LevelDataSegmentName>([
+							"symmetry",
+							"bitmaps",
+							"holeMetadata",
+							"monsters",
+							"windCurrents",
+						]),
 						"retroForge"
 					);
 					setPrg(patched);
