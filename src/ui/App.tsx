@@ -44,11 +44,8 @@ export function App() {
 										<Card>
 											<h2>{tab.title}</h2>
 											<LevelsVisualizerWithPeDownload prg={prg} />
+											{/* <LevelsPatcher prg={prg} setPrg={setPrg} /> */}
 										</Card>
-										{/* <Card>
-											<h2>Patch</h2>
-											<LevelsPatcher prg={prg} setPrg={setPrg} />
-										</Card> */}
 									</>
 								);
 							},
@@ -61,9 +58,6 @@ export function App() {
 										<Card>
 											<h2>{tab.title}</h2>
 											<LevelGraphicsVisualizerWithPeDownload prg={prg} />
-										</Card>
-										<Card>
-											<h2>Patch</h2>
 											<LevelGraphicsPatcher prg={prg} setPrg={setPrg} />
 										</Card>
 									</>
@@ -78,9 +72,6 @@ export function App() {
 										<Card>
 											<h2>{tab.title}</h2>
 											<SpritesVisualizerWithBinDownload prg={prg} />
-										</Card>
-										<Card>
-											<h2>Patch</h2>
 											<SpritesPatcher prg={prg} setPrg={setPrg} />
 										</Card>
 									</>
