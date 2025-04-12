@@ -3,8 +3,6 @@ import { patchPrgSpritesBin } from "../bb/prg/parse-prg";
 import { FileInput } from "./FileInput";
 import { Attempt, attempt } from "../bb/functions";
 import { parseSpriteGroupsFromBin } from "../bb/prg/sprites";
-import { drawSpritesToCanvas } from "../bb/image-data/draw-levels-to-canvas";
-import { ImageDataCanvas } from "./ImageDataCanvas";
 
 export function SpritesPatcher({
 	prg,
@@ -46,11 +44,6 @@ export function SpritesPatcher({
 				<p>Could not parse bin: {parsedSpriteBinData?.error ?? "No reason."}</p>
 			) : (
 				<>
-					<ImageDataCanvas
-						imageData={drawSpritesToCanvas(parsedSpriteBinData.result)}
-					/>
-					<br />
-					<br />
 					<button
 						onClick={() => {
 							const patched = patchPrgSpritesBin(

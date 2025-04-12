@@ -5,8 +5,6 @@ import { peFileDataToLevels } from "../bb/pe/level-pe-conversion";
 import { FileInput } from "./FileInput";
 import { attempt } from "../bb/functions";
 import { deserializePeFileData } from "../bb/pe/pe-file";
-import { drawPlatformCharsToCanvas } from "../bb/image-data/draw-levels-to-canvas";
-import { ImageDataCanvas } from "./ImageDataCanvas";
 
 export function LevelGraphicsPatcher({
 	prg,
@@ -73,9 +71,6 @@ function Patcher({
 
 	return (
 		<>
-			<ImageDataCanvas
-				imageData={drawPlatformCharsToCanvas(parsedPeData.result.levels)}
-			/>
 			<button
 				onClick={() => {
 					const patched = patchPrg(
