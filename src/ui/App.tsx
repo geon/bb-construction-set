@@ -6,7 +6,7 @@ import { useState } from "react";
 import { LevelsVisualizerWithPeDownload } from "./tabs/LevelsVisualizerWithPeDownload";
 import { SpritesVisualizerWithBinDownload } from "./tabs/SpritesVisualizerWithBinDownload";
 import { PrgDownloader } from "./PrgDownloader";
-import { ItemsVisualizerWithCtmDownload } from "./tabs/ItemsVisualizerWithCtmDownload";
+import { Items } from "./tabs/Items";
 import { LevelGraphicsVisualizerWithPeDownload } from "./tabs/LevelGraphicsVisualizerWithPeDownload";
 
 const Page = styled.div`
@@ -89,7 +89,7 @@ export function App() {
 									<>
 										<Card>
 											<h2>{tab.title}</h2>
-											<ItemsVisualizerWithCtmDownload prg={prg} />
+											<Items prg={prg} />
 										</Card>
 									</>
 								);

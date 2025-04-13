@@ -4,11 +4,7 @@ import { parsePrg } from "../../bb/prg/parse-prg";
 import { ImageDataCanvas } from "../ImageDataCanvas";
 import { drawItemsToCanvas } from "../../bb/image-data/draw-levels-to-canvas";
 
-export function ItemsVisualizerWithCtmDownload({
-	prg,
-}: {
-	readonly prg: ArrayBuffer;
-}): ReactNode {
+export function Items({ prg }: { readonly prg: ArrayBuffer }): ReactNode {
 	const parsedPrgData = attempt(() => parsePrg(prg));
 
 	return (
