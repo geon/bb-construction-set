@@ -40,19 +40,17 @@ export function Sprites({
 			<FileInput
 				accept={["bin"]}
 				onChange={async (file) => {
-					const buffer = await file?.arrayBuffer();
+					const buffer = await file.arrayBuffer();
 
-					const parsedSpriteBinData =
-						buffer &&
-						attempt(() => {
-							const parsed = parseSpriteGroupsFromBin(new Uint8Array(buffer));
-							return parsed;
-						});
+					const parsedSpriteBinData = attempt(() => {
+						const parsed = parseSpriteGroupsFromBin(new Uint8Array(buffer));
+						return parsed;
+					});
 
-					if (parsedSpriteBinData?.type !== "ok") {
+					if (parsedSpriteBinData.type !== "ok") {
 						alert(
 							`Could not parse bin: ${
-								parsedSpriteBinData?.error ?? "No reason."
+								parsedSpriteBinData.error ?? "No reason."
 							}`
 						);
 						return;

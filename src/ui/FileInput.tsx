@@ -3,7 +3,7 @@ import { ComponentPropsWithoutRef, useEffect, useRef, useState } from "react";
 type CallbackArg<Multiple> = Multiple extends true
 	? readonly File[]
 	: Multiple extends false | undefined
-	? File | undefined
+	? File
 	: never;
 export function FileInput<Multiple extends boolean = false>({
 	multiple,
@@ -32,11 +32,19 @@ export function FileInput<Multiple extends boolean = false>({
 				style={{ display: "none" }}
 				onChange={(event) => {
 					const files = event.target.files;
+					if (!files) {
+						// https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/files
+						// > A FileList object listing the selected files, if any, or null if the HTMLInputElement is not of type="file".
+						throw new Error("No files property on input.");
+					}
 
 					if (multiple) {
-						(onChange as (arg: CallbackArg<true>) => void)([...(files ?? [])]);
+						(onChange as (arg: CallbackArg<true>) => void)([...files]);
 					} else {
-						(onChange as (arg: CallbackArg<false>) => void)(files?.[0]);
+						if (!files[0]) {
+							throw new Error("Empty file selection.");
+						}
+						(onChange as (arg: CallbackArg<false>) => void)(files[0]);
 					}
 					// Clear the input, so the same file can trigger it consecutively.
 					event.target.value = "";
