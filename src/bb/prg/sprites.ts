@@ -83,12 +83,12 @@ export function parseSpriteGroupsFromBin(
 			.map((name) => {
 				const offset = getCharacterOffsetInSprites(name);
 				const sprite = characterSprites[offset];
+				const colorByte = sprite![63];
 				if (!sprite) {
 					throw new Error(
 						`Missing first sprite of ${name} at offset ${offset}.`
 					);
 				}
-				const colorByte = sprite[63];
 				return colorByte & 0b00001111;
 			})
 	);
