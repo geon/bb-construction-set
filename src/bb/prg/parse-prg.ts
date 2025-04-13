@@ -41,9 +41,9 @@ import { shadowChars, ShadowStyle } from "./shadow-chars";
 import { ReadonlyUint8Array } from "../types";
 
 export function parsePrg(prg: ArrayBuffer): {
-	levels: readonly Level[];
-	sprites: Record<SpriteGroupName, SpriteGroup>;
-	items: ItemGroups;
+	readonly levels: readonly Level[];
+	readonly sprites: Record<SpriteGroupName, SpriteGroup>;
+	readonly items: ItemGroups;
 } {
 	const levels = readLevels(getDataSegments(prg, levelSegmentLocations));
 	const sprites = parseSpriteGroupsFromPrg(
