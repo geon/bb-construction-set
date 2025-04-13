@@ -41,6 +41,13 @@ export function App() {
 		setState({ prg, parsedPrg: parsedPrg.result });
 	};
 
+	const setParsedPrg = (parsedPrg: ParsedPrg): void => {
+		if (!state) {
+			throw new Error("State should be set first.");
+		}
+		setState({ prg: state?.prg, parsedPrg });
+	};
+
 	const { parsedPrg, prg } = state ?? { parsedPrg: undefined, prg: undefined };
 
 	return (
@@ -53,7 +60,7 @@ export function App() {
 					<PrgSelector setPrg={setPrg} />
 				)}
 			</Card>
-			{prg && parsedPrg && (
+			{parsedPrg && (
 				<TabBar
 					initialTabId={"patchLevels"}
 					tabs={{
@@ -64,7 +71,10 @@ export function App() {
 									<>
 										<Card>
 											<h2>{tab.title}</h2>
-											<Levels parsedPrg={parsedPrg} prg={prg} setPrg={setPrg} />
+											<Levels
+												parsedPrg={parsedPrg}
+												setParsedPrg={setParsedPrg}
+											/>
 										</Card>
 									</>
 								);
@@ -79,8 +89,7 @@ export function App() {
 											<h2>{tab.title}</h2>
 											<LevelGraphics
 												parsedPrg={parsedPrg}
-												prg={prg}
-												setPrg={setPrg}
+												setParsedPrg={setParsedPrg}
 											/>
 										</Card>
 									</>
@@ -96,8 +105,7 @@ export function App() {
 											<h2>{tab.title}</h2>
 											<Sprites
 												parsedPrg={parsedPrg}
-												prg={prg}
-												setPrg={setPrg}
+												setParsedPrg={setParsedPrg}
 											/>
 										</Card>
 									</>
@@ -111,7 +119,10 @@ export function App() {
 									<>
 										<Card>
 											<h2>{tab.title}</h2>
-											<Items parsedPrg={parsedPrg} prg={prg} />
+											<Items
+												parsedPrg={parsedPrg}
+												setParsedPrg={setParsedPrg}
+											/>
 										</Card>
 									</>
 								);

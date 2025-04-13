@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { BlobDownloadButton } from "../BlobDownloadButton";
 import { attempt } from "../../bb/functions";
-import { ParsedPrg, patchPrg } from "../../bb/prg/parse-prg";
+import { ParsedPrg } from "../../bb/prg/parse-prg";
 import {
 	convertSpriteGroupsToBinFile,
 	parseSpriteGroupsFromBin,
@@ -12,12 +12,10 @@ import { FileInput } from "../FileInput";
 
 export function Sprites({
 	parsedPrg,
-	prg,
-	setPrg,
+	setParsedPrg,
 }: {
 	readonly parsedPrg: ParsedPrg;
-	readonly prg: ArrayBuffer;
-	readonly setPrg: (file: ArrayBuffer) => void;
+	readonly setParsedPrg: (parsedPrg: ParsedPrg) => void;
 }): ReactNode {
 	return (
 		<>
@@ -56,12 +54,7 @@ export function Sprites({
 						return;
 					}
 
-					const patched = patchPrg(
-						prg,
-						{ ...parsedPrg, sprites: parsedSpriteBinData.result },
-						"retroForge"
-					);
-					setPrg(patched);
+					setParsedPrg({ ...parsedPrg, sprites: parsedSpriteBinData.result });
 				}}
 			>
 				Choose file

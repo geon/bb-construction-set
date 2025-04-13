@@ -7,7 +7,7 @@ export function Items({
 	parsedPrg,
 }: {
 	readonly parsedPrg: ParsedPrg;
-	readonly prg: ArrayBuffer;
+	readonly setParsedPrg: (parsedPrg: ParsedPrg) => void;
 }): ReactNode {
 	return <ImageDataCanvas imageData={drawItemsToCanvas(parsedPrg.items)} />;
 }

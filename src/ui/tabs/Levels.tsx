@@ -11,8 +11,7 @@ export function Levels({
 	parsedPrg,
 }: {
 	readonly parsedPrg: ParsedPrg;
-	readonly prg: ArrayBuffer;
-	readonly setPrg: (file: ArrayBuffer) => void;
+	readonly setParsedPrg: (parsedPrg: ParsedPrg) => void;
 }): ReactNode {
 	return (
 		<>
