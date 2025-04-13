@@ -1,17 +1,17 @@
 import { expect, test } from "vitest";
-import {
-	parseSpriteGroupsFromPrg,
-	convertSpriteGroupsToBinFile,
-} from "../sprites";
-import { getDataSegments, getDataSegment } from "../io";
+import { parseSpriteGroupsFromPrg } from "../../prg/sprites";
+import { convertSpriteGroupsToBinFile } from "../sprite-bin";
+import { getDataSegments, getDataSegment } from "../../prg/io";
 import { readFileSync } from "fs";
 import {
 	monsterSpriteColorsSegmentLocation,
 	spriteDataSegmentLocations,
-} from "../data-locations";
+} from "../../prg/data-locations";
 
 test("readSpritesBin snapshot", () => {
-	const prg = readFileSync(__dirname + "/decompressed-bb.prg").buffer;
+	const prg = readFileSync(
+		__dirname + "/../../prg/tests/decompressed-bb.prg"
+	).buffer;
 	const segments = getDataSegments(prg, spriteDataSegmentLocations);
 	const monsterColorsSegment = getDataSegment(
 		prg,

@@ -2,11 +2,11 @@ import { ReactNode } from "react";
 import { BlobDownloadButton } from "../BlobDownloadButton";
 import { attempt } from "../../bb/functions";
 import { parsePrg, patchPrgSpritesBin } from "../../bb/prg/parse-prg";
+import { parseSpriteGroupsFromPrg } from "../../bb/prg/sprites";
 import {
 	convertSpriteGroupsToBinFile,
 	parseSpriteGroupsFromBin,
-	parseSpriteGroupsFromPrg,
-} from "../../bb/prg/sprites";
+} from "../../bb/sprite-bin/sprite-bin";
 import { getDataSegment, getDataSegments } from "../../bb/prg/io";
 import {
 	monsterSpriteColorsSegmentLocation,

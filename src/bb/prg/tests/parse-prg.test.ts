@@ -9,7 +9,7 @@ import { knownGoodBubbleCurrentRectsForLevels } from "./knownGoodBubbleCurrentRe
 import {
 	convertSpriteGroupsToBinFile,
 	parseSpriteGroupsFromBin,
-} from "../sprites";
+} from "../../sprite-bin/sprite-bin";
 
 test("readBubbleCurrentRectangles", () => {
 	const rectanglesOnly = knownGoodBubbleCurrentRectsForLevels
@@ -63,6 +63,7 @@ test("patchPrgSpritesBin", () => {
 		__dirname + "/decompressed-bb.prg"
 	).buffer;
 
+	// TODO: Remove conversion to bin.
 	const spritesBin = parseSpriteGroupsFromBin(
 		convertSpriteGroupsToBinFile(parsePrg(prgFileContent).sprites)
 	);
