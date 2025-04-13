@@ -103,14 +103,6 @@ export const spriteDataSegmentLocations: Readonly<
 	bonusCupCake: { startAddress: 0xa320, length: 64 * 4 },
 	bonusMelon: { startAddress: 0xa420, length: 64 * 4 },
 	bonusDiamond: { startAddress: 0xa520, length: 64 * 2 },
-
-	// playerInBubble: { startAddress: 0x7440, length: 64 * 8 },
-	// bossLeft: { startAddress: 0x7640, length: 64 * 9 },
-	// bossInBubble: { startAddress: 0x7880, length: 64 * 9 },
-	// bossRight: { startAddress: 0x7c40, length: 64 * 9 },
-	// bonusCupCake: { startAddress: 0xa320, length: 64 * 4 },
-	// bonusMelon: { startAddress: 0xa4a0, length: 64 * 2 },
-	// bonusDiamond: { startAddress: 0xa520, length: 64 * 2 },
 };
 export const monsterSpriteColorsSegmentLocation: SegmentLocation = {
 	startAddress: 0xab63,
@@ -128,10 +120,6 @@ export const itemDataSegmentLocations: Readonly<
 		startAddress: 0x8980,
 		length: 4 * 8 * 12,
 	},
-	// rest: {
-	// 	startAddress: 0x8f00,
-	// 	length: 4 * 8 * 161,
-	// },
 	baronVonBlubba: {
 		startAddress: 0x8f00,
 		length: 4 * 8 * 12,

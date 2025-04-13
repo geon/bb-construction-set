@@ -64,18 +64,6 @@ export function convertSpriteGroupsToBinFile(
 	);
 }
 
-// function spriteGroupToBinFile(spriteGroup: SpriteGroup): Uint8Array {
-// 	return uint8ArrayConcatenate(
-// 		spriteGroup.sprites.map((sprite) =>
-// 			spriteToBinFile(sprite, spriteGroup.color)
-// 		)
-// 	);
-// }
-
-// function spriteToBinFile(sprite: Sprite, color: PaletteIndex): Uint8Array {
-// 	return new Uint8Array([...sprite.bitmap, multicolorBit | color]);
-// }
-
 export function parseSpriteGroupsFromBin(
 	binFileContents: Uint8Array
 ): Record<SpriteGroupName, SpriteGroup> {
