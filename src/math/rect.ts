@@ -1,4 +1,4 @@
-import { add, Coord2 } from "./coord2";
+import { add, Coord2, origo } from "./coord2";
 
 export type Rect = {
 	/** top left */
@@ -18,7 +18,7 @@ export function flexbox(
 	const rects: Array<Rect> = [];
 	for (const _size of sizes) {
 		rects.push({
-			pos: { x: 123, y: 456 },
+			pos: origo,
 			size: { x: 42, y: 1337 },
 		});
 	}

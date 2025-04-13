@@ -1,5 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { bottomRight, flexbox } from "../rect";
+import { origo } from "../coord2";
 
 test("bottomRight", () => {
 	expect(
@@ -24,5 +25,9 @@ describe("flexbox", () => {
 				0
 			).length
 		).toStrictEqual(3);
+	});
+
+	test("first pos", () => {
+		expect(flexbox([{ x: 1, y: 1 }], "row", 0)[0]?.pos).toStrictEqual(origo);
 	});
 });
