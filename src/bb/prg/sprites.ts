@@ -88,7 +88,8 @@ export function parseSpriteGroupsFromBin(
 						`Missing first sprite of ${name} at offset ${offset}.`
 					);
 				}
-				return sprite[63] & 0b00001111;
+				const colorByte = sprite[63];
+				return colorByte & 0b00001111;
 			})
 	);
 
