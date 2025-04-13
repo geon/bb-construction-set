@@ -181,11 +181,11 @@ function _parseSpriteGroupsFromBuffers(
 		spriteGroupLocations,
 		(location, groupName): SpriteGroup => {
 			const color = spriteGroupColors[groupName];
+			const spritesInSegment = spritesBySegment[location.segmentName];
 
 			return {
 				sprites: range(0, location.length).map((index): Sprite => {
-					const sprite =
-						spritesBySegment[location.segmentName][location.startIndex + index];
+					const sprite = spritesInSegment[location.startIndex + index];
 					if (!sprite) {
 						throw new Error(`Missing sprite ${index} in group ${groupName}.`);
 					}
