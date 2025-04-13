@@ -88,4 +88,51 @@ describe("flexbox", () => {
 			)[2]?.pos.x
 		).toStrictEqual(4);
 	});
+
+	test("column", () => {
+		expect(
+			flexbox(
+				[
+					{ x: 123, y: 1 },
+					{ x: 1, y: 10 },
+					{ x: 1, y: 1 },
+				],
+				"column",
+				1
+			)
+		).toMatchInlineSnapshot(`
+			[
+			  {
+			    "pos": {
+			      "x": 0,
+			      "y": 0,
+			    },
+			    "size": {
+			      "x": 123,
+			      "y": 1,
+			    },
+			  },
+			  {
+			    "pos": {
+			      "x": 0,
+			      "y": 2,
+			    },
+			    "size": {
+			      "x": 1,
+			      "y": 10,
+			    },
+			  },
+			  {
+			    "pos": {
+			      "x": 0,
+			      "y": 13,
+			    },
+			    "size": {
+			      "x": 1,
+			      "y": 1,
+			    },
+			  },
+			]
+		`);
+	});
 });
