@@ -1,9 +1,12 @@
 import { ReactNode } from "react";
 import { BlobDownloadButton } from "./BlobDownloadButton";
+import { ParsedPrg, patchPrg } from "../bb/prg/parse-prg";
 
 export function PrgDownloader({
+	parsedPrg,
 	prg,
 }: {
+	readonly parsedPrg: ParsedPrg;
 	readonly prg: ArrayBuffer;
 }): ReactNode {
 	return (
@@ -27,12 +30,16 @@ export function PrgDownloader({
 				, placed in the same folder as Exomizer to pack it for execution.
 			</p>
 			<BlobDownloadButton
-				getBlob={() => ({
-					blob: new Blob([prg], {
-						type: "application/octet-stream",
-					}),
-					fileName: "custom bubble bobble.prg",
-				})}
+				getBlob={() => {
+					const patched = patchPrg(prg, parsedPrg, "retroForge");
+
+					return {
+						blob: new Blob([patched], {
+							type: "application/octet-stream",
+						}),
+						fileName: "custom bubble bobble.prg",
+					};
+				}}
 				label="Save prg"
 			/>
 		</>

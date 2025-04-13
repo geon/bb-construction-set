@@ -23,7 +23,6 @@ const Page = styled.div`
 `;
 
 export function App() {
-	// TODO: Patch on save.
 	const [state, setState] = useState<
 		| {
 				readonly prg: ArrayBuffer;
@@ -48,7 +47,11 @@ export function App() {
 		<Page>
 			<h1>BB Construction Set</h1>
 			<Card>
-				{prg ? <PrgDownloader prg={prg} /> : <PrgSelector setPrg={setPrg} />}
+				{prg ? (
+					<PrgDownloader prg={prg} parsedPrg={parsedPrg} />
+				) : (
+					<PrgSelector setPrg={setPrg} />
+				)}
 			</Card>
 			{prg && parsedPrg && (
 				<TabBar
