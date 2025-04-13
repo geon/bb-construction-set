@@ -173,9 +173,9 @@ export function parsePrgSpriteBin(prg: ArrayBuffer): Uint8Array {
 		prg,
 		monsterSpriteColorsSegmentLocation
 	);
-	const spriteBin = convertSpriteGroupsToBinFile(
-		parseSpriteGroupsFromPrg(segments, monsterColorsSegment)
-	);
+	const spriteGroups = parseSpriteGroupsFromPrg(segments, monsterColorsSegment);
+
+	const spriteBin = convertSpriteGroupsToBinFile(spriteGroups);
 	return spriteBin;
 }
 
