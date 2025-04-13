@@ -46,4 +46,18 @@ describe("flexbox", () => {
 			{ x: 2, y: 3 },
 		]);
 	});
+
+	test("accumulated x-pos", () => {
+		expect(
+			flexbox(
+				[
+					{ x: 123, y: 1 },
+					{ x: 1, y: 1 },
+					{ x: 1, y: 1 },
+				],
+				"row",
+				0
+			)[2]?.pos.x
+		).toStrictEqual(124);
+	});
 });

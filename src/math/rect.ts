@@ -15,12 +15,15 @@ export function flexbox(
 	_direction: "row" | "column",
 	_gap: number
 ): ReadonlyArray<Rect> {
+	let pos = origo;
 	const rects: Array<Rect> = [];
 	for (const size of sizes) {
 		rects.push({
-			pos: origo,
+			pos,
 			size,
 		});
+
+		pos = add(pos, size);
 	}
 
 	return rects;
