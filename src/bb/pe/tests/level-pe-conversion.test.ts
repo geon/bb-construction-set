@@ -19,6 +19,7 @@ test("peFileDataToLevels & levelsToPeFileData", () => {
 			sprites: Array(count).fill({
 				bitmap: Array(numSpriteBytes).fill(0),
 			}),
+			color: 0,
 		})) as Sprites,
 	});
 

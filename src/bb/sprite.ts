@@ -18,7 +18,7 @@ export interface Sprite {
 export type Sprites = Record<
 	CharacterName,
 	{
-		readonly sprites: Sprite[];
+		readonly sprites: readonly Sprite[];
 		readonly color: PaletteIndex;
 	}
 >;
@@ -195,6 +195,6 @@ export const spriteGroupLocations: Record<
 };
 
 export type SpriteGroup = {
-	readonly sprites: Sprite[];
+	readonly sprites: ReadonlyArray<Sprite>;
 	readonly color: PaletteIndex;
 };
