@@ -122,12 +122,13 @@ function _parseSpriteGroupsFromBuffers(
 	const characterSpriteColors =
 		parseCharacterSpriteColorsFromBuffer(monsterColorSegment);
 
-	const hardCodedGroupColors: Partial<Record<SpriteGroupName, PaletteIndex>> = {
-		bonusDiamond: 3,
-		bonusCupCake: 8,
-	};
-
 	function getSpriteGroupColor(groupName: SpriteGroupName) {
+		const hardCodedGroupColors: Partial<Record<SpriteGroupName, PaletteIndex>> =
+			{
+				bonusDiamond: 3,
+				bonusCupCake: 8,
+			};
+
 		return isCharacterName(groupName)
 			? characterSpriteColors[groupName]
 			: hardCodedGroupColors[groupName] ?? hardcodedPlayerColor;
