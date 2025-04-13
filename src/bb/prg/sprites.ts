@@ -136,17 +136,10 @@ function _parseSpriteGroupsFromBuffers(
 	const characterSpriteColors =
 		parseCharacterSpriteColorsFromBuffer(monsterColorSegment);
 
-	const spriteGroupColors = objectFromEntries(
-		spriteGroupNames.map((groupName) => {
-			const color = getSpriteGroupColor(groupName, characterSpriteColors);
-			return [groupName, color];
-		})
-	);
-
 	const spriteGroups = mapRecord(
 		spriteSegments,
 		(segment, groupName): SpriteGroup => {
-			const color = spriteGroupColors[groupName];
+			const color = getSpriteGroupColor(groupName, characterSpriteColors);
 			const sprites = parseSpritesFromBuffer(segment);
 
 			return {
