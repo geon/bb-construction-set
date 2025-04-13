@@ -24,13 +24,17 @@ const Page = styled.div`
 
 export function App() {
 	// TODO: Patch on save.
-	const [parsedPrg, setParsedPrg] = useState<ParsedPrg | undefined>();
-	const [prg, _setPrg] = useState<ArrayBuffer | undefined>();
-	const setPrg = (prg: ArrayBuffer | undefined): void => {
-		_setPrg(prg);
+	const [state, setState] = useState<
+		| {
+				readonly prg: ArrayBuffer;
+				readonly parsedPrg: ParsedPrg;
+		  }
+		| undefined
+	>();
 
+	const setPrg = (prg: ArrayBuffer | undefined): void => {
 		if (!prg) {
-			setParsedPrg(undefined);
+			setState(undefined);
 			return;
 		}
 
@@ -40,8 +44,10 @@ export function App() {
 			return;
 		}
 
-		setParsedPrg(parsedPrg.result);
+		setState({ prg, parsedPrg: parsedPrg.result });
 	};
+
+	const { parsedPrg, prg } = state ?? { parsedPrg: undefined, prg: undefined };
 
 	return (
 		<Page>
