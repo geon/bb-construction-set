@@ -55,7 +55,9 @@ export function parseSpriteGroupsFromBin(
 					throw new Error(`Missing color byte ${name}.`);
 				}
 
-				return colorByte & 0b00001111;
+				const color = (colorByte & 0b00001111) as PaletteIndex;
+
+				return color;
 			})
 	);
 
