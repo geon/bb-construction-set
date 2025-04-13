@@ -4,7 +4,6 @@ import { Sprite, SpriteGroupName, SpriteGroup, spriteColors } from "../sprite";
 import {
 	CharacterName,
 	characterNames,
-	isCharacterName,
 } from "../game-definitions/character-name";
 import { Tuple } from "../tuple";
 import { spriteDataSegmentLocations } from "./data-locations";
@@ -126,14 +125,16 @@ function parseSpritesFromBuffer(
 
 function getSpriteGroupColor(
 	groupName: SpriteGroupName,
-	characterSpriteColors: Record<CharacterName, PaletteIndex>
+	characterSpriteColors: Partial<Record<SpriteGroupName, PaletteIndex>>
 ) {
 	const hardCodedGroupColors: Partial<Record<SpriteGroupName, PaletteIndex>> = {
 		bonusDiamond: 3,
 		bonusCupCake: 8,
 	};
 
-	return isCharacterName(groupName)
-		? characterSpriteColors[groupName]
-		: hardCodedGroupColors[groupName] ?? hardcodedPlayerColor;
+	return (
+		characterSpriteColors[groupName] ??
+		hardCodedGroupColors[groupName] ??
+		hardcodedPlayerColor
+	);
 }
