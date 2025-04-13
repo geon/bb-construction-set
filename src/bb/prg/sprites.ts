@@ -146,6 +146,14 @@ function parseCharacterSpriteColorsFromBuffer(
 	return characterSpriteColors;
 }
 
+function parseSpritesFromBuffer(
+	segment: ReadonlyUint8Array
+): ReadonlyArray<Sprite> {
+	return strictChunk([...segment], 64)
+		.map((withPadding) => withPadding.slice(0, -1) as Tuple<number, 63>)
+		.map((bitmap): Sprite => ({ bitmap }));
+}
+
 function _parseSpriteGroupsFromBuffers(
 	spriteSegments: Record<SpriteDataSegmentName, ReadonlyUint8Array>,
 	monsterColorSegment: ReadonlyUint8Array
@@ -153,11 +161,7 @@ function _parseSpriteGroupsFromBuffers(
 	const characterSpriteColors =
 		parseCharacterSpriteColorsFromBuffer(monsterColorSegment);
 
-	const spritesBySegment = mapRecord(spriteSegments, (segment, _segmentName) =>
-		strictChunk([...segment], 64)
-			.map((withPadding) => withPadding.slice(0, -1) as Tuple<number, 63>)
-			.map((bitmap): Sprite => ({ bitmap }))
-	);
+	const spritesBySegment = mapRecord(spriteSegments, parseSpritesFromBuffer);
 
 	const hardCodedGroupColors: Partial<Record<SpriteGroupName, PaletteIndex>> = {
 		bonusDiamond: 3,
