@@ -7,7 +7,7 @@ import { LevelsVisualizerWithPeDownload } from "./tabs/LevelsVisualizerWithPeDow
 import { SpritesVisualizerWithBinDownload } from "./tabs/SpritesVisualizerWithBinDownload";
 import { PrgDownloader } from "./PrgDownloader";
 import { Items } from "./tabs/Items";
-import { LevelGraphicsVisualizerWithPeDownload } from "./tabs/LevelGraphicsVisualizerWithPeDownload";
+import { LevelGraphics } from "./tabs/LevelGraphics";
 
 const Page = styled.div`
 	width: 600px;
@@ -57,10 +57,7 @@ export function App() {
 									<>
 										<Card>
 											<h2>{tab.title}</h2>
-											<LevelGraphicsVisualizerWithPeDownload
-												prg={prg}
-												setPrg={setPrg}
-											/>
+											<LevelGraphics prg={prg} setPrg={setPrg} />
 										</Card>
 									</>
 								);

@@ -15,7 +15,7 @@ import { ImageDataCanvas } from "../ImageDataCanvas";
 import { LevelDataSegmentName } from "../../bb/game-definitions/level-segment-name";
 import { FileInput } from "../FileInput";
 
-export function LevelGraphicsVisualizerWithPeDownload({
+export function LevelGraphics({
 	prg,
 	setPrg,
 }: {
