@@ -3,6 +3,7 @@ import { BlobDownloadButton } from "../BlobDownloadButton";
 import { attempt } from "../../bb/functions";
 import { parsePrgSpriteBin, patchPrgSpritesBin } from "../../bb/prg/parse-prg";
 import {
+	convertSpriteGroupsToBinFile,
 	parseSpriteGroupsFromBin,
 	parseSpriteGroupsFromPrg,
 } from "../../bb/prg/sprites";
@@ -40,9 +41,12 @@ export function Sprites({
 					<br />
 					<BlobDownloadButton
 						getBlob={() => ({
-							blob: new Blob([parsedPrgData.result], {
-								type: "application/json",
-							}),
+							blob: new Blob(
+								[convertSpriteGroupsToBinFile(parsedPrgData.result)],
+								{
+									type: "application/json",
+								}
+							),
 							fileName: "bubble bobble c64 - all sprites.bin",
 						})}
 						label="Download SpritePad bin-file."

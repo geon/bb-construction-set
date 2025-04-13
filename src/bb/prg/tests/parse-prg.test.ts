@@ -11,7 +11,10 @@ import {
 	bytesToBubbleCurrentRectangle,
 } from "../bubble-current-rectangles";
 import { knownGoodBubbleCurrentRectsForLevels } from "./knownGoodBubbleCurrentRectsForLevels";
-import { parseSpriteGroupsFromBin } from "../sprites";
+import {
+	convertSpriteGroupsToBinFile,
+	parseSpriteGroupsFromBin,
+} from "../sprites";
 
 test("readBubbleCurrentRectangles", () => {
 	const rectanglesOnly = knownGoodBubbleCurrentRectsForLevels
@@ -66,7 +69,7 @@ test("patchPrgSpritesBin", () => {
 	).buffer;
 
 	const spritesBin = parseSpriteGroupsFromBin(
-		parsePrgSpriteBin(prgFileContent)
+		convertSpriteGroupsToBinFile(parsePrgSpriteBin(prgFileContent))
 	);
 
 	const patched = patchPrgSpritesBin(prgFileContent, spritesBin);

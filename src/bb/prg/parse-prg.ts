@@ -41,10 +41,7 @@ import {
 } from "./sidebar-chars";
 import { readTiles } from "./tiles";
 import { writeMonsters, readMonsters } from "./monsters";
-import {
-	parseSpriteGroupsFromPrg,
-	convertSpriteGroupsToBinFile,
-} from "./sprites";
+import { parseSpriteGroupsFromPrg } from "./sprites";
 import { readTileBitmaps } from "./tile-bitmap";
 import { writeSymmetry, writeBitmaps, writeHoles } from "./misc-patch";
 import { readBubbleCurrentPerLineDefaults } from "./bubble-current-per-line-defaults";
@@ -167,16 +164,15 @@ function mixByte(newByte: number, originalByte: number, mask: number): number {
 	return (newByte & mask) | (originalByte & ~mask);
 }
 
-export function parsePrgSpriteBin(prg: ArrayBuffer): Uint8Array {
+export function parsePrgSpriteBin(
+	prg: ArrayBuffer
+): Record<SpriteGroupName, SpriteGroup> {
 	const segments = getDataSegments(prg, spriteDataSegmentLocations);
 	const monsterColorsSegment = getDataSegment(
 		prg,
 		monsterSpriteColorsSegmentLocation
 	);
-	const spriteGroups = parseSpriteGroupsFromPrg(segments, monsterColorsSegment);
-
-	const spriteBin = convertSpriteGroupsToBinFile(spriteGroups);
-	return spriteBin;
+	return parseSpriteGroupsFromPrg(segments, monsterColorsSegment);
 }
 
 export function patchPrgSpritesBin(
