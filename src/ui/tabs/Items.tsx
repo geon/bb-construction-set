@@ -5,16 +5,16 @@ import { ImageDataCanvas } from "../ImageDataCanvas";
 import { drawItemsToCanvas } from "../../bb/image-data/draw-levels-to-canvas";
 
 export function Items({ prg }: { readonly prg: ArrayBuffer }): ReactNode {
-	const parsedPrgData = attempt(() => parsePrg(prg));
+	const parsedPrg = attempt(() => parsePrg(prg));
 
 	return (
 		<>
-			{parsedPrgData.type !== "ok" ? (
-				<p>Could not parse prg: {parsedPrgData.error ?? "No reason."}</p>
+			{parsedPrg.type !== "ok" ? (
+				<p>Could not parse prg: {parsedPrg.error ?? "No reason."}</p>
 			) : (
 				<>
 					<ImageDataCanvas
-						imageData={drawItemsToCanvas(parsedPrgData.result.items)}
+						imageData={drawItemsToCanvas(parsedPrg.result.items)}
 					/>
 				</>
 			)}

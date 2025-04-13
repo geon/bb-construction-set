@@ -23,7 +23,7 @@ export function Sprites({
 	readonly prg: ArrayBuffer;
 	readonly setPrg: (file: ArrayBuffer | undefined) => void;
 }): ReactNode {
-	const parsedPrgData = attempt(() => parsePrg(prg));
+	const parsedPrg = attempt(() => parsePrg(prg));
 
 	const spriteGroups = parseSpriteGroupsFromPrg(
 		getDataSegments(prg, spriteDataSegmentLocations),
@@ -32,8 +32,8 @@ export function Sprites({
 
 	return (
 		<>
-			{parsedPrgData.type !== "ok" ? (
-				<p>Could not parse prg: {parsedPrgData.error ?? "No reason."}</p>
+			{parsedPrg.type !== "ok" ? (
+				<p>Could not parse prg: {parsedPrg.error ?? "No reason."}</p>
 			) : (
 				<>
 					<ImageDataCanvas imageData={drawSpritesToCanvas(spriteGroups)} />
@@ -42,7 +42,7 @@ export function Sprites({
 					<BlobDownloadButton
 						getBlob={() => ({
 							blob: new Blob(
-								[convertSpriteGroupsToBinFile(parsedPrgData.result.sprites)],
+								[convertSpriteGroupsToBinFile(parsedPrg.result.sprites)],
 								{
 									type: "application/json",
 								}

@@ -13,30 +13,30 @@ export function Levels({
 	readonly prg: ArrayBuffer;
 	readonly setPrg: (file: ArrayBuffer) => void;
 }): ReactNode {
-	const parsedPrgData = attempt(() => parsePrg(prg));
+	const parsedPrg = attempt(() => parsePrg(prg));
 
 	return (
 		<>
-			{parsedPrgData.type !== "ok" ? (
-				<p>Could not parse prg: {parsedPrgData.error ?? "No reason."}</p>
+			{parsedPrg.type !== "ok" ? (
+				<p>Could not parse prg: {parsedPrg.error ?? "No reason."}</p>
 			) : (
 				<>
 					<ImageDataCanvas
 						imageData={drawLevelsToCanvas(
-							parsedPrgData.result.levels,
-							mapRecord(parsedPrgData.result.sprites, ({ color }) => color)
+							parsedPrg.result.levels,
+							mapRecord(parsedPrg.result.sprites, ({ color }) => color)
 						)}
 					/>
 					<br />
 					<br />
 					<BlobDownloadButton
 						getBlob={() => {
-							const parts = parsedPrgData.result.levels.map((level, index) => {
+							const parts = parsedPrg.result.levels.map((level, index) => {
 								const blob = new Blob(
 									[
 										serializePeFileData(
 											levelsToPeFileData({
-												...parsedPrgData.result,
+												...parsedPrg.result,
 												levels: [level],
 											})
 										),

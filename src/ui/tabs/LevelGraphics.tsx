@@ -21,27 +21,27 @@ export function LevelGraphics({
 	readonly prg: ArrayBuffer;
 	readonly setPrg: (file: ArrayBuffer) => void;
 }): ReactNode {
-	const parsedPrgData = attempt(() => parsePrg(prg));
+	const parsedPrg = attempt(() => parsePrg(prg));
 
 	return (
 		<>
-			{parsedPrgData.type !== "ok" ? (
-				<p>Could not parse prg: {parsedPrgData.error ?? "No reason."}</p>
+			{parsedPrg.type !== "ok" ? (
+				<p>Could not parse prg: {parsedPrg.error ?? "No reason."}</p>
 			) : (
 				<>
 					<ImageDataCanvas
-						imageData={drawPlatformCharsToCanvas(parsedPrgData.result.levels)}
+						imageData={drawPlatformCharsToCanvas(parsedPrg.result.levels)}
 					/>
 					<br />
 					<br />
 					<BlobDownloadButton
 						getBlob={() => {
-							const parts = parsedPrgData.result.levels.map((level, index) => {
+							const parts = parsedPrg.result.levels.map((level, index) => {
 								const blob = new Blob(
 									[
 										serializePeFileData(
 											levelsToPeFileData({
-												...parsedPrgData.result,
+												...parsedPrg.result,
 												levels: [level],
 											})
 										),
@@ -97,11 +97,11 @@ export function LevelGraphics({
 						return;
 					}
 
-					if (parsedPrgData.type !== "ok") {
+					if (parsedPrg.type !== "ok") {
 						return;
 					}
 
-					const old = unzipObject(parsedPrgData.result.levels);
+					const old = unzipObject(parsedPrg.result.levels);
 					const new_ = unzipObject(parsedPeData.result.levels);
 					const levelsWithNewGraphics = zipObject({
 						...old,
