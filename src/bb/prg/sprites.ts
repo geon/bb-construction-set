@@ -122,8 +122,6 @@ function _parseSpriteGroupsFromBuffers(
 	const characterSpriteColors =
 		parseCharacterSpriteColorsFromBuffer(monsterColorSegment);
 
-	const spritesBySegment = mapRecord(spriteSegments, parseSpritesFromBuffer);
-
 	const hardCodedGroupColors: Partial<Record<SpriteGroupName, PaletteIndex>> = {
 		bonusDiamond: 3,
 		bonusCupCake: 8,
@@ -140,9 +138,9 @@ function _parseSpriteGroupsFromBuffers(
 
 	const spriteGroups = mapRecord(
 		spriteSegments,
-		(_segment, groupName): SpriteGroup => {
+		(segment, groupName): SpriteGroup => {
 			const color = spriteGroupColors[groupName];
-			const sprites = spritesBySegment[groupName];
+			const sprites = parseSpritesFromBuffer(segment);
 
 			return {
 				sprites,
