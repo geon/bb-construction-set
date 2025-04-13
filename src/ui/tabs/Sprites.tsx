@@ -15,7 +15,7 @@ import { ImageDataCanvas } from "../ImageDataCanvas";
 import { drawSpritesToCanvas } from "../../bb/image-data/draw-levels-to-canvas";
 import { FileInput } from "../FileInput";
 
-export function SpritesVisualizerWithBinDownload({
+export function Sprites({
 	prg,
 	setPrg,
 }: {

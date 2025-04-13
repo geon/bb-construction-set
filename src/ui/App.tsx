@@ -4,7 +4,7 @@ import { Card } from "./Card";
 import { PrgSelector } from "./PrgSelector";
 import { useState } from "react";
 import { Levels } from "./tabs/Levels";
-import { SpritesVisualizerWithBinDownload } from "./tabs/SpritesVisualizerWithBinDownload";
+import { Sprites } from "./tabs/Sprites";
 import { PrgDownloader } from "./PrgDownloader";
 import { Items } from "./tabs/Items";
 import { LevelGraphics } from "./tabs/LevelGraphics";
@@ -67,10 +67,7 @@ export function App() {
 									<>
 										<Card>
 											<h2>{tab.title}</h2>
-											<SpritesVisualizerWithBinDownload
-												prg={prg}
-												setPrg={setPrg}
-											/>
+											<Sprites prg={prg} setPrg={setPrg} />
 										</Card>
 									</>
 								);
