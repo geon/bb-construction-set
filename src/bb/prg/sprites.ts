@@ -127,11 +127,15 @@ function _parseSpriteGroupsFromBuffers(
 		bonusCupCake: 8,
 	};
 
+	function getSpriteGroupColor(groupName: SpriteGroupName) {
+		return isCharacterName(groupName)
+			? characterSpriteColors[groupName]
+			: hardCodedGroupColors[groupName] ?? hardcodedPlayerColor;
+	}
+
 	const spriteGroupColors = objectFromEntries(
 		spriteGroupNames.map((groupName) => {
-			const color = isCharacterName(groupName)
-				? characterSpriteColors[groupName]
-				: hardCodedGroupColors[groupName] ?? hardcodedPlayerColor;
+			const color = getSpriteGroupColor(groupName);
 			return [groupName, color];
 		})
 	);
