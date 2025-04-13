@@ -31,14 +31,12 @@ export function FileInput<Multiple extends boolean = false>({
 				multiple={multiple}
 				style={{ display: "none" }}
 				onChange={(event) => {
+					const files = event.target.files;
+
 					if (multiple) {
-						(onChange as (arg: CallbackArg<true>) => void)([
-							...(event.target.files ?? []),
-						]);
+						(onChange as (arg: CallbackArg<true>) => void)([...(files ?? [])]);
 					} else {
-						(onChange as (arg: CallbackArg<false>) => void)(
-							event.target.files?.[0]
-						);
+						(onChange as (arg: CallbackArg<false>) => void)(files?.[0]);
 					}
 					// Clear the input, so the same file can trigger it consecutively.
 					event.target.value = "";
