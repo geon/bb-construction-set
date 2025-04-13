@@ -13,7 +13,7 @@ export function bottomRight(rect: Rect): Coord2 {
 export function flexbox(
 	sizes: ReadonlyArray<Coord2>,
 	direction: "row" | "column",
-	_gap: number
+	gap: number
 ): ReadonlyArray<Rect> {
 	const axis = ({ row: "x", column: "y" } as const)[direction];
 
@@ -25,7 +25,7 @@ export function flexbox(
 			size,
 		});
 
-		const offsetDistance = size[axis];
+		const offsetDistance = size[axis] + gap;
 		const offsetVector: Coord2 = { x: 0, y: 0, [axis]: offsetDistance };
 		pos = add(pos, offsetVector);
 	}

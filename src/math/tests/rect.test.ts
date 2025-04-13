@@ -74,4 +74,18 @@ describe("flexbox", () => {
 			)[2]?.pos.y
 		).toStrictEqual(0);
 	});
+
+	test("gap", () => {
+		expect(
+			flexbox(
+				[
+					{ x: 1, y: 1 },
+					{ x: 1, y: 1 },
+					{ x: 1, y: 1 },
+				],
+				"row",
+				1
+			)[2]?.pos.x
+		).toStrictEqual(4);
+	});
 });
