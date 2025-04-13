@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { BlobDownloadButton } from "../BlobDownloadButton";
 import { attempt } from "../../bb/functions";
-import { ParsedPrg, patchPrgSpritesBin } from "../../bb/prg/parse-prg";
+import { ParsedPrg, patchPrg } from "../../bb/prg/parse-prg";
 import {
 	convertSpriteGroupsToBinFile,
 	parseSpriteGroupsFromBin,
@@ -56,7 +56,11 @@ export function Sprites({
 						return;
 					}
 
-					const patched = patchPrgSpritesBin(prg, parsedSpriteBinData.result);
+					const patched = patchPrg(
+						prg,
+						{ ...parsedPrg, sprites: parsedSpriteBinData.result },
+						"retroForge"
+					);
 					setPrg(patched);
 				}}
 			>

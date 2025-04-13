@@ -1,15 +1,11 @@
 import { expect, test } from "vitest";
 import { readFileSync } from "fs";
-import { parsePrg, patchPrg, patchPrgSpritesBin } from "../parse-prg";
+import { parsePrg, patchPrg } from "../parse-prg";
 import {
 	bubbleCurrentRectangleToBytes,
 	bytesToBubbleCurrentRectangle,
 } from "../bubble-current-rectangles";
 import { knownGoodBubbleCurrentRectsForLevels } from "./knownGoodBubbleCurrentRectsForLevels";
-import {
-	convertSpriteGroupsToBinFile,
-	parseSpriteGroupsFromBin,
-} from "../../sprite-bin/sprite-bin";
 
 test("readBubbleCurrentRectangles", () => {
 	const rectanglesOnly = knownGoodBubbleCurrentRectsForLevels
@@ -51,24 +47,8 @@ test("patchPrg", () => {
 		__dirname + "/decompressed-bb.prg"
 	).buffer;
 
-	const { levels } = parsePrg(prgFileContent);
-	const patched = patchPrg(prgFileContent, levels, "originalC64");
-
-	// Just comparing the ArrayBuffers is super slow and fails.
-	expect(Buffer.from(patched)).toStrictEqual(Buffer.from(prgFileContent));
-});
-
-test("patchPrgSpritesBin", () => {
-	const prgFileContent = readFileSync(
-		__dirname + "/decompressed-bb.prg"
-	).buffer;
-
-	// TODO: Remove conversion to bin.
-	const spritesBin = parseSpriteGroupsFromBin(
-		convertSpriteGroupsToBinFile(parsePrg(prgFileContent).sprites)
-	);
-
-	const patched = patchPrgSpritesBin(prgFileContent, spritesBin);
+	const parsedPrg = parsePrg(prgFileContent);
+	const patched = patchPrg(prgFileContent, parsedPrg, "originalC64");
 
 	// Just comparing the ArrayBuffers is super slow and fails.
 	expect(Buffer.from(patched)).toStrictEqual(Buffer.from(prgFileContent));

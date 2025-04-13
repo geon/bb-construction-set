@@ -124,9 +124,11 @@ export function levelsToSegments(
 
 export function patchPrg(
 	prg: ArrayBuffer,
-	levels: readonly Level[],
+	parsedPrg: ParsedPrg,
 	shadowStyle: ShadowStyle
 ): ArrayBuffer {
+	const { levels, sprites: spriteGroups } = parsedPrg;
+
 	const patchedPrg = prg.slice();
 
 	const prgSegments = getMutableDataSegments(patchedPrg, levelSegmentLocations);
@@ -146,15 +148,6 @@ export function patchPrg(
 			)
 		);
 	}
-
-	return patchedPrg;
-}
-
-export function patchPrgSpritesBin(
-	prg: ArrayBuffer,
-	spriteGroups: Record<SpriteGroupName, SpriteGroup>
-): ArrayBuffer {
-	const patchedPrg = prg.slice();
 
 	const prgSpriteSegments = getMutableDataSegments(
 		patchedPrg,

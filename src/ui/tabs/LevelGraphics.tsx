@@ -100,7 +100,11 @@ export function LevelGraphics({
 						sidebarChars: new_.sidebarChars,
 					});
 
-					const patched = patchPrg(prg, levelsWithNewGraphics, "retroForge");
+					const patched = patchPrg(
+						prg,
+						{ ...parsedPrg, levels: levelsWithNewGraphics },
+						"retroForge"
+					);
 					setPrg(patched);
 				}}
 			>
