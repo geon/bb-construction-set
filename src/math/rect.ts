@@ -32,3 +32,7 @@ export function flexbox(
 
 	return rects;
 }
+
+export function boundingBox(rects: ReadonlyArray<Rect>): Rect | undefined {
+	return rects[0];
+}

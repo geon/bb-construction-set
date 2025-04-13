@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { bottomRight, flexbox } from "../rect";
+import { bottomRight, boundingBox, flexbox } from "../rect";
 import { origo } from "../coord2";
 
 test("bottomRight", () => {
@@ -134,5 +134,12 @@ describe("flexbox", () => {
 			  },
 			]
 		`);
+	});
+});
+
+describe("boundingBox", () => {
+	test("one", () => {
+		const rect = { pos: { x: 1, y: 1 }, size: { x: 1, y: 1 } };
+		expect(boundingBox([rect])).toStrictEqual(rect);
 	});
 });
