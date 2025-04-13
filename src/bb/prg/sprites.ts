@@ -122,7 +122,10 @@ function _parseSpriteGroupsFromBuffers(
 	const characterSpriteColors =
 		parseCharacterSpriteColorsFromBuffer(monsterColorSegment);
 
-	function getSpriteGroupColor(groupName: SpriteGroupName) {
+	function getSpriteGroupColor(
+		groupName: SpriteGroupName,
+		characterSpriteColors: Record<CharacterName, PaletteIndex>
+	) {
 		const hardCodedGroupColors: Partial<Record<SpriteGroupName, PaletteIndex>> =
 			{
 				bonusDiamond: 3,
@@ -136,7 +139,7 @@ function _parseSpriteGroupsFromBuffers(
 
 	const spriteGroupColors = objectFromEntries(
 		spriteGroupNames.map((groupName) => {
-			const color = getSpriteGroupColor(groupName);
+			const color = getSpriteGroupColor(groupName, characterSpriteColors);
 			return [groupName, color];
 		})
 	);
