@@ -1,12 +1,6 @@
 import { mapRecord, objectFromEntries, strictChunk, sum } from "../functions";
 import { PaletteIndex } from "../internal-data-formats/palette";
-import {
-	Sprite,
-	SpriteGroupName,
-	SpriteGroup,
-	spriteColors,
-	spriteGroupNames,
-} from "../sprite";
+import { Sprite, SpriteGroupName, SpriteGroup, spriteColors } from "../sprite";
 import {
 	CharacterName,
 	characterNames,
@@ -65,7 +59,16 @@ export function parseSpriteGroupsFromBin(
 			})
 	);
 
-	return _parseSpriteGroupsFromBuffers(spriteSegments, spriteColorsSegment);
+	const characterSpriteColors =
+		parseCharacterSpriteColorsFromBuffer(spriteColorsSegment);
+
+	return mapRecord(
+		spriteSegments,
+		(segment, groupName): SpriteGroup => ({
+			sprites: parseSpritesFromBuffer(segment),
+			color: getSpriteGroupColor(groupName, characterSpriteColors),
+		})
+	);
 }
 
 function getSpriteDataSegmentOffsetInBin(
@@ -83,9 +86,16 @@ export function parseSpriteGroupsFromPrg(
 	spriteSegments: Record<SpriteDataSegmentName, DataSegment>,
 	monsterColorSegment: DataSegment
 ): Record<SpriteGroupName, SpriteGroup> {
-	return _parseSpriteGroupsFromBuffers(
-		mapRecord(spriteSegments, (x) => x.buffer),
+	const characterSpriteColors = parseCharacterSpriteColorsFromBuffer(
 		monsterColorSegment.buffer
+	);
+
+	return mapRecord(
+		mapRecord(spriteSegments, (x) => x.buffer),
+		(segment, groupName): SpriteGroup => ({
+			sprites: parseSpritesFromBuffer(segment),
+			color: getSpriteGroupColor(groupName, characterSpriteColors),
+		})
 	);
 }
 
@@ -127,22 +137,4 @@ function getSpriteGroupColor(
 	return isCharacterName(groupName)
 		? characterSpriteColors[groupName]
 		: hardCodedGroupColors[groupName] ?? hardcodedPlayerColor;
-}
-
-function _parseSpriteGroupsFromBuffers(
-	spriteSegments: Record<SpriteDataSegmentName, ReadonlyUint8Array>,
-	monsterColorSegment: ReadonlyUint8Array
-): Record<SpriteGroupName, SpriteGroup> {
-	const characterSpriteColors =
-		parseCharacterSpriteColorsFromBuffer(monsterColorSegment);
-
-	const spriteGroups = mapRecord(
-		spriteSegments,
-		(segment, groupName): SpriteGroup => ({
-			sprites: parseSpritesFromBuffer(segment),
-			color: getSpriteGroupColor(groupName, characterSpriteColors),
-		})
-	);
-
-	return spriteGroups;
 }
