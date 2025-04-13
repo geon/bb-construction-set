@@ -17,6 +17,7 @@ import {
 	spriteColors,
 } from "../sprite";
 import {
+	CharacterName,
 	characterNames,
 	isCharacterName,
 } from "../game-definitions/character-name";
@@ -126,10 +127,9 @@ export function parseSpriteGroupsFromPrg(
 	);
 }
 
-function _parseSpriteGroupsFromBuffers(
-	spriteSegments: Record<SpriteDataSegmentName, ReadonlyUint8Array>,
+function parseCharacterSpriteColorsFromBuffer(
 	monsterColorSegment: ReadonlyUint8Array
-): Record<SpriteGroupName, SpriteGroup> {
+): Record<CharacterName, PaletteIndex> {
 	const characterColors = [
 		hardcodedPlayerColor,
 		...monsterColorSegment,
@@ -141,6 +141,16 @@ function _parseSpriteGroupsFromBuffers(
 			characterColors[characterIndex]!,
 		])
 	);
+
+	return characterSpriteColors;
+}
+
+function _parseSpriteGroupsFromBuffers(
+	spriteSegments: Record<SpriteDataSegmentName, ReadonlyUint8Array>,
+	monsterColorSegment: ReadonlyUint8Array
+): Record<SpriteGroupName, SpriteGroup> {
+	const characterSpriteColors =
+		parseCharacterSpriteColorsFromBuffer(monsterColorSegment);
 
 	const spritesBySegment = mapRecord(spriteSegments, (segment, _segmentName) =>
 		strictChunk([...segment], 64)
