@@ -30,4 +30,20 @@ describe("flexbox", () => {
 	test("first pos", () => {
 		expect(flexbox([{ x: 1, y: 1 }], "row", 0)[0]?.pos).toStrictEqual(origo);
 	});
+
+	test("use size", () => {
+		expect(
+			flexbox(
+				[
+					{ x: 1, y: 1 },
+					{ x: 2, y: 3 },
+				],
+				"row",
+				0
+			).map((x) => x.size)
+		).toStrictEqual([
+			{ x: 1, y: 1 },
+			{ x: 2, y: 3 },
+		]);
+	});
 });

@@ -16,10 +16,10 @@ export function flexbox(
 	_gap: number
 ): ReadonlyArray<Rect> {
 	const rects: Array<Rect> = [];
-	for (const _size of sizes) {
+	for (const size of sizes) {
 		rects.push({
 			pos: origo,
-			size: { x: 42, y: 1337 },
+			size,
 		});
 	}
 
