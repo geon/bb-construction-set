@@ -9,61 +9,54 @@ import {
 } from "../../bb/pe/pe-file";
 import { BlobDownloadButton } from "../BlobDownloadButton";
 import { attempt, unzipObject, zipObject } from "../../bb/functions";
-import { parsePrg, patchPrg } from "../../bb/prg/parse-prg";
+import { ParsedPrg, patchPrg } from "../../bb/prg/parse-prg";
 import { drawPlatformCharsToCanvas } from "../../bb/image-data/draw-levels-to-canvas";
 import { ImageDataCanvas } from "../ImageDataCanvas";
 import { FileInput } from "../FileInput";
 
 export function LevelGraphics({
+	parsedPrg,
 	prg,
 	setPrg,
 }: {
+	readonly parsedPrg: ParsedPrg;
 	readonly prg: ArrayBuffer;
 	readonly setPrg: (file: ArrayBuffer) => void;
 }): ReactNode {
-	const parsedPrg = attempt(() => parsePrg(prg));
-
 	return (
 		<>
-			{parsedPrg.type !== "ok" ? (
-				<p>Could not parse prg: {parsedPrg.error ?? "No reason."}</p>
-			) : (
-				<>
-					<ImageDataCanvas
-						imageData={drawPlatformCharsToCanvas(parsedPrg.result.levels)}
-					/>
-					<br />
-					<br />
-					<BlobDownloadButton
-						getBlob={() => {
-							const parts = parsedPrg.result.levels.map((level, index) => {
-								const blob = new Blob(
-									[
-										serializePeFileData(
-											levelsToPeFileData({
-												...parsedPrg.result,
-												levels: [level],
-											})
-										),
-									],
-									{ type: "application/json" }
-								);
+			<ImageDataCanvas
+				imageData={drawPlatformCharsToCanvas(parsedPrg.levels)}
+			/>
+			<br />
+			<br />
+			<BlobDownloadButton
+				getBlob={() => {
+					const parts = parsedPrg.levels.map((level, index) => {
+						const blob = new Blob(
+							[
+								serializePeFileData(
+									levelsToPeFileData({
+										...parsedPrg,
+										levels: [level],
+									})
+								),
+							],
+							{ type: "application/json" }
+						);
 
-								const fileName =
-									(index + 1).toString().padStart(3, "0") + ".pe";
+						const fileName = (index + 1).toString().padStart(3, "0") + ".pe";
 
-								return { blob, fileName };
-							});
+						return { blob, fileName };
+					});
 
-							return {
-								parts,
-								fileName: "bubble bobble c64 - all levels.pe",
-							};
-						}}
-						label="Download PETSCII Editor file"
-					/>
-				</>
-			)}
+					return {
+						parts,
+						fileName: "bubble bobble c64 - all levels.pe",
+					};
+				}}
+				label="Download PETSCII Editor file"
+			/>
 			<p>
 				Save the file generated above, then edit it in the{" "}
 				<a href="https://petscii.krissz.hu">PETSCII Editor web app</a>, save it
@@ -97,11 +90,7 @@ export function LevelGraphics({
 						return;
 					}
 
-					if (parsedPrg.type !== "ok") {
-						return;
-					}
-
-					const old = unzipObject(parsedPrg.result.levels);
+					const old = unzipObject(parsedPrg.levels);
 					const new_ = unzipObject(parsedPeData.result.levels);
 					const levelsWithNewGraphics = zipObject({
 						...old,

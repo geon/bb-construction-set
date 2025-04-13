@@ -1,58 +1,38 @@
 import { ReactNode } from "react";
 import { BlobDownloadButton } from "../BlobDownloadButton";
 import { attempt } from "../../bb/functions";
-import { parsePrg, patchPrgSpritesBin } from "../../bb/prg/parse-prg";
-import { parseSpriteGroupsFromPrg } from "../../bb/prg/sprites";
+import { ParsedPrg, patchPrgSpritesBin } from "../../bb/prg/parse-prg";
 import {
 	convertSpriteGroupsToBinFile,
 	parseSpriteGroupsFromBin,
 } from "../../bb/sprite-bin/sprite-bin";
-import { getDataSegment, getDataSegments } from "../../bb/prg/io";
-import {
-	monsterSpriteColorsSegmentLocation,
-	spriteDataSegmentLocations,
-} from "../../bb/prg/data-locations";
 import { ImageDataCanvas } from "../ImageDataCanvas";
 import { drawSpritesToCanvas } from "../../bb/image-data/draw-levels-to-canvas";
 import { FileInput } from "../FileInput";
 
 export function Sprites({
+	parsedPrg,
 	prg,
 	setPrg,
 }: {
+	readonly parsedPrg: ParsedPrg;
 	readonly prg: ArrayBuffer;
 	readonly setPrg: (file: ArrayBuffer | undefined) => void;
 }): ReactNode {
-	const parsedPrg = attempt(() => parsePrg(prg));
-
-	const spriteGroups = parseSpriteGroupsFromPrg(
-		getDataSegments(prg, spriteDataSegmentLocations),
-		getDataSegment(prg, monsterSpriteColorsSegmentLocation)
-	);
-
 	return (
 		<>
-			{parsedPrg.type !== "ok" ? (
-				<p>Could not parse prg: {parsedPrg.error ?? "No reason."}</p>
-			) : (
-				<>
-					<ImageDataCanvas imageData={drawSpritesToCanvas(spriteGroups)} />
-					<br />
-					<br />
-					<BlobDownloadButton
-						getBlob={() => ({
-							blob: new Blob(
-								[convertSpriteGroupsToBinFile(parsedPrg.result.sprites)],
-								{
-									type: "application/json",
-								}
-							),
-							fileName: "bubble bobble c64 - all sprites.bin",
-						})}
-						label="Download SpritePad bin-file."
-					/>
-				</>
-			)}
+			<ImageDataCanvas imageData={drawSpritesToCanvas(parsedPrg.sprites)} />
+			<br />
+			<br />
+			<BlobDownloadButton
+				getBlob={() => ({
+					blob: new Blob([convertSpriteGroupsToBinFile(parsedPrg.sprites)], {
+						type: "application/json",
+					}),
+					fileName: "bubble bobble c64 - all sprites.bin",
+				})}
+				label="Download SpritePad bin-file."
+			/>
 			<p>
 				Save the file generated above, then edit it in SpritePad, save it and
 				select it here.

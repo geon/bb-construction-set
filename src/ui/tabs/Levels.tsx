@@ -2,63 +2,55 @@ import { ReactNode } from "react";
 import { levelsToPeFileData } from "../../bb/pe/level-pe-conversion";
 import { serializePeFileData } from "../../bb/pe/pe-file";
 import { BlobDownloadButton } from "../BlobDownloadButton";
-import { attempt, mapRecord } from "../../bb/functions";
-import { parsePrg } from "../../bb/prg/parse-prg";
+import { mapRecord } from "../../bb/functions";
+import { ParsedPrg } from "../../bb/prg/parse-prg";
 import { drawLevelsToCanvas } from "../../bb/image-data/draw-levels-to-canvas";
 import { ImageDataCanvas } from "../ImageDataCanvas";
 
 export function Levels({
-	prg,
+	parsedPrg,
 }: {
+	readonly parsedPrg: ParsedPrg;
 	readonly prg: ArrayBuffer;
 	readonly setPrg: (file: ArrayBuffer) => void;
 }): ReactNode {
-	const parsedPrg = attempt(() => parsePrg(prg));
-
 	return (
 		<>
-			{parsedPrg.type !== "ok" ? (
-				<p>Could not parse prg: {parsedPrg.error ?? "No reason."}</p>
-			) : (
-				<>
-					<ImageDataCanvas
-						imageData={drawLevelsToCanvas(
-							parsedPrg.result.levels,
-							mapRecord(parsedPrg.result.sprites, ({ color }) => color)
-						)}
-					/>
-					<br />
-					<br />
-					<BlobDownloadButton
-						getBlob={() => {
-							const parts = parsedPrg.result.levels.map((level, index) => {
-								const blob = new Blob(
-									[
-										serializePeFileData(
-											levelsToPeFileData({
-												...parsedPrg.result,
-												levels: [level],
-											})
-										),
-									],
-									{ type: "application/json" }
-								);
+			<ImageDataCanvas
+				imageData={drawLevelsToCanvas(
+					parsedPrg.levels,
+					mapRecord(parsedPrg.sprites, ({ color }) => color)
+				)}
+			/>
+			<br />
+			<br />
+			<BlobDownloadButton
+				getBlob={() => {
+					const parts = parsedPrg.levels.map((level, index) => {
+						const blob = new Blob(
+							[
+								serializePeFileData(
+									levelsToPeFileData({
+										...parsedPrg,
+										levels: [level],
+									})
+								),
+							],
+							{ type: "application/json" }
+						);
 
-								const fileName =
-									(index + 1).toString().padStart(3, "0") + ".pe";
+						const fileName = (index + 1).toString().padStart(3, "0") + ".pe";
 
-								return { blob, fileName };
-							});
+						return { blob, fileName };
+					});
 
-							return {
-								parts,
-								fileName: "bubble bobble c64 - all levels.pe",
-							};
-						}}
-						label="Download PETSCII Editor file"
-					/>
-				</>
-			)}
+					return {
+						parts,
+						fileName: "bubble bobble c64 - all levels.pe",
+					};
+				}}
+				label="Download PETSCII Editor file"
+			/>
 
 			{/* <p>
 				Save the file generated above, then edit it in the{" "}

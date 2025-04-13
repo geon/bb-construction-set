@@ -8,6 +8,8 @@ import { Sprites } from "./tabs/Sprites";
 import { PrgDownloader } from "./PrgDownloader";
 import { Items } from "./tabs/Items";
 import { LevelGraphics } from "./tabs/LevelGraphics";
+import { ParsedPrg, parsePrg } from "../bb/prg/parse-prg";
+import { attempt } from "../bb/functions";
 
 const Page = styled.div`
 	width: 600px;
@@ -21,8 +23,25 @@ const Page = styled.div`
 `;
 
 export function App() {
-	// TODO: Store the internal format, as well as the original prg, and patch on save.
-	const [prg, setPrg] = useState<ArrayBuffer | undefined>();
+	// TODO: Patch on save.
+	const [parsedPrg, setParsedPrg] = useState<ParsedPrg | undefined>();
+	const [prg, _setPrg] = useState<ArrayBuffer | undefined>();
+	const setPrg = (prg: ArrayBuffer | undefined): void => {
+		_setPrg(prg);
+
+		if (!prg) {
+			setParsedPrg(undefined);
+			return;
+		}
+
+		const parsedPrg = attempt(() => parsePrg(prg));
+		if (parsedPrg.type !== "ok") {
+			alert(`Could not parse prg: ${parsedPrg.error ?? "No reason."}`);
+			return;
+		}
+
+		setParsedPrg(parsedPrg.result);
+	};
 
 	return (
 		<Page>
@@ -30,7 +49,7 @@ export function App() {
 			<Card>
 				{prg ? <PrgDownloader prg={prg} /> : <PrgSelector setPrg={setPrg} />}
 			</Card>
-			{prg && (
+			{prg && parsedPrg && (
 				<TabBar
 					initialTabId={"patchLevels"}
 					tabs={{
@@ -41,7 +60,7 @@ export function App() {
 									<>
 										<Card>
 											<h2>{tab.title}</h2>
-											<Levels prg={prg} setPrg={setPrg} />
+											<Levels parsedPrg={parsedPrg} prg={prg} setPrg={setPrg} />
 										</Card>
 									</>
 								);
@@ -54,7 +73,11 @@ export function App() {
 									<>
 										<Card>
 											<h2>{tab.title}</h2>
-											<LevelGraphics prg={prg} setPrg={setPrg} />
+											<LevelGraphics
+												parsedPrg={parsedPrg}
+												prg={prg}
+												setPrg={setPrg}
+											/>
 										</Card>
 									</>
 								);
@@ -67,7 +90,11 @@ export function App() {
 									<>
 										<Card>
 											<h2>{tab.title}</h2>
-											<Sprites prg={prg} setPrg={setPrg} />
+											<Sprites
+												parsedPrg={parsedPrg}
+												prg={prg}
+												setPrg={setPrg}
+											/>
 										</Card>
 									</>
 								);
@@ -80,7 +107,7 @@ export function App() {
 									<>
 										<Card>
 											<h2>{tab.title}</h2>
-											<Items prg={prg} />
+											<Items parsedPrg={parsedPrg} prg={prg} />
 										</Card>
 									</>
 								);
