@@ -40,11 +40,13 @@ import { readBubbleCurrentPerLineDefaults } from "./bubble-current-per-line-defa
 import { shadowChars, ShadowStyle } from "./shadow-chars";
 import { ReadonlyUint8Array } from "../types";
 
-export function parsePrg(prg: ArrayBuffer): {
+export type ParsedPrg = {
 	readonly levels: readonly Level[];
 	readonly sprites: Record<SpriteGroupName, SpriteGroup>;
 	readonly items: ItemGroups;
-} {
+};
+
+export function parsePrg(prg: ArrayBuffer): ParsedPrg {
 	const levels = readLevels(getDataSegments(prg, levelSegmentLocations));
 	const sprites = parseSpriteGroupsFromPrg(
 		getDataSegments(prg, spriteDataSegmentLocations),
