@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { BlobDownloadButton } from "../BlobDownloadButton";
 import { attempt } from "../../bb/functions";
-import { parsePrgSpriteBin, patchPrgSpritesBin } from "../../bb/prg/parse-prg";
+import { parsePrg, patchPrgSpritesBin } from "../../bb/prg/parse-prg";
 import {
 	convertSpriteGroupsToBinFile,
 	parseSpriteGroupsFromBin,
@@ -23,7 +23,7 @@ export function Sprites({
 	readonly prg: ArrayBuffer;
 	readonly setPrg: (file: ArrayBuffer | undefined) => void;
 }): ReactNode {
-	const parsedPrgData = attempt(() => parsePrgSpriteBin(prg));
+	const parsedPrgData = attempt(() => parsePrg(prg).sprites);
 
 	const spriteGroups = parseSpriteGroupsFromPrg(
 		getDataSegments(prg, spriteDataSegmentLocations),

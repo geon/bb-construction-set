@@ -164,17 +164,6 @@ function mixByte(newByte: number, originalByte: number, mask: number): number {
 	return (newByte & mask) | (originalByte & ~mask);
 }
 
-export function parsePrgSpriteBin(
-	prg: ArrayBuffer
-): Record<SpriteGroupName, SpriteGroup> {
-	const segments = getDataSegments(prg, spriteDataSegmentLocations);
-	const monsterColorsSegment = getDataSegment(
-		prg,
-		monsterSpriteColorsSegmentLocation
-	);
-	return parseSpriteGroupsFromPrg(segments, monsterColorsSegment);
-}
-
 export function patchPrgSpritesBin(
 	prg: ArrayBuffer,
 	spriteGroups: Record<SpriteGroupName, SpriteGroup>

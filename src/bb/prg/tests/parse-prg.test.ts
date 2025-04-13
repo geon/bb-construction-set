@@ -1,11 +1,6 @@
 import { expect, test } from "vitest";
 import { readFileSync } from "fs";
-import {
-	parsePrg,
-	parsePrgSpriteBin,
-	patchPrg,
-	patchPrgSpritesBin,
-} from "../parse-prg";
+import { parsePrg, patchPrg, patchPrgSpritesBin } from "../parse-prg";
 import {
 	bubbleCurrentRectangleToBytes,
 	bytesToBubbleCurrentRectangle,
@@ -69,7 +64,7 @@ test("patchPrgSpritesBin", () => {
 	).buffer;
 
 	const spritesBin = parseSpriteGroupsFromBin(
-		convertSpriteGroupsToBinFile(parsePrgSpriteBin(prgFileContent))
+		convertSpriteGroupsToBinFile(parsePrg(prgFileContent).sprites)
 	);
 
 	const patched = patchPrgSpritesBin(prgFileContent, spritesBin);
