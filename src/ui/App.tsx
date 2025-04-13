@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Card } from "./Card";
 import { PrgSelector } from "./PrgSelector";
 import { useState } from "react";
-import { LevelsVisualizerWithPeDownload } from "./tabs/LevelsVisualizerWithPeDownload";
+import { Levels } from "./tabs/Levels";
 import { SpritesVisualizerWithBinDownload } from "./tabs/SpritesVisualizerWithBinDownload";
 import { PrgDownloader } from "./PrgDownloader";
 import { Items } from "./tabs/Items";
@@ -41,10 +41,7 @@ export function App() {
 									<>
 										<Card>
 											<h2>{tab.title}</h2>
-											<LevelsVisualizerWithPeDownload
-												prg={prg}
-												setPrg={setPrg}
-											/>
+											<Levels prg={prg} setPrg={setPrg} />
 										</Card>
 									</>
 								);

@@ -7,7 +7,7 @@ import { parsePrg } from "../../bb/prg/parse-prg";
 import { drawLevelsToCanvas } from "../../bb/image-data/draw-levels-to-canvas";
 import { ImageDataCanvas } from "../ImageDataCanvas";
 
-export function LevelsVisualizerWithPeDownload({
+export function Levels({
 	prg,
 }: {
 	readonly prg: ArrayBuffer;
