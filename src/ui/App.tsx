@@ -3,11 +3,11 @@ import styled from "styled-components";
 import { Card } from "./Card";
 import { PrgSelector } from "./PrgSelector";
 import { useState } from "react";
-import { LevelsVisualizerWithPeDownload } from "./LevelsVisualizerWithPeDownload";
-import { SpritesVisualizerWithBinDownload } from "./SpritesVisualizerWithBinDownload";
+import { LevelsVisualizerWithPeDownload } from "./tabs/LevelsVisualizerWithPeDownload";
+import { SpritesVisualizerWithBinDownload } from "./tabs/SpritesVisualizerWithBinDownload";
 import { PrgDownloader } from "./PrgDownloader";
-import { ItemsVisualizerWithCtmDownload } from "./ItemsVisualizerWithCtmDownload";
-import { LevelGraphicsVisualizerWithPeDownload } from "./LevelGraphicsVisualizerWithPeDownload";
+import { ItemsVisualizerWithCtmDownload } from "./tabs/ItemsVisualizerWithCtmDownload";
+import { LevelGraphicsVisualizerWithPeDownload } from "./tabs/LevelGraphicsVisualizerWithPeDownload";
 
 const Page = styled.div`
 	width: 600px;
