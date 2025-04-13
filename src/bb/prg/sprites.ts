@@ -15,6 +15,7 @@ import {
 	SpriteGroup,
 	SpriteGroupLocation,
 	spriteColors,
+	spriteGroupNames,
 } from "../sprite";
 import {
 	CharacterName,
@@ -163,12 +164,19 @@ function _parseSpriteGroupsFromBuffers(
 		bonusCupCake: 8,
 	};
 
-	const spriteGroups = mapRecord(
-		spriteGroupLocations,
-		(location, groupName): SpriteGroup => {
+	const spriteGroupColors = objectFromEntries(
+		spriteGroupNames.map((groupName) => {
 			const color = isCharacterName(groupName)
 				? characterSpriteColors[groupName]
 				: hardCodedGroupColors[groupName] ?? hardcodedPlayerColor;
+			return [groupName, color];
+		})
+	);
+
+	const spriteGroups = mapRecord(
+		spriteGroupLocations,
+		(location, groupName): SpriteGroup => {
+			const color = spriteGroupColors[groupName];
 
 			return {
 				sprites: range(0, location.length).map((index): Sprite => {
