@@ -115,27 +115,26 @@ function parseSpritesFromBuffer(
 		.map((bitmap): Sprite => ({ bitmap }));
 }
 
+function getSpriteGroupColor(
+	groupName: SpriteGroupName,
+	characterSpriteColors: Record<CharacterName, PaletteIndex>
+) {
+	const hardCodedGroupColors: Partial<Record<SpriteGroupName, PaletteIndex>> = {
+		bonusDiamond: 3,
+		bonusCupCake: 8,
+	};
+
+	return isCharacterName(groupName)
+		? characterSpriteColors[groupName]
+		: hardCodedGroupColors[groupName] ?? hardcodedPlayerColor;
+}
+
 function _parseSpriteGroupsFromBuffers(
 	spriteSegments: Record<SpriteDataSegmentName, ReadonlyUint8Array>,
 	monsterColorSegment: ReadonlyUint8Array
 ): Record<SpriteGroupName, SpriteGroup> {
 	const characterSpriteColors =
 		parseCharacterSpriteColorsFromBuffer(monsterColorSegment);
-
-	function getSpriteGroupColor(
-		groupName: SpriteGroupName,
-		characterSpriteColors: Record<CharacterName, PaletteIndex>
-	) {
-		const hardCodedGroupColors: Partial<Record<SpriteGroupName, PaletteIndex>> =
-			{
-				bonusDiamond: 3,
-				bonusCupCake: 8,
-			};
-
-		return isCharacterName(groupName)
-			? characterSpriteColors[groupName]
-			: hardCodedGroupColors[groupName] ?? hardcodedPlayerColor;
-	}
 
 	const spriteGroupColors = objectFromEntries(
 		spriteGroupNames.map((groupName) => {
