@@ -23,7 +23,7 @@ export function Sprites({
 	readonly prg: ArrayBuffer;
 	readonly setPrg: (file: ArrayBuffer | undefined) => void;
 }): ReactNode {
-	const parsedPrgData = attempt(() => parsePrg(prg).sprites);
+	const parsedPrgData = attempt(() => parsePrg(prg));
 
 	const spriteGroups = parseSpriteGroupsFromPrg(
 		getDataSegments(prg, spriteDataSegmentLocations),
@@ -42,7 +42,7 @@ export function Sprites({
 					<BlobDownloadButton
 						getBlob={() => ({
 							blob: new Blob(
-								[convertSpriteGroupsToBinFile(parsedPrgData.result)],
+								[convertSpriteGroupsToBinFile(parsedPrgData.result.sprites)],
 								{
 									type: "application/json",
 								}
