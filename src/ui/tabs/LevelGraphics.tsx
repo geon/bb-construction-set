@@ -8,11 +8,10 @@ import {
 	serializePeFileData,
 } from "../../bb/pe/pe-file";
 import { BlobDownloadButton } from "../BlobDownloadButton";
-import { attempt } from "../../bb/functions";
+import { attempt, unzipObject, zipObject } from "../../bb/functions";
 import { parsePrg, patchPrg } from "../../bb/prg/parse-prg";
 import { drawPlatformCharsToCanvas } from "../../bb/image-data/draw-levels-to-canvas";
 import { ImageDataCanvas } from "../ImageDataCanvas";
-import { LevelDataSegmentName } from "../../bb/game-definitions/level-segment-name";
 import { FileInput } from "../FileInput";
 
 export function LevelGraphics({
@@ -98,18 +97,21 @@ export function LevelGraphics({
 						return;
 					}
 
-					const patched = patchPrg(
-						prg,
-						parsedPeData.result.levels,
-						new Set<LevelDataSegmentName>([
-							"bgColors",
-							"platformChars",
-							"sidebarChars",
-							"sidebarCharsIndex",
-							"shadowChars",
-						]),
-						"retroForge"
-					);
+					if (parsedPrgData.type !== "ok") {
+						return;
+					}
+
+					const old = unzipObject(parsedPrgData.result.levels);
+					const new_ = unzipObject(parsedPeData.result.levels);
+					const levelsWithNewGraphics = zipObject({
+						...old,
+						bgColorLight: new_.bgColorLight,
+						bgColorDark: new_.bgColorDark,
+						platformChar: new_.platformChar,
+						sidebarChars: new_.sidebarChars,
+					});
+
+					const patched = patchPrg(prg, levelsWithNewGraphics, "retroForge");
 					setPrg(patched);
 				}}
 			>

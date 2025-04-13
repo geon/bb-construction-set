@@ -1,4 +1,4 @@
-import { unzipObject, zipObject } from "../functions";
+import { objectEntries, unzipObject, zipObject } from "../functions";
 import { Level } from "../internal-data-formats/level";
 import { writeBgColors, readBgColors } from "./bg-colors";
 import { SpriteGroup, SpriteGroupName } from "../sprite";
@@ -16,10 +16,7 @@ import {
 	monsterSpriteColorsSegmentLocation,
 	spriteDataSegmentLocations,
 } from "./data-locations";
-import {
-	LevelDataSegmentName,
-	levelDataSegmentNames,
-} from "../game-definitions/level-segment-name";
+import { LevelDataSegmentName } from "../game-definitions/level-segment-name";
 import { spriteDataSegmentNames } from "../game-definitions/sprite-segment-name";
 import { readItems, ItemGroups } from "./items";
 import {
@@ -128,7 +125,6 @@ export function levelsToSegments(
 export function patchPrg(
 	prg: ArrayBuffer,
 	levels: readonly Level[],
-	segmentsToPatch: Set<LevelDataSegmentName> | undefined,
 	shadowStyle: ShadowStyle
 ): ArrayBuffer {
 	const patchedPrg = prg.slice();
@@ -136,10 +132,10 @@ export function patchPrg(
 	const prgSegments = getMutableDataSegments(patchedPrg, levelSegmentLocations);
 	const newSegments = levelsToSegments(prgSegments, levels, shadowStyle);
 
-	for (const segmentName of segmentsToPatch ?? levelDataSegmentNames) {
-		prgSegments[segmentName].buffer.set(
+	for (const [segmentName, prgSegment] of objectEntries(prgSegments)) {
+		prgSegment.buffer.set(
 			zipObject({
-				originalByte: [...prgSegments[segmentName].buffer],
+				originalByte: [...prgSegment.buffer],
 				newByte: [...newSegments[segmentName]],
 			}).map(({ originalByte, newByte }) =>
 				mixByte(
