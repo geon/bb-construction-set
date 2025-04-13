@@ -150,10 +150,6 @@ export function patchPrg(
 	return patchedPrg;
 }
 
-function mixByte(newByte: number, originalByte: number, mask: number): number {
-	return (newByte & mask) | (originalByte & ~mask);
-}
-
 export function patchPrgSpritesBin(
 	prg: ArrayBuffer,
 	spriteGroups: Record<SpriteGroupName, SpriteGroup>
@@ -187,4 +183,8 @@ export function patchPrgSpritesBin(
 	prgSpriteColorsSegment.buffer.set(spriteColorsSegment);
 
 	return patchedPrg;
+}
+
+function mixByte(newByte: number, originalByte: number, mask: number): number {
+	return (newByte & mask) | (originalByte & ~mask);
 }
