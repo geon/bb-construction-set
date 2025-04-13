@@ -32,12 +32,7 @@ export function App() {
 		| undefined
 	>();
 
-	const setPrg = (prg: ArrayBuffer | undefined): void => {
-		if (!prg) {
-			setState(undefined);
-			return;
-		}
-
+	const setPrg = (prg: ArrayBuffer): void => {
 		const parsedPrg = attempt(() => parsePrg(prg));
 		if (parsedPrg.type !== "ok") {
 			alert(`Could not parse prg: ${parsedPrg.error ?? "No reason."}`);

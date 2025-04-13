@@ -4,7 +4,7 @@ import { FileInput } from "./FileInput";
 export function PrgSelector({
 	setPrg,
 }: {
-	readonly setPrg: (file: ArrayBuffer | undefined) => void;
+	readonly setPrg: (file: ArrayBuffer) => void;
 }): ReactNode {
 	return (
 		<>

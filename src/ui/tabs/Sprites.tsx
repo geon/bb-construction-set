@@ -17,7 +17,7 @@ export function Sprites({
 }: {
 	readonly parsedPrg: ParsedPrg;
 	readonly prg: ArrayBuffer;
-	readonly setPrg: (file: ArrayBuffer | undefined) => void;
+	readonly setPrg: (file: ArrayBuffer) => void;
 }): ReactNode {
 	return (
 		<>
