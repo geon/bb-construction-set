@@ -43,7 +43,7 @@ export function parseSpriteGroupsFromBin(
 		}
 	);
 
-	const spriteColorsSegment = new Uint8Array(
+	const characterSpriteColors = objectFromEntries(
 		characterNames
 			// The player color is not included in the segment.
 			.slice(1)
@@ -57,12 +57,9 @@ export function parseSpriteGroupsFromBin(
 
 				const color = (colorByte & 0b00001111) as PaletteIndex;
 
-				return color;
+				return [name, color];
 			})
 	);
-
-	const characterSpriteColors =
-		parseCharacterSpriteColorsFromBuffer(spriteColorsSegment);
 
 	return mapRecord(
 		spriteSegments,
