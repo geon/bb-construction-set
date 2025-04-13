@@ -1,19 +1,9 @@
-import {
-	groupBy,
-	mapRecord,
-	objectFromEntries,
-	range,
-	strictChunk,
-	sum,
-} from "../functions";
+import { mapRecord, objectFromEntries, strictChunk, sum } from "../functions";
 import { PaletteIndex } from "../internal-data-formats/palette";
 import {
 	Sprite,
 	SpriteGroupName,
-	getCharacterOffsetInSprites,
-	spriteGroupLocations,
 	SpriteGroup,
-	SpriteGroupLocation,
 	spriteColors,
 	spriteGroupNames,
 } from "../sprite";
@@ -36,30 +26,14 @@ const hardcodedPlayerColor = spriteColors.player;
 export function convertSpriteGroupsToBinFile(
 	spriteGroups: Record<SpriteGroupName, SpriteGroup>
 ): Uint8Array {
-	const spriteGroupNamesBySegment = groupBy(
-		Object.entries(spriteGroupLocations) as [
-			SpriteGroupName,
-			SpriteGroupLocation
-		][],
-		([, { segmentName }]) => segmentName,
-		([spriteGroupName]) => spriteGroupName
-	);
-
 	return new Uint8Array(
-		spriteDataSegmentNames.flatMap((segmentName): number[] => {
-			const spriteGroupNamesInSegment = spriteGroupNamesBySegment[segmentName];
-			if (!spriteGroupNamesInSegment) {
-				throw new Error("No spriteGroupsInSegment " + segmentName);
-			}
-
+		spriteDataSegmentNames.flatMap((spriteGroupName): number[] => {
 			const multicolorBit = 0b10000000;
-			return spriteGroupNamesInSegment.flatMap((spriteGroupName): number[] => {
-				const spriteGroup = spriteGroups[spriteGroupName];
-				return spriteGroup.sprites.flatMap((sprite): number[] => [
-					...sprite.bitmap,
-					multicolorBit | spriteGroup.color,
-				]);
-			});
+			const spriteGroup = spriteGroups[spriteGroupName];
+			return spriteGroup.sprites.flatMap((sprite): number[] => [
+				...sprite.bitmap,
+				multicolorBit | spriteGroup.color,
+			]);
 		})
 	);
 }
@@ -75,18 +49,18 @@ export function parseSpriteGroupsFromBin(
 		}
 	);
 
-	const characterSprites = strictChunk([...spriteSegments.characters], 64);
 	const spriteColorsSegment = new Uint8Array(
 		characterNames
 			// The player color is not included in the segment.
 			.slice(1)
 			.map((name) => {
-				const offset = getCharacterOffsetInSprites(name);
-				const sprite = characterSprites[offset];
-				const colorByte = sprite![63];
+				const segment = spriteSegments[name];
+				const colorByte = segment[63];
+
 				if (colorByte === undefined) {
 					throw new Error(`Missing color byte ${name}.`);
 				}
+
 				return colorByte & 0b00001111;
 			})
 	);
@@ -165,19 +139,13 @@ function _parseSpriteGroupsFromBuffers(
 	);
 
 	const spriteGroups = mapRecord(
-		spriteGroupLocations,
-		(location, groupName): SpriteGroup => {
+		spriteSegments,
+		(_segment, groupName): SpriteGroup => {
 			const color = spriteGroupColors[groupName];
-			const spritesInSegment = spritesBySegment[location.segmentName];
+			const sprites = spritesBySegment[groupName];
 
 			return {
-				sprites: range(0, location.length).map((index): Sprite => {
-					const sprite = spritesInSegment[location.startIndex + index];
-					if (!sprite) {
-						throw new Error(`Missing sprite ${index} in group ${groupName}.`);
-					}
-					return sprite;
-				}),
+				sprites,
 				color,
 			};
 		}

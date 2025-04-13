@@ -1,6 +1,9 @@
 import { sum } from "./functions";
 import { PaletteIndex } from "./internal-data-formats/palette";
-import { SpriteDataSegmentName } from "./game-definitions/sprite-segment-name";
+import {
+	SpriteDataSegmentName,
+	spriteDataSegmentNames,
+} from "./game-definitions/sprite-segment-name";
 import { Tuple } from "./tuple";
 import {
 	CharacterName,
@@ -70,18 +73,8 @@ export function getCharacterOffsetInSprites(
 	);
 }
 
-export const spriteGroupNames = [
-	...characterNames,
-	"playerInBubble",
-	"bossFacingLeft",
-	"bossFacingRight",
-	"bossInBubble",
-	"bonusCupCake",
-	"bonusMelon",
-	"bonusDiamond",
-] as const;
-
-export type SpriteGroupName = (typeof spriteGroupNames)[number];
+export const spriteGroupNames = spriteDataSegmentNames;
+export type SpriteGroupName = SpriteDataSegmentName;
 
 export const spriteGroupMultiWidths: Record<SpriteGroupName, number> = {
 	player: 1,
@@ -100,98 +93,6 @@ export const spriteGroupMultiWidths: Record<SpriteGroupName, number> = {
 	bonusCupCake: 2,
 	bonusMelon: 2,
 	bonusDiamond: 2,
-};
-
-export type SpriteGroupLocation = {
-	segmentName: SpriteDataSegmentName;
-	startIndex: number;
-	length: number;
-};
-
-export const spriteGroupLocations: Record<
-	SpriteGroupName,
-	SpriteGroupLocation
-> = {
-	player: {
-		segmentName: "characters",
-		startIndex: getCharacterOffsetInSprites("player"),
-		length: spriteCounts.player,
-	},
-	bubbleBuster: {
-		segmentName: "characters",
-		startIndex: getCharacterOffsetInSprites("bubbleBuster"),
-		length: spriteCounts.bubbleBuster,
-	},
-	incendo: {
-		segmentName: "characters",
-		startIndex: getCharacterOffsetInSprites("incendo"),
-		length: spriteCounts.incendo,
-	},
-	colley: {
-		segmentName: "characters",
-		startIndex: getCharacterOffsetInSprites("colley"),
-		length: spriteCounts.colley,
-	},
-	hullaballoon: {
-		segmentName: "characters",
-		startIndex: getCharacterOffsetInSprites("hullaballoon"),
-		length: spriteCounts.hullaballoon,
-	},
-	beluga: {
-		segmentName: "characters",
-		startIndex: getCharacterOffsetInSprites("beluga"),
-		length: spriteCounts.beluga,
-	},
-	willyWhistle: {
-		segmentName: "characters",
-		startIndex: getCharacterOffsetInSprites("willyWhistle"),
-		length: spriteCounts.willyWhistle,
-	},
-	stoner: {
-		segmentName: "characters",
-		startIndex: getCharacterOffsetInSprites("stoner"),
-		length: spriteCounts.stoner,
-	},
-	superSocket: {
-		segmentName: "characters",
-		startIndex: getCharacterOffsetInSprites("superSocket"),
-		length: spriteCounts.superSocket,
-	},
-	playerInBubble: {
-		segmentName: "playerInBubble",
-		startIndex: 0,
-		length: 8,
-	},
-	bossFacingLeft: {
-		segmentName: "bossA",
-		startIndex: 0,
-		length: 9,
-	},
-	bossInBubble: {
-		segmentName: "bossA",
-		startIndex: 9,
-		length: 9,
-	},
-	bossFacingRight: {
-		segmentName: "bossB",
-		startIndex: 0,
-		length: 9,
-	},
-	bonusCupCake: {
-		segmentName: "bonusCupCake",
-		startIndex: 0,
-		length: 4,
-	},
-	bonusMelon: {
-		segmentName: "bonusMelon",
-		startIndex: 0,
-		length: 4,
-	},
-	bonusDiamond: {
-		segmentName: "bonusDiamond",
-		startIndex: 0,
-		length: 2,
-	},
 };
 
 export type SpriteGroup = {

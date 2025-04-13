@@ -1,5 +1,4 @@
-import { sum } from "../functions";
-import { spriteCounts } from "../sprite";
+import { getCharacterOffsetInSprites, spriteCounts } from "../sprite";
 import { characterNames } from "../game-definitions/character-name";
 import { ItemDataSegmentName } from "../game-definitions/item-segment-name";
 import { SpriteDataSegmentName } from "../game-definitions/sprite-segment-name";
@@ -90,16 +89,60 @@ export const levelSegmentLocations: Readonly<
 	},
 };
 
+const charactersStartAddress = 22528;
+
 export const spriteDataSegmentLocations: Readonly<
 	Record<SpriteDataSegmentName, SegmentLocation>
 > = {
-	characters: {
-		startAddress: 22528,
-		length: 64 * sum(Object.values(spriteCounts)),
+	player: {
+		startAddress:
+			charactersStartAddress + 64 * getCharacterOffsetInSprites("player"),
+		length: 64 * spriteCounts.player,
+	},
+	bubbleBuster: {
+		startAddress:
+			charactersStartAddress + 64 * getCharacterOffsetInSprites("bubbleBuster"),
+		length: 64 * spriteCounts.bubbleBuster,
+	},
+	incendo: {
+		startAddress:
+			charactersStartAddress + 64 * getCharacterOffsetInSprites("incendo"),
+		length: 64 * spriteCounts.incendo,
+	},
+	colley: {
+		startAddress:
+			charactersStartAddress + 64 * getCharacterOffsetInSprites("colley"),
+		length: 64 * spriteCounts.colley,
+	},
+	hullaballoon: {
+		startAddress:
+			charactersStartAddress + 64 * getCharacterOffsetInSprites("hullaballoon"),
+		length: 64 * spriteCounts.hullaballoon,
+	},
+	beluga: {
+		startAddress:
+			charactersStartAddress + 64 * getCharacterOffsetInSprites("beluga"),
+		length: 64 * spriteCounts.beluga,
+	},
+	willyWhistle: {
+		startAddress:
+			charactersStartAddress + 64 * getCharacterOffsetInSprites("willyWhistle"),
+		length: 64 * spriteCounts.willyWhistle,
+	},
+	stoner: {
+		startAddress:
+			charactersStartAddress + 64 * getCharacterOffsetInSprites("stoner"),
+		length: 64 * spriteCounts.stoner,
+	},
+	superSocket: {
+		startAddress:
+			charactersStartAddress + 64 * getCharacterOffsetInSprites("superSocket"),
+		length: 64 * spriteCounts.superSocket,
 	},
 	playerInBubble: { startAddress: 0x7440, length: 64 * 8 },
-	bossA: { startAddress: 0x7640, length: 64 * 18 },
-	bossB: { startAddress: 0x7c40, length: 64 * 9 },
+	bossFacingLeft: { startAddress: 0x7640, length: 64 * 9 },
+	bossInBubble: { startAddress: 0x7640 + 64 * 9, length: 64 * 9 },
+	bossFacingRight: { startAddress: 0x7c40, length: 64 * 9 },
 	bonusCupCake: { startAddress: 0xa320, length: 64 * 4 },
 	bonusMelon: { startAddress: 0xa420, length: 64 * 4 },
 	bonusDiamond: { startAddress: 0xa520, length: 64 * 2 },

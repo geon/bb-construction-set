@@ -1,12 +1,7 @@
-import { groupBy, unzipObject, zipObject } from "../functions";
+import { unzipObject, zipObject } from "../functions";
 import { Level } from "../internal-data-formats/level";
 import { writeBgColors, readBgColors } from "./bg-colors";
-import {
-	SpriteGroup,
-	SpriteGroupLocation,
-	spriteGroupLocations,
-	SpriteGroupName,
-} from "../sprite";
+import { SpriteGroup, SpriteGroupName } from "../sprite";
 import { characterNames } from "../game-definitions/character-name";
 import { readPlatformChars, writePlatformChars } from "./charset-char";
 import {
@@ -25,10 +20,7 @@ import {
 	LevelDataSegmentName,
 	levelDataSegmentNames,
 } from "../game-definitions/level-segment-name";
-import {
-	SpriteDataSegmentName,
-	spriteDataSegmentNames,
-} from "../game-definitions/sprite-segment-name";
+import { spriteDataSegmentNames } from "../game-definitions/sprite-segment-name";
 import { readItems, ItemGroups } from "./items";
 import {
 	readBubbleCurrentRectangles,
@@ -175,28 +167,8 @@ export function patchPrgSpritesBin(
 		spriteDataSegmentLocations
 	);
 
-	const spriteGroupNamesBySegment = groupBy(
-		Object.entries(spriteGroupLocations) as [
-			SpriteGroupName,
-			SpriteGroupLocation
-		][],
-		([, { segmentName }]) => segmentName,
-		([spriteGroupName]) => spriteGroupName
-	) as unknown as Record<SpriteDataSegmentName, SpriteGroupName[]>;
-
-	if (
-		Object.keys(spriteGroupNamesBySegment).length !==
-		spriteDataSegmentNames.length
-	) {
-		throw new Error("Missing keys in spriteGroupNamesBySegment");
-	}
-
 	for (const segmentName of spriteDataSegmentNames) {
-		const spriteGroupNames = spriteGroupNamesBySegment[segmentName];
-
-		const sprites = spriteGroupNames.flatMap(
-			(name) => spriteGroups[name].sprites
-		);
+		const sprites = spriteGroups[segmentName].sprites;
 
 		for (const [index, sprite] of sprites.entries()) {
 			prgSpriteSegments[segmentName].buffer.set(sprite.bitmap, index * 64);
