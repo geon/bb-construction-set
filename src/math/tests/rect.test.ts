@@ -60,4 +60,18 @@ describe("flexbox", () => {
 			)[2]?.pos.x
 		).toStrictEqual(124);
 	});
+
+	test("no y-pos", () => {
+		expect(
+			flexbox(
+				[
+					{ x: 123, y: 1 },
+					{ x: 1, y: 1 },
+					{ x: 1, y: 1 },
+				],
+				"row",
+				0
+			)[2]?.pos.y
+		).toStrictEqual(0);
+	});
 });
