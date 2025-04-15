@@ -6,7 +6,7 @@ import {
 	Tiles,
 } from "../internal-data-formats/level";
 import { palette, PaletteIndex } from "../internal-data-formats/palette";
-import { Color, mixColors, black } from "../color";
+import { Color, mixColors, black } from "../../math/color";
 import { CharsetChar } from "../internal-data-formats/charset-char";
 import { spriteHeight, spriteWidthBytes } from "../../c64/consts";
 import { Sprite, SpriteGroup } from "../internal-data-formats/sprite";
