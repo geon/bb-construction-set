@@ -142,4 +142,34 @@ describe("boundingBox", () => {
 		const rect = { pos: { x: 1, y: 1 }, size: { x: 1, y: 1 } };
 		expect(boundingBox([rect])).toStrictEqual(rect);
 	});
+
+	test("largest containing", () => {
+		const rects = [
+			{ pos: { x: 1, y: 1 }, size: { x: 1, y: 1 } },
+			{ pos: { x: 0, y: 0 }, size: { x: 3, y: 3 } },
+		];
+		expect(boundingBox(rects)).toStrictEqual(rects[1]);
+	});
+
+	test("side by side", () => {
+		const rects = [
+			{ pos: { x: 0, y: 0 }, size: { x: 1, y: 1 } },
+			{ pos: { x: 2, y: 0 }, size: { x: 1, y: 1 } },
+		];
+		expect(boundingBox(rects)).toStrictEqual({
+			pos: { x: 0, y: 0 },
+			size: { x: 3, y: 1 },
+		});
+	});
+
+	test("random", () => {
+		const rects = [
+			{ pos: { x: 1, y: 1 }, size: { x: 1, y: 1 } },
+			{ pos: { x: 10, y: 12 }, size: { x: 4, y: 5 } },
+			{ pos: { x: -1, y: 4 }, size: { x: 1, y: 2 } },
+			{ pos: { x: 3, y: 1 }, size: { x: 4, y: 1 } },
+			{ pos: { x: 0, y: 2 }, size: { x: 3, y: 3 } },
+		];
+		expect(boundingBox(rects)).toMatchSnapshot();
+	});
 });

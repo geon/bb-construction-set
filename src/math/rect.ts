@@ -1,4 +1,5 @@
-import { add, Coord2, origo } from "./coord2";
+import { unzipObject } from "../bb/functions";
+import { add, Coord2, origo, subtract } from "./coord2";
 
 export type Rect = {
 	/** top left */
@@ -34,5 +35,21 @@ export function flexbox(
 }
 
 export function boundingBox(rects: ReadonlyArray<Rect>): Rect | undefined {
-	return rects[0];
+	const topLefts = rects.map((rect) => rect.pos);
+	const { x: lefts, y: tops } = unzipObject(topLefts);
+
+	const bottomRights = rects.map(bottomRight);
+	const { x: rights, y: bottoms } = unzipObject(bottomRights);
+
+	const min = {
+		x: Math.min(...lefts),
+		y: Math.min(...tops),
+	};
+
+	const max = {
+		x: Math.max(...rights),
+		y: Math.max(...bottoms),
+	};
+
+	return { pos: min, size: subtract(max, min) };
 }

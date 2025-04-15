@@ -6,3 +6,16 @@ exports[`bottomRight 1`] = `
   "y": 457,
 }
 `;
+
+exports[`boundingBox > random 1`] = `
+{
+  "pos": {
+    "x": -1,
+    "y": 1,
+  },
+  "size": {
+    "x": 15,
+    "y": 16,
+  },
+}
+`;
