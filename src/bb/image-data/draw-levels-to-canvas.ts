@@ -8,11 +8,7 @@ import {
 import { palette, PaletteIndex } from "../internal-data-formats/palette";
 import { Color, mixColors, black } from "../color";
 import { CharsetChar } from "../internal-data-formats/charset-char";
-import {
-	spriteGroupMultiWidths,
-	spriteHeight,
-	spriteWidthBytes,
-} from "../sprite";
+import { spriteHeight, spriteWidthBytes } from "../sprite";
 import { Sprite, SpriteGroup } from "../internal-data-formats/sprite";
 import { CharacterName } from "../game-definitions/character-name";
 import { Item, ItemGroup, ItemGroups } from "../prg/items";
@@ -482,3 +478,22 @@ function imageDataConcatenate(
 
 	return result;
 }
+
+const spriteGroupMultiWidths: Record<SpriteGroupName, number> = {
+	player: 1,
+	bubbleBuster: 1,
+	incendo: 1,
+	colley: 1,
+	hullaballoon: 1,
+	beluga: 1,
+	willyWhistle: 1,
+	stoner: 1,
+	superSocket: 1,
+	playerInBubble: 2,
+	bossFacingLeft: 3,
+	bossInBubble: 3,
+	bossFacingRight: 3,
+	bonusCupCake: 2,
+	bonusMelon: 2,
+	bonusDiamond: 2,
+};
