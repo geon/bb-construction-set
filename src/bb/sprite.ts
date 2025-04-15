@@ -4,15 +4,6 @@ import {
 	CharacterName,
 	characterNames,
 } from "./game-definitions/character-name";
-import { Sprite } from "./internal-data-formats/sprite";
-
-export type Sprites = Record<
-	CharacterName,
-	{
-		readonly sprites: readonly Sprite[];
-		readonly color: PaletteIndex;
-	}
->;
 
 export const spriteCounts: Record<CharacterName, number> = {
 	player: 19,

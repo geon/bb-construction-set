@@ -11,7 +11,7 @@ import {
 	Monster,
 } from "../internal-data-formats/level";
 import { Bit, CharBitmap, createPeFileData, PeFileData } from "./pe-file";
-import { Sprites, spriteLeftIndex } from "../sprite";
+import { spriteLeftIndex } from "../sprite";
 import {
 	CharacterName,
 	characterNames,
@@ -26,6 +26,7 @@ import { c64BuiltinCharsets } from "./c64-builtin-charsets";
 import { PaletteIndex } from "../internal-data-formats/palette";
 import { shadowChars, ShadowStyle } from "../prg/shadow-chars";
 import { assertTuple } from "../tuple";
+import { Sprite } from "../internal-data-formats/sprite";
 
 const emptyChar: CharBitmap = [0, 0, 0, 0, 0, 0, 0, 0];
 
@@ -670,3 +671,10 @@ export function getSpriteColorsFromPeFileSpriteSet(
 
 	return objectFromEntries(spriteColorEntries);
 }
+export type Sprites = Record<
+	CharacterName,
+	{
+		readonly sprites: readonly Sprite[];
+		readonly color: PaletteIndex;
+	}
+>;
