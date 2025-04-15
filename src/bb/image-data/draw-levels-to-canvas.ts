@@ -9,12 +9,11 @@ import { palette, PaletteIndex } from "../internal-data-formats/palette";
 import { Color, mixColors, black } from "../color";
 import { CharsetChar } from "../internal-data-formats/charset-char";
 import {
-	Sprite,
-	SpriteGroup,
 	spriteGroupMultiWidths,
 	spriteHeight,
 	spriteWidthBytes,
 } from "../sprite";
+import { Sprite, SpriteGroup } from "../internal-data-formats/sprite";
 import { CharacterName } from "../game-definitions/character-name";
 import { Item, ItemGroup, ItemGroups } from "../prg/items";
 import { chunk, mapRecord, range, sum, zipObject } from "../functions";

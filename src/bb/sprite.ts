@@ -1,19 +1,15 @@
 import { sum } from "./functions";
 import { PaletteIndex } from "./internal-data-formats/palette";
 import { SpriteGroupName } from "./game-definitions/sprite-segment-name";
-import { Tuple } from "./tuple";
 import {
 	CharacterName,
 	characterNames,
 } from "./game-definitions/character-name";
+import { Sprite } from "./internal-data-formats/sprite";
 
 export const spriteWidthBytes = 3;
 export const spriteHeight = 21;
 export const numSpriteBytes = spriteWidthBytes * spriteHeight;
-
-export interface Sprite {
-	readonly bitmap: Tuple<number, 63>;
-}
 
 export type Sprites = Record<
 	CharacterName,
@@ -87,9 +83,4 @@ export const spriteGroupMultiWidths: Record<SpriteGroupName, number> = {
 	bonusCupCake: 2,
 	bonusMelon: 2,
 	bonusDiamond: 2,
-};
-
-export type SpriteGroup = {
-	readonly sprites: ReadonlyArray<Sprite>;
-	readonly color: PaletteIndex;
 };

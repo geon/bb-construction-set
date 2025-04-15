@@ -1,7 +1,7 @@
 import { objectEntries, unzipObject, zipObject } from "../functions";
 import { Level } from "../internal-data-formats/level";
 import { writeBgColors, readBgColors } from "./bg-colors";
-import { SpriteGroup } from "../sprite";
+import { SpriteGroup } from "../internal-data-formats/sprite";
 import { characterNames } from "../game-definitions/character-name";
 import { readPlatformChars, writePlatformChars } from "./charset-char";
 import {

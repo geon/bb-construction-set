@@ -5,7 +5,7 @@ import {
 	SpriteGroupName,
 } from "../game-definitions/sprite-segment-name";
 import { PaletteIndex } from "../internal-data-formats/palette";
-import { SpriteGroup } from "../sprite";
+import { SpriteGroup } from "../internal-data-formats/sprite";
 import { spriteDataSegmentLocations } from "../prg/data-locations";
 import { parseSpritesFromBuffer, getSpriteGroupColor } from "../prg/sprites";
 

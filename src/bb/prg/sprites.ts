@@ -1,6 +1,7 @@
 import { mapRecord, objectFromEntries, strictChunk } from "../functions";
 import { PaletteIndex } from "../internal-data-formats/palette";
-import { Sprite, SpriteGroup, spriteColors } from "../sprite";
+import { spriteColors } from "../sprite";
+import { Sprite, SpriteGroup } from "../internal-data-formats/sprite";
 import {
 	CharacterName,
 	characterNames,
