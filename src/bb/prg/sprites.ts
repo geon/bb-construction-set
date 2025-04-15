@@ -1,6 +1,5 @@
 import { mapRecord, objectFromEntries, strictChunk } from "../functions";
 import { PaletteIndex } from "../internal-data-formats/palette";
-import { spriteColors } from "../sprite";
 import { Sprite, SpriteGroup } from "../internal-data-formats/sprite";
 import {
 	CharacterName,
@@ -10,6 +9,18 @@ import { Tuple } from "../tuple";
 import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
 import { DataSegment } from "./io";
 import { ReadonlyUint8Array } from "../types";
+
+const spriteColors: Record<"player", PaletteIndex> = {
+	player: 5,
+	// bubbleBuster: 12,
+	// incendo: 15,
+	// colley: 5,
+	// hullaballoon: 13,
+	// beluga: 4,
+	// willyWhistle: 5,
+	// stoner: 3,
+	// superSocket: 15,
+};
 
 const hardcodedPlayerColor = spriteColors.player;
 
