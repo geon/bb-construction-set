@@ -11,7 +11,6 @@ import {
 	Monster,
 } from "../internal-data-formats/level";
 import { Bit, CharBitmap, createPeFileData, PeFileData } from "./pe-file";
-import { spriteLeftIndex } from "../sprite";
 import {
 	CharacterName,
 	characterNames,
@@ -678,3 +677,15 @@ export type Sprites = Record<
 		readonly color: PaletteIndex;
 	}
 >;
+
+const spriteLeftIndex: Record<CharacterName, number> = {
+	player: 4,
+	bubbleBuster: 4,
+	incendo: 4,
+	colley: 4,
+	hullaballoon: 2,
+	beluga: 4,
+	willyWhistle: 2,
+	stoner: 2,
+	superSocket: 1,
+};

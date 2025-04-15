@@ -13,18 +13,6 @@ export const spriteCounts: Record<CharacterName, number> = {
 	superSocket: 6,
 };
 
-export const spriteLeftIndex: Record<CharacterName, number> = {
-	player: 4,
-	bubbleBuster: 4,
-	incendo: 4,
-	colley: 4,
-	hullaballoon: 2,
-	beluga: 4,
-	willyWhistle: 2,
-	stoner: 2,
-	superSocket: 1,
-};
-
 export const spriteColors: Record<"player", PaletteIndex> = {
 	player: 5,
 	// bubbleBuster: 12,
