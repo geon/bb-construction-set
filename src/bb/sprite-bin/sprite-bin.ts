@@ -5,12 +5,12 @@ import {
 	SpriteGroupName,
 } from "../game-definitions/sprite-segment-name";
 import { PaletteIndex } from "../internal-data-formats/palette";
-import { SpriteGroup } from "../internal-data-formats/sprite";
+import { SpriteGroup, SpriteGroups } from "../internal-data-formats/sprite";
 import { spriteDataSegmentLocations } from "../prg/data-locations";
 import { parseSpritesFromBuffer, getSpriteGroupColor } from "../prg/sprites";
 
 export function convertSpriteGroupsToBinFile(
-	spriteGroups: Record<SpriteGroupName, SpriteGroup>
+	spriteGroups: SpriteGroups
 ): Uint8Array {
 	return new Uint8Array(
 		spriteGroupNames.flatMap((spriteGroupName): number[] => {
@@ -26,7 +26,7 @@ export function convertSpriteGroupsToBinFile(
 
 export function parseSpriteGroupsFromBin(
 	binFileContents: Uint8Array
-): Record<SpriteGroupName, SpriteGroup> {
+): SpriteGroups {
 	const spriteSegments = mapRecord(
 		spriteDataSegmentLocations,
 		({ length }, segmentName) => {

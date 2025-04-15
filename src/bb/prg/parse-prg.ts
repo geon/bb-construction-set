@@ -1,7 +1,7 @@
 import { objectEntries, unzipObject, zipObject } from "../functions";
 import { Level } from "../internal-data-formats/level";
 import { writeBgColors, readBgColors } from "./bg-colors";
-import { SpriteGroup } from "../internal-data-formats/sprite";
+import { SpriteGroups } from "../internal-data-formats/sprite";
 import { characterNames } from "../game-definitions/character-name";
 import { readPlatformChars, writePlatformChars } from "./charset-char";
 import {
@@ -17,10 +17,7 @@ import {
 	spriteDataSegmentLocations,
 } from "./data-locations";
 import { LevelDataSegmentName } from "../game-definitions/level-segment-name";
-import {
-	SpriteGroupName,
-	spriteGroupNames,
-} from "../game-definitions/sprite-segment-name";
+import { spriteGroupNames } from "../game-definitions/sprite-segment-name";
 import { readItems, ItemGroups } from "./items";
 import {
 	readBubbleCurrentRectangles,
@@ -42,7 +39,7 @@ import { ReadonlyUint8Array } from "../types";
 
 export type ParsedPrg = {
 	readonly levels: readonly Level[];
-	readonly sprites: Record<SpriteGroupName, SpriteGroup>;
+	readonly sprites: SpriteGroups;
 	readonly items: ItemGroups;
 };
 

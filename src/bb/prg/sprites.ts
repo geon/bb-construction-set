@@ -1,6 +1,10 @@
 import { mapRecord, objectFromEntries, strictChunk } from "../functions";
 import { PaletteIndex } from "../internal-data-formats/palette";
-import { Sprite, SpriteGroup } from "../internal-data-formats/sprite";
+import {
+	Sprite,
+	SpriteGroup,
+	SpriteGroups,
+} from "../internal-data-formats/sprite";
 import {
 	CharacterName,
 	characterNames,
@@ -27,7 +31,7 @@ const hardcodedPlayerColor = spriteColors.player;
 export function parseSpriteGroupsFromPrg(
 	spriteSegments: Record<SpriteGroupName, DataSegment>,
 	monsterColorSegment: DataSegment
-): Record<SpriteGroupName, SpriteGroup> {
+): SpriteGroups {
 	const characterSpriteColors = parseCharacterSpriteColorsFromBuffer(
 		monsterColorSegment.buffer
 	);

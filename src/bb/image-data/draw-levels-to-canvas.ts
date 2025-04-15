@@ -9,7 +9,7 @@ import { palette, PaletteIndex } from "../internal-data-formats/palette";
 import { Color, mixColors, black } from "../../math/color";
 import { CharsetChar } from "../internal-data-formats/charset-char";
 import { spriteHeight, spriteWidthBytes } from "../../c64/consts";
-import { Sprite, SpriteGroup } from "../internal-data-formats/sprite";
+import { Sprite, SpriteGroups } from "../internal-data-formats/sprite";
 import { CharacterName } from "../game-definitions/character-name";
 import { Item, ItemGroup, ItemGroups } from "../prg/items";
 import { chunk, mapRecord, range, sum, zipObject } from "../functions";
@@ -206,9 +206,7 @@ function drawChar(
 	return image;
 }
 
-export function drawSpritesToCanvas(
-	spriteGroups: Record<SpriteGroupName, SpriteGroup>
-): ImageData {
+export function drawSpritesToCanvas(spriteGroups: SpriteGroups): ImageData {
 	const spriteImageGroups = mapRecord(spriteGroups, (spriteGroup) => {
 		return spriteGroup.sprites.map((sprite) =>
 			drawSprite(sprite, getSpritePalette(spriteGroup.color))
