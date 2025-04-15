@@ -1,7 +1,7 @@
 import { mapRecord, objectFromEntries, sum } from "../functions";
 import { characterNames } from "../game-definitions/character-name";
 import {
-	spriteDataSegmentNames,
+	spriteGroupNames,
 	SpriteDataSegmentName,
 } from "../game-definitions/sprite-segment-name";
 import { PaletteIndex } from "../internal-data-formats/palette";
@@ -13,7 +13,7 @@ export function convertSpriteGroupsToBinFile(
 	spriteGroups: Record<SpriteGroupName, SpriteGroup>
 ): Uint8Array {
 	return new Uint8Array(
-		spriteDataSegmentNames.flatMap((spriteGroupName): number[] => {
+		spriteGroupNames.flatMap((spriteGroupName): number[] => {
 			const multicolorBit = 0b10000000;
 			const spriteGroup = spriteGroups[spriteGroupName];
 			return spriteGroup.sprites.flatMap((sprite): number[] => [
@@ -66,8 +66,8 @@ function getSpriteDataSegmentOffsetInBin(
 ): number {
 	// Sum up the length of all segments before the wanted one.
 	return sum(
-		spriteDataSegmentNames
-			.slice(0, spriteDataSegmentNames.indexOf(segmentName))
+		spriteGroupNames
+			.slice(0, spriteGroupNames.indexOf(segmentName))
 			.map((segmentName) => spriteDataSegmentLocations[segmentName].length)
 	);
 }

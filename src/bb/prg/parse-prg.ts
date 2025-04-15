@@ -17,7 +17,7 @@ import {
 	spriteDataSegmentLocations,
 } from "./data-locations";
 import { LevelDataSegmentName } from "../game-definitions/level-segment-name";
-import { spriteDataSegmentNames } from "../game-definitions/sprite-segment-name";
+import { spriteGroupNames } from "../game-definitions/sprite-segment-name";
 import { readItems, ItemGroups } from "./items";
 import {
 	readBubbleCurrentRectangles,
@@ -154,7 +154,7 @@ export function patchPrg(
 		spriteDataSegmentLocations
 	);
 
-	for (const segmentName of spriteDataSegmentNames) {
+	for (const segmentName of spriteGroupNames) {
 		const sprites = spriteGroups[segmentName].sprites;
 
 		for (const [index, sprite] of sprites.entries()) {
