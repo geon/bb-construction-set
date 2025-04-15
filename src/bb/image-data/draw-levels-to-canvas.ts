@@ -12,7 +12,6 @@ import {
 	Sprite,
 	SpriteGroup,
 	spriteGroupMultiWidths,
-	SpriteGroupName,
 	spriteHeight,
 	spriteWidthBytes,
 } from "../sprite";
@@ -20,6 +19,7 @@ import { CharacterName } from "../game-definitions/character-name";
 import { Item, ItemGroup, ItemGroups } from "../prg/items";
 import { chunk, mapRecord, range, sum, zipObject } from "../functions";
 import { assertTuple, ReadonlyTuple } from "../tuple";
+import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
 
 export function drawLevelsToCanvas(
 	levels: readonly Level[],

@@ -2,10 +2,10 @@ import { mapRecord, objectFromEntries, sum } from "../functions";
 import { characterNames } from "../game-definitions/character-name";
 import {
 	spriteGroupNames,
-	SpriteDataSegmentName,
+	SpriteGroupName,
 } from "../game-definitions/sprite-segment-name";
 import { PaletteIndex } from "../internal-data-formats/palette";
-import { SpriteGroupName, SpriteGroup } from "../sprite";
+import { SpriteGroup } from "../sprite";
 import { spriteDataSegmentLocations } from "../prg/data-locations";
 import { parseSpritesFromBuffer, getSpriteGroupColor } from "../prg/sprites";
 
@@ -61,9 +61,7 @@ export function parseSpriteGroupsFromBin(
 		})
 	);
 }
-function getSpriteDataSegmentOffsetInBin(
-	segmentName: SpriteDataSegmentName
-): number {
+function getSpriteDataSegmentOffsetInBin(segmentName: SpriteGroupName): number {
 	// Sum up the length of all segments before the wanted one.
 	return sum(
 		spriteGroupNames

@@ -1,19 +1,19 @@
 import { mapRecord, objectFromEntries, strictChunk } from "../functions";
 import { PaletteIndex } from "../internal-data-formats/palette";
-import { Sprite, SpriteGroupName, SpriteGroup, spriteColors } from "../sprite";
+import { Sprite, SpriteGroup, spriteColors } from "../sprite";
 import {
 	CharacterName,
 	characterNames,
 } from "../game-definitions/character-name";
 import { Tuple } from "../tuple";
-import { SpriteDataSegmentName } from "../game-definitions/sprite-segment-name";
+import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
 import { DataSegment } from "./io";
 import { ReadonlyUint8Array } from "../types";
 
 const hardcodedPlayerColor = spriteColors.player;
 
 export function parseSpriteGroupsFromPrg(
-	spriteSegments: Record<SpriteDataSegmentName, DataSegment>,
+	spriteSegments: Record<SpriteGroupName, DataSegment>,
 	monsterColorSegment: DataSegment
 ): Record<SpriteGroupName, SpriteGroup> {
 	const characterSpriteColors = parseCharacterSpriteColorsFromBuffer(

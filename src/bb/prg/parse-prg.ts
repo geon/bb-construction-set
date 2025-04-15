@@ -1,7 +1,7 @@
 import { objectEntries, unzipObject, zipObject } from "../functions";
 import { Level } from "../internal-data-formats/level";
 import { writeBgColors, readBgColors } from "./bg-colors";
-import { SpriteGroup, SpriteGroupName } from "../sprite";
+import { SpriteGroup } from "../sprite";
 import { characterNames } from "../game-definitions/character-name";
 import { readPlatformChars, writePlatformChars } from "./charset-char";
 import {
@@ -17,7 +17,10 @@ import {
 	spriteDataSegmentLocations,
 } from "./data-locations";
 import { LevelDataSegmentName } from "../game-definitions/level-segment-name";
-import { spriteGroupNames } from "../game-definitions/sprite-segment-name";
+import {
+	SpriteGroupName,
+	spriteGroupNames,
+} from "../game-definitions/sprite-segment-name";
 import { readItems, ItemGroups } from "./items";
 import {
 	readBubbleCurrentRectangles,

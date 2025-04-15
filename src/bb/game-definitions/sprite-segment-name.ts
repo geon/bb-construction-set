@@ -16,4 +16,4 @@ export const spriteGroupNames = [
 	"bonusMelon",
 	"bonusDiamond",
 ] as const;
-export type SpriteDataSegmentName = (typeof spriteGroupNames)[number];
+export type SpriteGroupName = (typeof spriteGroupNames)[number];

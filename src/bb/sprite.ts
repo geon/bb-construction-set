@@ -1,6 +1,6 @@
 import { sum } from "./functions";
 import { PaletteIndex } from "./internal-data-formats/palette";
-import { SpriteDataSegmentName } from "./game-definitions/sprite-segment-name";
+import { SpriteGroupName } from "./game-definitions/sprite-segment-name";
 import { Tuple } from "./tuple";
 import {
 	CharacterName,
@@ -69,8 +69,6 @@ export function getCharacterOffsetInSprites(
 			.map((characterName) => spriteCounts[characterName])
 	);
 }
-
-export type SpriteGroupName = SpriteDataSegmentName;
 
 export const spriteGroupMultiWidths: Record<SpriteGroupName, number> = {
 	player: 1,

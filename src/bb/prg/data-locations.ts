@@ -1,7 +1,7 @@
 import { getCharacterOffsetInSprites, spriteCounts } from "../sprite";
 import { characterNames } from "../game-definitions/character-name";
 import { ItemDataSegmentName } from "../game-definitions/item-segment-name";
-import { SpriteDataSegmentName } from "../game-definitions/sprite-segment-name";
+import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
 import { LevelDataSegmentName } from "../game-definitions/level-segment-name";
 
 export const maxAsymmetric = 45;
@@ -92,7 +92,7 @@ export const levelSegmentLocations: Readonly<
 const charactersStartAddress = 22528;
 
 export const spriteDataSegmentLocations: Readonly<
-	Record<SpriteDataSegmentName, SegmentLocation>
+	Record<SpriteGroupName, SegmentLocation>
 > = {
 	player: {
 		startAddress:
