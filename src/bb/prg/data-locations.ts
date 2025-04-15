@@ -1,8 +1,12 @@
-import { getCharacterOffsetInSprites, spriteCounts } from "../sprite";
-import { characterNames } from "../game-definitions/character-name";
+import { spriteCounts } from "../sprite";
+import {
+	CharacterName,
+	characterNames,
+} from "../game-definitions/character-name";
 import { ItemDataSegmentName } from "../game-definitions/item-segment-name";
 import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
 import { LevelDataSegmentName } from "../game-definitions/level-segment-name";
+import { sum } from "../functions";
 
 export const maxAsymmetric = 45;
 export const maxSidebars = 59;
@@ -210,3 +214,12 @@ export const itemDataSegmentLocations: Readonly<
 		length: 4 * 8 * 3,
 	},
 };
+
+function getCharacterOffsetInSprites(characterName: CharacterName): number {
+	// Sum up the length of all segments before the wanted one.
+	return sum(
+		characterNames
+			.slice(0, characterNames.indexOf(characterName))
+			.map((characterName) => spriteCounts[characterName])
+	);
+}

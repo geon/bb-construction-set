@@ -1,9 +1,5 @@
-import { sum } from "./functions";
 import { PaletteIndex } from "./internal-data-formats/palette";
-import {
-	CharacterName,
-	characterNames,
-} from "./game-definitions/character-name";
+import { CharacterName } from "./game-definitions/character-name";
 
 export const spriteCounts: Record<CharacterName, number> = {
 	player: 19,
@@ -40,14 +36,3 @@ export const spriteColors: Record<"player", PaletteIndex> = {
 	// stoner: 3,
 	// superSocket: 15,
 };
-
-export function getCharacterOffsetInSprites(
-	characterName: CharacterName
-): number {
-	// Sum up the length of all segments before the wanted one.
-	return sum(
-		characterNames
-			.slice(0, characterNames.indexOf(characterName))
-			.map((characterName) => spriteCounts[characterName])
-	);
-}
