@@ -8,8 +8,6 @@ import { Sprite } from "./internal-data-formats/sprite";
 
 export const spriteWidthBytes = 3;
 export const spriteHeight = 21;
-export const numSpriteBytes = spriteWidthBytes * spriteHeight;
-
 export type Sprites = Record<
 	CharacterName,
 	{
