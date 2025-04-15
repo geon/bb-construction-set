@@ -2,10 +2,10 @@ import { test } from "vitest";
 import { levelsToPeFileData, peFileDataToLevels } from "../level-pe-conversion";
 import { deserializePeFileData } from "../pe-file";
 import { readFileSync } from "fs";
-import { spriteCounts } from "../../sprite";
 import { Sprites } from "../level-pe-conversion";
 import { spriteHeight, spriteWidthBytes } from "../../../c64/consts";
-import { mapRecord } from "../../functions";
+import { objectFromEntries } from "../../functions";
+import { characterNames } from "../../game-definitions/character-name";
 
 test("peFileDataToLevels & levelsToPeFileData", () => {
 	const peFileData = deserializePeFileData(
@@ -17,12 +17,17 @@ test("peFileDataToLevels & levelsToPeFileData", () => {
 	const generatedPeFileData = levelsToPeFileData({
 		levels,
 		// Dummy data, not tested.
-		sprites: mapRecord(spriteCounts, (count) => ({
-			sprites: Array(count).fill({
-				bitmap: Array(numSpriteBytes).fill(0),
-			}),
-			color: 0,
-		})) as Sprites,
+		sprites: objectFromEntries(
+			characterNames.map((name) => [
+				name,
+				{
+					sprites: Array(100).fill({
+						bitmap: Array(numSpriteBytes).fill(0),
+					}),
+					color: 0,
+				},
+			])
+		) as Sprites,
 	});
 
 	// Dummy data, not tested.
