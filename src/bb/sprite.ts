@@ -6,8 +6,6 @@ import {
 } from "./game-definitions/character-name";
 import { Sprite } from "./internal-data-formats/sprite";
 
-export const spriteWidthBytes = 3;
-export const spriteHeight = 21;
 export type Sprites = Record<
 	CharacterName,
 	{

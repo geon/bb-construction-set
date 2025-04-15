@@ -8,7 +8,7 @@ import {
 import { palette, PaletteIndex } from "../internal-data-formats/palette";
 import { Color, mixColors, black } from "../color";
 import { CharsetChar } from "../internal-data-formats/charset-char";
-import { spriteHeight, spriteWidthBytes } from "../sprite";
+import { spriteHeight, spriteWidthBytes } from "../../c64/consts";
 import { Sprite, SpriteGroup } from "../internal-data-formats/sprite";
 import { CharacterName } from "../game-definitions/character-name";
 import { Item, ItemGroup, ItemGroups } from "../prg/items";
