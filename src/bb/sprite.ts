@@ -1,17 +1,4 @@
 import { PaletteIndex } from "./internal-data-formats/palette";
-import { CharacterName } from "./game-definitions/character-name";
-
-export const spriteCounts: Record<CharacterName, number> = {
-	player: 19,
-	bubbleBuster: 12,
-	incendo: 12,
-	colley: 12,
-	hullaballoon: 8,
-	beluga: 12,
-	willyWhistle: 8,
-	stoner: 8,
-	superSocket: 6,
-};
 
 export const spriteColors: Record<"player", PaletteIndex> = {
 	player: 5,

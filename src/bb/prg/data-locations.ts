@@ -1,4 +1,3 @@
-import { spriteCounts } from "../sprite";
 import {
 	CharacterName,
 	characterNames,
@@ -91,6 +90,18 @@ export const levelSegmentLocations: Readonly<
 		startAddress: 0x4050,
 		length: 6 * 8, // 6 chars of 8 bytes.
 	},
+};
+
+const spriteCounts: Record<CharacterName, number> = {
+	player: 19,
+	bubbleBuster: 12,
+	incendo: 12,
+	colley: 12,
+	hullaballoon: 8,
+	beluga: 12,
+	willyWhistle: 8,
+	stoner: 8,
+	superSocket: 6,
 };
 
 const charactersStartAddress = 22528;
