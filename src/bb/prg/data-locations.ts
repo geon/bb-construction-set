@@ -5,7 +5,7 @@ import {
 import { ItemDataSegmentName } from "../game-definitions/item-segment-name";
 import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
 import { LevelDataSegmentName } from "../game-definitions/level-segment-name";
-import { sum } from "../functions";
+import { mapRecord, sum } from "../functions";
 
 export const maxAsymmetric = 45;
 export const maxSidebars = 59;
@@ -115,78 +115,71 @@ const charactersStartAddress = 22528;
 
 export const spriteDataSegmentLocations: Readonly<
 	Record<SpriteGroupName, SegmentLocation>
-> = {
-	player: {
-		startAddress:
-			charactersStartAddress + 64 * getCharacterOffsetInSprites("player"),
-		length: 64 * spriteCounts.player,
+> = mapRecord(
+	{
+		player: {
+			startAddress:
+				charactersStartAddress + 64 * getCharacterOffsetInSprites("player"),
+		},
+		bubbleBuster: {
+			startAddress:
+				charactersStartAddress +
+				64 * getCharacterOffsetInSprites("bubbleBuster"),
+		},
+		incendo: {
+			startAddress:
+				charactersStartAddress + 64 * getCharacterOffsetInSprites("incendo"),
+		},
+		colley: {
+			startAddress:
+				charactersStartAddress + 64 * getCharacterOffsetInSprites("colley"),
+		},
+		hullaballoon: {
+			startAddress:
+				charactersStartAddress +
+				64 * getCharacterOffsetInSprites("hullaballoon"),
+		},
+		beluga: {
+			startAddress:
+				charactersStartAddress + 64 * getCharacterOffsetInSprites("beluga"),
+		},
+		willyWhistle: {
+			startAddress:
+				charactersStartAddress +
+				64 * getCharacterOffsetInSprites("willyWhistle"),
+		},
+		stoner: {
+			startAddress:
+				charactersStartAddress + 64 * getCharacterOffsetInSprites("stoner"),
+		},
+		superSocket: {
+			startAddress:
+				charactersStartAddress +
+				64 * getCharacterOffsetInSprites("superSocket"),
+		},
+		playerInBubble: {
+			startAddress: 0x7440,
+		},
+		bossFacingLeft: {
+			startAddress: 0x7640,
+		},
+		bossInBubble: {
+			startAddress: 0x7640 + 64 * 9,
+		},
+		bossFacingRight: {
+			startAddress: 0x7c40,
+		},
+		bonusCupCake: {
+			startAddress: 0xa320,
+		},
+		bonusMelon: { startAddress: 0xa420 },
+		bonusDiamond: {
+			startAddress: 0xa520,
+		},
 	},
-	bubbleBuster: {
-		startAddress:
-			charactersStartAddress + 64 * getCharacterOffsetInSprites("bubbleBuster"),
-		length: 64 * spriteCounts.bubbleBuster,
-	},
-	incendo: {
-		startAddress:
-			charactersStartAddress + 64 * getCharacterOffsetInSprites("incendo"),
-		length: 64 * spriteCounts.incendo,
-	},
-	colley: {
-		startAddress:
-			charactersStartAddress + 64 * getCharacterOffsetInSprites("colley"),
-		length: 64 * spriteCounts.colley,
-	},
-	hullaballoon: {
-		startAddress:
-			charactersStartAddress + 64 * getCharacterOffsetInSprites("hullaballoon"),
-		length: 64 * spriteCounts.hullaballoon,
-	},
-	beluga: {
-		startAddress:
-			charactersStartAddress + 64 * getCharacterOffsetInSprites("beluga"),
-		length: 64 * spriteCounts.beluga,
-	},
-	willyWhistle: {
-		startAddress:
-			charactersStartAddress + 64 * getCharacterOffsetInSprites("willyWhistle"),
-		length: 64 * spriteCounts.willyWhistle,
-	},
-	stoner: {
-		startAddress:
-			charactersStartAddress + 64 * getCharacterOffsetInSprites("stoner"),
-		length: 64 * spriteCounts.stoner,
-	},
-	superSocket: {
-		startAddress:
-			charactersStartAddress + 64 * getCharacterOffsetInSprites("superSocket"),
-		length: 64 * spriteCounts.superSocket,
-	},
-	playerInBubble: {
-		startAddress: 0x7440,
-		length: 64 * spriteCounts.playerInBubble,
-	},
-	bossFacingLeft: {
-		startAddress: 0x7640,
-		length: 64 * spriteCounts.bossFacingLeft,
-	},
-	bossInBubble: {
-		startAddress: 0x7640 + 64 * 9,
-		length: 64 * spriteCounts.bossInBubble,
-	},
-	bossFacingRight: {
-		startAddress: 0x7c40,
-		length: 64 * spriteCounts.bossFacingRight,
-	},
-	bonusCupCake: {
-		startAddress: 0xa320,
-		length: 64 * spriteCounts.bonusCupCake,
-	},
-	bonusMelon: { startAddress: 0xa420, length: 64 * spriteCounts.bonusMelon },
-	bonusDiamond: {
-		startAddress: 0xa520,
-		length: 64 * spriteCounts.bonusDiamond,
-	},
-};
+	(x, name) => ({ ...x, length: 64 * spriteCounts[name] })
+);
+
 export const monsterSpriteColorsSegmentLocation: SegmentLocation = {
 	startAddress: 0xab63,
 	length: characterNames.slice(1).length, // 8. The player color is not included.
