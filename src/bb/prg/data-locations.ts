@@ -6,6 +6,7 @@ import { ItemDataSegmentName } from "../game-definitions/item-segment-name";
 import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
 import { LevelDataSegmentName } from "../game-definitions/level-segment-name";
 import { mapRecord, objectFromEntries, sum } from "../functions";
+import { itemGroupMeta } from "./items";
 
 export const maxAsymmetric = 45;
 export const maxSidebars = 59;
@@ -164,21 +165,10 @@ export const monsterSpriteColorsSegmentLocation: SegmentLocation = {
 	length: characterNames.slice(1).length, // 8. The player color is not included.
 };
 
-const itemSegmentLengths: Readonly<Record<ItemDataSegmentName, number>> = {
-	bubbleBlow: 4 * 8 * 36,
-	bubblePop: 4 * 8 * 12,
-	baronVonBlubba: 4 * 8 * 12,
-	specialBubbles: 4 * 8 * 18,
-	lightning: 4 * 8 * 2,
-	fire: 4 * 8 * 12,
-	extendBubbles: 4 * 8 * 30,
-	stonerWeapon: 4 * 8 * 3,
-	drunkAndInvaderWeapon: 4 * 8 * 10,
-	incendoWeapon: 4 * 8 * 8,
-	items: 4 * 8 * 58,
-	largeLightning: 4 * 8 * 5,
-	bonusRoundCircles: 4 * 8 * 3,
-};
+const itemSegmentLengths = mapRecord(
+	itemGroupMeta,
+	(x) => 8 * x.count * x.width * x.height * (x.hasMask ? 2 : 1)
+);
 
 export const itemDataSegmentLocations: Readonly<
 	Record<ItemDataSegmentName, SegmentLocation>
