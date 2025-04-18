@@ -2,7 +2,10 @@ import {
 	CharacterName,
 	characterNames,
 } from "../game-definitions/character-name";
-import { ItemDataSegmentName } from "../game-definitions/item-segment-name";
+import {
+	ItemDataSegmentName,
+	itemDataSegmentNames,
+} from "../game-definitions/item-segment-name";
 import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
 import { LevelDataSegmentName } from "../game-definitions/level-segment-name";
 import { mapRecord, objectFromEntries, sum } from "../functions";
@@ -170,6 +173,18 @@ const itemSegmentLengths = mapRecord(
 	(x) => 8 * x.count * x.width * x.height * (x.hasMask ? 2 : 1)
 );
 
+const mainItemsStartAddress = 0x8f00;
+function getItemsStartAddress(itemSegmentName: ItemDataSegmentName): number {
+	// Sum up the length of all segments before the wanted one.
+	return (
+		mainItemsStartAddress +
+		sum(
+			itemDataSegmentNames
+				.slice(2, itemDataSegmentNames.indexOf(itemSegmentName))
+				.map((characterName) => itemSegmentLengths[characterName])
+		)
+	);
+}
 export const itemDataSegmentLocations: Readonly<
 	Record<ItemDataSegmentName, SegmentLocation>
 > = {
@@ -182,49 +197,48 @@ export const itemDataSegmentLocations: Readonly<
 		length: itemSegmentLengths.bubblePop,
 	},
 	baronVonBlubba: {
-		startAddress: 0x8f00,
+		startAddress: getItemsStartAddress("baronVonBlubba"),
 		length: itemSegmentLengths.baronVonBlubba,
 	},
 	specialBubbles: {
-		startAddress: 0x8f00 + 4 * 8 * 12,
+		startAddress: getItemsStartAddress("specialBubbles"),
 		length: itemSegmentLengths.specialBubbles,
 	},
 	lightning: {
-		startAddress: 0x8f00 + 4 * 8 * (12 + 18),
+		startAddress: getItemsStartAddress("lightning"),
 		length: itemSegmentLengths.lightning,
 	},
 	fire: {
-		startAddress: 0x8f00 + 4 * 8 * (12 + 18 + 2),
+		startAddress: getItemsStartAddress("fire"),
 		length: itemSegmentLengths.fire,
 	},
 	extendBubbles: {
-		startAddress: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12),
+		startAddress: getItemsStartAddress("extendBubbles"),
 		length: itemSegmentLengths.extendBubbles,
 	},
 	stonerWeapon: {
-		startAddress: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30),
+		startAddress: getItemsStartAddress("stonerWeapon"),
 		length: itemSegmentLengths.stonerWeapon,
 	},
 	drunkAndInvaderWeapon: {
-		startAddress: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3),
+		startAddress: getItemsStartAddress("drunkAndInvaderWeapon"),
 		length: itemSegmentLengths.drunkAndInvaderWeapon,
 	},
 	incendoWeapon: {
-		startAddress: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3 + 10),
+		startAddress: getItemsStartAddress("incendoWeapon"),
 		length: itemSegmentLengths.incendoWeapon,
 	},
 	items: {
-		startAddress: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3 + 10 + 8),
+		startAddress: getItemsStartAddress("items"),
 		length: itemSegmentLengths.items,
 	},
 	//  (4x4 chars, but only 12 chars are stored.)
 	largeLightning: {
-		startAddress: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3 + 10 + 9 + 57),
+		startAddress: getItemsStartAddress("largeLightning"),
 		length: itemSegmentLengths.largeLightning,
 	},
 	bonusRoundCircles: {
-		startAddress:
-			0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3 + 10 + 9 + 57 + 5),
+		startAddress: getItemsStartAddress("bonusRoundCircles"),
 		length: itemSegmentLengths.bonusRoundCircles,
 	},
 };
