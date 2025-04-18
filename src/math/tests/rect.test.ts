@@ -28,23 +28,7 @@ describe("flexbox", () => {
 	});
 
 	test("first pos", () => {
-		expect(flexbox([{ x: 1, y: 1 }], "row", 0)[0]?.pos).toStrictEqual(origo);
-	});
-
-	test("use size", () => {
-		expect(
-			flexbox(
-				[
-					{ x: 1, y: 1 },
-					{ x: 2, y: 3 },
-				],
-				"row",
-				0
-			).map((x) => x.size)
-		).toStrictEqual([
-			{ x: 1, y: 1 },
-			{ x: 2, y: 3 },
-		]);
+		expect(flexbox([{ x: 1, y: 1 }], "row", 0)[0]).toStrictEqual(origo);
 	});
 
 	test("accumulated x-pos", () => {
@@ -57,7 +41,7 @@ describe("flexbox", () => {
 				],
 				"row",
 				0
-			)[2]?.pos.x
+			)[2]?.x
 		).toStrictEqual(124);
 	});
 
@@ -71,7 +55,7 @@ describe("flexbox", () => {
 				],
 				"row",
 				0
-			)[2]?.pos.y
+			)[2]?.y
 		).toStrictEqual(0);
 	});
 
@@ -85,7 +69,7 @@ describe("flexbox", () => {
 				],
 				"row",
 				1
-			)[2]?.pos.x
+			)[2]?.x
 		).toStrictEqual(4);
 	});
 
@@ -103,34 +87,16 @@ describe("flexbox", () => {
 		).toMatchInlineSnapshot(`
 			[
 			  {
-			    "pos": {
-			      "x": 0,
-			      "y": 0,
-			    },
-			    "size": {
-			      "x": 123,
-			      "y": 1,
-			    },
+			    "x": 0,
+			    "y": 0,
 			  },
 			  {
-			    "pos": {
-			      "x": 0,
-			      "y": 2,
-			    },
-			    "size": {
-			      "x": 1,
-			      "y": 10,
-			    },
+			    "x": 0,
+			    "y": 2,
 			  },
 			  {
-			    "pos": {
-			      "x": 0,
-			      "y": 13,
-			    },
-			    "size": {
-			      "x": 1,
-			      "y": 1,
-			    },
+			    "x": 0,
+			    "y": 13,
 			  },
 			]
 		`);
