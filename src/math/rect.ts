@@ -11,7 +11,7 @@ export function bottomRight(rect: Rect): Coord2 {
 	return add(rect.pos, rect.size);
 }
 
-export function flexbox(
+export function flexboxChildPositions(
 	sizes: ReadonlyArray<Coord2>,
 	direction: "row" | "column",
 	gap: number

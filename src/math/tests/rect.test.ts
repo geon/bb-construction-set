@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { bottomRight, boundingBox, flexbox } from "../rect";
+import { bottomRight, boundingBox, flexboxChildPositions } from "../rect";
 import { origo } from "../coord2";
 
 test("bottomRight", () => {
@@ -13,9 +13,11 @@ test("bottomRight", () => {
 
 describe("flexbox", () => {
 	test("length", () => {
-		expect(flexbox([{ x: 1, y: 1 }], "row", 0).length).toStrictEqual(1);
 		expect(
-			flexbox(
+			flexboxChildPositions([{ x: 1, y: 1 }], "row", 0).length
+		).toStrictEqual(1);
+		expect(
+			flexboxChildPositions(
 				[
 					{ x: 1, y: 1 },
 					{ x: 1, y: 1 },
@@ -28,12 +30,14 @@ describe("flexbox", () => {
 	});
 
 	test("first pos", () => {
-		expect(flexbox([{ x: 1, y: 1 }], "row", 0)[0]).toStrictEqual(origo);
+		expect(flexboxChildPositions([{ x: 1, y: 1 }], "row", 0)[0]).toStrictEqual(
+			origo
+		);
 	});
 
 	test("accumulated x-pos", () => {
 		expect(
-			flexbox(
+			flexboxChildPositions(
 				[
 					{ x: 123, y: 1 },
 					{ x: 1, y: 1 },
@@ -47,7 +51,7 @@ describe("flexbox", () => {
 
 	test("no y-pos", () => {
 		expect(
-			flexbox(
+			flexboxChildPositions(
 				[
 					{ x: 123, y: 1 },
 					{ x: 1, y: 1 },
@@ -61,7 +65,7 @@ describe("flexbox", () => {
 
 	test("gap", () => {
 		expect(
-			flexbox(
+			flexboxChildPositions(
 				[
 					{ x: 1, y: 1 },
 					{ x: 1, y: 1 },
@@ -75,7 +79,7 @@ describe("flexbox", () => {
 
 	test("column", () => {
 		expect(
-			flexbox(
+			flexboxChildPositions(
 				[
 					{ x: 123, y: 1 },
 					{ x: 1, y: 10 },
