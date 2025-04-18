@@ -15,6 +15,9 @@ import { Item, ItemGroup, ItemGroups } from "../prg/items";
 import { chunk, mapRecord, range, sum, zipObject } from "../functions";
 import { assertTuple, ReadonlyTuple } from "../tuple";
 import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
+import { flexbox, leafs, LayoutRect } from "../../math/rect";
+import { spriteCounts } from "../prg/data-locations";
+import { origo } from "../../math/coord2";
 
 export function drawLevelsToCanvas(
 	levels: readonly Level[],
@@ -206,75 +209,101 @@ function drawChar(
 	return image;
 }
 
-export function drawSpritesToCanvas(spriteGroups: SpriteGroups): ImageData {
-	const spriteImageGroups = mapRecord(spriteGroups, (spriteGroup) => {
-		return spriteGroup.sprites.map((sprite) =>
-			drawSprite(sprite, getSpritePalette(spriteGroup.color))
+export function layOutSpriteGroups(): LayoutRect {
+	const spriteSize = {
+		x: spriteWidthBytes * 8,
+		y: spriteHeight,
+	};
+
+	let index = 0;
+	const spriteRects = mapRecord(
+		spriteCounts,
+		(count): ReadonlyArray<LayoutRect> =>
+			range(0, count).map(
+				(): LayoutRect => ({
+					pos: origo,
+					size: spriteSize,
+					index: index++,
+				})
+			)
+	);
+
+	const spriteGroupRects = mapRecord(spriteRects, (rects, groupName) => {
+		const multiWidth = spriteGroupMultiWidths[groupName];
+		const gap = multiWidth === 1 ? 8 : 0;
+		return flexbox(
+			chunk(rects, multiWidth === 1 ? 4 : multiWidth).map((row) =>
+				flexbox(row, "row", gap)
+			),
+			"column",
+			gap
 		);
 	});
 
-	const renderedSpriteGroups = mapRecord(
-		spriteImageGroups,
-		(spriteImages, groupName) => {
-			const multiWidth = spriteGroupMultiWidths[groupName];
-			const gap = multiWidth === 1 ? 8 : 0;
-			return imageDataConcatenate(
-				chunk(spriteImages, multiWidth === 1 ? 4 : multiWidth).map((row) =>
-					imageDataConcatenate(row, "row", gap)
-				),
-				"column",
-				gap
-			);
-		}
-	);
-
-	return imageDataConcatenate(
+	return flexbox(
 		[
 			[
-				renderedSpriteGroups.player,
-				renderedSpriteGroups.bubbleBuster,
-				renderedSpriteGroups.stoner,
-				renderedSpriteGroups.beluga,
+				spriteGroupRects.player,
+				spriteGroupRects.bubbleBuster,
+				spriteGroupRects.stoner,
+				spriteGroupRects.beluga,
 			],
 			[
-				renderedSpriteGroups.hullaballoon,
-				renderedSpriteGroups.colley,
-				renderedSpriteGroups.incendo,
-				renderedSpriteGroups.willyWhistle,
-				renderedSpriteGroups.superSocket,
+				spriteGroupRects.hullaballoon,
+				spriteGroupRects.colley,
+				spriteGroupRects.incendo,
+				spriteGroupRects.willyWhistle,
+				spriteGroupRects.superSocket,
 			],
 			[
-				imageDataConcatenate(
-					[
-						renderedSpriteGroups.playerInBubbleA,
-						renderedSpriteGroups.playerInBubbleB,
-					],
+				flexbox(
+					[spriteGroupRects.playerInBubbleA, spriteGroupRects.playerInBubbleB],
 					"row",
 					8
 				),
-				imageDataConcatenate(
-					[
-						renderedSpriteGroups.bossFacingLeft,
-						renderedSpriteGroups.bossFacingRight,
-					],
+				flexbox(
+					[spriteGroupRects.bossFacingLeft, spriteGroupRects.bossFacingRight],
 					"row",
 					8 * 3
 				),
-				renderedSpriteGroups.bossInBubble,
-				imageDataConcatenate(
+				spriteGroupRects.bossInBubble,
+				flexbox(
 					[
-						renderedSpriteGroups.bonusCupCake,
-						renderedSpriteGroups.bonusMelon,
-						renderedSpriteGroups.bonusDiamond,
+						spriteGroupRects.bonusCupCake,
+						spriteGroupRects.bonusMelon,
+						spriteGroupRects.bonusDiamond,
 					],
 					"row",
 					8
 				),
 			],
-		].map((chunk) => imageDataConcatenate(chunk, "column", 3 * 8)),
+		].map((chunk) => flexbox(chunk, "column", 3 * 8)),
 		"row",
 		3 * 8
 	);
+}
+
+export function drawSpritesToCanvas(spriteGroups: SpriteGroups): ImageData {
+	const sprites = Object.values(
+		mapRecord(spriteGroups, (spriteGroup) => {
+			return spriteGroup.sprites.map((sprite) =>
+				drawSprite(sprite, getSpritePalette(spriteGroup.color))
+			);
+		})
+	).flat();
+
+	const layout = layOutSpriteGroups();
+	const spritePositions = leafs(layout).map(({ pos }) => pos);
+
+	const image = new ImageData(layout.size.x, layout.size.y);
+	for (const { sprite, pos } of zipObject({
+		sprite: sprites,
+		pos: spritePositions,
+	})) {
+		blitImageData(image, sprite, pos.x, pos.y);
+	}
+
+	return image;
 }
 
 function drawSprite(

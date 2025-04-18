@@ -7,6 +7,16 @@ export type Rect = {
 	readonly size: Coord2;
 };
 
+export type LayoutRect = Rect &
+	(
+		| {
+				readonly children: ReadonlyArray<LayoutRect>;
+		  }
+		| {
+				readonly index: number;
+		  }
+	);
+
 export function bottomRight(rect: Rect): Coord2 {
 	return add(rect.pos, rect.size);
 }
@@ -49,4 +59,54 @@ export function boundingBox(rects: ReadonlyArray<Rect>): Rect | undefined {
 	};
 
 	return { pos: min, size: subtract(max, min) };
+}
+
+export function flexbox(
+	rects: ReadonlyArray<LayoutRect>,
+	direction: "row" | "column",
+	gap: number
+): LayoutRect {
+	const childPositions = flexboxChildPositions(
+		rects.map(({ size }) => size),
+		direction,
+		gap
+	);
+
+	const children = rects.map((rect, index) => ({
+		...rect,
+		pos: childPositions[index]!,
+	}));
+
+	const bounding = boundingBox(children);
+	if (!bounding) {
+		throw new Error("Missing bounding box.");
+	}
+
+	return {
+		children,
+		...bounding,
+	};
+}
+
+function _leafs(
+	rect: LayoutRect,
+	parentPos: Coord2
+): Array<Rect & { readonly index: number }> {
+	const rectPosInParentSpace = add(rect.pos, parentPos);
+
+	if ("index" in rect) {
+		return [
+			{
+				pos: rectPosInParentSpace,
+				size: rect.size,
+				index: rect.index,
+			},
+		];
+	}
+
+	return rect.children.flatMap((x) => _leafs(x, rectPosInParentSpace));
+}
+
+export function leafs(rect: LayoutRect): ReadonlyArray<Rect> {
+	return _leafs(rect, origo).sort((a, b) => a.index - b.index);
 }
