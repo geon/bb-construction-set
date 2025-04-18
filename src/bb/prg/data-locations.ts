@@ -112,6 +112,14 @@ export const spriteCounts: Record<SpriteGroupName, number> = {
 };
 
 const charactersStartAddress = 22528;
+function getCharacterOffsetInSprites(characterName: CharacterName): number {
+	// Sum up the length of all segments before the wanted one.
+	return sum(
+		characterNames
+			.slice(0, characterNames.indexOf(characterName))
+			.map((characterName) => spriteCounts[characterName])
+	);
+}
 
 const spriteSegmentAddresses: Readonly<Record<SpriteGroupName, number>> = {
 	player: charactersStartAddress + 64 * getCharacterOffsetInSprites("player"),
@@ -206,12 +214,3 @@ export const itemDataSegmentLocations: Readonly<
 		length: 4 * 8 * 3,
 	},
 };
-
-function getCharacterOffsetInSprites(characterName: CharacterName): number {
-	// Sum up the length of all segments before the wanted one.
-	return sum(
-		characterNames
-			.slice(0, characterNames.indexOf(characterName))
-			.map((characterName) => spriteCounts[characterName])
-	);
-}
