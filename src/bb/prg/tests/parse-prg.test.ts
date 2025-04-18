@@ -30,6 +30,12 @@ test("parsePrg", () => {
 	expect(levelFromPrg).toMatchSnapshot();
 });
 
+test("parsePrg items", () => {
+	expect(
+		parsePrg(readFileSync(__dirname + "/decompressed-bb.prg").buffer).items
+	).toMatchSnapshot();
+});
+
 test("First few levels bubble current rectangles.", () => {
 	const prg = readFileSync(__dirname + "/decompressed-bb.prg").buffer;
 
