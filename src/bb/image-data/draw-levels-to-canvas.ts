@@ -12,7 +12,14 @@ import { spriteHeight, spriteWidthBytes } from "../../c64/consts";
 import { Sprite, SpriteGroups } from "../internal-data-formats/sprite";
 import { CharacterName } from "../game-definitions/character-name";
 import { Item, ItemGroup, itemGroupMeta, ItemGroups } from "../prg/items";
-import { chunk, mapRecord, range, sum, zipObject } from "../functions";
+import {
+	chunk,
+	mapRecord,
+	range,
+	sum,
+	unzipObject,
+	zipObject,
+} from "../functions";
 import { assertTuple, ReadonlyTuple } from "../tuple";
 import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
 import { flexbox, leafs, LayoutRect, grid } from "../../math/rect";
@@ -337,12 +344,25 @@ export function layOutItemGroups(): LayoutRect {
 	const itemRectGroups = mapRecord(
 		itemGroupMeta,
 		(group): ReadonlyArray<LayoutRect> =>
-			range(0, group.count).map(
-				(): LayoutRect => ({
-					pos: origo,
-					size: { x: group.width * 8, y: group.height * 8 },
-					index: index++,
-				})
+			range(0, group.count).map(() =>
+				flexbox(
+					range(0, group.width).map(
+						(): LayoutRect =>
+							flexbox(
+								range(0, group.height).map(
+									(): LayoutRect => ({
+										pos: origo,
+										size: { x: 8, y: 8 },
+										index: index++,
+									})
+								),
+								"column",
+								0
+							)
+					),
+					"row",
+					0
+				)
 			)
 	);
 
@@ -396,7 +416,7 @@ export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
 		4
 	);
 
-	const items = Object.values(
+	const chars = Object.values(
 		mapRecord(
 			mapRecord(
 				itemGroups,
@@ -423,16 +443,24 @@ export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
 				}
 			),
 			(maskedItems) => {
-				return maskedItems.map((maskedItem) =>
-					drawCharblock(
-						maskedItem.item,
+				const { item: items, mask: itemMasks } = unzipObject(maskedItems);
+				const chars = items.flat().flat();
+				const masks = itemMasks?.flat().flat() ?? chars.map(() => undefined);
+				const maskedChars = zipObject({
+					char: chars,
+					mask: masks,
+				});
+
+				return maskedChars.map((maskedChar) =>
+					drawChar(
+						maskedChar.char,
 						[
 							palette[0], //black
 							palette[9], // Brown
 							palette[1], // White
 							palette[5], // Green
 						],
-						maskedItem.mask
+						maskedChar.mask
 					)
 				);
 			}
@@ -443,8 +471,8 @@ export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
 	const itemPositions = leafs(layout).map(({ pos }) => pos);
 
 	const image = new ImageData(layout.size.x, layout.size.y);
-	for (const { item, pos } of zipObject({
-		item: items,
+	for (const { char: item, pos } of zipObject({
+		char: chars,
 		pos: itemPositions,
 	})) {
 		blitImageData(image, item, pos.x, pos.y);
