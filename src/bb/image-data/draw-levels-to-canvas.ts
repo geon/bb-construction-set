@@ -261,21 +261,15 @@ export function layOutSpriteGroups(): LayoutRect {
 					"row",
 					8
 				),
-				flexbox(
-					[spriteGroupRects.bossFacingLeft, spriteGroupRects.bossFacingRight],
-					"row",
-					8 * 3
-				),
+				spriteGroupRects.bossFacingLeft,
+				spriteGroupRects.bossFacingRight,
 				spriteGroupRects.bossInBubble,
 				flexbox(
-					[
-						spriteGroupRects.bonusCupCake,
-						spriteGroupRects.bonusMelon,
-						spriteGroupRects.bonusDiamond,
-					],
+					[spriteGroupRects.bonusCupCake, spriteGroupRects.bonusMelon],
 					"row",
 					8
 				),
+				spriteGroupRects.bonusDiamond,
 			],
 		].map((chunk) => flexbox(chunk, "column", 3 * 8)),
 		"row",
