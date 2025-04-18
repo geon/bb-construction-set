@@ -2,7 +2,7 @@ import {
 	CharsetChar,
 	parseCharsetCharLine,
 } from "../internal-data-formats/charset-char";
-import { mapRecord, strictChunk } from "../functions";
+import { mapRecord, strictChunk, zipObject } from "../functions";
 import { ReadonlyTuple } from "../tuple";
 import { linesPerChar } from "./charset-char";
 import { ItemDataSegmentName } from "../game-definitions/item-segment-name";
@@ -102,10 +102,14 @@ export type Item<Height extends number, Width extends number> =
 	// The chars are column-order just like in the game.
 	ReadonlyTuple<ReadonlyTuple<CharsetChar, Height>, Width>;
 
-export type ItemGroup<Width extends number, Height extends number> = {
-	items: ReadonlyArray<Item<Height, Width>>;
-	masks?: ReadonlyArray<Item<Height, Width>>;
-};
+export type ItemGroup<
+	Width extends number,
+	Height extends number
+> = ReadonlyArray<{
+	readonly item: Item<Height, Width>;
+	readonly mask?: Item<Height, Width>;
+}>;
+
 export type ItemGroups = {
 	readonly [Key in ItemDataSegmentName]: ItemGroup<number, number>;
 };
@@ -129,13 +133,11 @@ export function readItems(
 			);
 
 			return itemGroupMeta[segmentName].hasMask
-				? {
-						items: items.slice(0, items.length / 2),
-						masks: items.slice(items.length / 2),
-				  }
-				: {
-						items,
-				  };
+				? zipObject({
+						item: items.slice(0, items.length / 2),
+						mask: items.slice(items.length / 2),
+				  })
+				: items.map((item) => ({ item }));
 		}
 	);
 }

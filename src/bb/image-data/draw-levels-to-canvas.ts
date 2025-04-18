@@ -392,7 +392,7 @@ export function layOutItemGroups(): LayoutRect {
 
 export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
 	const sharedBubbleMask = assertTuple(
-		itemGroups.bubbleBlow.masks?.slice(8) ?? [],
+		itemGroups.bubbleBlow.slice(8).map((x) => x.mask!),
 		4
 	);
 
@@ -415,24 +415,17 @@ export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
 					})();
 
 					return masks
-						? {
-								items: itemGroup.items,
-								masks,
-						  }
+						? zipObject({
+								item: itemGroup.map(({ item }) => item),
+								mask: masks,
+						  })
 						: itemGroup;
 				}
 			),
-			(itemGroup) => {
-				const maskedItems = zipObject({
-					charblock: itemGroup.items,
-					mask:
-						itemGroup.masks ??
-						range(0, itemGroup.items.length).map(() => undefined),
-				});
-
+			(maskedItems) => {
 				return maskedItems.map((maskedItem) =>
 					drawCharblock(
-						maskedItem.charblock,
+						maskedItem.item,
 						[
 							palette[0], //black
 							palette[9], // Brown
