@@ -1,4 +1,4 @@
-import { unzipObject } from "../bb/functions";
+import { chunk, unzipObject } from "../bb/functions";
 import { add, Coord2, origo, subtract } from "./coord2";
 
 export type Rect = {
@@ -86,6 +86,18 @@ export function flexbox(
 		children,
 		...bounding,
 	};
+}
+
+export function grid(
+	rects: ReadonlyArray<LayoutRect>,
+	rowWidth: number,
+	gap: number
+): LayoutRect {
+	return flexbox(
+		chunk(rects, rowWidth).map((row) => flexbox(row, "row", gap)),
+		"column",
+		gap
+	);
 }
 
 function _leafs(

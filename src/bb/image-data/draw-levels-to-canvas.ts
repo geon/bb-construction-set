@@ -11,11 +11,11 @@ import { CharsetChar } from "../internal-data-formats/charset-char";
 import { spriteHeight, spriteWidthBytes } from "../../c64/consts";
 import { Sprite, SpriteGroups } from "../internal-data-formats/sprite";
 import { CharacterName } from "../game-definitions/character-name";
-import { Item, ItemGroup, ItemGroups } from "../prg/items";
+import { Item, ItemGroup, itemGroupMeta, ItemGroups } from "../prg/items";
 import { chunk, mapRecord, range, sum, zipObject } from "../functions";
 import { assertTuple, ReadonlyTuple } from "../tuple";
 import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
-import { flexbox, leafs, LayoutRect } from "../../math/rect";
+import { flexbox, leafs, LayoutRect, grid } from "../../math/rect";
 import { spriteCounts } from "../prg/data-locations";
 import { origo } from "../../math/coord2";
 
@@ -332,98 +332,132 @@ function getSpritePalette(color: PaletteIndex): [Color, Color, Color, Color] {
 	];
 }
 
+export function layOutItemGroups(): LayoutRect {
+	let index = 0;
+	const itemRectGroups = mapRecord(
+		itemGroupMeta,
+		(group): ReadonlyArray<LayoutRect> =>
+			range(0, group.count).map(
+				(): LayoutRect => ({
+					pos: origo,
+					size: { x: group.width * 8, y: group.height * 8 },
+					index: index++,
+				})
+			)
+	);
+
+	const laidOutItemGroups = mapRecord(itemRectGroups, (itemRects, groupName) =>
+		grid(
+			itemRects,
+			{
+				bubbleBlow: 4,
+				bubblePop: 4,
+				specialBubbles: 4,
+				extendBubbles: 4,
+				items: Math.ceil(Math.sqrt(itemRectGroups.items.length)),
+			}[groupName as string] ?? 1000,
+			8
+		)
+	);
+
+	return flexbox(
+		[
+			[
+				laidOutItemGroups.bubbleBlow,
+				laidOutItemGroups.specialBubbles,
+				laidOutItemGroups.extendBubbles,
+			],
+			[
+				laidOutItemGroups.bubblePop,
+				laidOutItemGroups.fire,
+				laidOutItemGroups.baronVonBlubba,
+				laidOutItemGroups.stonerWeapon,
+				laidOutItemGroups.drunkAndInvaderWeapon,
+				flexbox(
+					[laidOutItemGroups.incendoWeapon, laidOutItemGroups.lightning],
+					"row",
+					8
+				),
+			],
+			[
+				laidOutItemGroups.items,
+				laidOutItemGroups.bonusRoundCircles,
+				laidOutItemGroups.largeLightning,
+			],
+		].map((chunk) => flexbox(chunk, "column", 3 * 8)),
+		"row",
+		4 * 8
+	);
+}
+
 export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
 	const sharedBubbleMask = assertTuple(
 		itemGroups.bubbleBlow.masks?.slice(8) ?? [],
 		4
 	);
 
-	const itemImageGroups = mapRecord(
-		mapRecord(itemGroups, (itemGroup, groupName): ItemGroup<number, number> => {
-			const masks = (() => {
-				switch (groupName) {
-					case "specialBubbles":
-						return range(0, 3).flatMap(() => sharedBubbleMask);
-					case "extendBubbles":
-						return range(0, 5).flatMap(() => sharedBubbleMask);
-					case "stonerWeapon":
-						return [sharedBubbleMask[0], sharedBubbleMask[2]];
-					default:
-						return undefined;
+	const items = Object.values(
+		mapRecord(
+			mapRecord(
+				itemGroups,
+				(itemGroup, groupName): ItemGroup<number, number> => {
+					const masks = (() => {
+						switch (groupName) {
+							case "specialBubbles":
+								return range(0, 3).flatMap(() => sharedBubbleMask);
+							case "extendBubbles":
+								return range(0, 5).flatMap(() => sharedBubbleMask);
+							case "stonerWeapon":
+								return [sharedBubbleMask[0], sharedBubbleMask[2]];
+							default:
+								return undefined;
+						}
+					})();
+
+					return masks
+						? {
+								items: itemGroup.items,
+								masks,
+						  }
+						: itemGroup;
 				}
-			})();
+			),
+			(itemGroup) => {
+				const maskedItems = zipObject({
+					charblock: itemGroup.items,
+					mask:
+						itemGroup.masks ??
+						range(0, itemGroup.items.length).map(() => undefined),
+				});
 
-			return masks
-				? {
-						items: itemGroup.items,
-						masks,
-				  }
-				: itemGroup;
-		}),
-		(itemGroup) => {
-			const maskedItems = zipObject(itemGroup).map(
-				({ items: charblock, masks: mask }) => ({ charblock, mask })
-			);
+				return maskedItems.map((maskedItem) =>
+					drawCharblock(
+						maskedItem.charblock,
+						[
+							palette[0], //black
+							palette[9], // Brown
+							palette[1], // White
+							palette[5], // Green
+						],
+						maskedItem.mask
+					)
+				);
+			}
+		)
+	).flat();
 
-			return maskedItems.map((maskedItem) =>
-				drawCharblock(
-					maskedItem.charblock,
-					[
-						palette[0], //black
-						palette[9], // Brown
-						palette[1], // White
-						palette[5], // Green
-					],
-					maskedItem.mask
-				)
-			);
-		}
-	);
+	const layout = layOutItemGroups();
+	const itemPositions = leafs(layout).map(({ pos }) => pos);
 
-	const renderedItemGroups = mapRecord(
-		itemImageGroups,
-		(itemImages, groupName) =>
-			drawGrid(
-				itemImages,
-				{
-					bubbleBlow: 4,
-					bubblePop: 4,
-					specialBubbles: 4,
-					extendBubbles: 4,
-					items: Math.ceil(Math.sqrt(itemImageGroups.items.length)),
-				}[groupName as string] ?? 1000,
-				8
-			)
-	);
+	const image = new ImageData(layout.size.x, layout.size.y);
+	for (const { item, pos } of zipObject({
+		item: items,
+		pos: itemPositions,
+	})) {
+		blitImageData(image, item, pos.x, pos.y);
+	}
 
-	return imageDataConcatenate(
-		[
-			[
-				renderedItemGroups.bubbleBlow,
-				renderedItemGroups.specialBubbles,
-				renderedItemGroups.extendBubbles,
-			],
-			[
-				renderedItemGroups.bubblePop,
-				renderedItemGroups.fire,
-				renderedItemGroups.baronVonBlubba,
-				renderedItemGroups.stonerWeapon,
-				renderedItemGroups.drunkAndInvaderWeapon,
-				imageDataConcatenate(
-					[renderedItemGroups.incendoWeapon, renderedItemGroups.lightning],
-					"row",
-					8
-				),
-			],
-			[
-				renderedItemGroups.items,
-				renderedItemGroups.bonusRoundCircles,
-				renderedItemGroups.largeLightning,
-			],
-		].map((chunk) => imageDataConcatenate(chunk, "column", 3 * 8)),
-		"row",
-		4 * 8
-	);
+	return image;
 }
 
 type CharPalette = ReadonlyTuple<Color, 4>;
