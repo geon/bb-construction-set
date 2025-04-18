@@ -112,29 +112,29 @@ export const spriteCounts: Record<SpriteGroupName, number> = {
 };
 
 const charactersStartAddress = 22528;
-function getCharacterOffsetInSprites(characterName: CharacterName): number {
+function getCharacterStartAddress(characterName: CharacterName): number {
 	// Sum up the length of all segments before the wanted one.
-	return sum(
-		characterNames
-			.slice(0, characterNames.indexOf(characterName))
-			.map((characterName) => spriteCounts[characterName])
+	return (
+		charactersStartAddress +
+		64 *
+			sum(
+				characterNames
+					.slice(0, characterNames.indexOf(characterName))
+					.map((characterName) => spriteCounts[characterName])
+			)
 	);
 }
 
 const spriteSegmentAddresses: Readonly<Record<SpriteGroupName, number>> = {
-	player: charactersStartAddress + 64 * getCharacterOffsetInSprites("player"),
-	bubbleBuster:
-		charactersStartAddress + 64 * getCharacterOffsetInSprites("bubbleBuster"),
-	incendo: charactersStartAddress + 64 * getCharacterOffsetInSprites("incendo"),
-	colley: charactersStartAddress + 64 * getCharacterOffsetInSprites("colley"),
-	hullaballoon:
-		charactersStartAddress + 64 * getCharacterOffsetInSprites("hullaballoon"),
-	beluga: charactersStartAddress + 64 * getCharacterOffsetInSprites("beluga"),
-	willyWhistle:
-		charactersStartAddress + 64 * getCharacterOffsetInSprites("willyWhistle"),
-	stoner: charactersStartAddress + 64 * getCharacterOffsetInSprites("stoner"),
-	superSocket:
-		charactersStartAddress + 64 * getCharacterOffsetInSprites("superSocket"),
+	player: getCharacterStartAddress("player"),
+	bubbleBuster: getCharacterStartAddress("bubbleBuster"),
+	incendo: getCharacterStartAddress("incendo"),
+	colley: getCharacterStartAddress("colley"),
+	hullaballoon: getCharacterStartAddress("hullaballoon"),
+	beluga: getCharacterStartAddress("beluga"),
+	willyWhistle: getCharacterStartAddress("willyWhistle"),
+	stoner: getCharacterStartAddress("stoner"),
+	superSocket: getCharacterStartAddress("superSocket"),
 	playerInBubble: 0x7440,
 	bossFacingLeft: 0x7640,
 	bossInBubble: 0x7640 + 64 * 9,
