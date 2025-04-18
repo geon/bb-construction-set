@@ -113,72 +113,35 @@ export const spriteCounts: Record<SpriteGroupName, number> = {
 
 const charactersStartAddress = 22528;
 
+const spriteSegmentAddresses: Readonly<Record<SpriteGroupName, number>> = {
+	player: charactersStartAddress + 64 * getCharacterOffsetInSprites("player"),
+	bubbleBuster:
+		charactersStartAddress + 64 * getCharacterOffsetInSprites("bubbleBuster"),
+	incendo: charactersStartAddress + 64 * getCharacterOffsetInSprites("incendo"),
+	colley: charactersStartAddress + 64 * getCharacterOffsetInSprites("colley"),
+	hullaballoon:
+		charactersStartAddress + 64 * getCharacterOffsetInSprites("hullaballoon"),
+	beluga: charactersStartAddress + 64 * getCharacterOffsetInSprites("beluga"),
+	willyWhistle:
+		charactersStartAddress + 64 * getCharacterOffsetInSprites("willyWhistle"),
+	stoner: charactersStartAddress + 64 * getCharacterOffsetInSprites("stoner"),
+	superSocket:
+		charactersStartAddress + 64 * getCharacterOffsetInSprites("superSocket"),
+	playerInBubble: 0x7440,
+	bossFacingLeft: 0x7640,
+	bossInBubble: 0x7640 + 64 * 9,
+	bossFacingRight: 0x7c40,
+	bonusCupCake: 0xa320,
+	bonusMelon: 0xa420,
+	bonusDiamond: 0xa520,
+};
+
 export const spriteDataSegmentLocations: Readonly<
 	Record<SpriteGroupName, SegmentLocation>
-> = mapRecord(
-	{
-		player: {
-			startAddress:
-				charactersStartAddress + 64 * getCharacterOffsetInSprites("player"),
-		},
-		bubbleBuster: {
-			startAddress:
-				charactersStartAddress +
-				64 * getCharacterOffsetInSprites("bubbleBuster"),
-		},
-		incendo: {
-			startAddress:
-				charactersStartAddress + 64 * getCharacterOffsetInSprites("incendo"),
-		},
-		colley: {
-			startAddress:
-				charactersStartAddress + 64 * getCharacterOffsetInSprites("colley"),
-		},
-		hullaballoon: {
-			startAddress:
-				charactersStartAddress +
-				64 * getCharacterOffsetInSprites("hullaballoon"),
-		},
-		beluga: {
-			startAddress:
-				charactersStartAddress + 64 * getCharacterOffsetInSprites("beluga"),
-		},
-		willyWhistle: {
-			startAddress:
-				charactersStartAddress +
-				64 * getCharacterOffsetInSprites("willyWhistle"),
-		},
-		stoner: {
-			startAddress:
-				charactersStartAddress + 64 * getCharacterOffsetInSprites("stoner"),
-		},
-		superSocket: {
-			startAddress:
-				charactersStartAddress +
-				64 * getCharacterOffsetInSprites("superSocket"),
-		},
-		playerInBubble: {
-			startAddress: 0x7440,
-		},
-		bossFacingLeft: {
-			startAddress: 0x7640,
-		},
-		bossInBubble: {
-			startAddress: 0x7640 + 64 * 9,
-		},
-		bossFacingRight: {
-			startAddress: 0x7c40,
-		},
-		bonusCupCake: {
-			startAddress: 0xa320,
-		},
-		bonusMelon: { startAddress: 0xa420 },
-		bonusDiamond: {
-			startAddress: 0xa520,
-		},
-	},
-	(x, name) => ({ ...x, length: 64 * spriteCounts[name] })
-);
+> = mapRecord(spriteSegmentAddresses, (startAddress, name) => ({
+	startAddress,
+	length: 64 * spriteCounts[name],
+}));
 
 export const monsterSpriteColorsSegmentLocation: SegmentLocation = {
 	startAddress: 0xab63,
