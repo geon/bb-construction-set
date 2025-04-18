@@ -92,7 +92,7 @@ export const levelSegmentLocations: Readonly<
 	},
 };
 
-const spriteCounts: Record<CharacterName, number> = {
+export const spriteCounts: Record<SpriteGroupName, number> = {
 	player: 19,
 	bubbleBuster: 12,
 	incendo: 12,
@@ -102,6 +102,13 @@ const spriteCounts: Record<CharacterName, number> = {
 	willyWhistle: 8,
 	stoner: 8,
 	superSocket: 6,
+	playerInBubble: 8,
+	bossFacingLeft: 9,
+	bossInBubble: 9,
+	bossFacingRight: 9,
+	bonusCupCake: 4,
+	bonusMelon: 4,
+	bonusDiamond: 2,
 };
 
 const charactersStartAddress = 22528;
@@ -154,13 +161,31 @@ export const spriteDataSegmentLocations: Readonly<
 			charactersStartAddress + 64 * getCharacterOffsetInSprites("superSocket"),
 		length: 64 * spriteCounts.superSocket,
 	},
-	playerInBubble: { startAddress: 0x7440, length: 64 * 8 },
-	bossFacingLeft: { startAddress: 0x7640, length: 64 * 9 },
-	bossInBubble: { startAddress: 0x7640 + 64 * 9, length: 64 * 9 },
-	bossFacingRight: { startAddress: 0x7c40, length: 64 * 9 },
-	bonusCupCake: { startAddress: 0xa320, length: 64 * 4 },
-	bonusMelon: { startAddress: 0xa420, length: 64 * 4 },
-	bonusDiamond: { startAddress: 0xa520, length: 64 * 2 },
+	playerInBubble: {
+		startAddress: 0x7440,
+		length: 64 * spriteCounts.playerInBubble,
+	},
+	bossFacingLeft: {
+		startAddress: 0x7640,
+		length: 64 * spriteCounts.bossFacingLeft,
+	},
+	bossInBubble: {
+		startAddress: 0x7640 + 64 * 9,
+		length: 64 * spriteCounts.bossInBubble,
+	},
+	bossFacingRight: {
+		startAddress: 0x7c40,
+		length: 64 * spriteCounts.bossFacingRight,
+	},
+	bonusCupCake: {
+		startAddress: 0xa320,
+		length: 64 * spriteCounts.bonusCupCake,
+	},
+	bonusMelon: { startAddress: 0xa420, length: 64 * spriteCounts.bonusMelon },
+	bonusDiamond: {
+		startAddress: 0xa520,
+		length: 64 * spriteCounts.bonusDiamond,
+	},
 };
 export const monsterSpriteColorsSegmentLocation: SegmentLocation = {
 	startAddress: 0xab63,
