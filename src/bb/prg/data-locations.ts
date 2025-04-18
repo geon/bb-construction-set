@@ -5,7 +5,7 @@ import {
 import { ItemDataSegmentName } from "../game-definitions/item-segment-name";
 import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
 import { LevelDataSegmentName } from "../game-definitions/level-segment-name";
-import { mapRecord, sum } from "../functions";
+import { mapRecord, objectFromEntries, sum } from "../functions";
 
 export const maxAsymmetric = 45;
 export const maxSidebars = 59;
@@ -126,15 +126,21 @@ function getCharacterStartAddress(characterName: CharacterName): number {
 }
 
 const spriteSegmentAddresses: Readonly<Record<SpriteGroupName, number>> = {
-	player: getCharacterStartAddress("player"),
-	bubbleBuster: getCharacterStartAddress("bubbleBuster"),
-	incendo: getCharacterStartAddress("incendo"),
-	colley: getCharacterStartAddress("colley"),
-	hullaballoon: getCharacterStartAddress("hullaballoon"),
-	beluga: getCharacterStartAddress("beluga"),
-	willyWhistle: getCharacterStartAddress("willyWhistle"),
-	stoner: getCharacterStartAddress("stoner"),
-	superSocket: getCharacterStartAddress("superSocket"),
+	...objectFromEntries(
+		(
+			[
+				"player",
+				"bubbleBuster",
+				"incendo",
+				"colley",
+				"hullaballoon",
+				"beluga",
+				"willyWhistle",
+				"stoner",
+				"superSocket",
+			] as const
+		).map((name) => [name, getCharacterStartAddress(name)])
+	),
 	playerInBubble: 0x7440,
 	bossFacingLeft: 0x7640,
 	bossInBubble: 0x7640 + 64 * 9,
