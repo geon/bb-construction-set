@@ -10,19 +10,84 @@ import { DataSegment } from "./io";
 import { assertTuple } from "../tuple";
 
 export const itemGroupMeta = {
-	bubbleBlow: { width: 3, height: 2, count: 6, hasMask: true },
-	bubblePop: { width: 3, height: 2, count: 6, hasMask: false },
-	baronVonBlubba: { width: 3, height: 2, count: 6, hasMask: true },
-	specialBubbles: { width: 3, height: 2, count: 6, hasMask: false },
-	lightning: { width: 2, height: 2, count: 6, hasMask: true },
-	fire: { width: 3, height: 2, count: 6, hasMask: true },
-	extendBubbles: { width: 3, height: 2, count: 6, hasMask: false },
-	stonerWeapon: { width: 3, height: 2, count: 6, hasMask: false },
-	drunkAndInvaderWeapon: { width: 2, height: 2, count: 6, hasMask: true },
-	incendoWeapon: { width: 2, height: 2, count: 6, hasMask: true },
-	items: { width: 2, height: 2, count: 6, hasMask: false },
-	largeLightning: { width: 5, height: 2, count: 6, hasMask: true },
-	bonusRoundCircles: { width: 2, height: 2, count: 6, hasMask: false },
+	bubbleBlow: {
+		width: 3,
+		height: 2,
+		count: 6,
+		hasMask: true,
+	},
+	bubblePop: {
+		width: 3,
+		height: 2,
+		count: 6,
+		hasMask: false,
+	},
+	baronVonBlubba: {
+		width: 3,
+		height: 2,
+		count: 6,
+		hasMask: true,
+	},
+	specialBubbles: {
+		width: 3,
+		height: 2,
+		count: 6,
+		hasMask: false,
+	},
+	lightning: {
+		width: 2,
+		height: 2,
+		count: 6,
+		hasMask: true,
+	},
+	fire: {
+		width: 3,
+		height: 2,
+		count: 6,
+		hasMask: true,
+	},
+	extendBubbles: {
+		width: 3,
+		height: 2,
+		count: 6,
+		hasMask: false,
+	},
+	stonerWeapon: {
+		width: 3,
+		height: 2,
+		count: 6,
+		hasMask: false,
+	},
+	drunkAndInvaderWeapon: {
+		width: 2,
+		height: 2,
+		count: 6,
+		hasMask: true,
+	},
+	incendoWeapon: {
+		width: 2,
+		height: 2,
+		count: 6,
+		hasMask: true,
+	},
+	items: {
+		width: 2,
+		height: 2,
+		count: 6,
+		hasMask: false,
+	},
+	largeLightning: {
+		width: 5,
+		height: 2,
+		count: 6,
+		hasMask: true,
+	},
+	bonusRoundCircles: {
+		width: 2,
+		height: 2,
+		count: 6,
+		hasMask: false,
+	},
 } as const satisfies Record<
 	ItemDataSegmentName,
 	{
