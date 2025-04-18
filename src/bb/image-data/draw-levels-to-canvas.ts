@@ -216,14 +216,6 @@ export function drawSpritesToCanvas(spriteGroups: SpriteGroups): ImageData {
 	const renderedSpriteGroups = mapRecord(
 		spriteImageGroups,
 		(spriteImages, groupName) => {
-			if (groupName === "playerInBubble") {
-				return imageDataConcatenate(
-					chunk(spriteImages, 4).map((multi) => drawGrid(multi, 2)),
-					"row",
-					8
-				);
-			}
-
 			const multiWidth = spriteGroupMultiWidths[groupName];
 			const gap = multiWidth === 1 ? 8 : 0;
 			return imageDataConcatenate(
@@ -252,7 +244,14 @@ export function drawSpritesToCanvas(spriteGroups: SpriteGroups): ImageData {
 				renderedSpriteGroups.superSocket,
 			],
 			[
-				renderedSpriteGroups.playerInBubble,
+				imageDataConcatenate(
+					[
+						renderedSpriteGroups.playerInBubbleA,
+						renderedSpriteGroups.playerInBubbleB,
+					],
+					"row",
+					8
+				),
 				imageDataConcatenate(
 					[
 						renderedSpriteGroups.bossFacingLeft,
@@ -487,7 +486,8 @@ const spriteGroupMultiWidths: Record<SpriteGroupName, number> = {
 	willyWhistle: 1,
 	stoner: 1,
 	superSocket: 1,
-	playerInBubble: 2,
+	playerInBubbleA: 2,
+	playerInBubbleB: 2,
 	bossFacingLeft: 3,
 	bossInBubble: 3,
 	bossFacingRight: 3,

@@ -102,7 +102,8 @@ export const spriteCounts: Record<SpriteGroupName, number> = {
 	willyWhistle: 8,
 	stoner: 8,
 	superSocket: 6,
-	playerInBubble: 8,
+	playerInBubbleA: 4,
+	playerInBubbleB: 4,
 	bossFacingLeft: 9,
 	bossInBubble: 9,
 	bossFacingRight: 9,
@@ -141,7 +142,8 @@ const spriteSegmentAddresses: Readonly<Record<SpriteGroupName, number>> = {
 			] as const
 		).map((name) => [name, getCharacterStartAddress(name)])
 	),
-	playerInBubble: 0x7440,
+	playerInBubbleA: 0x7440,
+	playerInBubbleB: 0x7440 + 64 * 4,
 	bossFacingLeft: 0x7640,
 	bossInBubble: 0x7640 + 64 * 9,
 	bossFacingRight: 0x7c40,
