@@ -164,61 +164,77 @@ export const monsterSpriteColorsSegmentLocation: SegmentLocation = {
 	length: characterNames.slice(1).length, // 8. The player color is not included.
 };
 
+const itemSegmentLengths: Readonly<Record<ItemDataSegmentName, number>> = {
+	bubbleBlow: 4 * 8 * 36,
+	bubblePop: 4 * 8 * 12,
+	baronVonBlubba: 4 * 8 * 12,
+	specialBubbles: 4 * 8 * 18,
+	lightning: 4 * 8 * 2,
+	fire: 4 * 8 * 12,
+	extendBubbles: 4 * 8 * 30,
+	stonerWeapon: 4 * 8 * 3,
+	drunkAndInvaderWeapon: 4 * 8 * 10,
+	incendoWeapon: 4 * 8 * 8,
+	items: 4 * 8 * 58,
+	largeLightning: 4 * 8 * 5,
+	bonusRoundCircles: 4 * 8 * 3,
+};
+
 export const itemDataSegmentLocations: Readonly<
 	Record<ItemDataSegmentName, SegmentLocation>
 > = {
 	bubbleBlow: {
 		startAddress: 0x8000,
-		length: 4 * 8 * 36,
+		length: itemSegmentLengths.bubbleBlow,
 	},
 	bubblePop: {
 		startAddress: 0x8980,
-		length: 4 * 8 * 12,
+		length: itemSegmentLengths.bubblePop,
 	},
 	baronVonBlubba: {
 		startAddress: 0x8f00,
-		length: 4 * 8 * 12,
+		length: itemSegmentLengths.baronVonBlubba,
 	},
 	specialBubbles: {
 		startAddress: 0x8f00 + 4 * 8 * 12,
-		length: 4 * 8 * 18,
+		length: itemSegmentLengths.specialBubbles,
 	},
 	lightning: {
 		startAddress: 0x8f00 + 4 * 8 * (12 + 18),
-		length: 4 * 8 * 2,
+		length: itemSegmentLengths.lightning,
 	},
 	fire: {
 		startAddress: 0x8f00 + 4 * 8 * (12 + 18 + 2),
-		length: 4 * 8 * 12,
+		length: itemSegmentLengths.fire,
 	},
 	extendBubbles: {
 		startAddress: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12),
-		length: 4 * 8 * 30,
+		length: itemSegmentLengths.extendBubbles,
 	},
 	stonerWeapon: {
 		startAddress: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30),
-		length: 4 * 8 * 3,
+		length: itemSegmentLengths.stonerWeapon,
 	},
 	drunkAndInvaderWeapon: {
 		startAddress: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3),
-		length: 4 * 8 * 10,
+		length: itemSegmentLengths.drunkAndInvaderWeapon,
 	},
 	incendoWeapon: {
 		startAddress: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3 + 10),
-		length: 4 * 8 * 8,
+		length: itemSegmentLengths.incendoWeapon,
 	},
 	items: {
 		startAddress: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3 + 10 + 8),
-		length: 4 * 8 * 58,
+		length: itemSegmentLengths.items,
 	},
 	//  (4x4 chars, but only 12 chars are stored.)
 	largeLightning: {
 		startAddress: 0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3 + 10 + 9 + 57),
-		length: 4 * 8 * 5,
+		length: itemSegmentLengths.largeLightning,
 	},
 	bonusRoundCircles: {
 		startAddress:
 			0x8f00 + 4 * 8 * (12 + 18 + 2 + 12 + 30 + 3 + 10 + 9 + 57 + 5),
-		length: 4 * 8 * 3,
+		length: itemSegmentLengths.bonusRoundCircles,
 	},
 };
