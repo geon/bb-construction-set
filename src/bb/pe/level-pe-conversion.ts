@@ -30,6 +30,10 @@ import { Sprite } from "../internal-data-formats/sprite";
 const emptyChar: CharBitmap = [0, 0, 0, 0, 0, 0, 0, 0];
 
 const charsetIndices = {
+	sideBorderTopLeft: 16,
+	sideBorderTopRight: 17,
+	sideBorderBottomLeft: 32,
+	sideBorderBottomRight: 33,
 	shadowEndUnder: 0 + 2,
 	shadowOuterCorner: 1 + 2,
 	shadowEndRight: 2 + 2,
@@ -541,10 +545,13 @@ function makeCharsetBitmaps(
 
 	const sidebarChars = (level.sidebarChars ?? []).map(levelCharToPeChar);
 
-	charset[16]! = sidebarChars[0]! ?? platformChar;
-	charset[17]! = sidebarChars[1]! ?? platformChar;
-	charset[32]! = sidebarChars[2]! ?? platformChar;
-	charset[33]! = sidebarChars[3]! ?? platformChar;
+	charset[charsetIndices.sideBorderTopLeft]! = sidebarChars[0]! ?? platformChar;
+	charset[charsetIndices.sideBorderTopRight]! =
+		sidebarChars[1]! ?? platformChar;
+	charset[charsetIndices.sideBorderBottomLeft]! =
+		sidebarChars[2]! ?? platformChar;
+	charset[charsetIndices.sideBorderBottomRight]! =
+		sidebarChars[3]! ?? platformChar;
 
 	const currentIndices = Object.values(bubbleCurrentRectangleCharsetIndices);
 	for (const index of currentIndices.slice(0, -2)) {
