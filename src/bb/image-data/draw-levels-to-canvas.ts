@@ -1,4 +1,9 @@
-import { Level, Tiles } from "../internal-data-formats/level";
+import {
+	Level,
+	levelToCharNames,
+	makeCharset,
+	Tiles,
+} from "../internal-data-formats/level";
 import { levelHeight, levelWidth } from "../game-definitions/level-size";
 import { palette, PaletteIndex } from "../internal-data-formats/palette";
 import { Color, mixColors, black } from "../../math/color";
@@ -89,6 +94,27 @@ function drawLevelThumbnail(
 			);
 		}
 	}
+
+	return image;
+}
+
+export function drawLevel(
+	level: Level,
+	_spriteColors: Record<CharacterName, PaletteIndex>
+): ImageData {
+	// Draw level.
+	const palette = getCharPalette(level);
+
+	const charset = mapRecord(makeCharset(level, "retroForge"), (char) =>
+		drawChar(char, palette)
+	);
+
+	const image = drawGrid(
+		levelToCharNames(level)
+			.flat()
+			.map((charName) => charset[charName]),
+		levelWidth
+	);
 
 	return image;
 }

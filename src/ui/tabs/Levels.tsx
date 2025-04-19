@@ -2,9 +2,12 @@ import { ReactNode } from "react";
 import { levelsToPeFileData } from "../../bb/pe/level-pe-conversion";
 import { serializePeFileData } from "../../bb/pe/pe-file";
 import { BlobDownloadButton } from "../BlobDownloadButton";
-import { mapRecord } from "../../bb/functions";
+import { mapAsync, mapRecord } from "../../bb/functions";
 import { ParsedPrg } from "../../bb/prg/parse-prg";
-import { drawLevelsToCanvas } from "../../bb/image-data/draw-levels-to-canvas";
+import {
+	drawLevel,
+	drawLevelsToCanvas,
+} from "../../bb/image-data/draw-levels-to-canvas";
 import { ImageDataCanvas } from "../ImageDataCanvas";
 
 export function Levels({
@@ -20,6 +23,31 @@ export function Levels({
 					parsedPrg.levels,
 					mapRecord(parsedPrg.sprites, ({ color }) => color)
 				)}
+			/>
+			<br />
+			<br />
+			<ImageDataCanvas
+				imageData={drawLevel(
+					parsedPrg.levels[4]!,
+					mapRecord(parsedPrg.sprites, ({ color }) => color)
+				)}
+			/>
+			<br />
+			<br />
+			<BlobDownloadButton
+				getBlob={async () => ({
+					parts: await mapAsync(parsedPrg.levels, async (level, index) => ({
+						fileName: (index + 1).toString().padStart(3, "0") + ".png",
+						blob: await imageDataToBlob(
+							drawLevel(
+								level,
+								mapRecord(parsedPrg.sprites, ({ color }) => color)
+							)
+						),
+					})),
+					fileName: "bubble bobble c64 - all level images.zip",
+				})}
+				label="Download level images"
 			/>
 			<br />
 			<br />
@@ -103,4 +131,19 @@ export function Levels({
 			</FileInput> */}
 		</>
 	);
+}
+
+function imageDataToBlob(image: ImageData): Promise<Blob> {
+	var canvas = document.createElement("canvas");
+	var ctx = canvas.getContext("2d");
+	if (!ctx) {
+		throw new Error("Missing canvas 2d context.");
+	}
+	canvas.width = image.width;
+	canvas.height = image.height;
+	ctx.putImageData(image, 0, 0);
+
+	return new Promise((resolve, reject) => {
+		canvas.toBlob((blob) => (blob ? resolve(blob) : reject()));
+	});
 }

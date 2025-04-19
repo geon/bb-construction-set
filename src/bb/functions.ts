@@ -196,3 +196,14 @@ export function groupBy<Key extends string | number, Item, Value>(
 	}
 	return grouped as Grouped<Key, Value>;
 }
+
+export async function mapAsync<TIn, TOut>(
+	array: ReadonlyArray<TIn>,
+	transform: (value: TIn, index: number) => Promise<TOut>
+): Promise<ReadonlyArray<TOut>> {
+	const result: Array<TOut> = [];
+	for (const [index, element] of array.entries()) {
+		result.push(await transform(element, index));
+	}
+	return result;
+}
