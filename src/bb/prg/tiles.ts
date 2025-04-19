@@ -1,9 +1,5 @@
-import {
-	createTiles,
-	levelWidth,
-	levelHeight,
-	Tiles,
-} from "../internal-data-formats/level";
+import { createTiles, Tiles } from "../internal-data-formats/level";
+import { levelWidth, levelHeight } from "../game-definitions/level-size";
 import { byteToBits, isBitSet } from "../bit-twiddling";
 import { TileBitmap } from "./tile-bitmap";
 import { ReadonlyUint8Array } from "../types";

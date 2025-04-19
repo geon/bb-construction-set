@@ -1,9 +1,5 @@
-import {
-	Level,
-	levelHeight,
-	levelWidth,
-	Tiles,
-} from "../internal-data-formats/level";
+import { Level, Tiles } from "../internal-data-formats/level";
+import { levelHeight, levelWidth } from "../game-definitions/level-size";
 import { palette, PaletteIndex } from "../internal-data-formats/palette";
 import { Color, mixColors, black } from "../../math/color";
 import { CharsetChar } from "../internal-data-formats/charset-char";
