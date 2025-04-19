@@ -29,7 +29,21 @@ import { Sprite } from "../internal-data-formats/sprite";
 
 const emptyChar: CharBitmap = [0, 0, 0, 0, 0, 0, 0, 0];
 
-const charsetIndices = {
+type CharName =
+	| "empty"
+	| "platform"
+	| "sideBorderTopLeft"
+	| "sideBorderTopRight"
+	| "sideBorderBottomLeft"
+	| "sideBorderBottomRight"
+	| "shadowEndUnder"
+	| "shadowOuterCorner"
+	| "shadowEndRight"
+	| "shadowUnder"
+	| "shadowRight"
+	| "shadowInnerCorner";
+
+const charsetIndices: Readonly<Record<CharName, number>> = {
 	empty: 0,
 	platform: 1,
 	sideBorderTopLeft: 16,
