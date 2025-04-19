@@ -1,4 +1,5 @@
 import { CharBitmap } from "../pe/pe-file";
+import { ReadonlyTuple } from "../tuple";
 
 export const shadowChars = {
 	originalC64: [
@@ -126,6 +127,6 @@ export const shadowChars = {
 			0b00010000,
 		],
 	],
-} satisfies Record<string, CharBitmap[]>;
+} satisfies Record<string, ReadonlyTuple<CharBitmap, 6>>;
 
 export type ShadowStyle = keyof typeof shadowChars;
