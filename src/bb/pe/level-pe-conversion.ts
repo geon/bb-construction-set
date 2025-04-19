@@ -28,22 +28,9 @@ import { shadowChars, ShadowStyle } from "../prg/shadow-chars";
 import { assertTuple, ReadonlyTuple } from "../tuple";
 import { Sprite } from "../internal-data-formats/sprite";
 import { levelHeight, levelWidth } from "../game-definitions/level-size";
+import { CharName } from "../game-definitions/char-name";
 
 const emptyChar: CharBitmap = [0, 0, 0, 0, 0, 0, 0, 0];
-
-type CharName =
-	| "empty"
-	| "platform"
-	| "sideBorderTopLeft"
-	| "sideBorderTopRight"
-	| "sideBorderBottomLeft"
-	| "sideBorderBottomRight"
-	| "shadowEndUnder"
-	| "shadowOuterCorner"
-	| "shadowEndRight"
-	| "shadowUnder"
-	| "shadowRight"
-	| "shadowInnerCorner";
 
 const charsetIndices: Readonly<Record<CharName, number>> = {
 	empty: 0,
