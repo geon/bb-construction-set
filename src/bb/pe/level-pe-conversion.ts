@@ -30,6 +30,8 @@ import { Sprite } from "../internal-data-formats/sprite";
 const emptyChar: CharBitmap = [0, 0, 0, 0, 0, 0, 0, 0];
 
 const charsetIndices = {
+	empty: 0,
+	platform: 1,
 	sideBorderTopLeft: 16,
 	sideBorderTopRight: 17,
 	sideBorderBottomLeft: 32,
@@ -332,7 +334,9 @@ function makeLevelCharAndColorData(
 	// Draw the platforms.
 	for (const [tileY, row] of level.tiles.entries()) {
 		for (const [tileX, tile] of row.entries()) {
-			charData[tileY]![tileX]! = tile ? 1 : 0;
+			charData[tileY]![tileX]! = tile
+				? charsetIndices.platform
+				: charsetIndices.empty;
 		}
 	}
 
