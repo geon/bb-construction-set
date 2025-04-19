@@ -571,12 +571,12 @@ function drawCharblock(
 // Just like ctx.putImageData
 function blitImageData(to: ImageData, from: ImageData, dx: number, dy: number) {
 	for (let y = 0; y < from.height; ++y) {
-		for (let x = 0; x < from.width; ++x) {
-			for (let channel = 0; channel < 4; ++channel) {
-				to.data[((y + dy) * to.width + (x + dx)) * 4 + channel] =
-					from.data[(y * from.width + x) * 4 + channel]!;
-			}
-		}
+		const toStart = ((y + dy) * to.width + dx) * 4;
+		const fromStart = y * from.width * 4;
+		to.data.set(
+			from.data.slice(fromStart, fromStart + from.width * 4),
+			toStart
+		);
 	}
 }
 
