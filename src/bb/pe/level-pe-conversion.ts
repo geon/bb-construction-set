@@ -354,19 +354,25 @@ function levelToChars(
 				continue;
 			}
 
-			if (char === 1) {
+			if (char === charsetIndices.platform) {
 				continue;
 			}
 
-			if (indexX > 0 && charData[indexY]![indexX - 1]! === 1) {
-				if (indexY > 0 && charData[indexY - 1]![indexX]! === 1) {
+			if (
+				indexX > 0 &&
+				charData[indexY]![indexX - 1]! === charsetIndices.platform
+			) {
+				if (
+					indexY > 0 &&
+					charData[indexY - 1]![indexX]! === charsetIndices.platform
+				) {
 					charData[indexY]![indexX]! = charsetIndices.shadowInnerCorner;
 					continue;
 				}
 				if (
 					indexX > 0 &&
 					indexY > 0 &&
-					charData[indexY - 1]![indexX - 1]! === 1
+					charData[indexY - 1]![indexX - 1]! === charsetIndices.platform
 				) {
 					charData[indexY]![indexX]! = charsetIndices.shadowRight;
 					continue;
@@ -375,11 +381,14 @@ function levelToChars(
 				continue;
 			}
 
-			if (indexY > 0 && charData[indexY - 1]![indexX]! === 1) {
+			if (
+				indexY > 0 &&
+				charData[indexY - 1]![indexX]! === charsetIndices.platform
+			) {
 				if (
 					indexX > 0 &&
 					indexY > 0 &&
-					charData[indexY - 1]![indexX - 1]! === 1
+					charData[indexY - 1]![indexX - 1]! === charsetIndices.platform
 				) {
 					charData[indexY]![indexX]! = charsetIndices.shadowUnder;
 					continue;
@@ -392,7 +401,7 @@ function levelToChars(
 			if (
 				indexX > 0 &&
 				indexY > 0 &&
-				charData[indexY - 1]![indexX - 1]! === 1
+				charData[indexY - 1]![indexX - 1]! === charsetIndices.platform
 			) {
 				charData[indexY]![indexX]! = charsetIndices.shadowOuterCorner;
 				continue;
