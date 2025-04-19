@@ -475,16 +475,22 @@ function makeCharsetBitmaps(
 
 	const charset = padRight(
 		[
-			emptyChar,
-			platformChar,
-			...shadowChars[shadowStyle]!,
-			...Array<CharBitmap>(4).fill(emptyChar),
+			...Array<CharBitmap>(2 + 6 + 4).fill(emptyChar),
 			...Object.values(bubbleCurrentChars),
 		],
 		// `charset.length` should be exactly 256.
 		256,
 		emptyChar
 	);
+
+	charset[charsetIndices.empty] = emptyChar;
+	charset[charsetIndices.platform] = platformChar;
+	charset[charsetIndices.shadowEndUnder] = shadowChars[shadowStyle][0];
+	charset[charsetIndices.shadowOuterCorner] = shadowChars[shadowStyle][1];
+	charset[charsetIndices.shadowEndRight] = shadowChars[shadowStyle][2];
+	charset[charsetIndices.shadowUnder] = shadowChars[shadowStyle][3];
+	charset[charsetIndices.shadowRight] = shadowChars[shadowStyle][4];
+	charset[charsetIndices.shadowInnerCorner] = shadowChars[shadowStyle][5];
 
 	const sidebarChars = (level.sidebarChars ?? []).map(levelCharToPeChar);
 
