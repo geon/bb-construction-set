@@ -41,7 +41,7 @@ export function flexboxChildPositions(
 	return positions;
 }
 
-export function boundingBox(rects: ReadonlyArray<Rect>): Rect | undefined {
+export function boundingBox(rects: ReadonlyArray<Rect>): Rect {
 	const topLefts = rects.map((rect) => rect.pos);
 	const { x: lefts, y: tops } = unzipObject(topLefts);
 
@@ -77,14 +77,9 @@ export function flexbox(
 		pos: childPositions[index]!,
 	}));
 
-	const bounding = boundingBox(children);
-	if (!bounding) {
-		throw new Error("Missing bounding box.");
-	}
-
 	return {
+		...boundingBox(children),
 		children,
-		...bounding,
 	};
 }
 

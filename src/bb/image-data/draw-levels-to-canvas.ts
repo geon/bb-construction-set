@@ -368,8 +368,9 @@ function layoutLargeLightning(index: number) {
 			index: index++,
 		})
 	);
+
 	return {
-		...boundingBox(children)!,
+		...boundingBox(children),
 		children,
 	};
 }
