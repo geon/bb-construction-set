@@ -2,7 +2,6 @@ import {
 	Level,
 	levelHeight,
 	levelWidth,
-	numTiles,
 	Tiles,
 } from "../internal-data-formats/level";
 import { palette, PaletteIndex } from "../internal-data-formats/palette";
@@ -117,7 +116,7 @@ function drawTiles(
 		for (const [tileX, tileIsSet] of row.entries()) {
 			const tileIndex = tileY * levelWidth + tileX;
 			const pixelIndex = tileIndex + offset;
-			if (tileIsSet && pixelIndex < numTiles) {
+			if (tileIsSet && pixelIndex < levelWidth * levelHeight) {
 				plotPixel(image, pixelIndex, color);
 			}
 		}

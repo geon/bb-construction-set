@@ -5,7 +5,6 @@ import { Tuple } from "../tuple";
 
 export const levelWidth = 32;
 export const levelHeight = 25;
-export const numTiles = levelWidth * levelHeight;
 
 export interface Monster {
 	type: number;
