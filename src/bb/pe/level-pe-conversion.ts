@@ -1,9 +1,11 @@
 import {
 	isDefined,
 	mapRecord,
+	objectEntries,
 	objectFromEntries,
 	padRight,
 	range,
+	strictChunk,
 } from "../functions";
 import {
 	BubbleCurrentDirection,
@@ -29,6 +31,7 @@ import { assertTuple } from "../tuple";
 import { Sprite } from "../internal-data-formats/sprite";
 import { CharName } from "../game-definitions/char-name";
 import { levelToCharNames } from "../internal-data-formats/level";
+import { bitsToByte, byteToBits } from "../bit-twiddling";
 
 const emptyChar: CharBitmap = [0, 0, 0, 0, 0, 0, 0, 0];
 
@@ -467,12 +470,46 @@ function makeLevelCharAndColorData(
 	return { charData, colorData };
 }
 
+function peCharToLevelChar(char: CharBitmap): CharsetChar {
+	return {
+		lines: assertTuple(
+			char.map(byteToBits).map((line) =>
+				assertTuple(
+					strictChunk(line, 2).map(
+						(bits) => bitsToByte(bits) as CharsetCharColor
+					),
+					4
+				)
+			),
+			8
+		),
+	};
+}
+
+function makeCharset(
+	level: Level,
+	shadowStyle: ShadowStyle
+): Readonly<Record<CharName, CharsetChar>> {
+	return {
+		empty: peCharToLevelChar(emptyChar),
+		platform: level.platformChar,
+		sideBorderTopLeft: level.sidebarChars?.[0] ?? level.platformChar,
+		sideBorderTopRight: level.sidebarChars?.[1] ?? level.platformChar,
+		sideBorderBottomLeft: level.sidebarChars?.[2] ?? level.platformChar,
+		sideBorderBottomRight: level.sidebarChars?.[3] ?? level.platformChar,
+		shadowEndUnder: peCharToLevelChar(shadowChars[shadowStyle][0]),
+		shadowOuterCorner: peCharToLevelChar(shadowChars[shadowStyle][1]),
+		shadowEndRight: peCharToLevelChar(shadowChars[shadowStyle][2]),
+		shadowUnder: peCharToLevelChar(shadowChars[shadowStyle][3]),
+		shadowRight: peCharToLevelChar(shadowChars[shadowStyle][4]),
+		shadowInnerCorner: peCharToLevelChar(shadowChars[shadowStyle][5]),
+	};
+}
+
 function makeCharsetBitmaps(
 	level: Level,
 	shadowStyle: ShadowStyle
 ): CharBitmap[] {
-	const platformChar = levelCharToPeChar(level.platformChar);
-
 	const charset = padRight(
 		[
 			...Array<CharBitmap>(2 + 6 + 4).fill(emptyChar),
@@ -483,24 +520,9 @@ function makeCharsetBitmaps(
 		emptyChar
 	);
 
-	charset[charsetIndices.empty] = emptyChar;
-	charset[charsetIndices.platform] = platformChar;
-	charset[charsetIndices.shadowEndUnder] = shadowChars[shadowStyle][0];
-	charset[charsetIndices.shadowOuterCorner] = shadowChars[shadowStyle][1];
-	charset[charsetIndices.shadowEndRight] = shadowChars[shadowStyle][2];
-	charset[charsetIndices.shadowUnder] = shadowChars[shadowStyle][3];
-	charset[charsetIndices.shadowRight] = shadowChars[shadowStyle][4];
-	charset[charsetIndices.shadowInnerCorner] = shadowChars[shadowStyle][5];
-
-	const sidebarChars = (level.sidebarChars ?? []).map(levelCharToPeChar);
-
-	charset[charsetIndices.sideBorderTopLeft]! = sidebarChars[0]! ?? platformChar;
-	charset[charsetIndices.sideBorderTopRight]! =
-		sidebarChars[1]! ?? platformChar;
-	charset[charsetIndices.sideBorderBottomLeft]! =
-		sidebarChars[2]! ?? platformChar;
-	charset[charsetIndices.sideBorderBottomRight]! =
-		sidebarChars[3]! ?? platformChar;
+	for (const [name, char] of objectEntries(makeCharset(level, shadowStyle))) {
+		charset[charsetIndices[name]] = levelCharToPeChar(char);
+	}
 
 	const currentIndices = Object.values(bubbleCurrentRectangleCharsetIndices);
 	for (const index of currentIndices.slice(0, -2)) {

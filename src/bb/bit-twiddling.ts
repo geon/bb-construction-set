@@ -13,6 +13,15 @@ export function byteToBits(byte: number): Tuple<boolean, 8> {
 	return bits as Tuple<boolean, 8>;
 }
 
+export function bitsToByte(bits: ReadonlyArray<boolean>): number {
+	return sum(
+		bits
+			.slice()
+			.reverse()
+			.map((set, index) => (set ? 2 ** index : 0))
+	);
+}
+
 export function mirrorBits(byte: number): number {
 	return sum(
 		byteToBits(byte)
