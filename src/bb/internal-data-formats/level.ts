@@ -5,6 +5,12 @@ import { assertTuple, ReadonlyTuple, Tuple } from "../tuple";
 import { levelHeight, levelWidth } from "../game-definitions/level-size";
 import { range } from "../functions";
 import { CharName } from "../game-definitions/char-name";
+import {
+	ShadowStyle,
+	peCharToLevelChar,
+	shadowChars,
+} from "../prg/shadow-chars";
+import { CharBitmap } from "../pe/pe-file";
 
 export interface Monster {
 	type: number;
@@ -171,4 +177,26 @@ export function levelToCharNames(
 		chars.map((x) => assertTuple(x, levelWidth)),
 		levelHeight
 	);
+}
+
+export function makeCharset(
+	level: Level,
+	shadowStyle: ShadowStyle
+): Readonly<Record<CharName, CharsetChar>> {
+	const emptyChar: CharBitmap = [0, 0, 0, 0, 0, 0, 0, 0];
+
+	return {
+		empty: peCharToLevelChar(emptyChar),
+		platform: level.platformChar,
+		sideBorderTopLeft: level.sidebarChars?.[0] ?? level.platformChar,
+		sideBorderTopRight: level.sidebarChars?.[1] ?? level.platformChar,
+		sideBorderBottomLeft: level.sidebarChars?.[2] ?? level.platformChar,
+		sideBorderBottomRight: level.sidebarChars?.[3] ?? level.platformChar,
+		shadowEndUnder: peCharToLevelChar(shadowChars[shadowStyle][0]),
+		shadowOuterCorner: peCharToLevelChar(shadowChars[shadowStyle][1]),
+		shadowEndRight: peCharToLevelChar(shadowChars[shadowStyle][2]),
+		shadowUnder: peCharToLevelChar(shadowChars[shadowStyle][3]),
+		shadowRight: peCharToLevelChar(shadowChars[shadowStyle][4]),
+		shadowInnerCorner: peCharToLevelChar(shadowChars[shadowStyle][5]),
+	};
 }

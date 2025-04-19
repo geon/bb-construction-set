@@ -10,6 +10,7 @@ import {
 	BubbleCurrentDirection,
 	createTiles,
 	Level,
+	makeCharset,
 	Monster,
 } from "../internal-data-formats/level";
 import { Bit, CharBitmap, createPeFileData, PeFileData } from "./pe-file";
@@ -25,11 +26,7 @@ import {
 } from "../internal-data-formats/charset-char";
 import { c64BuiltinCharsets } from "./c64-builtin-charsets";
 import { PaletteIndex } from "../internal-data-formats/palette";
-import {
-	peCharToLevelChar,
-	shadowChars,
-	ShadowStyle,
-} from "../prg/shadow-chars";
+import { ShadowStyle } from "../prg/shadow-chars";
 import { assertTuple } from "../tuple";
 import { Sprite } from "../internal-data-formats/sprite";
 import { CharName } from "../game-definitions/char-name";
@@ -470,26 +467,6 @@ function makeLevelCharAndColorData(
 	}
 
 	return { charData, colorData };
-}
-
-function makeCharset(
-	level: Level,
-	shadowStyle: ShadowStyle
-): Readonly<Record<CharName, CharsetChar>> {
-	return {
-		empty: peCharToLevelChar(emptyChar),
-		platform: level.platformChar,
-		sideBorderTopLeft: level.sidebarChars?.[0] ?? level.platformChar,
-		sideBorderTopRight: level.sidebarChars?.[1] ?? level.platformChar,
-		sideBorderBottomLeft: level.sidebarChars?.[2] ?? level.platformChar,
-		sideBorderBottomRight: level.sidebarChars?.[3] ?? level.platformChar,
-		shadowEndUnder: peCharToLevelChar(shadowChars[shadowStyle][0]),
-		shadowOuterCorner: peCharToLevelChar(shadowChars[shadowStyle][1]),
-		shadowEndRight: peCharToLevelChar(shadowChars[shadowStyle][2]),
-		shadowUnder: peCharToLevelChar(shadowChars[shadowStyle][3]),
-		shadowRight: peCharToLevelChar(shadowChars[shadowStyle][4]),
-		shadowInnerCorner: peCharToLevelChar(shadowChars[shadowStyle][5]),
-	};
 }
 
 function makeCharsetBitmaps(
