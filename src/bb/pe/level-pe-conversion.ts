@@ -29,7 +29,7 @@ import { Sprite } from "../internal-data-formats/sprite";
 
 const emptyChar: CharBitmap = [0, 0, 0, 0, 0, 0, 0, 0];
 
-const shadowCharIndexByName = {
+const charsetIndices = {
 	shadowEndUnder: 0 + 2,
 	shadowOuterCorner: 1 + 2,
 	shadowEndRight: 2 + 2,
@@ -345,7 +345,7 @@ function makeLevelCharAndColorData(
 
 			if (indexX > 0 && charData[indexY]![indexX - 1]! === 1) {
 				if (indexY > 0 && charData[indexY - 1]![indexX]! === 1) {
-					charData[indexY]![indexX]! = shadowCharIndexByName.shadowInnerCorner;
+					charData[indexY]![indexX]! = charsetIndices.shadowInnerCorner;
 					continue;
 				}
 				if (
@@ -353,10 +353,10 @@ function makeLevelCharAndColorData(
 					indexY > 0 &&
 					charData[indexY - 1]![indexX - 1]! === 1
 				) {
-					charData[indexY]![indexX]! = shadowCharIndexByName.shadowRight;
+					charData[indexY]![indexX]! = charsetIndices.shadowRight;
 					continue;
 				}
-				charData[indexY]![indexX]! = shadowCharIndexByName.shadowEndRight;
+				charData[indexY]![indexX]! = charsetIndices.shadowEndRight;
 				continue;
 			}
 
@@ -366,11 +366,11 @@ function makeLevelCharAndColorData(
 					indexY > 0 &&
 					charData[indexY - 1]![indexX - 1]! === 1
 				) {
-					charData[indexY]![indexX]! = shadowCharIndexByName.shadowUnder;
+					charData[indexY]![indexX]! = charsetIndices.shadowUnder;
 					continue;
 				}
 
-				charData[indexY]![indexX]! = shadowCharIndexByName.shadowEndUnder;
+				charData[indexY]![indexX]! = charsetIndices.shadowEndUnder;
 				continue;
 			}
 
@@ -379,7 +379,7 @@ function makeLevelCharAndColorData(
 				indexY > 0 &&
 				charData[indexY - 1]![indexX - 1]! === 1
 			) {
-				charData[indexY]![indexX]! = shadowCharIndexByName.shadowOuterCorner;
+				charData[indexY]![indexX]! = charsetIndices.shadowOuterCorner;
 				continue;
 			}
 		}
