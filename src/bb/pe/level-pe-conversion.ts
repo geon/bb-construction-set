@@ -411,10 +411,15 @@ function levelToChars(
 
 	// Draw the 2x2 char sidebar tiles.
 	for (let indexY = 0; indexY < 25; ++indexY) {
-		const offset = indexY % 2 ? 16 : 0;
+		const left =
+			indexY % 2
+				? charsetIndices.sideBorderBottomLeft
+				: charsetIndices.sideBorderTopLeft;
 
-		const left = 16 + offset;
-		const right = 17 + offset;
+		const right =
+			indexY % 2
+				? charsetIndices.sideBorderBottomRight
+				: charsetIndices.sideBorderTopRight;
 
 		chars[indexY]![0]! = left;
 		chars[indexY]![1]! = right;
