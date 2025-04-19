@@ -47,15 +47,7 @@ function drawLevelThumbnail(
 
 	// Fill with background color.
 	const bgColor = palette[0];
-	for (let tileY = 0; tileY < levelHeight; ++tileY) {
-		for (let tileX = 0; tileX < levelWidth; ++tileX) {
-			const tileIndex = tileY * levelWidth + tileX;
-			image.data[tileIndex * 4 + 0] = bgColor.r;
-			image.data[tileIndex * 4 + 1] = bgColor.g;
-			image.data[tileIndex * 4 + 2] = bgColor.b;
-			image.data[tileIndex * 4 + 3] = 255;
-		}
-	}
+	fillImageData(image, bgColor);
 
 	// Draw shadows.
 	const shadowColor = palette[level.bgColorDark];
@@ -104,6 +96,15 @@ function drawLevelThumbnail(
 	}
 
 	return image;
+}
+
+function fillImageData(image: ImageData, bgColor: Color) {
+	for (let pixelIndex = 0; pixelIndex < image.data.length / 4; ++pixelIndex) {
+		image.data[pixelIndex * 4 + 0] = bgColor.r;
+		image.data[pixelIndex * 4 + 1] = bgColor.g;
+		image.data[pixelIndex * 4 + 2] = bgColor.b;
+		image.data[pixelIndex * 4 + 3] = 255;
+	}
 }
 
 function drawTiles(
