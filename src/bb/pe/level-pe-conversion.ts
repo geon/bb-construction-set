@@ -412,10 +412,14 @@ function levelToChars(
 	// Draw the 2x2 char sidebar tiles.
 	for (let indexY = 0; indexY < 25; ++indexY) {
 		const offset = indexY % 2 ? 16 : 0;
-		chars[indexY]![0]! = 16 + offset;
-		chars[indexY]![1]! = 17 + offset;
-		chars[indexY]![30]! = 16 + offset;
-		chars[indexY]![31]! = 17 + offset;
+
+		const left = 16 + offset;
+		const right = 17 + offset;
+
+		chars[indexY]![0]! = left;
+		chars[indexY]![1]! = right;
+		chars[indexY]![30]! = left;
+		chars[indexY]![31]! = right;
 	}
 
 	return assertTuple(
