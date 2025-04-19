@@ -1,8 +1,10 @@
 import { CharBlock } from "./charset-char";
 import { CharsetChar } from "./charset-char";
 import { PaletteIndex } from "./palette";
-import { Tuple } from "../tuple";
+import { assertTuple, ReadonlyTuple, Tuple } from "../tuple";
 import { levelHeight, levelWidth } from "../game-definitions/level-size";
+import { range } from "../functions";
+import { CharName } from "../game-definitions/char-name";
 
 export interface Monster {
 	type: number;
@@ -81,4 +83,92 @@ export function levelIsSymmetric(tiles: Tiles) {
 		}
 	}
 	return true;
+}
+
+export function levelToCharNames(
+	level: Level
+): ReadonlyTuple<
+	ReadonlyTuple<CharName, typeof levelWidth>,
+	typeof levelHeight
+> {
+	// Create canvas.
+	const chars: CharName[][] = range(0, levelHeight).map(() =>
+		range(0, levelWidth).map(() => "empty")
+	);
+
+	// Draw the platforms.
+	for (const [tileY, row] of level.tiles.entries()) {
+		for (const [tileX, tile] of row.entries()) {
+			chars[tileY]![tileX]! = tile ? "platform" : "empty";
+		}
+	}
+
+	// Draw the shadows.
+	for (const [indexY, row] of chars.entries()) {
+		for (const [indexX, char] of row.entries()) {
+			if (indexX >= 32) {
+				continue;
+			}
+
+			if (char === "platform") {
+				continue;
+			}
+
+			if (indexX > 0 && chars[indexY]![indexX - 1]! === "platform") {
+				if (indexY > 0 && chars[indexY - 1]![indexX]! === "platform") {
+					chars[indexY]![indexX]! = "shadowInnerCorner";
+					continue;
+				}
+				if (
+					indexX > 0 &&
+					indexY > 0 &&
+					chars[indexY - 1]![indexX - 1]! === "platform"
+				) {
+					chars[indexY]![indexX]! = "shadowRight";
+					continue;
+				}
+				chars[indexY]![indexX]! = "shadowEndRight";
+				continue;
+			}
+
+			if (indexY > 0 && chars[indexY - 1]![indexX]! === "platform") {
+				if (
+					indexX > 0 &&
+					indexY > 0 &&
+					chars[indexY - 1]![indexX - 1]! === "platform"
+				) {
+					chars[indexY]![indexX]! = "shadowUnder";
+					continue;
+				}
+
+				chars[indexY]![indexX]! = "shadowEndUnder";
+				continue;
+			}
+
+			if (
+				indexX > 0 &&
+				indexY > 0 &&
+				chars[indexY - 1]![indexX - 1]! === "platform"
+			) {
+				chars[indexY]![indexX]! = "shadowOuterCorner";
+				continue;
+			}
+		}
+	}
+
+	// Draw the 2x2 char sidebar tiles.
+	for (let indexY = 0; indexY < 25; ++indexY) {
+		const left = indexY % 2 ? "sideBorderBottomLeft" : "sideBorderTopLeft";
+		const right = indexY % 2 ? "sideBorderBottomRight" : "sideBorderTopRight";
+
+		chars[indexY]![0]! = left;
+		chars[indexY]![1]! = right;
+		chars[indexY]![30]! = left;
+		chars[indexY]![31]! = right;
+	}
+
+	return assertTuple(
+		chars.map((x) => assertTuple(x, levelWidth)),
+		levelHeight
+	);
 }
