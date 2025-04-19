@@ -25,8 +25,9 @@ import {
 import { c64BuiltinCharsets } from "./c64-builtin-charsets";
 import { PaletteIndex } from "../internal-data-formats/palette";
 import { shadowChars, ShadowStyle } from "../prg/shadow-chars";
-import { assertTuple } from "../tuple";
+import { assertTuple, ReadonlyTuple } from "../tuple";
 import { Sprite } from "../internal-data-formats/sprite";
+import { levelHeight, levelWidth } from "../game-definitions/level-size";
 
 const emptyChar: CharBitmap = [0, 0, 0, 0, 0, 0, 0, 0];
 
@@ -329,20 +330,12 @@ function parseSpriteUid(uid: string): {
 	return { monsterName, facingLeft };
 }
 
-function makeLevelCharAndColorData(
-	level: Level,
-	sizeX: number,
-	sizeY: number
-): {
-	readonly charData: number[][];
-	readonly colorData: number[][];
-} {
+function levelToChars(
+	level: Level
+): ReadonlyTuple<ReadonlyTuple<number, typeof levelWidth>, typeof levelHeight> {
 	// Create canvas.
-	const charData: number[][] = range(0, sizeY).map(() =>
-		range(0, sizeX).map(() => 0)
-	);
-	const colorData: number[][] = range(0, sizeY).map(() =>
-		range(0, sizeX).map(() => 13)
+	const charData: number[][] = range(0, levelHeight).map(() =>
+		range(0, levelWidth).map(() => 0)
 	);
 
 	// Draw the platforms.
@@ -414,6 +407,36 @@ function makeLevelCharAndColorData(
 		charData[indexY]![1]! = 17 + offset;
 		charData[indexY]![30]! = 16 + offset;
 		charData[indexY]![31]! = 17 + offset;
+	}
+
+	return assertTuple(
+		charData.map((x) => assertTuple(x, levelWidth)),
+		levelHeight
+	);
+}
+
+function makeLevelCharAndColorData(
+	level: Level,
+	sizeX: number,
+	sizeY: number
+): {
+	readonly charData: number[][];
+	readonly colorData: number[][];
+} {
+	// Create canvas.
+	const charData: number[][] = range(0, sizeY).map(() =>
+		range(0, sizeX).map(() => 0)
+	);
+	const colorData: number[][] = range(0, sizeY).map(() =>
+		range(0, sizeX).map(() => 13)
+	);
+
+	// Draw the level.
+	const levelChars = levelToChars(level);
+	for (const [indexY, row] of levelChars.entries()) {
+		for (const [indexX, char] of row.entries()) {
+			charData[indexY]![indexX]! = char;
+		}
 	}
 
 	// Draw the bubble currents.
