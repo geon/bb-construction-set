@@ -1,5 +1,11 @@
+import { byteToBits, bitsToByte } from "../bit-twiddling";
+import { strictChunk } from "../functions";
+import {
+	CharsetChar,
+	CharsetCharColor,
+} from "../internal-data-formats/charset-char";
 import { CharBitmap } from "../pe/pe-file";
-import { ReadonlyTuple } from "../tuple";
+import { assertTuple, ReadonlyTuple } from "../tuple";
 
 export const shadowChars = {
 	originalC64: [
@@ -130,3 +136,19 @@ export const shadowChars = {
 } satisfies Record<string, ReadonlyTuple<CharBitmap, 6>>;
 
 export type ShadowStyle = keyof typeof shadowChars;
+
+export function peCharToLevelChar(char: CharBitmap): CharsetChar {
+	return {
+		lines: assertTuple(
+			char.map(byteToBits).map((line) =>
+				assertTuple(
+					strictChunk(line, 2).map(
+						(bits) => bitsToByte(bits) as CharsetCharColor
+					),
+					4
+				)
+			),
+			8
+		),
+	};
+}

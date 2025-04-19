@@ -5,7 +5,6 @@ import {
 	objectFromEntries,
 	padRight,
 	range,
-	strictChunk,
 } from "../functions";
 import {
 	BubbleCurrentDirection,
@@ -26,12 +25,15 @@ import {
 } from "../internal-data-formats/charset-char";
 import { c64BuiltinCharsets } from "./c64-builtin-charsets";
 import { PaletteIndex } from "../internal-data-formats/palette";
-import { shadowChars, ShadowStyle } from "../prg/shadow-chars";
+import {
+	peCharToLevelChar,
+	shadowChars,
+	ShadowStyle,
+} from "../prg/shadow-chars";
 import { assertTuple } from "../tuple";
 import { Sprite } from "../internal-data-formats/sprite";
 import { CharName } from "../game-definitions/char-name";
 import { levelToCharNames } from "../internal-data-formats/level";
-import { bitsToByte, byteToBits } from "../bit-twiddling";
 
 const emptyChar: CharBitmap = [0, 0, 0, 0, 0, 0, 0, 0];
 
@@ -468,22 +470,6 @@ function makeLevelCharAndColorData(
 	}
 
 	return { charData, colorData };
-}
-
-function peCharToLevelChar(char: CharBitmap): CharsetChar {
-	return {
-		lines: assertTuple(
-			char.map(byteToBits).map((line) =>
-				assertTuple(
-					strictChunk(line, 2).map(
-						(bits) => bitsToByte(bits) as CharsetCharColor
-					),
-					4
-				)
-			),
-			8
-		),
-	};
 }
 
 function makeCharset(
