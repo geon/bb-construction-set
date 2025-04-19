@@ -30,12 +30,12 @@ import { Sprite } from "../internal-data-formats/sprite";
 const emptyChar: CharBitmap = [0, 0, 0, 0, 0, 0, 0, 0];
 
 const shadowCharIndexByName = {
-	endUnder: 0 + 2,
-	outerCorner: 1 + 2,
-	endRight: 2 + 2,
-	under: 3 + 2,
-	right: 4 + 2,
-	innerCorner: 5 + 2,
+	shadowEndUnder: 0 + 2,
+	shadowOuterCorner: 1 + 2,
+	shadowEndRight: 2 + 2,
+	shadowUnder: 3 + 2,
+	shadowRight: 4 + 2,
+	shadowInnerCorner: 5 + 2,
 };
 // Single color, high res.
 // up, right, down, left
@@ -345,7 +345,7 @@ function makeLevelCharAndColorData(
 
 			if (indexX > 0 && charData[indexY]![indexX - 1]! === 1) {
 				if (indexY > 0 && charData[indexY - 1]![indexX]! === 1) {
-					charData[indexY]![indexX]! = shadowCharIndexByName.innerCorner;
+					charData[indexY]![indexX]! = shadowCharIndexByName.shadowInnerCorner;
 					continue;
 				}
 				if (
@@ -353,10 +353,10 @@ function makeLevelCharAndColorData(
 					indexY > 0 &&
 					charData[indexY - 1]![indexX - 1]! === 1
 				) {
-					charData[indexY]![indexX]! = shadowCharIndexByName.right;
+					charData[indexY]![indexX]! = shadowCharIndexByName.shadowRight;
 					continue;
 				}
-				charData[indexY]![indexX]! = shadowCharIndexByName.endRight;
+				charData[indexY]![indexX]! = shadowCharIndexByName.shadowEndRight;
 				continue;
 			}
 
@@ -366,11 +366,11 @@ function makeLevelCharAndColorData(
 					indexY > 0 &&
 					charData[indexY - 1]![indexX - 1]! === 1
 				) {
-					charData[indexY]![indexX]! = shadowCharIndexByName.under;
+					charData[indexY]![indexX]! = shadowCharIndexByName.shadowUnder;
 					continue;
 				}
 
-				charData[indexY]![indexX]! = shadowCharIndexByName.endUnder;
+				charData[indexY]![indexX]! = shadowCharIndexByName.shadowEndUnder;
 				continue;
 			}
 
@@ -379,7 +379,7 @@ function makeLevelCharAndColorData(
 				indexY > 0 &&
 				charData[indexY - 1]![indexX - 1]! === 1
 			) {
-				charData[indexY]![indexX]! = shadowCharIndexByName.outerCorner;
+				charData[indexY]![indexX]! = shadowCharIndexByName.shadowOuterCorner;
 				continue;
 			}
 		}
