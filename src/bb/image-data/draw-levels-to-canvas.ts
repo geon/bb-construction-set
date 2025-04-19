@@ -22,9 +22,9 @@ import {
 } from "../functions";
 import { assertTuple, ReadonlyTuple } from "../tuple";
 import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
-import { flexbox, leafs, LayoutRect, grid } from "../../math/rect";
+import { flexbox, leafs, LayoutRect, grid, boundingBox } from "../../math/rect";
 import { spriteCounts } from "../prg/data-locations";
-import { origo } from "../../math/coord2";
+import { Coord2, origo, scale } from "../../math/coord2";
 
 export function drawLevelsToCanvas(
 	levels: readonly Level[],
@@ -339,13 +339,60 @@ function getSpritePalette(color: PaletteIndex): [Color, Color, Color, Color] {
 	];
 }
 
+function layoutLargeLightning(index: number) {
+	// 4x4 grid, but 2 corners are missing 3 chars each.
+	//  *  * [*][*]
+	//  * [*][*][*]
+	// [*][*][*] *
+	// [*][*] *  *
+	const positions: ReadonlyArray<Coord2> = [
+		{ x: 2, y: 0 },
+		{ x: 3, y: 0 },
+		{ x: 0, y: 1 },
+		{ x: 1, y: 1 },
+		{ x: 2, y: 1 },
+		{ x: 1, y: 2 },
+		{ x: 2, y: 2 },
+		{ x: 3, y: 2 },
+		{ x: 0, y: 3 },
+		{ x: 1, y: 3 },
+	];
+
+	const { width, height } = itemGroupMeta.largeLightning;
+	if (positions.length !== width * height) {
+		throw new Error(
+			`Bad char count for largeLightning. Was ${positions.length}, should be ${
+				width * height
+			}.`
+		);
+	}
+
+	const children = positions.map(
+		(pos): LayoutRect => ({
+			pos: scale(pos, 8),
+			size: { x: 8, y: 8 },
+			index: index++,
+		})
+	);
+	return {
+		...boundingBox(children)!,
+		children,
+	};
+}
+
 export function layOutItemGroups(): LayoutRect {
 	let index = 0;
 	const itemRectGroups = mapRecord(
 		itemGroupMeta,
-		(group): ReadonlyArray<LayoutRect> =>
-			range(0, group.count).map(() =>
-				flexbox(
+		(group, groupName): ReadonlyArray<LayoutRect> =>
+			range(0, group.count).map(() => {
+				if (groupName === "largeLightning") {
+					const layout = layoutLargeLightning(index);
+					index += layout.children.length;
+					return layout;
+				}
+
+				return flexbox(
 					range(0, group.width).map(
 						(): LayoutRect =>
 							flexbox(
@@ -362,8 +409,8 @@ export function layOutItemGroups(): LayoutRect {
 					),
 					"row",
 					0
-				)
-			)
+				);
+			})
 	);
 
 	const laidOutItemGroups = mapRecord(itemRectGroups, (itemRects, groupName) =>
