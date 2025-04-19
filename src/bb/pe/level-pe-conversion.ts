@@ -330,20 +330,21 @@ function parseSpriteUid(uid: string): {
 	return { monsterName, facingLeft };
 }
 
-function levelToChars(
+function levelToCharNames(
 	level: Level
-): ReadonlyTuple<ReadonlyTuple<number, typeof levelWidth>, typeof levelHeight> {
+): ReadonlyTuple<
+	ReadonlyTuple<CharName, typeof levelWidth>,
+	typeof levelHeight
+> {
 	// Create canvas.
-	const chars: number[][] = range(0, levelHeight).map(() =>
-		range(0, levelWidth).map(() => 0)
+	const chars: CharName[][] = range(0, levelHeight).map(() =>
+		range(0, levelWidth).map(() => "empty")
 	);
 
 	// Draw the platforms.
 	for (const [tileY, row] of level.tiles.entries()) {
 		for (const [tileX, tile] of row.entries()) {
-			chars[tileY]![tileX]! = tile
-				? charsetIndices.platform
-				: charsetIndices.empty;
+			chars[tileY]![tileX]! = tile ? "platform" : "empty";
 		}
 	}
 
@@ -354,56 +355,47 @@ function levelToChars(
 				continue;
 			}
 
-			if (char === charsetIndices.platform) {
+			if (char === "platform") {
 				continue;
 			}
 
-			if (
-				indexX > 0 &&
-				chars[indexY]![indexX - 1]! === charsetIndices.platform
-			) {
-				if (
-					indexY > 0 &&
-					chars[indexY - 1]![indexX]! === charsetIndices.platform
-				) {
-					chars[indexY]![indexX]! = charsetIndices.shadowInnerCorner;
+			if (indexX > 0 && chars[indexY]![indexX - 1]! === "platform") {
+				if (indexY > 0 && chars[indexY - 1]![indexX]! === "platform") {
+					chars[indexY]![indexX]! = "shadowInnerCorner";
 					continue;
 				}
 				if (
 					indexX > 0 &&
 					indexY > 0 &&
-					chars[indexY - 1]![indexX - 1]! === charsetIndices.platform
+					chars[indexY - 1]![indexX - 1]! === "platform"
 				) {
-					chars[indexY]![indexX]! = charsetIndices.shadowRight;
+					chars[indexY]![indexX]! = "shadowRight";
 					continue;
 				}
-				chars[indexY]![indexX]! = charsetIndices.shadowEndRight;
+				chars[indexY]![indexX]! = "shadowEndRight";
 				continue;
 			}
 
-			if (
-				indexY > 0 &&
-				chars[indexY - 1]![indexX]! === charsetIndices.platform
-			) {
+			if (indexY > 0 && chars[indexY - 1]![indexX]! === "platform") {
 				if (
 					indexX > 0 &&
 					indexY > 0 &&
-					chars[indexY - 1]![indexX - 1]! === charsetIndices.platform
+					chars[indexY - 1]![indexX - 1]! === "platform"
 				) {
-					chars[indexY]![indexX]! = charsetIndices.shadowUnder;
+					chars[indexY]![indexX]! = "shadowUnder";
 					continue;
 				}
 
-				chars[indexY]![indexX]! = charsetIndices.shadowEndUnder;
+				chars[indexY]![indexX]! = "shadowEndUnder";
 				continue;
 			}
 
 			if (
 				indexX > 0 &&
 				indexY > 0 &&
-				chars[indexY - 1]![indexX - 1]! === charsetIndices.platform
+				chars[indexY - 1]![indexX - 1]! === "platform"
 			) {
-				chars[indexY]![indexX]! = charsetIndices.shadowOuterCorner;
+				chars[indexY]![indexX]! = "shadowOuterCorner";
 				continue;
 			}
 		}
@@ -411,15 +403,8 @@ function levelToChars(
 
 	// Draw the 2x2 char sidebar tiles.
 	for (let indexY = 0; indexY < 25; ++indexY) {
-		const left =
-			indexY % 2
-				? charsetIndices.sideBorderBottomLeft
-				: charsetIndices.sideBorderTopLeft;
-
-		const right =
-			indexY % 2
-				? charsetIndices.sideBorderBottomRight
-				: charsetIndices.sideBorderTopRight;
+		const left = indexY % 2 ? "sideBorderBottomLeft" : "sideBorderTopLeft";
+		const right = indexY % 2 ? "sideBorderBottomRight" : "sideBorderTopRight";
 
 		chars[indexY]![0]! = left;
 		chars[indexY]![1]! = right;
@@ -450,10 +435,10 @@ function makeLevelCharAndColorData(
 	);
 
 	// Draw the level.
-	const levelChars = levelToChars(level);
+	const levelChars = levelToCharNames(level);
 	for (const [indexY, row] of levelChars.entries()) {
 		for (const [indexX, char] of row.entries()) {
-			charData[indexY]![indexX]! = char;
+			charData[indexY]![indexX]! = charsetIndices[char];
 		}
 	}
 
