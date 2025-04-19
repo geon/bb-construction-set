@@ -3,6 +3,7 @@ import {
 	mapRecord,
 	objectFromEntries,
 	padRight,
+	range,
 } from "../functions";
 import {
 	BubbleCurrentDirection,
@@ -337,13 +338,12 @@ function makeLevelCharAndColorData(
 	readonly colorData: number[][];
 } {
 	// Create canvas.
-	const charData: number[][] = Array(sizeY)
-		.fill(0)
-		.map((_) => padRight([], sizeX, 0));
-	const colorData = Array(sizeY)
-		.fill(0)
-		// Multicolor green for bubbles.
-		.map((_) => Array<number>(sizeX).fill(13));
+	const charData: number[][] = range(0, sizeY).map(() =>
+		range(0, sizeX).map(() => 0)
+	);
+	const colorData: number[][] = range(0, sizeY).map(() =>
+		range(0, sizeX).map(() => 13)
+	);
 
 	// Draw the platforms.
 	for (const [tileY, row] of level.tiles.entries()) {
