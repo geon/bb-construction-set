@@ -137,13 +137,7 @@ function plotPixel(
 
 export function drawPlatformCharsToCanvas(levels: readonly Level[]): ImageData {
 	const gap = 10;
-	return imageDataConcatenate(
-		chunk(levels, 10).map((row) =>
-			imageDataConcatenate(row.map(drawLevelPlatformChars), "row", gap)
-		),
-		"column",
-		gap
-	);
+	return drawGrid(levels.map(drawLevelPlatformChars), 10, gap);
 }
 
 function drawGrid(
