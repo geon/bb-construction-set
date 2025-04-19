@@ -23,7 +23,7 @@ export function Sprites({
 			<br />
 			<br />
 			<BlobDownloadButton
-				getBlob={() => ({
+				getBlob={async () => ({
 					blob: new Blob([convertSpriteGroupsToBinFile(parsedPrg.sprites)], {
 						type: "application/json",
 					}),

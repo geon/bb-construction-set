@@ -29,7 +29,7 @@ export function LevelGraphics({
 			<br />
 			<br />
 			<BlobDownloadButton
-				getBlob={() => {
+				getBlob={async () => {
 					const parts = parsedPrg.levels.map((level, index) => {
 						const blob = new Blob(
 							[

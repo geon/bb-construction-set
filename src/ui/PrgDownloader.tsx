@@ -30,7 +30,7 @@ export function PrgDownloader({
 				, placed in the same folder as Exomizer to pack it for execution.
 			</p>
 			<BlobDownloadButton
-				getBlob={() => {
+				getBlob={async () => {
 					const patched = patchPrg(prg, parsedPrg, "retroForge");
 
 					return {

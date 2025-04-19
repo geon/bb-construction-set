@@ -1,25 +1,27 @@
 import { InputWithSizeMeta, makeZip } from "client-zip";
 
 export function BlobDownloadButton(props: {
-	getBlob: () => {
-		readonly fileName: string;
-	} & (
-		| {
-				readonly blob: Blob;
-		  }
-		| {
-				readonly parts: readonly {
-					readonly fileName: string;
+	getBlob: () => Promise<
+		{
+			readonly fileName: string;
+		} & (
+			| {
 					readonly blob: Blob;
-				}[];
-		  }
-	);
+			  }
+			| {
+					readonly parts: readonly {
+						readonly fileName: string;
+						readonly blob: Blob;
+					}[];
+			  }
+		)
+	>;
 	label: string;
 }) {
 	return (
 		<button
 			onClick={async () => {
-				const result = props.getBlob();
+				const result = await props.getBlob();
 				const { blob, fileName } = !("parts" in result)
 					? result
 					: {
