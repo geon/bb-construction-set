@@ -334,21 +334,21 @@ function levelToChars(
 	level: Level
 ): ReadonlyTuple<ReadonlyTuple<number, typeof levelWidth>, typeof levelHeight> {
 	// Create canvas.
-	const charData: number[][] = range(0, levelHeight).map(() =>
+	const chars: number[][] = range(0, levelHeight).map(() =>
 		range(0, levelWidth).map(() => 0)
 	);
 
 	// Draw the platforms.
 	for (const [tileY, row] of level.tiles.entries()) {
 		for (const [tileX, tile] of row.entries()) {
-			charData[tileY]![tileX]! = tile
+			chars[tileY]![tileX]! = tile
 				? charsetIndices.platform
 				: charsetIndices.empty;
 		}
 	}
 
 	// Draw the shadows.
-	for (const [indexY, row] of charData.entries()) {
+	for (const [indexY, row] of chars.entries()) {
 		for (const [indexX, char] of row.entries()) {
 			if (indexX >= 32) {
 				continue;
@@ -360,50 +360,50 @@ function levelToChars(
 
 			if (
 				indexX > 0 &&
-				charData[indexY]![indexX - 1]! === charsetIndices.platform
+				chars[indexY]![indexX - 1]! === charsetIndices.platform
 			) {
 				if (
 					indexY > 0 &&
-					charData[indexY - 1]![indexX]! === charsetIndices.platform
+					chars[indexY - 1]![indexX]! === charsetIndices.platform
 				) {
-					charData[indexY]![indexX]! = charsetIndices.shadowInnerCorner;
+					chars[indexY]![indexX]! = charsetIndices.shadowInnerCorner;
 					continue;
 				}
 				if (
 					indexX > 0 &&
 					indexY > 0 &&
-					charData[indexY - 1]![indexX - 1]! === charsetIndices.platform
+					chars[indexY - 1]![indexX - 1]! === charsetIndices.platform
 				) {
-					charData[indexY]![indexX]! = charsetIndices.shadowRight;
+					chars[indexY]![indexX]! = charsetIndices.shadowRight;
 					continue;
 				}
-				charData[indexY]![indexX]! = charsetIndices.shadowEndRight;
+				chars[indexY]![indexX]! = charsetIndices.shadowEndRight;
 				continue;
 			}
 
 			if (
 				indexY > 0 &&
-				charData[indexY - 1]![indexX]! === charsetIndices.platform
+				chars[indexY - 1]![indexX]! === charsetIndices.platform
 			) {
 				if (
 					indexX > 0 &&
 					indexY > 0 &&
-					charData[indexY - 1]![indexX - 1]! === charsetIndices.platform
+					chars[indexY - 1]![indexX - 1]! === charsetIndices.platform
 				) {
-					charData[indexY]![indexX]! = charsetIndices.shadowUnder;
+					chars[indexY]![indexX]! = charsetIndices.shadowUnder;
 					continue;
 				}
 
-				charData[indexY]![indexX]! = charsetIndices.shadowEndUnder;
+				chars[indexY]![indexX]! = charsetIndices.shadowEndUnder;
 				continue;
 			}
 
 			if (
 				indexX > 0 &&
 				indexY > 0 &&
-				charData[indexY - 1]![indexX - 1]! === charsetIndices.platform
+				chars[indexY - 1]![indexX - 1]! === charsetIndices.platform
 			) {
-				charData[indexY]![indexX]! = charsetIndices.shadowOuterCorner;
+				chars[indexY]![indexX]! = charsetIndices.shadowOuterCorner;
 				continue;
 			}
 		}
@@ -412,14 +412,14 @@ function levelToChars(
 	// Draw the 2x2 char sidebar tiles.
 	for (let indexY = 0; indexY < 25; ++indexY) {
 		const offset = indexY % 2 ? 16 : 0;
-		charData[indexY]![0]! = 16 + offset;
-		charData[indexY]![1]! = 17 + offset;
-		charData[indexY]![30]! = 16 + offset;
-		charData[indexY]![31]! = 17 + offset;
+		chars[indexY]![0]! = 16 + offset;
+		chars[indexY]![1]! = 17 + offset;
+		chars[indexY]![30]! = 16 + offset;
+		chars[indexY]![31]! = 17 + offset;
 	}
 
 	return assertTuple(
-		charData.map((x) => assertTuple(x, levelWidth)),
+		chars.map((x) => assertTuple(x, levelWidth)),
 		levelHeight
 	);
 }
