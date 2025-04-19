@@ -12,17 +12,17 @@ import { spriteHeight, spriteWidthBytes } from "../../c64/consts";
 import { Sprite, SpriteGroups } from "../internal-data-formats/sprite";
 import { CharacterName } from "../game-definitions/character-name";
 import { Item, ItemGroup, itemGroupMeta, ItemGroups } from "../prg/items";
-import {
-	chunk,
-	mapRecord,
-	range,
-	sum,
-	unzipObject,
-	zipObject,
-} from "../functions";
+import { chunk, mapRecord, range, unzipObject, zipObject } from "../functions";
 import { assertTuple, ReadonlyTuple } from "../tuple";
 import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
-import { flexbox, leafs, LayoutRect, grid, boundingBox } from "../../math/rect";
+import {
+	flexbox,
+	leafs,
+	LayoutRect,
+	grid,
+	boundingBox,
+	flexboxChildPositions,
+} from "../../math/rect";
 import { spriteCounts } from "../prg/data-locations";
 import { Coord2, origo, scale } from "../../math/coord2";
 
@@ -563,34 +563,26 @@ function imageDataConcatenate(
 	direction: "row" | "column",
 	gap: number
 ): ImageData {
-	const directionSizeSelector = (x: ImageData) =>
-		x[({ row: "width", column: "height" } as const)[direction]];
-	const orthogonalSizeSelector = (x: ImageData) =>
-		x[({ row: "height", column: "width" } as const)[direction]];
+	const positioned = zipObject({
+		image: images,
+		pos: flexboxChildPositions(
+			images.map(({ width: x, height: y }) => ({ x, y })),
+			direction,
+			gap
+		),
+	});
 
-	const sumGap = gap * (images.length - 1);
-
-	const totalDirectionSize = sum(images.map(directionSizeSelector)) + sumGap;
-	const maxOrthogonalSize = Math.max(...images.map(orthogonalSizeSelector));
-
-	const result = new ImageData(
-		...(
-			{
-				row: [totalDirectionSize, maxOrthogonalSize],
-				column: [maxOrthogonalSize, totalDirectionSize],
-			} as const
-		)[direction]
+	const bounding = boundingBox(
+		positioned.map(({ image, pos }) => ({
+			pos,
+			size: { x: image.width, y: image.height },
+		}))
 	);
 
-	let offset = 0;
-	for (const image of images) {
-		blitImageData(
-			result,
-			image,
-			direction === "row" ? offset : 0,
-			direction === "column" ? offset : 0
-		);
-		offset += directionSizeSelector(image) + gap;
+	const result = new ImageData(bounding.size.x, bounding.size.y);
+
+	for (const { image, pos } of positioned) {
+		blitImageData(result, image, pos.x, pos.y);
 	}
 
 	return result;
