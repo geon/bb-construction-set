@@ -137,14 +137,7 @@ export function drawLevel(level: Level, spriteGroups: SpriteGroups): ImageData {
 			characterName: "player",
 			facingLeft: true,
 		},
-		...level.monsters.map((monster): Character => {
-			const characterName = monster.characterName;
-			return {
-				spawnPoint: monster.spawnPoint,
-				characterName,
-				facingLeft: monster.facingLeft,
-			};
-		}),
+		...level.monsters,
 	];
 
 	for (const character of characters) {
