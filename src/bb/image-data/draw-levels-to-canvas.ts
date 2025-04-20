@@ -89,8 +89,11 @@ function drawLevelThumbnail(
 			y: monster.spawnPoint.y - spritePosOffset.y,
 			x: monster.spawnPoint.x - spritePosOffset.x,
 		};
-		const pixelIndex =
-			Math.floor(spritePos.y / 8) * 32 + Math.floor(spritePos.x / 8);
+		const pixelPos = {
+			y: spritePos.x / 8,
+			x: spritePos.y / 8,
+		};
+		const pixelIndex = Math.floor(pixelPos.y) * 32 + Math.floor(pixelPos.x);
 
 		// Monsters are 2x2 chars large.
 		for (const offset of [0, 1, 32, 33]) {
