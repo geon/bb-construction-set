@@ -90,7 +90,7 @@ function drawLevelThumbnail(
 		0
 	);
 
-	for (const character of level.monsters) {
+	for (const character of [pl1, pl2, ...level.monsters]) {
 		const spritePosOffset = {
 			x: 20,
 			y: 41,
@@ -98,7 +98,14 @@ function drawLevelThumbnail(
 		const spritePos = subtract(character.spawnPoint, spritePosOffset);
 		const pixelPos = scale(spritePos, 1 / 8);
 		const pixelIndex = Math.floor(pixelPos.y) * 32 + Math.floor(pixelPos.x);
-		const spriteColor = palette[spriteColors[character.characterName]];
+		const spriteColor =
+			palette[
+				character.characterName === "player"
+					? character.facingLeft
+						? 3 // Cyan
+						: 5 // Dark green
+					: spriteColors[character.characterName]
+			];
 
 		// Monsters are 2x2 chars large.
 		for (const offset of [0, 1, 32, 33]) {
