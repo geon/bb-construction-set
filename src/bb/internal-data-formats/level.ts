@@ -11,9 +11,10 @@ import {
 	shadowChars,
 } from "../prg/shadow-chars";
 import { CharBitmap } from "../pe/pe-file";
+import { CharacterName } from "../game-definitions/character-name";
 
 export interface Monster {
-	type: number;
+	characterName: CharacterName;
 	spawnPoint: {
 		x: number;
 		y: number;

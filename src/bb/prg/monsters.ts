@@ -2,6 +2,7 @@ import { Monster } from "../internal-data-formats/level";
 import { isBitSet } from "../bit-twiddling";
 import { bytesPerMonster, maxMonsters } from "./data-locations";
 import { ReadonlyUint8Array } from "../types";
+import { characterNames } from "../game-definitions/character-name";
 
 export function readMonsters(monsterBytes: ReadonlyUint8Array) {
 	const monstersForAllLevels: Monster[][] = [];
@@ -36,7 +37,7 @@ export function readMonsters(monsterBytes: ReadonlyUint8Array) {
 
 function readMonster(monsterBytes: ReadonlyUint8Array): Monster {
 	return {
-		type: monsterBytes[0]! & 0b111,
+		characterName: characterNames[(monsterBytes[0]! & 0b111) + 1]!,
 		spawnPoint: {
 			x: (monsterBytes[0]! & 0b11111000) + 20,
 			y: (monsterBytes[1]! & 0b11111110) + 21,
@@ -62,7 +63,8 @@ export function writeMonsters(
 		const subBytes = monsters.flatMap((monster) => {
 			const currentMonsterStartByte = monsterStartByte;
 			const subSubBytes = [
-				((monster.spawnPoint.x - 20) & 0b11111000) + monster.type,
+				((monster.spawnPoint.x - 20) & 0b11111000) +
+					(characterNames.indexOf(monster.characterName) - 1),
 				((monster.spawnPoint.y - 21) & 0b11111110) +
 					// TODO: No idea what the rest of the bits are.
 					(oldByteArray[currentMonsterStartByte + 1]! & 0b00000001),

@@ -12,7 +12,6 @@ import { spriteHeight, spriteWidthBytes } from "../../c64/consts";
 import { Sprite, SpriteGroups } from "../internal-data-formats/sprite";
 import {
 	CharacterName,
-	characterNames,
 	spriteLeftIndex,
 } from "../game-definitions/character-name";
 import { Item, ItemGroup, itemGroupMeta, ItemGroups } from "../prg/items";
@@ -98,7 +97,7 @@ function drawLevelThumbnail(
 			plotPixel(
 				image,
 				pixelIndex + offset,
-				palette[Object.values(spriteColors)[monster.type + 1]!]
+				palette[spriteColors[monster.characterName]]
 			);
 		}
 	}
@@ -146,7 +145,7 @@ export function drawLevel(level: Level, spriteGroups: SpriteGroups): ImageData {
 			facingLeft: true,
 		},
 		...level.monsters.map((monster): Character => {
-			const characterName = characterNames[monster.type + 1]!;
+			const characterName = monster.characterName;
 			return {
 				spawnPoint: monster.spawnPoint,
 				color: spriteGroups[characterName].color,

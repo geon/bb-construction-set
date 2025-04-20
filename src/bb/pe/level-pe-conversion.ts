@@ -229,7 +229,7 @@ function levelToScreen(
 			},
 			...level.monsters.map(
 				(monster): PeFileData["screens"][number]["sprites"][number] => {
-					const monsterName = characterNames[monster.type + 1]!;
+					const monsterName = monster.characterName;
 					return {
 						setId: 0,
 						uid: getSpriteUid({
@@ -557,9 +557,8 @@ export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 				if (!isCharacterName(monsterName) || monsterName === "player") {
 					return undefined;
 				}
-				const type = characterNames.indexOf(monsterName) - 1;
 				return {
-					type,
+					characterName: monsterName,
 					spawnPoint: { x: sprite.x, y: sprite.y },
 					facingLeft,
 				};

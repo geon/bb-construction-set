@@ -49,28 +49,28 @@ exports[`parsePrg 1`] = `
   },
   "monsters": [
     {
+      "characterName": "bubbleBuster",
       "facingLeft": true,
       "spawnPoint": {
         "x": 140,
         "y": 21,
       },
-      "type": 0,
     },
     {
+      "characterName": "bubbleBuster",
       "facingLeft": true,
       "spawnPoint": {
         "x": 140,
         "y": 21,
       },
-      "type": 0,
     },
     {
+      "characterName": "bubbleBuster",
       "facingLeft": true,
       "spawnPoint": {
         "x": 140,
         "y": 21,
       },
-      "type": 0,
     },
   ],
   "platformChar": {
