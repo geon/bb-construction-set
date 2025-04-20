@@ -156,7 +156,7 @@ export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
 		}
 	);
 
-	const chars = Object.values(
+	const charImages = Object.values(
 		mapRecord(maskedItemGroups, (maskedItems) => {
 			const { item: items, mask: itemMasks } = unzipObject(maskedItems);
 			const chars = items.flat().flat();
@@ -186,7 +186,7 @@ export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
 
 	const image = new ImageData(layout.size.x, layout.size.y);
 	for (const { char, pos } of zipObject({
-		char: chars,
+		char: charImages,
 		pos: charPositions,
 	})) {
 		blitImageData(image, char, pos.x, pos.y);
