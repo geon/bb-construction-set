@@ -1,6 +1,7 @@
 import { Coord2, scale, origo } from "../../math/coord2";
 import { LayoutRect, boundingBox, flexbox, grid, leafs } from "../../math/rect";
 import { mapRecord, range, zipObject, unzipObject } from "../functions";
+import { ItemDataSegmentName } from "../game-definitions/item-segment-name";
 import { palette } from "../internal-data-formats/palette";
 import { itemGroupMeta, ItemGroups, ItemGroup } from "../prg/items";
 import { assertTuple } from "../tuple";
@@ -131,23 +132,21 @@ export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
 		itemGroups.bubbleBlow.slice(8).map((x) => x.mask!),
 		4
 	);
+	const overriddenMasks: Partial<
+		Record<
+			ItemDataSegmentName,
+			ReadonlyArray<(typeof sharedBubbleMask)[number]>
+		>
+	> = {
+		specialBubbles: range(0, 3).flatMap(() => sharedBubbleMask),
+		extendBubbles: range(0, 5).flatMap(() => sharedBubbleMask),
+		stonerWeapon: [sharedBubbleMask[0], sharedBubbleMask[2]],
+	};
 
 	const maskedItemGroups = mapRecord(
 		itemGroups,
 		(itemGroup, groupName): ItemGroup<number, number> => {
-			const masks = (() => {
-				switch (groupName) {
-					case "specialBubbles":
-						return range(0, 3).flatMap(() => sharedBubbleMask);
-					case "extendBubbles":
-						return range(0, 5).flatMap(() => sharedBubbleMask);
-					case "stonerWeapon":
-						return [sharedBubbleMask[0], sharedBubbleMask[2]];
-					default:
-						return undefined;
-				}
-			})();
-
+			const masks = overriddenMasks[groupName];
 			return masks
 				? zipObject({
 						item: itemGroup.map(({ item }) => item),
