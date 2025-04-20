@@ -82,8 +82,8 @@ function drawLevelThumbnail(
 
 	for (const monster of level.monsters) {
 		const spritePosOffset = {
-			y: 41,
 			x: 20,
+			y: 41,
 		};
 		const spritePos = subtract(monster.spawnPoint, spritePosOffset);
 		const pixelPos = scale(spritePos, 1 / 8);
