@@ -12,7 +12,7 @@ export function PrgDownloader({
 	return (
 		<>
 			<h2>Save your prg-file</h2>
-			<p>
+			{/* <p>
 				Use the tools below to view and patch your prg-file. When you are done,
 				you can download the prg-file. You can also resume editing your saved
 				prg-file later.
@@ -28,7 +28,7 @@ export function PrgDownloader({
 					.bat-file
 				</a>
 				, placed in the same folder as Exomizer to pack it for execution.
-			</p>
+			</p> */}
 			<BlobDownloadButton
 				getBlob={async () => {
 					const patched = patchPrg(prg, parsedPrg, "retroForge");

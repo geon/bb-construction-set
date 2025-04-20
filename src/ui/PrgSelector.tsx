@@ -9,7 +9,7 @@ export function PrgSelector({
 	return (
 		<>
 			<h2>Select a prg-file</h2>
-			<p>
+			{/* <p>
 				Select an <i>unpacked</i> c64 prg-file containing Bubble Bobble. Most
 				prg-files you find will be <i>packed</i> and the c64 unpacks them on
 				startup. Such packed prg:s can't be used.
@@ -20,7 +20,7 @@ export function PrgSelector({
 					Shimmer bugfix by Shallan
 				</a>
 				.
-			</p>
+			</p> */}
 			<FileInput
 				accept={["prg"]}
 				onChange={async (file) => setPrg(await file.arrayBuffer())}
