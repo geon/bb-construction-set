@@ -1,11 +1,11 @@
-import { Monster } from "../internal-data-formats/level";
+import { Character } from "../internal-data-formats/level";
 import { isBitSet } from "../bit-twiddling";
 import { bytesPerMonster, maxMonsters } from "./data-locations";
 import { ReadonlyUint8Array } from "../types";
 import { characterNames } from "../game-definitions/character-name";
 
 export function readMonsters(monsterBytes: ReadonlyUint8Array) {
-	const monstersForAllLevels: Monster[][] = [];
+	const monstersForAllLevels: Character[][] = [];
 
 	let currentMonsterByteIndex = 0;
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
@@ -15,7 +15,7 @@ export function readMonsters(monsterBytes: ReadonlyUint8Array) {
 			continue;
 		}
 
-		const monsters: Monster[] = [];
+		const monsters: Character[] = [];
 		do {
 			monsters.push(
 				readMonster(
@@ -35,7 +35,7 @@ export function readMonsters(monsterBytes: ReadonlyUint8Array) {
 	return monstersForAllLevels;
 }
 
-function readMonster(monsterBytes: ReadonlyUint8Array): Monster {
+function readMonster(monsterBytes: ReadonlyUint8Array): Character {
 	return {
 		characterName: characterNames[(monsterBytes[0]! & 0b111) + 1]!,
 		spawnPoint: {
@@ -48,7 +48,7 @@ function readMonster(monsterBytes: ReadonlyUint8Array): Monster {
 
 export function writeMonsters(
 	oldByteArray: ReadonlyUint8Array,
-	monsterses: readonly Monster[][]
+	monsterses: readonly Character[][]
 ): Uint8Array {
 	const numMonsters = monsterses.flatMap((monsters) => monsters).length;
 	if (numMonsters > maxMonsters) {

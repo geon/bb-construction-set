@@ -13,7 +13,7 @@ import {
 import { CharBitmap } from "../pe/pe-file";
 import { CharacterName } from "../game-definitions/character-name";
 
-export interface Monster {
+export interface Character {
 	characterName: CharacterName;
 	spawnPoint: {
 		x: number;
@@ -69,7 +69,7 @@ export interface Level {
 	bgColorDark: PaletteIndex;
 	platformChar: CharsetChar;
 	sidebarChars: CharBlock | undefined;
-	monsters: Array<Monster>;
+	monsters: Array<Character>;
 	bubbleCurrentRectangles: BubbleCurrentRectangles;
 	bubbleCurrentPerLineDefaults: BubbleCurrentPerLineDefaults;
 }

@@ -11,7 +11,7 @@ import {
 	createTiles,
 	Level,
 	makeCharset,
-	Monster,
+	Character,
 } from "../internal-data-formats/level";
 import { Bit, CharBitmap, createPeFileData, PeFileData } from "./pe-file";
 import {
@@ -552,7 +552,7 @@ export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 		]!;
 
 		const monsters = screen.sprites
-			.map((sprite): Monster | undefined => {
+			.map((sprite): Character | undefined => {
 				const { monsterName, facingLeft } = parseSpriteUid(sprite.uid);
 				if (!isCharacterName(monsterName) || monsterName === "player") {
 					return undefined;
