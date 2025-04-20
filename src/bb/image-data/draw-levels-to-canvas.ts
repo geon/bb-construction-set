@@ -1,4 +1,5 @@
 import {
+	Character,
 	Level,
 	levelToCharNames,
 	makeCharset,
@@ -119,11 +120,6 @@ export function drawLevel(level: Level, spriteGroups: SpriteGroups): ImageData {
 		levelWidth
 	);
 
-	type Character = {
-		spawnPoint: Coord2;
-		characterName: CharacterName;
-		facingLeft: boolean;
-	};
 	const characters: ReadonlyArray<Character> = [
 		{
 			spawnPoint: {
