@@ -15,5 +15,5 @@ export function ImageDataCanvas(props: {
 		ctx && ctx.putImageData(props.imageData, 0, 0);
 	}, [props.imageData]);
 
-	return <canvas ref={canvasRef} />;
+	return <canvas ref={canvasRef} style={{ imageRendering: "pixelated" }} />;
 }
