@@ -1,3 +1,5 @@
+import { Character } from "../internal-data-formats/level";
+
 export const characterNames = [
 	"player",
 	"bubbleBuster",
@@ -26,4 +28,22 @@ export const spriteLeftIndex: Record<CharacterName, number> = {
 	willyWhistle: 2,
 	stoner: 2,
 	superSocket: 1,
+};
+
+export const pl1: Character = {
+	spawnPoint: {
+		x: 44, // The tail is 6 pixels from the edge.
+		y: 221,
+	},
+	characterName: "player",
+	facingLeft: false,
+};
+
+export const pl2: Character = {
+	spawnPoint: {
+		x: 236, // Only 4 pixels from the edge. Not same as pl1.
+		y: 221,
+	},
+	characterName: "player",
+	facingLeft: true,
 };
