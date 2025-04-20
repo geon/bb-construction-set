@@ -30,6 +30,7 @@ import {
 } from "../../math/rect";
 import { spriteCounts } from "../prg/data-locations";
 import { Coord2, origo, scale, subtract } from "../../math/coord2";
+import { ShadowStyle } from "../prg/shadow-chars";
 
 export function drawLevelsToCanvas(
 	levels: readonly Level[],
@@ -107,10 +108,14 @@ function drawLevelThumbnail(
 	return image;
 }
 
-export function drawLevel(level: Level, spriteGroups: SpriteGroups): ImageData {
+export function drawLevel(
+	level: Level,
+	spriteGroups: SpriteGroups,
+	shadowStyle: ShadowStyle
+): ImageData {
 	// Draw level.
 	const charPalette = getCharPalette(level);
-	const charset = mapRecord(makeCharset(level, "retroForge"), (char) =>
+	const charset = mapRecord(makeCharset(level, shadowStyle), (char) =>
 		drawChar(char, charPalette)
 	);
 
