@@ -34,7 +34,7 @@ import {
 	flexboxChildPositions,
 } from "../../math/rect";
 import { spriteCounts } from "../prg/data-locations";
-import { Coord2, origo, scale, subtract } from "../../math/coord2";
+import { add, Coord2, origo, scale, subtract } from "../../math/coord2";
 import { ShadowStyle } from "../prg/shadow-chars";
 
 export function drawLevelsToCanvas(
@@ -91,13 +91,11 @@ function drawLevelThumbnail(
 		0
 	);
 
+	const charBlockSize = { x: 16, y: 16 };
+	const fakeSpriteCharblockOffset = subtract(spriteSize, charBlockSize);
 	for (const character of [pl1, pl2, ...level.monsters]) {
-		const spritePosOffset = {
-			x: 20,
-			y: 41,
-		};
 		const spritePos = subtract(character.spawnPoint, spritePosOffset);
-		const pixelPos = scale(spritePos, 1 / 8);
+		const pixelPos = scale(add(spritePos, fakeSpriteCharblockOffset), 1 / 8);
 		const pixelIndex = Math.floor(pixelPos.y) * 32 + Math.floor(pixelPos.x);
 		const spriteColor =
 			palette[
