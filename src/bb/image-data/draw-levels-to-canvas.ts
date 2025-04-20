@@ -121,7 +121,6 @@ export function drawLevel(level: Level, spriteGroups: SpriteGroups): ImageData {
 
 	type Character = {
 		spawnPoint: Coord2;
-		color: PaletteIndex;
 		characterName: CharacterName;
 		facingLeft: boolean;
 	};
@@ -131,7 +130,6 @@ export function drawLevel(level: Level, spriteGroups: SpriteGroups): ImageData {
 				x: 44, // The tail is 6 pixels from the edge.
 				y: 221,
 			},
-			color: 5, // Dark green
 			characterName: "player",
 			facingLeft: false,
 		},
@@ -140,7 +138,6 @@ export function drawLevel(level: Level, spriteGroups: SpriteGroups): ImageData {
 				x: 236, // Only 4 pixels from the edge. Not same as pl1.
 				y: 221,
 			},
-			color: 3, // Cyan
 			characterName: "player",
 			facingLeft: true,
 		},
@@ -148,7 +145,6 @@ export function drawLevel(level: Level, spriteGroups: SpriteGroups): ImageData {
 			const characterName = monster.characterName;
 			return {
 				spawnPoint: monster.spawnPoint,
-				color: spriteGroups[characterName].color,
 				characterName,
 				facingLeft: monster.facingLeft,
 			};
@@ -165,7 +161,12 @@ export function drawLevel(level: Level, spriteGroups: SpriteGroups): ImageData {
 			y: 50,
 		};
 		const spritePos = subtract(character.spawnPoint, spritePosOffset);
-		const spriteColor = character.color;
+		const spriteColor =
+			character.characterName === "player"
+				? character.facingLeft
+					? 3 // Cyan
+					: 5 // Dark green
+				: spriteGroups[character.characterName].color;
 
 		blitImageDataMasked(
 			image,
