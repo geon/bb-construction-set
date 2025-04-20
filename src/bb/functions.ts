@@ -94,7 +94,7 @@ export function unzipObject<TInput extends object>(
 export function mapRecord<TKey extends string, TIn, TOut>(
 	record: Readonly<Record<TKey, TIn>>,
 	transform: (value: TIn, key: TKey) => TOut
-): Readonly<Record<TKey, TOut>> {
+): Record<TKey, TOut> {
 	return Object.fromEntries(
 		Object.entries(record).map(([key, value]) => [
 			key,
