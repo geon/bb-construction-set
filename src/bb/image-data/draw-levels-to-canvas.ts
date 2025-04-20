@@ -120,25 +120,25 @@ export function drawLevel(level: Level, spriteGroups: SpriteGroups): ImageData {
 		levelWidth
 	);
 
-	const characters: ReadonlyArray<Character> = [
-		{
-			spawnPoint: {
-				x: 44, // The tail is 6 pixels from the edge.
-				y: 221,
-			},
-			characterName: "player",
-			facingLeft: false,
+	const pl1: Character = {
+		spawnPoint: {
+			x: 44, // The tail is 6 pixels from the edge.
+			y: 221,
 		},
-		{
-			spawnPoint: {
-				x: 236, // Only 4 pixels from the edge. Not same as pl1.
-				y: 221,
-			},
-			characterName: "player",
-			facingLeft: true,
+		characterName: "player",
+		facingLeft: false,
+	};
+
+	const pl2: Character = {
+		spawnPoint: {
+			x: 236, // Only 4 pixels from the edge. Not same as pl1.
+			y: 221,
 		},
-		...level.monsters,
-	];
+		characterName: "player",
+		facingLeft: true,
+	};
+
+	const characters: ReadonlyArray<Character> = [pl1, pl2, ...level.monsters];
 
 	for (const character of characters) {
 		const sprite =
