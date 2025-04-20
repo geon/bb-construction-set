@@ -1,5 +1,4 @@
 import {
-	Character,
 	Level,
 	levelToCharNames,
 	makeCharset,
@@ -122,9 +121,7 @@ export function drawLevel(level: Level, spriteGroups: SpriteGroups): ImageData {
 		levelWidth
 	);
 
-	const characters: ReadonlyArray<Character> = [pl1, pl2, ...level.monsters];
-
-	for (const character of characters) {
+	for (const character of [pl1, pl2, ...level.monsters]) {
 		const sprite =
 			spriteGroups[character.characterName].sprites[
 				character.facingLeft ? spriteLeftIndex[character.characterName] : 0
