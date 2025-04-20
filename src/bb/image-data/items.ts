@@ -132,55 +132,54 @@ export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
 		4
 	);
 
-	const chars = Object.values(
-		mapRecord(
-			mapRecord(
-				itemGroups,
-				(itemGroup, groupName): ItemGroup<number, number> => {
-					const masks = (() => {
-						switch (groupName) {
-							case "specialBubbles":
-								return range(0, 3).flatMap(() => sharedBubbleMask);
-							case "extendBubbles":
-								return range(0, 5).flatMap(() => sharedBubbleMask);
-							case "stonerWeapon":
-								return [sharedBubbleMask[0], sharedBubbleMask[2]];
-							default:
-								return undefined;
-						}
-					})();
-
-					return masks
-						? zipObject({
-								item: itemGroup.map(({ item }) => item),
-								mask: masks,
-						  })
-						: itemGroup;
+	const maskedItemGroups = mapRecord(
+		itemGroups,
+		(itemGroup, groupName): ItemGroup<number, number> => {
+			const masks = (() => {
+				switch (groupName) {
+					case "specialBubbles":
+						return range(0, 3).flatMap(() => sharedBubbleMask);
+					case "extendBubbles":
+						return range(0, 5).flatMap(() => sharedBubbleMask);
+					case "stonerWeapon":
+						return [sharedBubbleMask[0], sharedBubbleMask[2]];
+					default:
+						return undefined;
 				}
-			),
-			(maskedItems) => {
-				const { item: items, mask: itemMasks } = unzipObject(maskedItems);
-				const chars = items.flat().flat();
-				const masks = itemMasks?.flat().flat() ?? chars.map(() => undefined);
-				const maskedChars = zipObject({
-					char: chars,
-					mask: masks,
-				});
+			})();
 
-				return maskedChars.map((maskedChar) =>
-					drawChar(
-						maskedChar.char,
-						[
-							palette[0], //black
-							palette[9], // Brown
-							palette[1], // White
-							palette[5], // Green
-						],
-						maskedChar.mask
-					)
-				);
-			}
-		)
+			return masks
+				? zipObject({
+						item: itemGroup.map(({ item }) => item),
+						mask: masks,
+				  })
+				: itemGroup;
+		}
+	);
+
+	const chars = Object.values(
+		mapRecord(maskedItemGroups, (maskedItems) => {
+			const { item: items, mask: itemMasks } = unzipObject(maskedItems);
+			const chars = items.flat().flat();
+			const masks = itemMasks?.flat().flat() ?? chars.map(() => undefined);
+			const maskedChars = zipObject({
+				char: chars,
+				mask: masks,
+			});
+
+			return maskedChars.map((maskedChar) =>
+				drawChar(
+					maskedChar.char,
+					[
+						palette[0], //black
+						palette[9], // Brown
+						palette[1], // White
+						palette[5], // Green
+					],
+					maskedChar.mask
+				)
+			);
+		})
 	).flat();
 
 	const layout = layOutItemChars();
