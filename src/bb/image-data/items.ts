@@ -10,10 +10,10 @@ import { blitImageData } from "./image-data";
 
 function layoutLargeLightning(index: number) {
 	// 4x4 grid, but 2 corners are missing 3 chars each.
-	//  *  * [*][*]
-	//  * [*][*][*]
-	// [*][*][*] *
-	// [*][*] *  *
+	// [o][o][x][x]
+	// [x][x][x][o]
+	// [o][x][x][x]
+	// [x][x][o][o]
 	const positions: ReadonlyArray<Coord2> = [
 		{ x: 2, y: 0 },
 		{ x: 3, y: 0 },
