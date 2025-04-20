@@ -24,7 +24,7 @@ import {
 	flexboxChildPositions,
 } from "../../math/rect";
 import { spriteCounts } from "../prg/data-locations";
-import { Coord2, origo, scale } from "../../math/coord2";
+import { Coord2, origo, scale, subtract } from "../../math/coord2";
 
 export function drawLevelsToCanvas(
 	levels: readonly Level[],
@@ -85,14 +85,8 @@ function drawLevelThumbnail(
 			y: 41,
 			x: 20,
 		};
-		const spritePos = {
-			y: monster.spawnPoint.y - spritePosOffset.y,
-			x: monster.spawnPoint.x - spritePosOffset.x,
-		};
-		const pixelPos = {
-			y: spritePos.x / 8,
-			x: spritePos.y / 8,
-		};
+		const spritePos = subtract(monster.spawnPoint, spritePosOffset);
+		const pixelPos = scale(spritePos, 1 / 8);
 		const pixelIndex = Math.floor(pixelPos.y) * 32 + Math.floor(pixelPos.x);
 
 		// Monsters are 2x2 chars large.
