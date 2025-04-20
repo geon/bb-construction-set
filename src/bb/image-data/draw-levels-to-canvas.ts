@@ -165,10 +165,11 @@ export function drawLevel(level: Level, spriteGroups: SpriteGroups): ImageData {
 			y: 50,
 		};
 		const spritePos = subtract(character.spawnPoint, spritePosOffset);
+		const spriteColor = character.color;
 
 		blitImageDataMasked(
 			image,
-			drawSprite(sprite, getSpritePalette(character.color)),
+			drawSprite(sprite, getSpritePalette(spriteColor)),
 			spritePos.x,
 			spritePos.y,
 			{ r: 0, g: 0, b: 0 }
