@@ -49,7 +49,7 @@ function layoutLargeLightning(index: number) {
 	};
 }
 
-function layOutItemGroups(): LayoutRect {
+function layOutItemChars(): LayoutRect {
 	let index = 0;
 	const itemRectGroups = mapRecord(
 		itemGroupMeta,
@@ -183,7 +183,7 @@ export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
 		)
 	).flat();
 
-	const layout = layOutItemGroups();
+	const layout = layOutItemChars();
 	const itemPositions = leafs(layout).map(({ pos }) => pos);
 
 	const image = new ImageData(layout.size.x, layout.size.y);
