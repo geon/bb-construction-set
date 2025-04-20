@@ -83,11 +83,7 @@ function drawLevelThumbnail(
 		image,
 		level.tiles,
 		// The platforms use only the 3 background colors.
-		mixColors(
-			level.platformChar.lines
-				.flatMap((pixels) => pixels)
-				.map((pixel) => charPalette[pixel])
-		),
+		getAverageCharColor(level.platformChar, charPalette),
 		0
 	);
 
@@ -113,6 +109,15 @@ function drawLevelThumbnail(
 	}
 
 	return image;
+}
+
+function getAverageCharColor(
+	char: CharsetChar,
+	charPalette: [Color, Color, Color, Color]
+): Color {
+	return mixColors(
+		char.lines.flatMap((pixels) => pixels).map((pixel) => charPalette[pixel])
+	);
 }
 
 export function drawLevel(
