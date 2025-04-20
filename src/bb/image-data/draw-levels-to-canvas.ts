@@ -98,14 +98,11 @@ function drawLevelThumbnail(
 		const spritePos = subtract(character.spawnPoint, spritePosOffset);
 		const pixelPos = scale(spritePos, 1 / 8);
 		const pixelIndex = Math.floor(pixelPos.y) * 32 + Math.floor(pixelPos.x);
+		const spriteColor = palette[spriteColors[character.characterName]];
 
 		// Monsters are 2x2 chars large.
 		for (const offset of [0, 1, 32, 33]) {
-			plotPixel(
-				image,
-				pixelIndex + offset,
-				palette[spriteColors[character.characterName]]
-			);
+			plotPixel(image, pixelIndex + offset, spriteColor);
 		}
 	}
 
