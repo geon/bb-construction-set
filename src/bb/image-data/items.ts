@@ -184,12 +184,12 @@ export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
 	).flat();
 
 	const layout = layOutItemChars();
-	const itemPositions = leafs(layout).map(({ pos }) => pos);
+	const charPositions = leafs(layout).map(({ pos }) => pos);
 
 	const image = new ImageData(layout.size.x, layout.size.y);
 	for (const { char: item, pos } of zipObject({
 		char: chars,
-		pos: itemPositions,
+		pos: charPositions,
 	})) {
 		blitImageData(image, item, pos.x, pos.y);
 	}
