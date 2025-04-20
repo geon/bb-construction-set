@@ -127,7 +127,7 @@ function layOutItemChars(): LayoutRect {
 	);
 }
 
-export function drawItemsToCanvas(itemGroups: ItemGroups): ImageData {
+export function drawItems(itemGroups: ItemGroups): ImageData {
 	const sharedBubbleMask = assertTuple(
 		itemGroups.bubbleBlow.slice(8).map((x) => x.mask!),
 		4
