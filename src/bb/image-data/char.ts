@@ -6,7 +6,7 @@ export function drawChar(
 	char: CharsetChar,
 	charPalette: readonly [Color, Color, Color, Color],
 	mask?: CharsetChar
-) {
+): ImageData {
 	const image = new ImageData(8, 8);
 
 	for (const [charY, line] of char.lines.entries()) {
