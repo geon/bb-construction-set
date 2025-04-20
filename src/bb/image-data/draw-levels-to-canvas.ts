@@ -8,7 +8,11 @@ import { levelHeight, levelWidth } from "../game-definitions/level-size";
 import { palette, PaletteIndex } from "../internal-data-formats/palette";
 import { Color, mixColors, black } from "../../math/color";
 import { CharsetChar } from "../internal-data-formats/charset-char";
-import { spriteHeight, spriteWidthBytes } from "../../c64/consts";
+import {
+	spriteHeight,
+	spritePosOffset,
+	spriteWidthBytes,
+} from "../../c64/consts";
 import { Sprite, SpriteGroups } from "../internal-data-formats/sprite";
 import {
 	CharacterName,
@@ -131,10 +135,6 @@ export function drawLevel(
 			spriteGroups[character.characterName].sprites[
 				character.facingLeft ? spriteLeftIndex[character.characterName] : 0
 			]!;
-		const spritePosOffset = {
-			x: 24,
-			y: 50,
-		};
 		const spritePos = subtract(character.spawnPoint, spritePosOffset);
 		const spriteColor =
 			character.characterName === "player"
