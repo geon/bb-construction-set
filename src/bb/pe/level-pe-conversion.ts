@@ -31,6 +31,7 @@ import { assertTuple } from "../tuple";
 import { Sprite } from "../internal-data-formats/sprite";
 import { CharName } from "../game-definitions/char-name";
 import { levelToCharNames } from "../internal-data-formats/level";
+import { spriteLeftIndex } from "../game-definitions/character-name";
 
 const emptyChar: CharBitmap = [0, 0, 0, 0, 0, 0, 0, 0];
 
@@ -626,15 +627,3 @@ export type Sprites = Record<
 		readonly color: PaletteIndex;
 	}
 >;
-
-const spriteLeftIndex: Record<CharacterName, number> = {
-	player: 4,
-	bubbleBuster: 4,
-	incendo: 4,
-	colley: 4,
-	hullaballoon: 2,
-	beluga: 4,
-	willyWhistle: 2,
-	stoner: 2,
-	superSocket: 1,
-};
