@@ -27,10 +27,7 @@ export function Levels({
 			<br />
 			<br />
 			<ImageDataCanvas
-				imageData={drawLevel(
-					parsedPrg.levels[4]!,
-					mapRecord(parsedPrg.sprites, ({ color }) => color)
-				)}
+				imageData={drawLevel(parsedPrg.levels[4]!, parsedPrg.sprites)}
 			/>
 			<br />
 			<br />
@@ -38,12 +35,7 @@ export function Levels({
 				getBlob={async () => ({
 					parts: await mapAsync(parsedPrg.levels, async (level, index) => ({
 						fileName: (index + 1).toString().padStart(3, "0") + ".png",
-						blob: await imageDataToBlob(
-							drawLevel(
-								level,
-								mapRecord(parsedPrg.sprites, ({ color }) => color)
-							)
-						),
+						blob: await imageDataToBlob(drawLevel(level, parsedPrg.sprites)),
 					})),
 					fileName: "bubble bobble c64 - all level images.zip",
 				})}

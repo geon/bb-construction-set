@@ -10,7 +10,11 @@ import { Color, mixColors, black } from "../../math/color";
 import { CharsetChar } from "../internal-data-formats/charset-char";
 import { spriteHeight, spriteWidthBytes } from "../../c64/consts";
 import { Sprite, SpriteGroups } from "../internal-data-formats/sprite";
-import { CharacterName } from "../game-definitions/character-name";
+import {
+	CharacterName,
+	characterNames,
+	spriteLeftIndex,
+} from "../game-definitions/character-name";
 import { Item, ItemGroup, itemGroupMeta, ItemGroups } from "../prg/items";
 import { chunk, mapRecord, range, unzipObject, zipObject } from "../functions";
 import { assertTuple, ReadonlyTuple } from "../tuple";
@@ -102,15 +106,11 @@ function drawLevelThumbnail(
 	return image;
 }
 
-export function drawLevel(
-	level: Level,
-	_spriteColors: Record<CharacterName, PaletteIndex>
-): ImageData {
+export function drawLevel(level: Level, spriteGroups: SpriteGroups): ImageData {
 	// Draw level.
-	const palette = getCharPalette(level);
-
+	const charPalette = getCharPalette(level);
 	const charset = mapRecord(makeCharset(level, "retroForge"), (char) =>
-		drawChar(char, palette)
+		drawChar(char, charPalette)
 	);
 
 	const image = drawGrid(
@@ -119,6 +119,62 @@ export function drawLevel(
 			.map((charName) => charset[charName]),
 		levelWidth
 	);
+
+	type Character = {
+		spawnPoint: Coord2;
+		color: PaletteIndex;
+		characterName: CharacterName;
+		facingLeft: boolean;
+	};
+	const characters: ReadonlyArray<Character> = [
+		{
+			spawnPoint: {
+				x: 44, // The tail is 6 pixels from the edge.
+				y: 221,
+			},
+			color: 5, // Dark green
+			characterName: "player",
+			facingLeft: false,
+		},
+		{
+			spawnPoint: {
+				x: 236, // Only 4 pixels from the edge. Not same as pl1.
+				y: 221,
+			},
+			color: 3, // Cyan
+			characterName: "player",
+			facingLeft: true,
+		},
+		...level.monsters.map((monster): Character => {
+			const characterName = characterNames[monster.type + 1]!;
+			return {
+				spawnPoint: monster.spawnPoint,
+				color: spriteGroups[characterName].color,
+				characterName,
+				facingLeft: monster.facingLeft,
+			};
+		}),
+	];
+
+	for (const character of characters) {
+		const sprite =
+			spriteGroups[character.characterName].sprites[
+				character.facingLeft ? spriteLeftIndex[character.characterName] : 0
+			]!;
+		const spritePosOffset = {
+			x: 24,
+			y: 50,
+		};
+		const spritePos = subtract(character.spawnPoint, spritePosOffset);
+
+		blitImageDataMasked(
+			image,
+			drawSprite(sprite, getSpritePalette(character.color)),
+			spritePos.x,
+			spritePos.y,
+			{ r: 0, g: 0, b: 0 }
+		);
+	}
 
 	return image;
 }
@@ -581,6 +637,33 @@ function blitImageData(to: ImageData, from: ImageData, dx: number, dy: number) {
 			from.data.slice(fromStart, fromStart + from.width * 4),
 			toStart
 		);
+	}
+}
+
+function blitImageDataMasked(
+	to: ImageData,
+	from: ImageData,
+	dx: number,
+	dy: number,
+	maskColor: Color
+) {
+	for (let y = 0; y < from.height; ++y) {
+		for (let x = 0; x < from.width; ++x) {
+			for (let channel = 0; channel < 4; ++channel) {
+				const toPixelIndex = ((y + dy) * to.width + (x + dx)) * 4;
+				const fromPixelIndex = (y * from.width + x) * 4;
+				if (
+					!(
+						maskColor.r === from.data[fromPixelIndex + 0] &&
+						maskColor.g === from.data[fromPixelIndex + 1] &&
+						maskColor.b === from.data[fromPixelIndex + 2]
+					)
+				) {
+					to.data[toPixelIndex + channel] =
+						from.data[fromPixelIndex + channel]!;
+				}
+			}
+		}
 	}
 }
 
