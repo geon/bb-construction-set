@@ -2,11 +2,10 @@ import {
 	Level,
 	levelToCharNames,
 	makeCharset,
-	Tiles,
 } from "../internal-data-formats/level";
 import { levelHeight, levelWidth } from "../game-definitions/level-size";
 import { palette, PaletteIndex } from "../internal-data-formats/palette";
-import { Color, mixColors, black } from "../../math/color";
+import { Color, mixColors } from "../../math/color";
 import { CharsetChar } from "../internal-data-formats/charset-char";
 import {
 	spriteHeight,
@@ -56,36 +55,24 @@ function drawLevelThumbnail(
 ): ImageData {
 	const image = new ImageData(levelWidth, levelHeight);
 
-	// Fill with background color.
-	const bgColor = palette[0];
-	fillImageData(image, bgColor);
-
-	// Draw shadows.
-	const shadowColor = palette[level.bgColorDark];
-	// The shadows use only the dark background color, and black.
-	drawTiles(image, level.tiles, mixColors([shadowColor, black, black]), 1);
-	drawTiles(
-		image,
-		level.tiles,
-		mixColors([shadowColor, black, black]),
-		levelWidth
-	);
-	drawTiles(
-		image,
-		level.tiles,
-		mixColors([shadowColor, black]),
-		levelWidth + 1
-	);
-
 	// Draw level.
 	const charPalette = getCharPalette(level);
-	drawTiles(
-		image,
-		level.tiles,
-		// The platforms use only the 3 background colors.
-		getAverageCharColor(level.platformChar, charPalette),
-		0
+	const charset = makeCharset(level, "originalC64");
+	const averageCharColors = mapRecord(charset, (char) =>
+		getAverageCharColor(char, charPalette)
 	);
+	const tiles = chunk(
+		levelToCharNames(level)
+			.flat()
+			.map((charName) => averageCharColors[charName]),
+		levelWidth
+	);
+	for (const [tileY, row] of tiles.entries()) {
+		for (const [tileX, color] of row.entries()) {
+			const pixelIndex = tileY * levelWidth + tileX;
+			plotPixel(image, pixelIndex, color);
+		}
+	}
 
 	const charBlockSize = { x: 16, y: 16 };
 	const fakeSpriteCharblockOffset = subtract(spriteSize, charBlockSize);
@@ -161,32 +148,6 @@ export function drawLevel(
 	}
 
 	return image;
-}
-
-function fillImageData(image: ImageData, bgColor: Color) {
-	for (let pixelIndex = 0; pixelIndex < image.data.length / 4; ++pixelIndex) {
-		image.data[pixelIndex * 4 + 0] = bgColor.r;
-		image.data[pixelIndex * 4 + 1] = bgColor.g;
-		image.data[pixelIndex * 4 + 2] = bgColor.b;
-		image.data[pixelIndex * 4 + 3] = 255;
-	}
-}
-
-function drawTiles(
-	image: ImageData,
-	tiles: Tiles,
-	color: Color,
-	offset: number
-) {
-	for (const [tileY, row] of tiles.entries()) {
-		for (const [tileX, tileIsSet] of row.entries()) {
-			const tileIndex = tileY * levelWidth + tileX;
-			const pixelIndex = tileIndex + offset;
-			if (tileIsSet && pixelIndex < levelWidth * levelHeight) {
-				plotPixel(image, pixelIndex, color);
-			}
-		}
-	}
 }
 
 function plotPixel(
