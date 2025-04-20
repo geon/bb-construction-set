@@ -12,13 +12,11 @@ import {
 } from "../prg/shadow-chars";
 import { CharBitmap } from "../pe/pe-file";
 import { CharacterName } from "../game-definitions/character-name";
+import { Coord2 } from "../../math/coord2";
 
 export interface Character {
 	characterName: CharacterName;
-	spawnPoint: {
-		x: number;
-		y: number;
-	};
+	spawnPoint: Coord2;
 	facingLeft: boolean;
 }
 
