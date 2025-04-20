@@ -7,3 +7,8 @@ export const spritePosOffset = {
 	x: 24,
 	y: 50,
 };
+
+export const spriteSize = {
+	x: spriteWidthBytes * 8,
+	y: spriteHeight,
+};

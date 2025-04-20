@@ -11,6 +11,7 @@ import { CharsetChar } from "../internal-data-formats/charset-char";
 import {
 	spriteHeight,
 	spritePosOffset,
+	spriteSize,
 	spriteWidthBytes,
 } from "../../c64/consts";
 import { Sprite, SpriteGroups } from "../internal-data-formats/sprite";
@@ -273,11 +274,6 @@ function drawChar(
 }
 
 export function layOutSpriteGroups(): LayoutRect {
-	const spriteSize = {
-		x: spriteWidthBytes * 8,
-		y: spriteHeight,
-	};
-
 	let index = 0;
 	const spriteRects = mapRecord(
 		spriteCounts,
