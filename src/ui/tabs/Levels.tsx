@@ -22,7 +22,7 @@ export function Levels({
 				imageData={drawLevelsToCanvas(
 					parsedPrg.levels,
 					mapRecord(parsedPrg.sprites, ({ color }) => color),
-					"originalC64"
+					parsedPrg.shadowStyle
 				)}
 			/>
 			<br />
@@ -31,7 +31,7 @@ export function Levels({
 				imageData={drawLevel(
 					parsedPrg.levels[4]!,
 					parsedPrg.sprites,
-					"retroForge"
+					parsedPrg.shadowStyle
 				)}
 			/>
 			<br />
@@ -41,7 +41,7 @@ export function Levels({
 					parts: await mapAsync(parsedPrg.levels, async (level, index) => ({
 						fileName: (index + 1).toString().padStart(3, "0") + ".png",
 						blob: await imageDataToBlob(
-							drawLevel(level, parsedPrg.sprites, "retroForge")
+							drawLevel(level, parsedPrg.sprites, parsedPrg.shadowStyle)
 						),
 					})),
 					fileName: "bubble bobble c64 - all level images.zip",
@@ -121,7 +121,7 @@ export function Levels({
 							"monsters",
 							"windCurrents",
 						]),
-						"retroForge"
+						parsedPrg.shadowStyle
 					);
 					setPrg(patched);
 				}}

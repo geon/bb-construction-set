@@ -6,6 +6,7 @@ import {
 } from "../internal-data-formats/charset-char";
 import { CharBitmap } from "../pe/pe-file";
 import { assertTuple, ReadonlyTuple } from "../tuple";
+import { DataSegment } from "./io";
 
 export const shadowChars = {
 	originalC64: [
@@ -151,4 +152,10 @@ export function peCharToLevelChar(char: CharBitmap): CharsetChar {
 			8
 		),
 	};
+}
+
+export function detectShadowStyle(dataSegment: DataSegment): ShadowStyle {
+	return dataSegment.buffer[0] === shadowChars.originalC64[0][0]
+		? "originalC64"
+		: "retroForge";
 }

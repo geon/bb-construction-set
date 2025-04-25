@@ -32,7 +32,7 @@ export function PrgDownloader({
 			</p> */}
 			<BlobDownloadButton
 				getBlob={async () => {
-					const patched = patchPrg(prg, parsedPrg, "retroForge");
+					const patched = patchPrg(prg, parsedPrg, parsedPrg.shadowStyle);
 
 					return {
 						blob: new Blob([patched], {

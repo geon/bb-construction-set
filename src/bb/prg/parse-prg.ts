@@ -33,7 +33,7 @@ import { parseSpriteGroupsFromPrg } from "./sprites";
 import { readTileBitmaps } from "./tile-bitmap";
 import { writeSymmetry, writeBitmaps, writeHoles } from "./misc-patch";
 import { readBubbleCurrentPerLineDefaults } from "./bubble-current-per-line-defaults";
-import { shadowChars, ShadowStyle } from "./shadow-chars";
+import { detectShadowStyle, shadowChars, ShadowStyle } from "./shadow-chars";
 import { ReadonlyUint8Array } from "../types";
 import { ParsedPrg } from "../internal-data-formats/parsed-prg";
 
@@ -45,7 +45,11 @@ export function parsePrg(prg: ArrayBuffer): ParsedPrg {
 	);
 	const items = readItems(getDataSegments(prg, itemDataSegmentLocations));
 
-	return { levels, sprites, items };
+	const shadowStyle = detectShadowStyle(
+		getDataSegments(prg, levelSegmentLocations).shadowChars
+	);
+
+	return { levels, sprites, items, shadowStyle };
 }
 
 function readLevels(
@@ -110,6 +114,7 @@ export function levelsToSegments(
 		windCurrents: writeBubbleCurrentRectangles(
 			unzippedLevels.bubbleCurrentRectangles
 		),
+		// TODO: Not part of the levels.
 		shadowChars: new Uint8Array(shadowChars[shadowStyle].flat()),
 	};
 
