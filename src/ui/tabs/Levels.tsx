@@ -21,7 +21,8 @@ export function Levels({
 			<ImageDataCanvas
 				imageData={drawLevelsToCanvas(
 					parsedPrg.levels,
-					mapRecord(parsedPrg.sprites, ({ color }) => color)
+					mapRecord(parsedPrg.sprites, ({ color }) => color),
+					"originalC64"
 				)}
 			/>
 			<br />

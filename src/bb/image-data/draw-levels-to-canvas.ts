@@ -38,12 +38,13 @@ import { drawChar } from "./char";
 
 export function drawLevelsToCanvas(
 	levels: readonly Level[],
-	spriteColors: Record<CharacterName, PaletteIndex>
+	spriteColors: Record<CharacterName, PaletteIndex>,
+	shadowStyle: ShadowStyle
 ): ImageData {
 	const gap = 10;
 
 	return drawGrid(
-		levels.map((level) => drawLevelThumbnail(level, spriteColors)),
+		levels.map((level) => drawLevelThumbnail(level, spriteColors, shadowStyle)),
 		10,
 		gap
 	);
@@ -51,13 +52,14 @@ export function drawLevelsToCanvas(
 
 function drawLevelThumbnail(
 	level: Level,
-	spriteColors: Record<CharacterName, PaletteIndex>
+	spriteColors: Record<CharacterName, PaletteIndex>,
+	shadowStyle: ShadowStyle
 ): ImageData {
 	const image = new ImageData(levelWidth, levelHeight);
 
 	// Draw level.
 	const charPalette = getCharPalette(level);
-	const charset = makeCharset(level, "originalC64");
+	const charset = makeCharset(level, shadowStyle);
 	const averageCharColors = mapRecord(charset, (char) =>
 		getAverageCharColor(char, charPalette)
 	);
