@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { BlobDownloadButton } from "./BlobDownloadButton";
-import { ParsedPrg, patchPrg } from "../bb/prg/parse-prg";
+import { patchPrg } from "../bb/prg/parse-prg";
+import { ParsedPrg } from "../bb/internal-data-formats/parsed-prg";
 
 export function PrgDownloader({
 	parsedPrg,

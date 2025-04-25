@@ -8,7 +8,8 @@ import { Sprites } from "./tabs/Sprites";
 import { PrgDownloader } from "./PrgDownloader";
 import { Items } from "./tabs/Items";
 import { LevelGraphics } from "./tabs/LevelGraphics";
-import { ParsedPrg, parsePrg } from "../bb/prg/parse-prg";
+import { parsePrg } from "../bb/prg/parse-prg";
+import { ParsedPrg } from "../bb/internal-data-formats/parsed-prg";
 import { attempt } from "../bb/functions";
 
 const Page = styled.div`

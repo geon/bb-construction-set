@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { ParsedPrg } from "../../bb/prg/parse-prg";
+import { ParsedPrg } from "../../bb/internal-data-formats/parsed-prg";
 import { ImageDataCanvas } from "../ImageDataCanvas";
 import { drawItems } from "../../bb/image-data/items";
 

@@ -1,7 +1,6 @@
 import { objectEntries, unzipObject, zipObject } from "../functions";
 import { Level } from "../internal-data-formats/level";
 import { writeBgColors, readBgColors } from "./bg-colors";
-import { SpriteGroups } from "../internal-data-formats/sprite";
 import { characterNames } from "../game-definitions/character-name";
 import { readPlatformChars, writePlatformChars } from "./charset-char";
 import {
@@ -18,7 +17,7 @@ import {
 } from "./data-locations";
 import { LevelDataSegmentName } from "../game-definitions/level-segment-name";
 import { spriteGroupNames } from "../game-definitions/sprite-segment-name";
-import { readItems, ItemGroups } from "./items";
+import { readItems } from "./items";
 import {
 	readBubbleCurrentRectangles,
 	writeBubbleCurrentRectangles,
@@ -36,12 +35,7 @@ import { writeSymmetry, writeBitmaps, writeHoles } from "./misc-patch";
 import { readBubbleCurrentPerLineDefaults } from "./bubble-current-per-line-defaults";
 import { shadowChars, ShadowStyle } from "./shadow-chars";
 import { ReadonlyUint8Array } from "../types";
-
-export type ParsedPrg = {
-	readonly levels: readonly Level[];
-	readonly sprites: SpriteGroups;
-	readonly items: ItemGroups;
-};
+import { ParsedPrg } from "../internal-data-formats/parsed-prg";
 
 export function parsePrg(prg: ArrayBuffer): ParsedPrg {
 	const levels = readLevels(getDataSegments(prg, levelSegmentLocations));

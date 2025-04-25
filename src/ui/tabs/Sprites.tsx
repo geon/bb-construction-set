@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { BlobDownloadButton } from "../BlobDownloadButton";
 import { attempt } from "../../bb/functions";
-import { ParsedPrg } from "../../bb/prg/parse-prg";
+import { ParsedPrg } from "../../bb/internal-data-formats/parsed-prg";
 import {
 	convertSpriteGroupsToBinFile,
 	parseSpriteGroupsFromBin,

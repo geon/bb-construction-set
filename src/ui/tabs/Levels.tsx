@@ -3,7 +3,7 @@ import { levelsToPeFileData } from "../../bb/pe/level-pe-conversion";
 import { serializePeFileData } from "../../bb/pe/pe-file";
 import { BlobDownloadButton } from "../BlobDownloadButton";
 import { mapAsync, mapRecord } from "../../bb/functions";
-import { ParsedPrg } from "../../bb/prg/parse-prg";
+import { ParsedPrg } from "../../bb/internal-data-formats/parsed-prg";
 import {
 	drawLevel,
 	drawLevelsToCanvas,
