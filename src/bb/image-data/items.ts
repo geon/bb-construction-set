@@ -92,7 +92,7 @@ function layOutItemChars(): LayoutRect {
 				extendBubbles: 4,
 				items: Math.ceil(Math.sqrt(itemRectGroups.items.length)),
 			}[groupName as string] ?? 1000,
-			8
+			{ x: 8, y: 8 }
 		)
 	);
 

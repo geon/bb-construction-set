@@ -86,12 +86,12 @@ export function flexbox(
 export function grid(
 	rects: ReadonlyArray<LayoutRect>,
 	rowWidth: number,
-	gap: number
+	gap: Coord2
 ): LayoutRect {
 	return flexbox(
-		chunk(rects, rowWidth).map((row) => flexbox(row, "row", gap)),
+		chunk(rects, rowWidth).map((row) => flexbox(row, "row", gap.x)),
 		"column",
-		gap
+		gap.y
 	);
 }
 
