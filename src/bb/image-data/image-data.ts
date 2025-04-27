@@ -1,5 +1,5 @@
 import { Color } from "../../math/color";
-import { Coord2 } from "../../math/coord2";
+import { add, Coord2, origo } from "../../math/coord2";
 
 // Just like ctx.putImageData
 export function blitImageData(
@@ -49,15 +49,16 @@ export function drawGrid(
 	images: readonly ImageData[],
 	numColumns: number,
 	size: Coord2,
-	gap: number = 0
+	gap: Coord2 = origo
 ): ImageData {
 	const numRows = Math.ceil(images.length / numColumns);
 
 	const gridImage = new ImageData(
-		size.x * numColumns + gap * (numColumns - 1),
-		size.y * numRows + gap * (numRows - 1)
+		size.x * numColumns + gap.x * (numColumns - 1),
+		size.y * numRows + gap.y * (numRows - 1)
 	);
 
+	const stepSize = add(size, gap);
 	outerLoop: for (let y = 0; y < numRows; ++y) {
 		for (let x = 0; x < numColumns; ++x) {
 			const index = y * numColumns + x;
@@ -66,7 +67,7 @@ export function drawGrid(
 				break outerLoop;
 			}
 
-			blitImageData(gridImage, image, x * (size.x + gap), y * (size.y + gap));
+			blitImageData(gridImage, image, x * stepSize.x, y * stepSize.y);
 		}
 	}
 

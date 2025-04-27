@@ -44,7 +44,7 @@ export function drawLevelsToCanvas(
 	spriteColors: Record<CharacterName, PaletteIndex>,
 	shadowStyle: ShadowStyle
 ): ImageData {
-	const gap = 10;
+	const gap = { x: 10, y: 10 };
 
 	return drawGrid(
 		levels.map((level) => drawLevelThumbnail(level, spriteColors, shadowStyle)),
@@ -164,7 +164,7 @@ export function drawLevel(
 }
 
 export function drawPlatformCharsToCanvas(levels: readonly Level[]): ImageData {
-	const gap = 10;
+	const gap = { x: 10, y: 10 };
 	return drawGrid(
 		levels.map(drawLevelPlatformChars),
 		10,
