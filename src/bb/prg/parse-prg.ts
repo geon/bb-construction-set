@@ -60,7 +60,7 @@ function readLevels(
 		dataSegments.symmetry.buffer
 	);
 
-	return zipObject({
+	return zipObject<Level>({
 		platformChar: readPlatformChars(dataSegments.platformChars.buffer),
 		...readBgColors(dataSegments.bgColors.buffer),
 		sidebarChars: readSidebarChars(
