@@ -4,7 +4,11 @@ import {
 	makeCharset,
 } from "../internal-data-formats/level";
 import { levelHeight, levelWidth } from "../game-definitions/level-size";
-import { palette, PaletteIndex } from "../internal-data-formats/palette";
+import {
+	palette,
+	PaletteIndex,
+	SubPalette,
+} from "../internal-data-formats/palette";
 import { Color, mixColors } from "../../math/color";
 import { CharsetChar } from "../internal-data-formats/charset-char";
 import {
@@ -22,7 +26,6 @@ import {
 } from "../game-definitions/character-name";
 import { Item } from "../prg/items";
 import { chunk, mapRecord, range, zipObject } from "../functions";
-import { ReadonlyTuple } from "../tuple";
 import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
 import { flexbox, leafs, LayoutRect } from "../../math/rect";
 import { spriteCounts } from "../prg/data-locations";
@@ -319,7 +322,6 @@ function getSpritePalette(color: PaletteIndex): [Color, Color, Color, Color] {
 	];
 }
 
-type SubPalette = ReadonlyTuple<Color, 4>;
 function drawCharblock(
 	item: Item<number, number>,
 	charPalette: SubPalette,
