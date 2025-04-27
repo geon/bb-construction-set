@@ -2,7 +2,6 @@ import { Coord2, scale, origo } from "../../math/coord2";
 import { LayoutRect, boundingBox, flexbox, grid, leafs } from "../../math/rect";
 import { mapRecord, range, zipObject, unzipObject } from "../functions";
 import { ItemDataSegmentName } from "../game-definitions/item-segment-name";
-import { palette } from "../internal-data-formats/palette";
 import { itemGroupMeta, ItemGroups, ItemGroup } from "../prg/items";
 import { assertTuple } from "../tuple";
 import { drawChar } from "./char";
@@ -170,10 +169,10 @@ export function drawItems(itemGroups: ItemGroups): ImageData {
 				drawChar(
 					maskedChar.char,
 					[
-						palette[0], //black
-						palette[9], // Brown
-						palette[1], // White
-						palette[5], // Green
+						0, //black
+						9, // Brown
+						1, // White
+						5, // Green
 					],
 					maskedChar.mask
 				)

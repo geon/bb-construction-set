@@ -112,7 +112,10 @@ function getAverageCharColor(
 	charPalette: SubPalette
 ): Color {
 	return mixColors(
-		char.lines.flatMap((pixels) => pixels).map((pixel) => charPalette[pixel])
+		char.lines
+			.flatMap((pixels) => pixels)
+			.map((pixel) => charPalette[pixel])
+			.map((paletteIndex) => palette[paletteIndex])
 	);
 }
 
@@ -196,11 +199,11 @@ function drawLevelPlatformChars(level: Level): ImageData {
 
 function getCharPalette(level: Level): SubPalette {
 	return [
-		palette[0],
-		palette[level.bgColorDark],
-		palette[level.bgColorLight],
+		0,
+		level.bgColorDark,
+		level.bgColorLight,
 		// The color ram gets cleared to green at the beginning of the game.
-		palette[5],
+		5,
 	];
 }
 
@@ -297,7 +300,9 @@ function drawSprite(sprite: Sprite, spritePalette: SubPalette): ImageData {
 		for (let byteX = 0; byteX < spriteWidthBytes; ++byteX) {
 			const byte = sprite.bitmap[pixelY * spriteWidthBytes + byteX]!;
 			for (let pixelX = 0; pixelX < 4; ++pixelX) {
-				const color = spritePalette[(byte >> ((3 - pixelX) * 2)) & 0b11]!;
+				const paletteIndex =
+					spritePalette[(byte >> ((3 - pixelX) * 2)) & 0b11]!;
+				const color = palette[paletteIndex];
 
 				// Double width pixels.
 				const pixelIndex =
@@ -312,10 +317,10 @@ function drawSprite(sprite: Sprite, spritePalette: SubPalette): ImageData {
 
 function getSpritePalette(color: PaletteIndex): SubPalette {
 	return [
-		palette[0], // Transparent (Black)
-		palette[2], // Dark red
-		palette[color],
-		palette[1], // White
+		0, // Transparent (Black)
+		2, // Dark red
+		color,
+		1, // White
 	];
 }
 

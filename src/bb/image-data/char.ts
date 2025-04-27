@@ -1,5 +1,5 @@
 import { CharsetChar } from "../internal-data-formats/charset-char";
-import { SubPalette } from "../internal-data-formats/palette";
+import { palette, SubPalette } from "../internal-data-formats/palette";
 import { plotPixel } from "./image-data";
 
 export function drawChar(
@@ -17,7 +17,9 @@ export function drawChar(
 			}
 			const alpha = masked ? 0 : 255;
 
-			const color = charPalette[colorIndex];
+			const paletteIndex = charPalette[colorIndex];
+			const color = palette[paletteIndex];
+
 			// Double width pixels.
 			const pixelIndex = charY * 8 + charX * 2;
 			plotPixel(image, pixelIndex, color, alpha);

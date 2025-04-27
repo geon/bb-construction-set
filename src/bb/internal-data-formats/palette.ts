@@ -29,4 +29,4 @@ export const palette = [
 	0x6c5eb5, 0x959595,
 ].map(hexToRgb) as Palette;
 
-export type SubPalette = ReadonlyTuple<Color, 4>;
+export type SubPalette = ReadonlyTuple<PaletteIndex, 4>;
