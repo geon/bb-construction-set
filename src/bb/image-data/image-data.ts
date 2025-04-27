@@ -1,7 +1,5 @@
 import { Color } from "../../math/color";
 import { Coord2 } from "../../math/coord2";
-import { flexboxChildPositions, boundingBox } from "../../math/rect";
-import { zipObject } from "../functions";
 
 // Just like ctx.putImageData
 export function blitImageData(
@@ -45,36 +43,6 @@ export function blitImageDataMasked(
 			}
 		}
 	}
-}
-
-export function imageDataConcatenate(
-	images: ReadonlyArray<ImageData>,
-	direction: "row" | "column",
-	gap: number
-): ImageData {
-	const positioned = zipObject({
-		image: images,
-		pos: flexboxChildPositions(
-			images.map(({ width: x, height: y }) => ({ x, y })),
-			direction,
-			gap
-		),
-	});
-
-	const bounding = boundingBox(
-		positioned.map(({ image, pos }) => ({
-			pos,
-			size: { x: image.width, y: image.height },
-		}))
-	);
-
-	const result = new ImageData(bounding.size.x, bounding.size.y);
-
-	for (const { image, pos } of positioned) {
-		blitImageData(result, image, pos.x, pos.y);
-	}
-
-	return result;
 }
 
 export function drawGrid(
