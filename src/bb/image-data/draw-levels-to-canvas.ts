@@ -46,6 +46,10 @@ export function drawLevelsToCanvas(
 	return drawGrid(
 		levels.map((level) => drawLevelThumbnail(level, spriteColors, shadowStyle)),
 		10,
+		{
+			x: levelWidth,
+			y: levelHeight,
+		},
 		gap
 	);
 }
@@ -124,7 +128,8 @@ export function drawLevel(
 		levelToCharNames(level)
 			.flat()
 			.map((charName) => charset[charName]),
-		levelWidth
+		levelWidth,
+		{ x: 8, y: 8 }
 	);
 
 	for (const character of [pl1, pl2, ...level.monsters]) {
@@ -154,7 +159,12 @@ export function drawLevel(
 
 export function drawPlatformCharsToCanvas(levels: readonly Level[]): ImageData {
 	const gap = 10;
-	return drawGrid(levels.map(drawLevelPlatformChars), 10, gap);
+	return drawGrid(
+		levels.map(drawLevelPlatformChars),
+		10,
+		{ x: 8 * 4, y: 8 * 4 },
+		gap
+	);
 }
 
 function drawLevelPlatformChars(level: Level): ImageData {
@@ -176,7 +186,8 @@ function drawLevelPlatformChars(level: Level): ImageData {
 
 	return drawGrid(
 		[sidebarImage, platformImage, sidebarImage, platformImage],
-		2
+		2,
+		{ x: 8 * 2, y: 8 * 2 }
 	);
 }
 

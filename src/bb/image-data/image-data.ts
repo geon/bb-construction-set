@@ -1,6 +1,7 @@
 import { Color } from "../../math/color";
+import { Coord2 } from "../../math/coord2";
 import { flexboxChildPositions, boundingBox } from "../../math/rect";
-import { chunk, zipObject } from "../functions";
+import { zipObject } from "../functions";
 
 // Just like ctx.putImageData
 export function blitImageData(
@@ -78,14 +79,30 @@ export function imageDataConcatenate(
 
 export function drawGrid(
 	images: readonly ImageData[],
-	rowWidth: number,
+	numColumns: number,
+	size: Coord2,
 	gap: number = 0
 ): ImageData {
-	return imageDataConcatenate(
-		chunk(images, rowWidth).map((row) => imageDataConcatenate(row, "row", gap)),
-		"column",
-		gap
+	const numRows = Math.ceil(images.length / numColumns);
+
+	const gridImage = new ImageData(
+		size.x * numColumns + gap * (numColumns - 1),
+		size.y * numRows + gap * (numRows - 1)
 	);
+
+	outerLoop: for (let y = 0; y < numRows; ++y) {
+		for (let x = 0; x < numColumns; ++x) {
+			const index = y * numColumns + x;
+			const image = images[index];
+			if (!image) {
+				break outerLoop;
+			}
+
+			blitImageData(gridImage, image, x * (size.x + gap), y * (size.y + gap));
+		}
+	}
+
+	return gridImage;
 }
 
 export function plotPixel(
