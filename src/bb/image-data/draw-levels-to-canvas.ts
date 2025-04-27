@@ -319,10 +319,10 @@ function getSpritePalette(color: PaletteIndex): [Color, Color, Color, Color] {
 	];
 }
 
-type CharPalette = ReadonlyTuple<Color, 4>;
+type SubPalette = ReadonlyTuple<Color, 4>;
 function drawCharblock(
 	item: Item<number, number>,
-	charPalette: CharPalette,
+	charPalette: SubPalette,
 	mask?: Item<number, number>
 ): ImageData {
 	// The chars are column-order just like in the game.
