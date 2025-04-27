@@ -109,7 +109,7 @@ function drawLevelThumbnail(
 
 function getAverageCharColor(
 	char: CharsetChar,
-	charPalette: [Color, Color, Color, Color]
+	charPalette: SubPalette
 ): Color {
 	return mixColors(
 		char.lines.flatMap((pixels) => pixels).map((pixel) => charPalette[pixel])
@@ -194,7 +194,7 @@ function drawLevelPlatformChars(level: Level): ImageData {
 	);
 }
 
-function getCharPalette(level: Level): [Color, Color, Color, Color] {
+function getCharPalette(level: Level): SubPalette {
 	return [
 		palette[0],
 		palette[level.bgColorDark],
@@ -290,10 +290,7 @@ export function drawSpritesToCanvas(spriteGroups: SpriteGroups): ImageData {
 	return image;
 }
 
-function drawSprite(
-	sprite: Sprite,
-	spritePalette: [Color, Color, Color, Color]
-): ImageData {
+function drawSprite(sprite: Sprite, spritePalette: SubPalette): ImageData {
 	const image = new ImageData(spriteWidthBytes * 8, spriteHeight);
 
 	for (let pixelY = 0; pixelY < spriteHeight; ++pixelY) {
@@ -313,7 +310,7 @@ function drawSprite(
 	return image;
 }
 
-function getSpritePalette(color: PaletteIndex): [Color, Color, Color, Color] {
+function getSpritePalette(color: PaletteIndex): SubPalette {
 	return [
 		palette[0], // Transparent (Black)
 		palette[2], // Dark red

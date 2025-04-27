@@ -1,10 +1,10 @@
-import { Color } from "../../math/color";
 import { CharsetChar } from "../internal-data-formats/charset-char";
+import { SubPalette } from "../internal-data-formats/palette";
 import { plotPixel } from "./image-data";
 
 export function drawChar(
 	char: CharsetChar,
-	charPalette: readonly [Color, Color, Color, Color],
+	charPalette: SubPalette,
 	mask?: CharsetChar
 ): ImageData {
 	const image = new ImageData(8, 8);
