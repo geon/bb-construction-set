@@ -279,7 +279,7 @@ export function spritesToPeSpriteSets(
 							expandY: false,
 							bitmapData: characterSprites.sprites[
 								facingLeft ? spriteLeftIndex[monsterName]! : 0
-							]!.bitmap.map((byte) => [
+							]!.map((byte) => [
 								isBitSet(byte, 0),
 								isBitSet(byte, 1),
 								isBitSet(byte, 2),

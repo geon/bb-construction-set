@@ -66,9 +66,9 @@ function parseCharacterSpriteColorsFromBuffer(
 export function parseSpritesFromBuffer(
 	segment: ReadonlyUint8Array
 ): ReadonlyArray<Sprite> {
-	return strictChunk([...segment], 64)
-		.map((withPadding) => withPadding.slice(0, -1) as Tuple<number, 63>)
-		.map((bitmap): Sprite => ({ bitmap }));
+	return strictChunk([...segment], 64).map(
+		(withPadding): Sprite => withPadding.slice(0, -1) as Tuple<number, 63>
+	);
 }
 
 export function getSpriteGroupColor(

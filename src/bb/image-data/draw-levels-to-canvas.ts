@@ -298,7 +298,7 @@ function drawSprite(sprite: Sprite, spritePalette: SubPalette): ImageData {
 
 	for (let pixelY = 0; pixelY < spriteHeight; ++pixelY) {
 		for (let byteX = 0; byteX < spriteWidthBytes; ++byteX) {
-			const byte = sprite.bitmap[pixelY * spriteWidthBytes + byteX]!;
+			const byte = sprite[pixelY * spriteWidthBytes + byteX]!;
 			for (let pixelX = 0; pixelX < 4; ++pixelX) {
 				const pixelValue = (byte >> ((3 - pixelX) * 2)) & 0b11;
 				const paletteIndex = spritePalette[pixelValue]!;

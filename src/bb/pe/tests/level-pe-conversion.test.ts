@@ -21,9 +21,7 @@ test("peFileDataToLevels & levelsToPeFileData", () => {
 			characterNames.map((name) => [
 				name,
 				{
-					sprites: Array(100).fill({
-						bitmap: Array(numSpriteBytes).fill(0),
-					}),
+					sprites: Array(100).fill(Array(numSpriteBytes).fill(0)),
 					color: 0,
 				},
 			])

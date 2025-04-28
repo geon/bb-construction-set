@@ -157,7 +157,7 @@ export function patchPrg(
 		const sprites = spriteGroups[segmentName].sprites;
 
 		for (const [index, sprite] of sprites.entries()) {
-			prgSpriteSegments[segmentName].buffer.set(sprite.bitmap, index * 64);
+			prgSpriteSegments[segmentName].buffer.set(sprite, index * 64);
 		}
 	}
 

@@ -17,7 +17,7 @@ export function convertSpriteGroupsToBinFile(
 			const multicolorBit = 0b10000000;
 			const spriteGroup = spriteGroups[spriteGroupName];
 			return spriteGroup.sprites.flatMap((sprite): number[] => [
-				...sprite.bitmap,
+				...sprite,
 				multicolorBit | spriteGroup.color,
 			]);
 		})
