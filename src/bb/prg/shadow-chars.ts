@@ -2,7 +2,7 @@ import { byteToBits, bitsToByte } from "../bit-twiddling";
 import { strictChunk } from "../functions";
 import {
 	CharsetChar,
-	CharsetCharColor,
+	SubPaletteIndex,
 } from "../internal-data-formats/charset-char";
 import { CharBitmap } from "../pe/pe-file";
 import { assertTuple, mapTuple, ReadonlyTuple } from "../tuple";
@@ -142,9 +142,7 @@ export function peCharToLevelChar(char: CharBitmap): CharsetChar {
 	return {
 		lines: mapTuple(mapTuple(char, byteToBits), (line) =>
 			assertTuple(
-				strictChunk(line, 2).map(
-					(bits) => bitsToByte(bits) as CharsetCharColor
-				),
+				strictChunk(line, 2).map((bits) => bitsToByte(bits) as SubPaletteIndex),
 				4
 			)
 		),
