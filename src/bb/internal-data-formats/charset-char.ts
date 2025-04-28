@@ -1,6 +1,6 @@
 import { ReadonlyTuple } from "../tuple";
+import { SubPaletteIndex } from "./palette";
 
-export type SubPaletteIndex = 0 | 1 | 2 | 3;
 export type CharsetCharLine = ReadonlyTuple<SubPaletteIndex, 4>;
 export interface CharsetChar {
 	readonly lines: ReadonlyTuple<CharsetCharLine, 8>;

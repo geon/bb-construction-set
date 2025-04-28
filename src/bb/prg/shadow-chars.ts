@@ -1,9 +1,7 @@
 import { byteToBits, bitsToByte } from "../bit-twiddling";
 import { strictChunk } from "../functions";
-import {
-	CharsetChar,
-	SubPaletteIndex,
-} from "../internal-data-formats/charset-char";
+import { CharsetChar } from "../internal-data-formats/charset-char";
+import { SubPaletteIndex } from "../internal-data-formats/palette";
 import { CharBitmap } from "../pe/pe-file";
 import { assertTuple, mapTuple, ReadonlyTuple } from "../tuple";
 import { DataSegment } from "./io";

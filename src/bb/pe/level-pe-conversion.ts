@@ -21,9 +21,9 @@ import {
 } from "../game-definitions/character-name";
 import {
 	CharsetChar,
-	SubPaletteIndex,
 	CharsetCharLine,
 } from "../internal-data-formats/charset-char";
+import { SubPaletteIndex } from "../internal-data-formats/palette";
 import { c64BuiltinCharsets } from "./c64-builtin-charsets";
 import { PaletteIndex } from "../internal-data-formats/palette";
 import { ShadowStyle } from "../prg/shadow-chars";

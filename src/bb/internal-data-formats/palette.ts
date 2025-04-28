@@ -2,7 +2,6 @@ import { Color, hexToRgb } from "../../math/color";
 import { ReadonlyTuple, Tuple } from "../tuple";
 
 type Palette = Tuple<Color, 16>;
-
 export type PaletteIndex =
 	| 0
 	| 1
@@ -30,3 +29,4 @@ export const palette = [
 ].map(hexToRgb) as Palette;
 
 export type SubPalette = ReadonlyTuple<PaletteIndex, 4>;
+export type SubPaletteIndex = 0 | 1 | 2 | 3;
