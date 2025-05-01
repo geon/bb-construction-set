@@ -3,12 +3,10 @@ import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
 import { ReadonlyTuple } from "../tuple";
 import { PaletteIndex, SubPaletteIndex } from "./palette";
 
-export type PixelSprite = ReadonlyTuple<
+export type Sprite = ReadonlyTuple<
 	ReadonlyTuple<SubPaletteIndex, typeof spriteSizePixels.x>,
 	typeof spriteSizePixels.y
 >;
-
-export type Sprite = ReadonlyTuple<number, 63>;
 
 export type SpriteGroup = {
 	readonly sprites: ReadonlyArray<Sprite>;

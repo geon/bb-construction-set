@@ -2,13 +2,22 @@ import { test } from "vitest";
 import { levelsToPeFileData, peFileDataToLevels } from "../level-pe-conversion";
 import { deserializePeFileData } from "../pe-file";
 import { readFileSync } from "fs";
-import { spriteSizeBytes } from "../../../c64/consts";
 import { objectFromEntries, range } from "../../functions";
 import { characterNames } from "../../game-definitions/character-name";
+import { spriteSizePixels } from "../../../c64/consts";
 import { Sprite } from "../../internal-data-formats/sprite";
+import { assertTuple } from "../../tuple";
 
 function makeFakeSprite(): Sprite {
-	return range(0, spriteSizeBytes);
+	return assertTuple(
+		range(0, spriteSizePixels.y).map(() =>
+			assertTuple(
+				range(0, spriteSizePixels.x).map(() => 0 as const),
+				spriteSizePixels.x
+			)
+		),
+		spriteSizePixels.y
+	);
 }
 
 test("peFileDataToLevels & levelsToPeFileData", () => {

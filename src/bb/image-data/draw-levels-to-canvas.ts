@@ -12,10 +12,9 @@ import {
 import { Color, mixColors } from "../../math/color";
 import { Char } from "../internal-data-formats/char";
 import {
-	spriteHeight,
 	spritePosOffset,
 	spriteSize,
-	spriteWidthBytes,
+	spriteSizePixels,
 } from "../../c64/consts";
 import { Sprite, SpriteGroups } from "../internal-data-formats/sprite";
 import {
@@ -291,24 +290,20 @@ export function drawSpritesToCanvas(spriteGroups: SpriteGroups): ImageData {
 }
 
 function drawSprite(sprite: Sprite, spritePalette: SubPalette): ImageData {
-	const image = new ImageData(spriteWidthBytes * 8, spriteHeight);
+	const image = new ImageData(spriteSizePixels.x * 2, spriteSizePixels.y);
 
-	for (let pixelY = 0; pixelY < spriteHeight; ++pixelY) {
-		for (let byteX = 0; byteX < spriteWidthBytes; ++byteX) {
-			const byte = sprite[pixelY * spriteWidthBytes + byteX]!;
-			for (let pixelX = 0; pixelX < 4; ++pixelX) {
-				const pixelValue = (byte >> ((3 - pixelX) * 2)) & 0b11;
-				const paletteIndex = spritePalette[pixelValue]!;
-				const color = palette[paletteIndex];
+	for (const [pixelY, row] of sprite.entries()) {
+		for (const [pixelX, pixelValue] of row.entries()) {
+			const paletteIndex = spritePalette[pixelValue];
+			const color = palette[paletteIndex];
 
-				// Double width pixels.
-				const pixelIndex =
-					pixelY * spriteWidthBytes * 8 + byteX * 8 + pixelX * 2;
-				plotPixel(image, pixelIndex, color);
-				plotPixel(image, pixelIndex + 1, color);
-			}
+			// Double width pixels.
+			const pixelIndex = pixelY * spriteSizePixels.x * 2 + pixelX * 2;
+			plotPixel(image, pixelIndex, color);
+			plotPixel(image, pixelIndex + 1, color);
 		}
 	}
+
 	return image;
 }
 

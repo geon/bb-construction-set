@@ -30,6 +30,7 @@ import { Sprite } from "../internal-data-formats/sprite";
 import { CharName } from "../game-definitions/char-name";
 import { levelToCharNames } from "../internal-data-formats/level";
 import { spriteLeftIndex } from "../game-definitions/character-name";
+import { serializeSprite } from "../prg/sprites";
 
 const emptyChar: CharBitmap = [0, 0, 0, 0, 0, 0, 0, 0];
 
@@ -275,9 +276,11 @@ export function spritesToPeSpriteSets(
 							multiColor2: 1,
 							expandX: false,
 							expandY: false,
-							bitmapData: characterSprites.sprites[
-								facingLeft ? spriteLeftIndex[monsterName]! : 0
-							]!.map((byte) => [
+							bitmapData: serializeSprite(
+								characterSprites.sprites[
+									facingLeft ? spriteLeftIndex[monsterName]! : 0
+								]!
+							).map((byte) => [
 								isBitSet(byte, 0),
 								isBitSet(byte, 1),
 								isBitSet(byte, 2),

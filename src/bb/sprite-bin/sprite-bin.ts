@@ -7,7 +7,11 @@ import {
 import { PaletteIndex } from "../internal-data-formats/palette";
 import { SpriteGroup, SpriteGroups } from "../internal-data-formats/sprite";
 import { spriteDataSegmentLocations } from "../prg/data-locations";
-import { parseSprites, getSpriteGroupColor } from "../prg/sprites";
+import {
+	parseSprites,
+	getSpriteGroupColor,
+	serializeSprite,
+} from "../prg/sprites";
 
 export function serializeSpriteGroups(spriteGroups: SpriteGroups): Uint8Array {
 	return new Uint8Array(
@@ -15,7 +19,7 @@ export function serializeSpriteGroups(spriteGroups: SpriteGroups): Uint8Array {
 			const multicolorBit = 0b10000000;
 			const spriteGroup = spriteGroups[spriteGroupName];
 			return spriteGroup.sprites.flatMap((sprite): number[] => [
-				...sprite,
+				...serializeSprite(sprite),
 				multicolorBit | spriteGroup.color,
 			]);
 		})
@@ -57,6 +61,7 @@ export function parseSpriteGroups(binFileContents: Uint8Array): SpriteGroups {
 		})
 	);
 }
+
 function getSpriteDataSegmentOffsetInBin(segmentName: SpriteGroupName): number {
 	// Sum up the length of all segments before the wanted one.
 	return sum(
