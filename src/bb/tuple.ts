@@ -35,7 +35,10 @@ type TOfTuple<TTuple> = TTuple extends ReadonlyTuple<infer T, number>
 type NOfTuple<TTuple extends ReadonlyArray<unknown>> = TTuple["length"];
 
 // Just a typed wrapper.
-export function mapTuple<TTuple extends ReadonlyTuple<unknown, number>, TOut>(
+export function mapTuple<
+	const TTuple extends ReadonlyTuple<unknown, number>,
+	TOut
+>(
 	tuple: TTuple,
 	fn: (value: TOfTuple<TTuple>) => TOut
 ): ReadonlyTuple<TOut, NOfTuple<typeof tuple>> {
