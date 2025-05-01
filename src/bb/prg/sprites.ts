@@ -67,6 +67,10 @@ export function parseSprite(withPadding: ReadonlyArray<number>): Sprite {
 	return assertTuple(withPadding, 63);
 }
 
+export function serializeSprite(sprite: Sprite): ReadonlyTuple<number, 63> {
+	return sprite;
+}
+
 export function parseSprites(
 	segment: ReadonlyUint8Array
 ): ReadonlyArray<Sprite> {

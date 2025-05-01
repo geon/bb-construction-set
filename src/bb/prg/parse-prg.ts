@@ -29,7 +29,7 @@ import {
 } from "./sidebar-chars";
 import { readTiles } from "./tiles";
 import { writeMonsters, readMonsters } from "./monsters";
-import { parseSpriteGroupsFromPrg } from "./sprites";
+import { parseSpriteGroupsFromPrg, serializeSprite } from "./sprites";
 import { readTileBitmaps } from "./tile-bitmap";
 import { writeSymmetry, writeBitmaps, writeHoles } from "./misc-patch";
 import { readBubbleCurrentPerLineDefaults } from "./bubble-current-per-line-defaults";
@@ -162,7 +162,10 @@ export function patchPrg(
 		const sprites = spriteGroups[segmentName].sprites;
 
 		for (const [index, sprite] of sprites.entries()) {
-			prgSpriteSegments[segmentName].buffer.set(sprite, index * 64);
+			prgSpriteSegments[segmentName].buffer.set(
+				serializeSprite(sprite),
+				index * 64
+			);
 		}
 	}
 
