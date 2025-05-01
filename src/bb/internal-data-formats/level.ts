@@ -23,13 +23,13 @@ export interface Character {
 // up, right, down, left
 export type BubbleCurrentDirection = 0 | 1 | 2 | 3;
 
-type TileRow = Tuple<boolean, 32>;
-export type Tiles = Tuple<TileRow, 25>;
+type TileRow = ReadonlyTuple<boolean, 32>;
+export type Tiles = ReadonlyTuple<TileRow, 25>;
 
-export function createTiles(): Tiles {
+export function createTiles(): Tuple<Tuple<boolean, 32>, 25> {
 	return Array(levelHeight)
 		.fill(0)
-		.map((_) => Array(levelWidth).fill(false)) as Tiles;
+		.map((_) => Array(levelWidth).fill(false)) as Tuple<Tuple<boolean, 32>, 25>;
 }
 
 export type BubbleCurrentPerLineDefaults = Array<BubbleCurrentDirection>;
@@ -72,7 +72,7 @@ export interface Level {
 	bubbleCurrentPerLineDefaults: BubbleCurrentPerLineDefaults;
 }
 
-function rowIsSymmetric(row: boolean[]): boolean {
+function rowIsSymmetric(row: readonly boolean[]): boolean {
 	for (let index = 0; index < 16; ++index) {
 		if (row[index] !== row[31 - index]) {
 			return false;
