@@ -7,7 +7,7 @@ import {
 import { PaletteIndex } from "../internal-data-formats/palette";
 import { SpriteGroup, SpriteGroups } from "../internal-data-formats/sprite";
 import { spriteDataSegmentLocations } from "../prg/data-locations";
-import { parseSpritesFromBuffer, getSpriteGroupColor } from "../prg/sprites";
+import { parseSprites, getSpriteGroupColor } from "../prg/sprites";
 
 export function serializeSpriteGroups(spriteGroups: SpriteGroups): Uint8Array {
 	return new Uint8Array(
@@ -52,7 +52,7 @@ export function parseSpriteGroups(binFileContents: Uint8Array): SpriteGroups {
 	return mapRecord(
 		spriteSegments,
 		(segment, groupName): SpriteGroup => ({
-			sprites: parseSpritesFromBuffer(segment),
+			sprites: parseSprites(segment),
 			color: getSpriteGroupColor(groupName, characterSpriteColors),
 		})
 	);

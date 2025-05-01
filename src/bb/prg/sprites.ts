@@ -39,7 +39,7 @@ export function parseSpriteGroupsFromPrg(
 	return mapRecord(
 		mapRecord(spriteSegments, (x) => x.buffer),
 		(segment, groupName): SpriteGroup => ({
-			sprites: parseSpritesFromBuffer(segment),
+			sprites: parseSprites(segment),
 			color: getSpriteGroupColor(groupName, characterSpriteColors),
 		})
 	);
@@ -63,7 +63,7 @@ function parseCharacterSpriteColorsFromBuffer(
 	return characterSpriteColors;
 }
 
-export function parseSpritesFromBuffer(
+export function parseSprites(
 	segment: ReadonlyUint8Array
 ): ReadonlyArray<Sprite> {
 	return strictChunk([...segment], 64).map(
