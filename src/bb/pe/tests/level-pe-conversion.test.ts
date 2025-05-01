@@ -2,7 +2,6 @@ import { test } from "vitest";
 import { levelsToPeFileData, peFileDataToLevels } from "../level-pe-conversion";
 import { deserializePeFileData } from "../pe-file";
 import { readFileSync } from "fs";
-import { Sprites } from "../level-pe-conversion";
 import { spriteSizeBytes } from "../../../c64/consts";
 import { objectFromEntries, range } from "../../functions";
 import { characterNames } from "../../game-definitions/character-name";
@@ -30,7 +29,7 @@ test("peFileDataToLevels & levelsToPeFileData", () => {
 					color: 0 as const,
 				},
 			])
-		) as Sprites,
+		),
 	});
 
 	// Dummy data, not tested.
