@@ -1,6 +1,6 @@
 import {
 	CharBlock,
-	parseCharsetCharLine,
+	parseColorPixelByte,
 } from "../internal-data-formats/charset-char";
 import { isDefined, padRight, strictChunk } from "../functions";
 import { Level } from "../internal-data-formats/level";
@@ -15,7 +15,7 @@ export function readSidebarChars(
 	const linesPerChar = 8;
 	const allSidebarCharBlocks = strictChunk(
 		strictChunk([...sidebarCharsBytes], linesPerChar).map((char) => ({
-			lines: mapTuple(char, parseCharsetCharLine),
+			lines: mapTuple(char, parseColorPixelByte),
 		})),
 		4
 	);

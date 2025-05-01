@@ -1,6 +1,6 @@
 import {
 	CharsetChar,
-	parseCharsetCharLine,
+	parseColorPixelByte,
 } from "../internal-data-formats/charset-char";
 import { mapRecord, strictChunk, zipObject } from "../functions";
 import { ReadonlyTuple } from "../tuple";
@@ -124,7 +124,7 @@ export function readItems(
 				strictChunk(
 					strictChunk([...dataSegment.buffer], linesPerChar).map(
 						(char): CharsetChar => ({
-							lines: mapTuple(char, parseCharsetCharLine),
+							lines: mapTuple(char, parseColorPixelByte),
 						})
 					),
 					itemGroupMeta[segmentName].height

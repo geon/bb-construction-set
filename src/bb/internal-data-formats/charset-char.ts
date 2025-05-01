@@ -8,7 +8,7 @@ export interface CharsetChar {
 export type CharBlock = ReadonlyTuple<CharsetChar, 4>;
 export type CharBlockIndex = 0 | 1 | 2 | 3;
 
-export function parseCharsetCharLine(byte: number): ColorPixelByte {
+export function parseColorPixelByte(byte: number): ColorPixelByte {
 	return [
 		((byte >> 6) & 0b11) as SubPaletteIndex,
 		((byte >> 4) & 0b11) as SubPaletteIndex,
