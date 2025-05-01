@@ -3,9 +3,10 @@ import { levelsToPeFileData, peFileDataToLevels } from "../level-pe-conversion";
 import { deserializePeFileData } from "../pe-file";
 import { readFileSync } from "fs";
 import { Sprites } from "../level-pe-conversion";
-import { spriteHeight, spriteWidthBytes } from "../../../c64/consts";
-import { objectFromEntries } from "../../functions";
+import { spriteSizeBytes } from "../../../c64/consts";
+import { objectFromEntries, range } from "../../functions";
 import { characterNames } from "../../game-definitions/character-name";
+import { Sprite } from "../../internal-data-formats/sprite";
 
 test("peFileDataToLevels & levelsToPeFileData", () => {
 	const peFileData = deserializePeFileData(
@@ -21,8 +22,8 @@ test("peFileDataToLevels & levelsToPeFileData", () => {
 			characterNames.map((name) => [
 				name,
 				{
-					sprites: Array(100).fill(Array(numSpriteBytes).fill(0)),
-					color: 0,
+					sprites: range(0, 100).map((): Sprite => range(0, spriteSizeBytes)),
+					color: 0 as const,
 				},
 			])
 		) as Sprites,
@@ -37,4 +38,3 @@ test("peFileDataToLevels & levelsToPeFileData", () => {
 	// Bubble current rectangles are not imported.
 	// expect(generatedPeFileData).toStrictEqual(peFileData);
 });
-export const numSpriteBytes = spriteWidthBytes * spriteHeight;
