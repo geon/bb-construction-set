@@ -23,14 +23,13 @@ import {
 	pl2,
 	spriteLeftIndex,
 } from "../game-definitions/character-name";
-import { Item } from "../internal-data-formats/item";
 import { chunk, mapRecord, range, zipObject } from "../functions";
 import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
 import { flexbox, leafs, LayoutRect } from "../../math/rect";
 import { spriteCounts } from "../prg/data-locations";
 import { add, origo, scale, subtract } from "../../math/coord2";
 import { ShadowStyle } from "../prg/shadow-chars";
-import { drawChar } from "./char";
+import { drawChar, getCharPalette } from "./char";
 import * as ImageDataFunctions from "./image-data";
 import { blitPaletteImage, drawGrid, PaletteImage } from "./palette-image";
 
@@ -154,52 +153,6 @@ export function drawLevel(
 	return image;
 }
 
-export function drawPlatformCharsToCanvas(
-	levels: readonly Level[]
-): PaletteImage {
-	const gap = { x: 5, y: 10 };
-	return drawGrid(
-		levels.map(drawLevelPlatformChars),
-		10,
-		{ x: 8 * 2, y: 8 * 4 },
-		gap
-	);
-}
-
-function drawLevelPlatformChars(level: Level): PaletteImage {
-	const charPalette = getCharPalette(level);
-
-	const platformChars = [
-		[level.platformChar, level.platformChar],
-		[level.platformChar, level.platformChar],
-	];
-
-	const [ul, ur, bl, br] = level.sidebarChars ?? platformChars.flat();
-	const sidebarChars = [
-		[ul, bl],
-		[ur, br],
-	];
-
-	const sidebarImage = drawCharblock(sidebarChars, charPalette);
-	const platformImage = drawCharblock(platformChars, charPalette);
-
-	return drawGrid(
-		[sidebarImage, platformImage, sidebarImage, platformImage],
-		2,
-		{ x: 8 * 1, y: 8 * 2 }
-	);
-}
-
-function getCharPalette(level: Level): SubPalette {
-	return [
-		0,
-		level.bgColorDark,
-		level.bgColorLight,
-		// The color ram gets cleared to green at the beginning of the game.
-		5,
-	];
-}
-
 export function layOutSpriteGroups(): LayoutRect {
 	let index = 0;
 	const spriteRects = mapRecord(
@@ -309,32 +262,6 @@ function getSpritePalette(color: PaletteIndex): SubPalette {
 		color,
 		1, // White
 	];
-}
-
-function drawCharblock(
-	item: Item<number, number>,
-	charPalette: SubPalette,
-	mask?: Item<number, number>
-): PaletteImage {
-	// The chars are column-order just like in the game.
-	const image: PaletteImage = {
-		width: item.length * 4,
-		height: item[0]!.length * 8,
-		data: [],
-	};
-
-	for (const [charBlockX, column] of item.entries()) {
-		for (const [charBlockY, char] of column.entries()) {
-			blitPaletteImage(
-				image,
-				drawChar(char, charPalette, mask?.[charBlockX]?.[charBlockY]),
-				charBlockX * 4,
-				charBlockY * 8
-			);
-		}
-	}
-
-	return image;
 }
 
 const spriteGroupMultiWidths: Record<SpriteGroupName, number> = {
