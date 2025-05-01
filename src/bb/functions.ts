@@ -1,4 +1,4 @@
-import { Tuple } from "./tuple";
+import { ReadonlyTuple, Tuple } from "./tuple";
 
 export function padRight<T>(
 	array: readonly T[],
@@ -114,10 +114,13 @@ export function isDefined<T>(x: T | undefined): x is T {
 	return x !== undefined;
 }
 
-export function range(from: number, length: number): readonly number[] {
+export function range<N extends number>(
+	from: number,
+	length: N
+): ReadonlyTuple<number, N> {
 	return Array(length)
 		.fill(undefined)
-		.map((_, index) => index + from);
+		.map((_, index) => index + from) as ReadonlyTuple<number, N>;
 }
 
 // https://stackoverflow.com/questions/69019873/how-can-i-get-typed-object-entries-and-object-fromentries-in-typescript
