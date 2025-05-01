@@ -9,9 +9,9 @@ export function drawChar(
 ): ImageData {
 	const image = new ImageData(8, 8);
 
-	for (const [charY, line] of char.lines.entries()) {
+	for (const [charY, line] of char.entries()) {
 		for (const [charX, colorIndex] of line.entries()) {
-			const masked = mask?.lines?.[charY]?.[charX];
+			const masked = mask?.[charY]?.[charX];
 			if (masked !== undefined && !(masked === 0b11 || masked === 0b00)) {
 				throw new Error("Invalid mask pixel");
 			}

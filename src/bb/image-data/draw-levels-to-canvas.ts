@@ -109,7 +109,7 @@ function drawLevelThumbnail(
 
 function getAverageCharColor(char: Char, charPalette: SubPalette): Color {
 	return mixColors(
-		char.lines
+		char
 			.flatMap((pixels) => pixels)
 			.map((pixel) => charPalette[pixel])
 			.map((paletteIndex) => palette[paletteIndex])

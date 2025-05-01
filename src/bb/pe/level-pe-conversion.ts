@@ -499,7 +499,7 @@ function makeCharsetBitmaps(
 }
 
 function levelCharToPeChar(char: Char): CharBitmap {
-	return char.lines.map((line): CharBitmap[number] =>
+	return char.map((line): CharBitmap[number] =>
 		line.reduce<CharBitmap[number]>(
 			(soFar, pixel, currentIndex) =>
 				soFar + (pixel << ((3 - currentIndex) * 2)),
@@ -515,8 +515,8 @@ function isBitSet(byte: number, index: number): Bit {
 export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 	const charsets = peFileData.charsets.map((peCharset) =>
 		peCharset.bitmaps.map(
-			(bitmap): Char => ({
-				lines: mapTuple(
+			(bitmap): Char =>
+				mapTuple(
 					bitmap,
 					(line): ColorPixelByte => [
 						((line >> 6) & 0b11) as SubPaletteIndex,
@@ -524,8 +524,7 @@ export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 						((line >> 2) & 0b11) as SubPaletteIndex,
 						((line >> 0) & 0b11) as SubPaletteIndex,
 					]
-				),
-			})
+				)
 		)
 	);
 
@@ -568,10 +567,10 @@ export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 			bgColorDark: screen.multiColor1 as PaletteIndex,
 			platformChar,
 			sidebarChars: sidebarChars.some((char) =>
-				char.lines.some((line, lineIndex) =>
+				char.some((line, lineIndex) =>
 					line.some(
 						(pixel, pixelIndex) =>
-							pixel !== platformChar.lines[lineIndex]![pixelIndex]!
+							pixel !== platformChar[lineIndex]![pixelIndex]!
 					)
 				)
 			)

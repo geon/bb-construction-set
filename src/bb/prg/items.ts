@@ -121,9 +121,7 @@ export function readItems(
 			const items = strictChunk(
 				strictChunk(
 					strictChunk([...dataSegment.buffer], linesPerChar).map(
-						(char): Char => ({
-							lines: mapTuple(char, parseColorPixelByte),
-						})
+						(char): Char => mapTuple(char, parseColorPixelByte)
 					),
 					itemGroupMeta[segmentName].height
 				),

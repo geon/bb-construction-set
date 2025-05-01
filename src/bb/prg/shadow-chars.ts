@@ -137,14 +137,12 @@ export const shadowChars = {
 export type ShadowStyle = keyof typeof shadowChars;
 
 export function peCharToLevelChar(char: CharBitmap): Char {
-	return {
-		lines: mapTuple(mapTuple(char, byteToBits), (line) =>
-			assertTuple(
-				strictChunk(line, 2).map((bits) => bitsToByte(bits) as SubPaletteIndex),
-				4
-			)
-		),
-	};
+	return mapTuple(mapTuple(char, byteToBits), (line) =>
+		assertTuple(
+			strictChunk(line, 2).map((bits) => bitsToByte(bits) as SubPaletteIndex),
+			4
+		)
+	);
 }
 
 export function detectShadowStyle(dataSegment: DataSegment): ShadowStyle {

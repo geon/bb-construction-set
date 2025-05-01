@@ -10,9 +10,9 @@ export const linesPerChar = 8;
 export function readPlatformChars(
 	platformCharsBytes: ReadonlyUint8Array
 ): ReadonlyArray<Char> {
-	return strictChunk([...platformCharsBytes], linesPerChar).map((char) => ({
-		lines: mapTuple(char, parseColorPixelByte),
-	}));
+	return strictChunk([...platformCharsBytes], linesPerChar).map((char) =>
+		mapTuple(char, parseColorPixelByte)
+	);
 }
 
 export function writePlatformChars(
@@ -20,7 +20,7 @@ export function writePlatformChars(
 ): Uint8Array {
 	return new Uint8Array(
 		platformChars.flatMap((platformChar) =>
-			platformChar.lines.map(
+			platformChar.map(
 				(line) =>
 					(line[0] << 6) + (line[1] << 4) + (line[2] << 2) + (line[3] << 0)
 			)

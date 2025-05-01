@@ -13,9 +13,7 @@ export function readSidebarChars(
 	const linesPerChar = 8;
 	const allSidebarCharBlocks: Array<CharBlock> = strictChunk(
 		strictChunk([...sidebarCharsBytes], linesPerChar).map(
-			(char): Char => ({
-				lines: mapTuple(char, parseColorPixelByte),
-			})
+			(char): Char => mapTuple(char, parseColorPixelByte)
 		),
 		4
 	);
@@ -49,7 +47,7 @@ export function writeSidebarChars(
 		padRight(
 			sidebarLevels.flatMap((sidebarChars) =>
 				sidebarChars.flatMap((char) =>
-					char.lines.map(
+					char.map(
 						(line) =>
 							(line[0] << 6) + (line[1] << 4) + (line[2] << 2) + (line[3] << 0)
 					)
