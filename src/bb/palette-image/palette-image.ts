@@ -63,7 +63,7 @@ export function drawLayout(
 	layout: LayoutRect,
 	images: ReadonlyArray<PaletteImage>
 ): PaletteImage {
-	const spritePositions = leafs(layout);
+	const rects = leafs(layout);
 
 	const image: PaletteImage = {
 		width: layout.size.x,
@@ -72,7 +72,7 @@ export function drawLayout(
 	};
 	for (const { image: sprite, pos } of zipObject({
 		image: images,
-		pos: spritePositions,
+		pos: rects,
 	})) {
 		blitPaletteImage(image, sprite, pos.pos);
 	}
