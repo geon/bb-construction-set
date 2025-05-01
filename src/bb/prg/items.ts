@@ -1,7 +1,5 @@
-import {
-	CharsetChar,
-	parseColorPixelByte,
-} from "../internal-data-formats/charset-char";
+import { CharsetChar } from "../internal-data-formats/charset-char";
+import { parseColorPixelByte } from "../internal-data-formats/color-pixel-byte";
 import { mapRecord, strictChunk, zipObject } from "../functions";
 import { ReadonlyTuple } from "../tuple";
 import { linesPerChar } from "./charset-char";

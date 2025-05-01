@@ -1,7 +1,5 @@
-import {
-	CharBlock,
-	parseColorPixelByte,
-} from "../internal-data-formats/charset-char";
+import { CharBlock } from "../internal-data-formats/charset-char";
+import { parseColorPixelByte } from "../internal-data-formats/color-pixel-byte";
 import { isDefined, padRight, strictChunk } from "../functions";
 import { Level } from "../internal-data-formats/level";
 import { mapTuple } from "../tuple";
