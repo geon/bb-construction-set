@@ -19,14 +19,21 @@ type _ReadonlyTupleOf<
 	R extends readonly unknown[]
 > = R["length"] extends N ? R : _ReadonlyTupleOf<T, N, readonly [T, ...R]>;
 
-export function assertTuple<T, N extends number>(
-	array: T[],
+export function assertTuple<
+	TTuple extends ReadonlyArray<unknown>,
+	N extends number
+>(
+	array: TTuple,
 	n: N
-): ReadonlyTuple<T, N> {
+): TTuple extends Array<unknown>
+	? Tuple<TOfTuple<TTuple>, N>
+	: ReadonlyTuple<TOfTuple<TTuple>, N> {
 	if (array.length !== n) {
 		throw new Error(`Bad length. Wanted: ${n} Actual: ${array.length}`);
 	}
-	return array as ReadonlyTuple<T, N>;
+	return array as TTuple extends Array<unknown>
+		? Tuple<TOfTuple<TTuple>, N>
+		: ReadonlyTuple<TOfTuple<TTuple>, N>;
 }
 
 type TOfTuple<TTuple> = TTuple extends ReadonlyTuple<infer T, number>
