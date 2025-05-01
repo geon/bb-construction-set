@@ -1,6 +1,7 @@
 import { mapRecord, objectFromEntries, strictChunk } from "../functions";
 import { PaletteIndex } from "../internal-data-formats/palette";
 import {
+	PixelSprite,
 	Sprite,
 	SpriteGroup,
 	SpriteGroups,
@@ -9,10 +10,19 @@ import {
 	CharacterName,
 	characterNames,
 } from "../game-definitions/character-name";
-import { assertTuple, ReadonlyTuple } from "../tuple";
+import { assertTuple, mapTuple, ReadonlyTuple } from "../tuple";
 import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
 import { DataSegment } from "./io";
 import { ReadonlyUint8Array } from "../types";
+import {
+	spriteSizeBytes,
+	spriteWidthBytes,
+	spriteSizePixels,
+} from "../../c64/consts";
+import {
+	parseColorPixelByte,
+	serializeColorPixelByte,
+} from "../internal-data-formats/color-pixel-byte";
 
 const spriteColors: Record<"player", PaletteIndex> = {
 	player: 5,
@@ -69,6 +79,24 @@ export function parseSprite(withPadding: ReadonlyArray<number>): Sprite {
 
 export function serializeSprite(sprite: Sprite): ReadonlyTuple<number, 63> {
 	return sprite;
+}
+
+export function parsePixelSprite(spriteBytes: Sprite): PixelSprite {
+	return assertTuple(
+		strictChunk(spriteBytes, spriteWidthBytes).map((byteRow) =>
+			assertTuple(byteRow.flatMap(parseColorPixelByte), spriteSizePixels.x)
+		),
+		spriteSizePixels.y
+	);
+}
+
+export function serializePixelSprite(sprite: PixelSprite): Sprite {
+	return assertTuple(
+		sprite.flatMap((row) =>
+			mapTuple(strictChunk(row, 4), serializeColorPixelByte)
+		),
+		spriteSizeBytes
+	);
 }
 
 export function parseSprites(

@@ -1,6 +1,12 @@
+import { spriteSizePixels } from "../../c64/consts";
 import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
 import { ReadonlyTuple } from "../tuple";
-import { PaletteIndex } from "./palette";
+import { PaletteIndex, SubPaletteIndex } from "./palette";
+
+export type PixelSprite = ReadonlyTuple<
+	ReadonlyTuple<SubPaletteIndex, typeof spriteSizePixels.x>,
+	typeof spriteSizePixels.y
+>;
 
 export type Sprite = ReadonlyTuple<number, 63>;
 

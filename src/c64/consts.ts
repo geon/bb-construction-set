@@ -1,4 +1,5 @@
 export const spriteWidthBytes = 3;
+const spriteWidthPixels = 12;
 export const spriteHeight = 21;
 
 // https://www.lemon64.com/forum/viewtopic.php?t=73528
@@ -12,3 +13,10 @@ export const spriteSize = {
 	x: spriteWidthBytes * 8,
 	y: spriteHeight,
 };
+
+export const spriteSizePixels = {
+	x: spriteWidthPixels,
+	y: spriteHeight,
+} as const;
+
+export const spriteSizeBytes = 63;
