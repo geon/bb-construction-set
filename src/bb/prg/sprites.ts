@@ -9,7 +9,7 @@ import {
 	CharacterName,
 	characterNames,
 } from "../game-definitions/character-name";
-import { assertTuple } from "../tuple";
+import { assertTuple, ReadonlyTuple } from "../tuple";
 import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
 import { DataSegment } from "./io";
 import { ReadonlyUint8Array } from "../types";
@@ -63,12 +63,16 @@ function parseCharacterSpriteColorsFromBuffer(
 	return characterSpriteColors;
 }
 
+export function parseSprite(withPadding: ReadonlyArray<number>): Sprite {
+	return assertTuple(withPadding, 63);
+}
+
 export function parseSprites(
 	segment: ReadonlyUint8Array
 ): ReadonlyArray<Sprite> {
-	return strictChunk([...segment], 64).map(
-		(withPadding): Sprite => assertTuple(withPadding.slice(0, -1), 63)
-	);
+	return strictChunk([...segment], 64)
+		.map((withPadding) => withPadding.slice(0, -1))
+		.map(parseSprite);
 }
 
 export function getSpriteGroupColor(
