@@ -8,6 +8,10 @@ import { objectFromEntries, range } from "../../functions";
 import { characterNames } from "../../game-definitions/character-name";
 import { Sprite } from "../../internal-data-formats/sprite";
 
+function makeFakeSprite(): Sprite {
+	return range(0, spriteSizeBytes);
+}
+
 test("peFileDataToLevels & levelsToPeFileData", () => {
 	const peFileData = deserializePeFileData(
 		readFileSync(__dirname + "/level-01.pe", "utf8")
@@ -22,7 +26,7 @@ test("peFileDataToLevels & levelsToPeFileData", () => {
 			characterNames.map((name) => [
 				name,
 				{
-					sprites: range(0, 100).map((): Sprite => range(0, spriteSizeBytes)),
+					sprites: range(0, 100).map(makeFakeSprite),
 					color: 0 as const,
 				},
 			])
