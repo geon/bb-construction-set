@@ -22,9 +22,7 @@ export function serializeSpriteGroups(spriteGroups: SpriteGroups): Uint8Array {
 	);
 }
 
-export function parseSpriteGroupsFromBin(
-	binFileContents: Uint8Array
-): SpriteGroups {
+export function parseSpriteGroups(binFileContents: Uint8Array): SpriteGroups {
 	const spriteSegments = mapRecord(
 		spriteDataSegmentLocations,
 		({ length }, segmentName) => {

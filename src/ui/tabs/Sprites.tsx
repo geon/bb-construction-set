@@ -4,7 +4,7 @@ import { attempt } from "../../bb/functions";
 import { ParsedPrg } from "../../bb/internal-data-formats/parsed-prg";
 import {
 	serializeSpriteGroups,
-	parseSpriteGroupsFromBin,
+	parseSpriteGroups,
 } from "../../bb/sprite-bin/sprite-bin";
 import { ImageDataCanvas } from "../ImageDataCanvas";
 import { drawSpritesToCanvas } from "../../bb/image-data/draw-levels-to-canvas";
@@ -41,7 +41,7 @@ export function Sprites({
 					const buffer = await file.arrayBuffer();
 
 					const parsedSpriteBinData = attempt(() => {
-						const parsed = parseSpriteGroupsFromBin(new Uint8Array(buffer));
+						const parsed = parseSpriteGroups(new Uint8Array(buffer));
 						return parsed;
 					});
 
