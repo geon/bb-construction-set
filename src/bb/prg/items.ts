@@ -1,4 +1,4 @@
-import { CharsetChar } from "../internal-data-formats/charset-char";
+import { Char } from "../internal-data-formats/char";
 import { parseColorPixelByte } from "../internal-data-formats/color-pixel-byte";
 import { mapRecord, strictChunk, zipObject } from "../functions";
 import { ReadonlyTuple } from "../tuple";
@@ -98,7 +98,7 @@ export const itemGroupMeta = {
 
 export type Item<Height extends number, Width extends number> =
 	// The chars are column-order just like in the game.
-	ReadonlyTuple<ReadonlyTuple<CharsetChar, Height>, Width>;
+	ReadonlyTuple<ReadonlyTuple<Char, Height>, Width>;
 
 export type ItemGroup<
 	Width extends number,
@@ -121,7 +121,7 @@ export function readItems(
 			const items = strictChunk(
 				strictChunk(
 					strictChunk([...dataSegment.buffer], linesPerChar).map(
-						(char): CharsetChar => ({
+						(char): Char => ({
 							lines: mapTuple(char, parseColorPixelByte),
 						})
 					),

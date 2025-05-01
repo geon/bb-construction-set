@@ -1,4 +1,4 @@
-import { CharsetChar } from "../internal-data-formats/charset-char";
+import { Char } from "../internal-data-formats/char";
 import { parseColorPixelByte } from "../internal-data-formats/color-pixel-byte";
 import { strictChunk } from "../functions";
 import { Level } from "../internal-data-formats/level";
@@ -9,7 +9,7 @@ export const linesPerChar = 8;
 
 export function readPlatformChars(
 	platformCharsBytes: ReadonlyUint8Array
-): ReadonlyArray<CharsetChar> {
+): ReadonlyArray<Char> {
 	return strictChunk([...platformCharsBytes], linesPerChar).map((char) => ({
 		lines: mapTuple(char, parseColorPixelByte),
 	}));

@@ -19,7 +19,7 @@ import {
 	characterNames,
 	isCharacterName,
 } from "../game-definitions/character-name";
-import { CharsetChar } from "../internal-data-formats/charset-char";
+import { Char } from "../internal-data-formats/char";
 import { ColorPixelByte } from "../internal-data-formats/color-pixel-byte";
 import { SubPaletteIndex } from "../internal-data-formats/palette";
 import { c64BuiltinCharsets } from "./c64-builtin-charsets";
@@ -498,7 +498,7 @@ function makeCharsetBitmaps(
 	return charset;
 }
 
-function levelCharToPeChar(char: CharsetChar): CharBitmap {
+function levelCharToPeChar(char: Char): CharBitmap {
 	return char.lines.map((line): CharBitmap[number] =>
 		line.reduce<CharBitmap[number]>(
 			(soFar, pixel, currentIndex) =>
@@ -515,7 +515,7 @@ function isBitSet(byte: number, index: number): Bit {
 export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 	const charsets = peFileData.charsets.map((peCharset) =>
 		peCharset.bitmaps.map(
-			(bitmap): CharsetChar => ({
+			(bitmap): Char => ({
 				lines: mapTuple(
 					bitmap,
 					(line): ColorPixelByte => [

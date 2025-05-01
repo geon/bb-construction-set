@@ -1,5 +1,5 @@
-import { CharBlock } from "./charset-char";
-import { CharsetChar } from "./charset-char";
+import { CharBlock } from "./char";
+import { Char } from "./char";
 import { PaletteIndex } from "./palette";
 import { assertTuple, mapTuple, ReadonlyTuple, Tuple } from "../tuple";
 import { levelHeight, levelWidth } from "../game-definitions/level-size";
@@ -65,7 +65,7 @@ export interface Level {
 	tiles: Tiles;
 	bgColorLight: PaletteIndex;
 	bgColorDark: PaletteIndex;
-	platformChar: CharsetChar;
+	platformChar: Char;
 	sidebarChars: CharBlock | undefined;
 	monsters: Array<Character>;
 	bubbleCurrentRectangles: BubbleCurrentRectangles;
@@ -181,7 +181,7 @@ export function levelToCharNames(
 export function makeCharset(
 	level: Level,
 	shadowStyle: ShadowStyle
-): Readonly<Record<CharName, CharsetChar>> {
+): Readonly<Record<CharName, Char>> {
 	const emptyChar: CharBitmap = [0, 0, 0, 0, 0, 0, 0, 0];
 
 	return {

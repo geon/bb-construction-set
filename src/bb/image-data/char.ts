@@ -1,11 +1,11 @@
-import { CharsetChar } from "../internal-data-formats/charset-char";
+import { Char } from "../internal-data-formats/char";
 import { palette, SubPalette } from "../internal-data-formats/palette";
 import { plotPixel } from "./image-data";
 
 export function drawChar(
-	char: CharsetChar,
+	char: Char,
 	charPalette: SubPalette,
-	mask?: CharsetChar
+	mask?: Char
 ): ImageData {
 	const image = new ImageData(8, 8);
 

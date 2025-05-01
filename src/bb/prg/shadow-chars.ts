@@ -1,6 +1,6 @@
 import { byteToBits, bitsToByte } from "../bit-twiddling";
 import { strictChunk } from "../functions";
-import { CharsetChar } from "../internal-data-formats/charset-char";
+import { Char } from "../internal-data-formats/char";
 import { SubPaletteIndex } from "../internal-data-formats/palette";
 import { CharBitmap } from "../pe/pe-file";
 import { assertTuple, mapTuple, ReadonlyTuple } from "../tuple";
@@ -136,7 +136,7 @@ export const shadowChars = {
 
 export type ShadowStyle = keyof typeof shadowChars;
 
-export function peCharToLevelChar(char: CharBitmap): CharsetChar {
+export function peCharToLevelChar(char: CharBitmap): Char {
 	return {
 		lines: mapTuple(mapTuple(char, byteToBits), (line) =>
 			assertTuple(

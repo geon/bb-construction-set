@@ -10,7 +10,7 @@ import {
 	SubPalette,
 } from "../internal-data-formats/palette";
 import { Color, mixColors } from "../../math/color";
-import { CharsetChar } from "../internal-data-formats/charset-char";
+import { Char } from "../internal-data-formats/char";
 import {
 	spriteHeight,
 	spritePosOffset,
@@ -107,10 +107,7 @@ function drawLevelThumbnail(
 	return image;
 }
 
-function getAverageCharColor(
-	char: CharsetChar,
-	charPalette: SubPalette
-): Color {
+function getAverageCharColor(char: Char, charPalette: SubPalette): Color {
 	return mixColors(
 		char.lines
 			.flatMap((pixels) => pixels)
