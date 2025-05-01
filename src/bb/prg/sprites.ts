@@ -9,7 +9,7 @@ import {
 	CharacterName,
 	characterNames,
 } from "../game-definitions/character-name";
-import { Tuple } from "../tuple";
+import { assertTuple } from "../tuple";
 import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
 import { DataSegment } from "./io";
 import { ReadonlyUint8Array } from "../types";
@@ -67,7 +67,7 @@ export function parseSpritesFromBuffer(
 	segment: ReadonlyUint8Array
 ): ReadonlyArray<Sprite> {
 	return strictChunk([...segment], 64).map(
-		(withPadding): Sprite => withPadding.slice(0, -1) as Tuple<number, 63>
+		(withPadding): Sprite => assertTuple(withPadding.slice(0, -1), 63)
 	);
 }
 
