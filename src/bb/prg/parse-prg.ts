@@ -36,6 +36,7 @@ import { readBubbleCurrentPerLineDefaults } from "./bubble-current-per-line-defa
 import { detectShadowStyle, shadowChars, ShadowStyle } from "./shadow-chars";
 import { ReadonlyUint8Array } from "../types";
 import { ParsedPrg } from "../internal-data-formats/parsed-prg";
+import { serializeColorPixelByte } from "../internal-data-formats/color-pixel-byte";
 
 export function parsePrg(prg: ArrayBuffer): ParsedPrg {
 	const levels = readLevels(getDataSegments(prg, levelSegmentLocations));
@@ -115,7 +116,11 @@ export function levelsToSegments(
 			unzippedLevels.bubbleCurrentRectangles
 		),
 		// TODO: Not part of the levels.
-		shadowChars: new Uint8Array(shadowChars[shadowStyle].flat()),
+		shadowChars: new Uint8Array(
+			shadowChars[shadowStyle].flatMap((char) =>
+				char.flatMap(serializeColorPixelByte)
+			)
+		),
 	};
 
 	return newSegments;

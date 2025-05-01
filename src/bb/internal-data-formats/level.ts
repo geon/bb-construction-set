@@ -5,12 +5,7 @@ import { assertTuple, mapTuple, ReadonlyTuple, Tuple } from "../tuple";
 import { levelHeight, levelWidth } from "../game-definitions/level-size";
 import { range } from "../functions";
 import { CharName } from "../game-definitions/char-name";
-import {
-	ShadowStyle,
-	peCharToLevelChar,
-	shadowChars,
-} from "../prg/shadow-chars";
-import { CharBitmap } from "../pe/pe-file";
+import { ShadowStyle, shadowChars } from "../prg/shadow-chars";
 import { CharacterName } from "../game-definitions/character-name";
 import { Coord2 } from "../../math/coord2";
 
@@ -182,20 +177,29 @@ export function makeCharset(
 	level: Level,
 	shadowStyle: ShadowStyle
 ): Readonly<Record<CharName, Char>> {
-	const emptyChar: CharBitmap = [0, 0, 0, 0, 0, 0, 0, 0];
+	const emptyChar: Char = [
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+	];
 
 	return {
-		empty: peCharToLevelChar(emptyChar),
+		empty: emptyChar,
 		platform: level.platformChar,
 		sideBorderTopLeft: level.sidebarChars?.[0] ?? level.platformChar,
 		sideBorderTopRight: level.sidebarChars?.[1] ?? level.platformChar,
 		sideBorderBottomLeft: level.sidebarChars?.[2] ?? level.platformChar,
 		sideBorderBottomRight: level.sidebarChars?.[3] ?? level.platformChar,
-		shadowEndUnder: peCharToLevelChar(shadowChars[shadowStyle][0]),
-		shadowOuterCorner: peCharToLevelChar(shadowChars[shadowStyle][1]),
-		shadowEndRight: peCharToLevelChar(shadowChars[shadowStyle][2]),
-		shadowUnder: peCharToLevelChar(shadowChars[shadowStyle][3]),
-		shadowRight: peCharToLevelChar(shadowChars[shadowStyle][4]),
-		shadowInnerCorner: peCharToLevelChar(shadowChars[shadowStyle][5]),
+		shadowEndUnder: shadowChars[shadowStyle][0],
+		shadowOuterCorner: shadowChars[shadowStyle][1],
+		shadowEndRight: shadowChars[shadowStyle][2],
+		shadowUnder: shadowChars[shadowStyle][3],
+		shadowRight: shadowChars[shadowStyle][4],
+		shadowInnerCorner: shadowChars[shadowStyle][5],
 	};
 }
