@@ -1,4 +1,4 @@
-import { CharBlock } from "../internal-data-formats/char";
+import { Char, CharBlock } from "../internal-data-formats/char";
 import { parseColorPixelByte } from "../internal-data-formats/color-pixel-byte";
 import { isDefined, padRight, strictChunk } from "../functions";
 import { Level } from "../internal-data-formats/level";
@@ -9,12 +9,14 @@ import { ReadonlyUint8Array } from "../types";
 export function readSidebarChars(
 	sidebarCharsBytes: ReadonlyUint8Array,
 	sidebarCharsIndexBytes: ReadonlyUint8Array
-) {
+): readonly (CharBlock | undefined)[] {
 	const linesPerChar = 8;
-	const allSidebarCharBlocks = strictChunk(
-		strictChunk([...sidebarCharsBytes], linesPerChar).map((char) => ({
-			lines: mapTuple(char, parseColorPixelByte),
-		})),
+	const allSidebarCharBlocks: Array<CharBlock> = strictChunk(
+		strictChunk([...sidebarCharsBytes], linesPerChar).map(
+			(char): Char => ({
+				lines: mapTuple(char, parseColorPixelByte),
+			})
+		),
 		4
 	);
 
