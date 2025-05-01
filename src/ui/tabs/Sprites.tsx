@@ -7,7 +7,7 @@ import {
 	parseSpriteGroups,
 } from "../../bb/sprite-bin/sprite-bin";
 import { ImageDataCanvas } from "../ImageDataCanvas";
-import { drawSpritesToCanvas } from "../../bb/image-data/draw-levels-to-canvas";
+import { drawSpritesToCanvas } from "../../bb/image-data/sprite";
 import { FileInput } from "../FileInput";
 import { imageDataFromPaletteImage } from "../../bb/image-data/image-data";
 
