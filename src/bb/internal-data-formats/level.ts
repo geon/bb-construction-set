@@ -1,7 +1,7 @@
 import { CharBlock } from "./charset-char";
 import { CharsetChar } from "./charset-char";
 import { PaletteIndex } from "./palette";
-import { assertTuple, ReadonlyTuple, Tuple } from "../tuple";
+import { assertTuple, mapTuple, ReadonlyTuple, Tuple } from "../tuple";
 import { levelHeight, levelWidth } from "../game-definitions/level-size";
 import { range } from "../functions";
 import { CharName } from "../game-definitions/char-name";
@@ -27,9 +27,9 @@ type TileRow = ReadonlyTuple<boolean, 32>;
 export type Tiles = ReadonlyTuple<TileRow, 25>;
 
 export function createTiles(): Tuple<Tuple<boolean, 32>, 25> {
-	return Array(levelHeight)
-		.fill(0)
-		.map((_) => Array(levelWidth).fill(false)) as Tuple<Tuple<boolean, 32>, 25>;
+	return mapTuple(range(0, levelHeight), () =>
+		mapTuple(range(0, levelWidth), () => false)
+	);
 }
 
 export type BubbleCurrentPerLineDefaults = Array<BubbleCurrentDirection>;

@@ -48,7 +48,7 @@ export function mapTuple<
 >(
 	tuple: TTuple,
 	fn: (value: TOfTuple<TTuple>) => TOut
-): ReadonlyTuple<TOut, NOfTuple<typeof tuple>> {
+): Tuple<TOut, NOfTuple<typeof tuple>> {
 	return assertTuple(
 		(tuple as ReadonlyArray<TOfTuple<TTuple>>).map(fn),
 		tuple.length as NOfTuple<typeof tuple>
