@@ -1,7 +1,7 @@
 import { Color } from "../../math/color";
 import { add, Coord2, origo } from "../../math/coord2";
 import { palette } from "../internal-data-formats/palette";
-import { PaletteImage } from "./palette-image";
+import { PaletteImage } from "../palette-image/palette-image";
 
 // Just like ctx.putImageData
 export function blitImageData(

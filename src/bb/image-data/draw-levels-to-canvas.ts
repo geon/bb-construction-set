@@ -16,7 +16,7 @@ import { CharacterName, pl1, pl2 } from "../game-definitions/character-name";
 import { chunk, mapRecord } from "../functions";
 import { add, scale, subtract } from "../../math/coord2";
 import { ShadowStyle } from "../prg/shadow-chars";
-import { getCharPalette } from "./char";
+import { getCharPalette } from "../palette-image/char";
 import * as ImageDataFunctions from "./image-data";
 
 export function drawLevelsToCanvas(

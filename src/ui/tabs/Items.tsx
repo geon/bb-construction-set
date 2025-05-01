@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { ParsedPrg } from "../../bb/internal-data-formats/parsed-prg";
 import { ImageDataCanvas } from "../ImageDataCanvas";
-import { drawItems } from "../../bb/image-data/items";
+import { drawItems } from "../../bb/palette-image/item";
 import { imageDataFromPaletteImage } from "../../bb/image-data/image-data";
 
 export function Items({

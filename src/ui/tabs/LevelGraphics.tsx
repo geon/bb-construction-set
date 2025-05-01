@@ -10,7 +10,7 @@ import {
 import { BlobDownloadButton } from "../BlobDownloadButton";
 import { attempt, unzipObject, zipObject } from "../../bb/functions";
 import { ParsedPrg } from "../../bb/internal-data-formats/parsed-prg";
-import { drawPlatformCharsToCanvas } from "../../bb/image-data/char";
+import { drawPlatformCharsToCanvas } from "../../bb/palette-image/char";
 import { ImageDataCanvas } from "../ImageDataCanvas";
 import { FileInput } from "../FileInput";
 import { imageDataFromPaletteImage } from "../../bb/image-data/image-data";
