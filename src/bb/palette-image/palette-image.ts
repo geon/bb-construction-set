@@ -61,7 +61,7 @@ export function drawGrid(
 
 export function drawLayout(
 	layout: LayoutRect,
-	sprites: ReadonlyArray<PaletteImage>
+	images: ReadonlyArray<PaletteImage>
 ): PaletteImage {
 	const spritePositions = leafs(layout).map(({ pos }) => pos);
 
@@ -71,7 +71,7 @@ export function drawLayout(
 		data: [],
 	};
 	for (const { sprite, pos } of zipObject({
-		sprite: sprites,
+		sprite: images,
 		pos: spritePositions,
 	})) {
 		blitPaletteImage(image, sprite, pos);
