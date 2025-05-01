@@ -46,12 +46,10 @@ export function drawLevel(
 					: 5 // Dark green
 				: spriteGroups[character.characterName].color;
 
-		blitPaletteImage(
-			image,
-			drawSprite(sprite, getSpritePalette(spriteColor)),
-			spritePos.x / 2,
-			spritePos.y
-		);
+		blitPaletteImage(image, drawSprite(sprite, getSpritePalette(spriteColor)), {
+			x: spritePos.x / 2,
+			y: spritePos.y,
+		});
 	}
 
 	return image;

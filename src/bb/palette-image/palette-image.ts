@@ -13,12 +13,11 @@ export type PaletteImage = {
 export function blitPaletteImage(
 	to: PaletteImage,
 	from: PaletteImage,
-	dx: number,
-	dy: number
+	pos: Coord2
 ) {
 	for (let y = 0; y < from.height; ++y) {
 		for (let x = 0; x < from.width; ++x) {
-			const toPixelIndex = (y + dy) * to.width + (x + dx);
+			const toPixelIndex = (y + pos.y) * to.width + (x + pos.x);
 			const fromPixelIndex = y * from.width + x;
 			if (from.data[fromPixelIndex] !== undefined) {
 				to.data[toPixelIndex] = from.data[fromPixelIndex];
@@ -50,7 +49,10 @@ export function drawGrid(
 				break outerLoop;
 			}
 
-			blitPaletteImage(gridImage, image, x * stepSize.x, y * stepSize.y);
+			blitPaletteImage(gridImage, image, {
+				x: x * stepSize.x,
+				y: y * stepSize.y,
+			});
 		}
 	}
 
@@ -72,7 +74,7 @@ export function drawLayout(
 		sprite: sprites,
 		pos: spritePositions,
 	})) {
-		blitPaletteImage(image, sprite, pos.x, pos.y);
+		blitPaletteImage(image, sprite, pos);
 	}
 
 	return image;

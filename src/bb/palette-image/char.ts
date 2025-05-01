@@ -88,8 +88,10 @@ function drawCharblock(
 			blitPaletteImage(
 				image,
 				drawChar(char, charPalette, mask?.[charBlockX]?.[charBlockY]),
-				charBlockX * 4,
-				charBlockY * 8
+				{
+					x: charBlockX * 4,
+					y: charBlockY * 8,
+				}
 			);
 		}
 	}
