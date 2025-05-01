@@ -13,6 +13,7 @@ import { ParsedPrg } from "../../bb/internal-data-formats/parsed-prg";
 import { drawPlatformCharsToCanvas } from "../../bb/image-data/draw-levels-to-canvas";
 import { ImageDataCanvas } from "../ImageDataCanvas";
 import { FileInput } from "../FileInput";
+import { imageDataFromPaletteImage } from "../../bb/image-data/image-data";
 
 export function LevelGraphics({
 	parsedPrg,
@@ -24,7 +25,9 @@ export function LevelGraphics({
 	return (
 		<>
 			<ImageDataCanvas
-				imageData={drawPlatformCharsToCanvas(parsedPrg.levels)}
+				imageData={imageDataFromPaletteImage(
+					drawPlatformCharsToCanvas(parsedPrg.levels)
+				)}
 			/>
 			<br />
 			<br />

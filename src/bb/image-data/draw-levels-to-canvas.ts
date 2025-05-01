@@ -30,13 +30,9 @@ import { flexbox, leafs, LayoutRect } from "../../math/rect";
 import { spriteCounts } from "../prg/data-locations";
 import { add, origo, scale, subtract } from "../../math/coord2";
 import { ShadowStyle } from "../prg/shadow-chars";
-import {
-	blitImageData,
-	blitImageDataMasked,
-	drawGrid,
-	plotPixel,
-} from "./image-data";
 import { drawChar } from "./char";
+import * as ImageDataFunctions from "./image-data";
+import { blitPaletteImage, drawGrid, PaletteImage } from "./palette-image";
 
 export function drawLevelsToCanvas(
 	levels: readonly Level[],
@@ -45,7 +41,7 @@ export function drawLevelsToCanvas(
 ): ImageData {
 	const gap = { x: 10, y: 10 };
 
-	return drawGrid(
+	return ImageDataFunctions.drawGrid(
 		levels.map((level) => drawLevelThumbnail(level, spriteColors, shadowStyle)),
 		10,
 		{
@@ -78,7 +74,7 @@ function drawLevelThumbnail(
 	for (const [tileY, row] of tiles.entries()) {
 		for (const [tileX, color] of row.entries()) {
 			const pixelIndex = tileY * levelWidth + tileX;
-			plotPixel(image, pixelIndex, color);
+			ImageDataFunctions.plotPixel(image, pixelIndex, color);
 		}
 	}
 
@@ -99,7 +95,7 @@ function drawLevelThumbnail(
 
 		// Monsters are 2x2 chars large.
 		for (const offset of [0, 1, 32, 33]) {
-			plotPixel(image, pixelIndex + offset, spriteColor);
+			ImageDataFunctions.plotPixel(image, pixelIndex + offset, spriteColor);
 		}
 	}
 
@@ -119,7 +115,7 @@ export function drawLevel(
 	level: Level,
 	spriteGroups: SpriteGroups,
 	shadowStyle: ShadowStyle
-): ImageData {
+): PaletteImage {
 	// Draw level.
 	const charPalette = getCharPalette(level);
 	const charset = mapRecord(makeCharset(level, shadowStyle), (char) =>
@@ -131,7 +127,7 @@ export function drawLevel(
 			.flat()
 			.map((charName) => charset[charName]),
 		levelWidth,
-		{ x: 8, y: 8 }
+		{ x: 4, y: 8 }
 	);
 
 	for (const character of [pl1, pl2, ...level.monsters]) {
@@ -147,29 +143,30 @@ export function drawLevel(
 					: 5 // Dark green
 				: spriteGroups[character.characterName].color;
 
-		blitImageDataMasked(
+		blitPaletteImage(
 			image,
 			drawSprite(sprite, getSpritePalette(spriteColor)),
-			spritePos.x,
-			spritePos.y,
-			{ r: 0, g: 0, b: 0 }
+			spritePos.x / 2,
+			spritePos.y
 		);
 	}
 
 	return image;
 }
 
-export function drawPlatformCharsToCanvas(levels: readonly Level[]): ImageData {
-	const gap = { x: 10, y: 10 };
+export function drawPlatformCharsToCanvas(
+	levels: readonly Level[]
+): PaletteImage {
+	const gap = { x: 5, y: 10 };
 	return drawGrid(
 		levels.map(drawLevelPlatformChars),
 		10,
-		{ x: 8 * 4, y: 8 * 4 },
+		{ x: 8 * 2, y: 8 * 4 },
 		gap
 	);
 }
 
-function drawLevelPlatformChars(level: Level): ImageData {
+function drawLevelPlatformChars(level: Level): PaletteImage {
 	const charPalette = getCharPalette(level);
 
 	const platformChars = [
@@ -189,7 +186,7 @@ function drawLevelPlatformChars(level: Level): ImageData {
 	return drawGrid(
 		[sidebarImage, platformImage, sidebarImage, platformImage],
 		2,
-		{ x: 8 * 2, y: 8 * 2 }
+		{ x: 8 * 1, y: 8 * 2 }
 	);
 }
 
@@ -211,7 +208,7 @@ export function layOutSpriteGroups(): LayoutRect {
 			range(0, count).map(
 				(): LayoutRect => ({
 					pos: origo,
-					size: spriteSize,
+					size: { x: spriteSize.x / 2, y: spriteSize.y },
 					index: index++,
 				})
 			)
@@ -219,13 +216,13 @@ export function layOutSpriteGroups(): LayoutRect {
 
 	const spriteGroupRects = mapRecord(spriteRects, (rects, groupName) => {
 		const multiWidth = spriteGroupMultiWidths[groupName];
-		const gap = multiWidth === 1 ? 8 : 0;
+		const gap = multiWidth === 1 ? { x: 4, y: 8 } : origo;
 		return flexbox(
 			chunk(rects, multiWidth === 1 ? 4 : multiWidth).map((row) =>
-				flexbox(row, "row", gap)
+				flexbox(row, "row", gap.x)
 			),
 			"column",
-			gap
+			gap.y
 		);
 	});
 
@@ -262,11 +259,11 @@ export function layOutSpriteGroups(): LayoutRect {
 			],
 		].map((chunk) => flexbox(chunk, "column", 3 * 8)),
 		"row",
-		3 * 8
+		3 * 4
 	);
 }
 
-export function drawSpritesToCanvas(spriteGroups: SpriteGroups): ImageData {
+export function drawSpritesToCanvas(spriteGroups: SpriteGroups): PaletteImage {
 	const sprites = Object.values(
 		mapRecord(spriteGroups, (spriteGroup) => {
 			return spriteGroup.sprites.map((sprite) =>
@@ -278,33 +275,31 @@ export function drawSpritesToCanvas(spriteGroups: SpriteGroups): ImageData {
 	const layout = layOutSpriteGroups();
 	const spritePositions = leafs(layout).map(({ pos }) => pos);
 
-	const image = new ImageData(layout.size.x, layout.size.y);
+	const image: PaletteImage = {
+		width: layout.size.x,
+		height: layout.size.y,
+		data: [],
+	};
 	for (const { sprite, pos } of zipObject({
 		sprite: sprites,
 		pos: spritePositions,
 	})) {
-		blitImageData(image, sprite, pos.x, pos.y);
+		blitPaletteImage(image, sprite, pos.x, pos.y);
 	}
 
 	return image;
 }
 
-function drawSprite(sprite: Sprite, spritePalette: SubPalette): ImageData {
-	const image = new ImageData(spriteSizePixels.x * 2, spriteSizePixels.y);
-
-	for (const [pixelY, row] of sprite.entries()) {
-		for (const [pixelX, pixelValue] of row.entries()) {
-			const paletteIndex = spritePalette[pixelValue];
-			const color = palette[paletteIndex];
-
-			// Double width pixels.
-			const pixelIndex = pixelY * spriteSizePixels.x * 2 + pixelX * 2;
-			plotPixel(image, pixelIndex, color);
-			plotPixel(image, pixelIndex + 1, color);
-		}
-	}
-
-	return image;
+function drawSprite(sprite: Sprite, spritePalette: SubPalette): PaletteImage {
+	return {
+		width: spriteSizePixels.x,
+		height: spriteSizePixels.y,
+		data: sprite
+			.flat()
+			.map((pixelValue) =>
+				pixelValue ? spritePalette[pixelValue] : undefined
+			),
+	};
 }
 
 function getSpritePalette(color: PaletteIndex): SubPalette {
@@ -320,16 +315,20 @@ function drawCharblock(
 	item: Item<number, number>,
 	charPalette: SubPalette,
 	mask?: Item<number, number>
-): ImageData {
+): PaletteImage {
 	// The chars are column-order just like in the game.
-	const image = new ImageData(item.length * 8, item[0]!.length * 8);
+	const image: PaletteImage = {
+		width: item.length * 4,
+		height: item[0]!.length * 8,
+		data: [],
+	};
 
 	for (const [charBlockX, column] of item.entries()) {
 		for (const [charBlockY, char] of column.entries()) {
-			blitImageData(
+			blitPaletteImage(
 				image,
 				drawChar(char, charPalette, mask?.[charBlockX]?.[charBlockY]),
-				charBlockX * 8,
+				charBlockX * 4,
 				charBlockY * 8
 			);
 		}

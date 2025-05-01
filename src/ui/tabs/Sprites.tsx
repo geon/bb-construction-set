@@ -9,6 +9,7 @@ import {
 import { ImageDataCanvas } from "../ImageDataCanvas";
 import { drawSpritesToCanvas } from "../../bb/image-data/draw-levels-to-canvas";
 import { FileInput } from "../FileInput";
+import { imageDataFromPaletteImage } from "../../bb/image-data/image-data";
 
 export function Sprites({
 	parsedPrg,
@@ -19,7 +20,11 @@ export function Sprites({
 }): ReactNode {
 	return (
 		<>
-			<ImageDataCanvas imageData={drawSpritesToCanvas(parsedPrg.sprites)} />
+			<ImageDataCanvas
+				imageData={imageDataFromPaletteImage(
+					drawSpritesToCanvas(parsedPrg.sprites)
+				)}
+			/>
 			<br />
 			<br />
 			<BlobDownloadButton

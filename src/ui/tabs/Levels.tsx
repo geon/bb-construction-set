@@ -9,6 +9,7 @@ import {
 	drawLevelsToCanvas,
 } from "../../bb/image-data/draw-levels-to-canvas";
 import { ImageDataCanvas } from "../ImageDataCanvas";
+import { imageDataFromPaletteImage } from "../../bb/image-data/image-data";
 
 export function Levels({
 	parsedPrg,
@@ -28,10 +29,12 @@ export function Levels({
 			<br />
 			<br />
 			<ImageDataCanvas
-				imageData={drawLevel(
-					parsedPrg.levels[4]!,
-					parsedPrg.sprites,
-					parsedPrg.shadowStyle
+				imageData={imageDataFromPaletteImage(
+					drawLevel(
+						parsedPrg.levels[4]!,
+						parsedPrg.sprites,
+						parsedPrg.shadowStyle
+					)
 				)}
 			/>
 			<br />
@@ -41,7 +44,9 @@ export function Levels({
 					parts: await mapAsync(parsedPrg.levels, async (level, index) => ({
 						fileName: (index + 1).toString().padStart(3, "0") + ".png",
 						blob: await imageDataToBlob(
-							drawLevel(level, parsedPrg.sprites, parsedPrg.shadowStyle)
+							imageDataFromPaletteImage(
+								drawLevel(level, parsedPrg.sprites, parsedPrg.shadowStyle)
+							)
 						),
 					})),
 					fileName: "bubble bobble c64 - all level images.zip",

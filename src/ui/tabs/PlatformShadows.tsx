@@ -4,6 +4,7 @@ import { drawLevel } from "../../bb/image-data/draw-levels-to-canvas";
 import { ImageDataCanvas } from "../ImageDataCanvas";
 import styled from "styled-components";
 import { ShadowStyle } from "../../bb/prg/shadow-chars";
+import { imageDataFromPaletteImage } from "../../bb/image-data/image-data";
 
 export function PlatformShadows({
 	parsedPrg,
@@ -15,10 +16,12 @@ export function PlatformShadows({
 	return (
 		<>
 			<ImageDataCanvas
-				imageData={drawLevel(
-					parsedPrg.levels[4]!,
-					parsedPrg.sprites,
-					parsedPrg.shadowStyle
+				imageData={imageDataFromPaletteImage(
+					drawLevel(
+						parsedPrg.levels[4]!,
+						parsedPrg.sprites,
+						parsedPrg.shadowStyle
+					)
 				)}
 			/>
 			<br />

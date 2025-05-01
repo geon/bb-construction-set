@@ -1,12 +1,12 @@
-import { Coord2, scale, origo } from "../../math/coord2";
+import { Coord2, origo } from "../../math/coord2";
 import { LayoutRect, boundingBox, flexbox, grid, leafs } from "../../math/rect";
 import { mapRecord, range, zipObject, unzipObject } from "../functions";
 import { ItemDataSegmentName } from "../game-definitions/item-segment-name";
 import { itemGroupMeta } from "../prg/items";
 import { ItemGroups, ItemGroup } from "../internal-data-formats/item";
 import { assertTuple } from "../tuple";
+import { blitPaletteImage, PaletteImage } from "./palette-image";
 import { drawChar } from "./char";
-import { blitImageData } from "./image-data";
 
 function layoutLargeLightning(index: number) {
 	// 4x4 grid, but 2 corners are missing 3 chars each.
@@ -38,8 +38,8 @@ function layoutLargeLightning(index: number) {
 
 	const children = positions.map(
 		(pos): LayoutRect => ({
-			pos: scale(pos, 8),
-			size: { x: 8, y: 8 },
+			pos: { x: pos.x * 4, y: pos.y * 8 },
+			size: { x: 4, y: 8 },
 			index: index++,
 		})
 	);
@@ -69,7 +69,7 @@ function layOutItemChars(): LayoutRect {
 								range(0, group.height).map(
 									(): LayoutRect => ({
 										pos: origo,
-										size: { x: 8, y: 8 },
+										size: { x: 4, y: 8 },
 										index: index++,
 									})
 								),
@@ -93,7 +93,7 @@ function layOutItemChars(): LayoutRect {
 				extendBubbles: 4,
 				items: Math.ceil(Math.sqrt(itemRectGroups.items.length)),
 			}[groupName as string] ?? 1000,
-			{ x: 8, y: 8 }
+			{ x: 4, y: 8 }
 		)
 	);
 
@@ -113,7 +113,7 @@ function layOutItemChars(): LayoutRect {
 				flexbox(
 					[laidOutItemGroups.incendoWeapon, laidOutItemGroups.lightning],
 					"row",
-					8
+					4
 				),
 			],
 			[
@@ -123,11 +123,11 @@ function layOutItemChars(): LayoutRect {
 			],
 		].map((chunk) => flexbox(chunk, "column", 3 * 8)),
 		"row",
-		4 * 8
+		4 * 4
 	);
 }
 
-export function drawItems(itemGroups: ItemGroups): ImageData {
+export function drawItems(itemGroups: ItemGroups): PaletteImage {
 	const sharedBubbleMask = assertTuple(
 		itemGroups.bubbleBlow.slice(8).map((x) => x.mask!),
 		4
@@ -184,12 +184,16 @@ export function drawItems(itemGroups: ItemGroups): ImageData {
 	const layout = layOutItemChars();
 	const charPositions = leafs(layout).map(({ pos }) => pos);
 
-	const image = new ImageData(layout.size.x, layout.size.y);
+	const image: PaletteImage = {
+		width: layout.size.x,
+		height: layout.size.y,
+		data: [],
+	};
 	for (const { charImage, pos } of zipObject({
 		charImage: charImages,
 		pos: charPositions,
 	})) {
-		blitImageData(image, charImage, pos.x, pos.y);
+		blitPaletteImage(image, charImage, pos.x, pos.y);
 	}
 
 	return image;
