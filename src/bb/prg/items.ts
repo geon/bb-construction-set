@@ -1,11 +1,11 @@
 import { Char } from "../internal-data-formats/char";
 import { parseColorPixelByte } from "../internal-data-formats/color-pixel-byte";
 import { mapRecord, strictChunk, zipObject } from "../functions";
-import { ReadonlyTuple } from "../tuple";
 import { linesPerChar } from "./charset-char";
 import { ItemDataSegmentName } from "../game-definitions/item-segment-name";
 import { DataSegment } from "./io";
 import { mapTuple } from "../tuple";
+import { ItemGroups, ItemGroup } from "../internal-data-formats/item";
 
 export const itemGroupMeta = {
 	bubbleBlow: {
@@ -95,22 +95,6 @@ export const itemGroupMeta = {
 		readonly hasMask: boolean;
 	}
 >;
-
-export type Item<Height extends number, Width extends number> =
-	// The chars are column-order just like in the game.
-	ReadonlyTuple<ReadonlyTuple<Char, Height>, Width>;
-
-export type ItemGroup<
-	Width extends number,
-	Height extends number
-> = ReadonlyArray<{
-	readonly item: Item<Height, Width>;
-	readonly mask?: Item<Height, Width>;
-}>;
-
-export type ItemGroups = {
-	readonly [Key in ItemDataSegmentName]: ItemGroup<number, number>;
-};
 
 export function readItems(
 	dataSegments: Record<ItemDataSegmentName, DataSegment>

@@ -23,7 +23,7 @@ import {
 	pl2,
 	spriteLeftIndex,
 } from "../game-definitions/character-name";
-import { Item } from "../prg/items";
+import { Item } from "../internal-data-formats/item";
 import { chunk, mapRecord, range, zipObject } from "../functions";
 import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
 import { flexbox, leafs, LayoutRect } from "../../math/rect";

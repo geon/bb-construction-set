@@ -1,6 +1,6 @@
 import { Level } from "./level";
 import { SpriteGroups } from "./sprite";
-import { ItemGroups } from "../prg/items";
+import { ItemGroups } from "./item";
 import { ShadowStyle } from "../prg/shadow-chars";
 
 export type ParsedPrg = {
