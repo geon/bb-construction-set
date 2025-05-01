@@ -3,7 +3,7 @@ import { BlobDownloadButton } from "../BlobDownloadButton";
 import { attempt } from "../../bb/functions";
 import { ParsedPrg } from "../../bb/internal-data-formats/parsed-prg";
 import {
-	convertSpriteGroupsToBinFile,
+	serializeSpriteGroups,
 	parseSpriteGroupsFromBin,
 } from "../../bb/sprite-bin/sprite-bin";
 import { ImageDataCanvas } from "../ImageDataCanvas";
@@ -24,7 +24,7 @@ export function Sprites({
 			<br />
 			<BlobDownloadButton
 				getBlob={async () => ({
-					blob: new Blob([convertSpriteGroupsToBinFile(parsedPrg.sprites)], {
+					blob: new Blob([serializeSpriteGroups(parsedPrg.sprites)], {
 						type: "application/json",
 					}),
 					fileName: "bubble bobble c64 - all sprites.bin",

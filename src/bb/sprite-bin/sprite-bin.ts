@@ -9,9 +9,7 @@ import { SpriteGroup, SpriteGroups } from "../internal-data-formats/sprite";
 import { spriteDataSegmentLocations } from "../prg/data-locations";
 import { parseSpritesFromBuffer, getSpriteGroupColor } from "../prg/sprites";
 
-export function convertSpriteGroupsToBinFile(
-	spriteGroups: SpriteGroups
-): Uint8Array {
+export function serializeSpriteGroups(spriteGroups: SpriteGroups): Uint8Array {
 	return new Uint8Array(
 		spriteGroupNames.flatMap((spriteGroupName): number[] => {
 			const multicolorBit = 0b10000000;

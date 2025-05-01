@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 import { parseSpriteGroupsFromPrg } from "../../prg/sprites";
-import { convertSpriteGroupsToBinFile } from "../sprite-bin";
+import { serializeSpriteGroups } from "../sprite-bin";
 import { getDataSegments, getDataSegment } from "../../prg/io";
 import { readFileSync } from "fs";
 import {
@@ -18,7 +18,7 @@ test("readSpritesBin snapshot", () => {
 		monsterSpriteColorsSegmentLocation
 	);
 
-	const sprites = convertSpriteGroupsToBinFile(
+	const sprites = serializeSpriteGroups(
 		parseSpriteGroupsFromPrg(segments, monsterColorsSegment)
 	);
 
