@@ -1,12 +1,12 @@
 import { spriteSize, spriteSizePixels } from "../../c64/consts";
 import { origo } from "../../math/coord2";
-import { LayoutRect, flexbox, leafs } from "../../math/rect";
-import { mapRecord, range, chunk, zipObject } from "../functions";
+import { LayoutRect, flexbox } from "../../math/rect";
+import { mapRecord, range, chunk } from "../functions";
 import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
 import { SubPalette, PaletteIndex } from "../internal-data-formats/palette";
 import { SpriteGroups, Sprite } from "../internal-data-formats/sprite";
 import { spriteCounts } from "../prg/data-locations";
-import { PaletteImage, blitPaletteImage } from "./palette-image";
+import { PaletteImage, drawLayout } from "./palette-image";
 
 export function layOutSpriteGroups(): LayoutRect {
 	let index = 0;
@@ -81,21 +81,8 @@ export function drawSpritesToCanvas(spriteGroups: SpriteGroups): PaletteImage {
 	).flat();
 
 	const layout = layOutSpriteGroups();
-	const spritePositions = leafs(layout).map(({ pos }) => pos);
 
-	const image: PaletteImage = {
-		width: layout.size.x,
-		height: layout.size.y,
-		data: [],
-	};
-	for (const { sprite, pos } of zipObject({
-		sprite: sprites,
-		pos: spritePositions,
-	})) {
-		blitPaletteImage(image, sprite, pos.x, pos.y);
-	}
-
-	return image;
+	return drawLayout(layout, sprites);
 }
 
 export function drawSprite(

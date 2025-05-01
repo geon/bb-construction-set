@@ -1,4 +1,6 @@
 import { add, Coord2, origo } from "../../math/coord2";
+import { LayoutRect, leafs } from "../../math/rect";
+import { zipObject } from "../functions";
 import { PaletteIndex } from "../internal-data-formats/palette";
 
 export type PaletteImage = {
@@ -53,4 +55,25 @@ export function drawGrid(
 	}
 
 	return gridImage;
+}
+
+export function drawLayout(
+	layout: LayoutRect,
+	sprites: ReadonlyArray<PaletteImage>
+): PaletteImage {
+	const spritePositions = leafs(layout).map(({ pos }) => pos);
+
+	const image: PaletteImage = {
+		width: layout.size.x,
+		height: layout.size.y,
+		data: [],
+	};
+	for (const { sprite, pos } of zipObject({
+		sprite: sprites,
+		pos: spritePositions,
+	})) {
+		blitPaletteImage(image, sprite, pos.x, pos.y);
+	}
+
+	return image;
 }

@@ -1,11 +1,11 @@
 import { Coord2, origo } from "../../math/coord2";
-import { LayoutRect, boundingBox, flexbox, grid, leafs } from "../../math/rect";
+import { LayoutRect, boundingBox, flexbox, grid } from "../../math/rect";
 import { mapRecord, range, zipObject, unzipObject } from "../functions";
 import { ItemDataSegmentName } from "../game-definitions/item-segment-name";
 import { itemGroupMeta } from "../prg/items";
 import { ItemGroups, ItemGroup } from "../internal-data-formats/item";
 import { assertTuple } from "../tuple";
-import { blitPaletteImage, PaletteImage } from "./palette-image";
+import { drawLayout, PaletteImage } from "./palette-image";
 import { drawChar } from "./char";
 
 function layoutLargeLightning(index: number) {
@@ -182,19 +182,6 @@ export function drawItems(itemGroups: ItemGroups): PaletteImage {
 	).flat();
 
 	const layout = layOutItemChars();
-	const charPositions = leafs(layout).map(({ pos }) => pos);
 
-	const image: PaletteImage = {
-		width: layout.size.x,
-		height: layout.size.y,
-		data: [],
-	};
-	for (const { charImage, pos } of zipObject({
-		charImage: charImages,
-		pos: charPositions,
-	})) {
-		blitPaletteImage(image, charImage, pos.x, pos.y);
-	}
-
-	return image;
+	return drawLayout(layout, charImages);
 }
