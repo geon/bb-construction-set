@@ -63,19 +63,18 @@ export function drawLayout(
 	layout: LayoutRect,
 	images: ReadonlyArray<PaletteImage>
 ): PaletteImage {
-	const rects = leafs(layout);
-
-	const collage: PaletteImage = {
-		width: layout.size.x,
-		height: layout.size.y,
-		data: [],
-	};
-
 	return zipObject({
 		image: images,
-		rect: rects,
-	}).reduce((soFar, current) => {
-		blitPaletteImage(soFar, current.image, current.rect.pos);
-		return soFar;
-	}, collage);
+		rect: leafs(layout),
+	}).reduce(
+		(soFar, current) => {
+			blitPaletteImage(soFar, current.image, current.rect.pos);
+			return soFar;
+		},
+		{
+			width: layout.size.x,
+			height: layout.size.y,
+			data: [],
+		}
+	);
 }
