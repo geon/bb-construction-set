@@ -4,10 +4,8 @@ import { serializePeFileData } from "../../bb/pe/pe-file";
 import { BlobDownloadButton } from "../BlobDownloadButton";
 import { mapAsync, mapRecord } from "../../bb/functions";
 import { ParsedPrg } from "../../bb/internal-data-formats/parsed-prg";
-import {
-	drawLevel,
-	drawLevelsToCanvas,
-} from "../../bb/image-data/draw-levels-to-canvas";
+import { drawLevelsToCanvas } from "../../bb/image-data/draw-levels-to-canvas";
+import { drawLevel } from "../../bb/image-data/level";
 import { ImageDataCanvas } from "../ImageDataCanvas";
 import { imageDataFromPaletteImage } from "../../bb/image-data/image-data";
 

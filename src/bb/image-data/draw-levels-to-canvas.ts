@@ -12,20 +12,12 @@ import {
 import { Color, mixColors } from "../../math/color";
 import { Char } from "../internal-data-formats/char";
 import { spritePosOffset, spriteSize } from "../../c64/consts";
-import { SpriteGroups } from "../internal-data-formats/sprite";
-import {
-	CharacterName,
-	pl1,
-	pl2,
-	spriteLeftIndex,
-} from "../game-definitions/character-name";
+import { CharacterName, pl1, pl2 } from "../game-definitions/character-name";
 import { chunk, mapRecord } from "../functions";
 import { add, scale, subtract } from "../../math/coord2";
 import { ShadowStyle } from "../prg/shadow-chars";
-import { drawChar, getCharPalette } from "./char";
+import { getCharPalette } from "./char";
 import * as ImageDataFunctions from "./image-data";
-import { blitPaletteImage, drawGrid, PaletteImage } from "./palette-image";
-import { drawSprite, getSpritePalette } from "./sprite";
 
 export function drawLevelsToCanvas(
 	levels: readonly Level[],
@@ -102,47 +94,4 @@ function getAverageCharColor(char: Char, charPalette: SubPalette): Color {
 			.map((pixel) => charPalette[pixel])
 			.map((paletteIndex) => palette[paletteIndex])
 	);
-}
-
-export function drawLevel(
-	level: Level,
-	spriteGroups: SpriteGroups,
-	shadowStyle: ShadowStyle
-): PaletteImage {
-	// Draw level.
-	const charPalette = getCharPalette(level);
-	const charset = mapRecord(makeCharset(level, shadowStyle), (char) =>
-		drawChar(char, charPalette)
-	);
-
-	const image = drawGrid(
-		levelToCharNames(level)
-			.flat()
-			.map((charName) => charset[charName]),
-		levelWidth,
-		{ x: 4, y: 8 }
-	);
-
-	for (const character of [pl1, pl2, ...level.monsters]) {
-		const sprite =
-			spriteGroups[character.characterName].sprites[
-				character.facingLeft ? spriteLeftIndex[character.characterName] : 0
-			]!;
-		const spritePos = subtract(character.spawnPoint, spritePosOffset);
-		const spriteColor =
-			character.characterName === "player"
-				? character.facingLeft
-					? 3 // Cyan
-					: 5 // Dark green
-				: spriteGroups[character.characterName].color;
-
-		blitPaletteImage(
-			image,
-			drawSprite(sprite, getSpritePalette(spriteColor)),
-			spritePos.x / 2,
-			spritePos.y
-		);
-	}
-
-	return image;
 }

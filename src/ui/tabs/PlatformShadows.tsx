@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { ParsedPrg } from "../../bb/internal-data-formats/parsed-prg";
-import { drawLevel } from "../../bb/image-data/draw-levels-to-canvas";
+import { drawLevel } from "../../bb/image-data/level";
 import { ImageDataCanvas } from "../ImageDataCanvas";
 import styled from "styled-components";
 import { ShadowStyle } from "../../bb/prg/shadow-chars";
