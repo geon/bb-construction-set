@@ -11,3 +11,12 @@ export function parseColorPixelByte(byte: number): ColorPixelByte {
 		((byte >> 0) & 0b11) as SubPaletteIndex,
 	];
 }
+
+export function serializeColorPixelByte(colorIndices: ColorPixelByte): number {
+	return (
+		(colorIndices[0] << 6) +
+		(colorIndices[1] << 4) +
+		(colorIndices[2] << 2) +
+		(colorIndices[3] << 0)
+	);
+}
