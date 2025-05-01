@@ -127,7 +127,7 @@ function layOutItemChars(): LayoutRect {
 	);
 }
 
-export function drawItems(itemGroups: ItemGroups): PaletteImage {
+function getAllItemChars(itemGroups: ItemGroups): ReadonlyArray<PaletteImage> {
 	const sharedBubbleMask = assertTuple(
 		itemGroups.bubbleBlow.slice(8).map((x) => x.mask!),
 		4
@@ -156,7 +156,7 @@ export function drawItems(itemGroups: ItemGroups): PaletteImage {
 		}
 	);
 
-	const charImages = Object.values(
+	return Object.values(
 		mapRecord(maskedItemGroups, (maskedItems) => {
 			const { item: items, mask: itemMasks } = unzipObject(maskedItems);
 			const chars = items.flat().flat();
@@ -180,8 +180,10 @@ export function drawItems(itemGroups: ItemGroups): PaletteImage {
 			);
 		})
 	).flat();
+}
 
+export function drawItems(itemGroups: ItemGroups): PaletteImage {
+	const charImages = getAllItemChars(itemGroups);
 	const layout = layOutItemChars();
-
 	return drawLayout(layout, charImages);
 }
