@@ -70,8 +70,8 @@ export function drawLayout(
 		height: layout.size.y,
 		data: [],
 	};
-	for (const { sprite, pos } of zipObject({
-		sprite: images,
+	for (const { image: sprite, pos } of zipObject({
+		image: images,
 		pos: spritePositions,
 	})) {
 		blitPaletteImage(image, sprite, pos);
