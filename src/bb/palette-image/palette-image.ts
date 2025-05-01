@@ -63,7 +63,7 @@ export function drawLayout(
 	layout: LayoutRect,
 	images: ReadonlyArray<PaletteImage>
 ): PaletteImage {
-	const spritePositions = leafs(layout).map(({ pos }) => pos);
+	const spritePositions = leafs(layout);
 
 	const image: PaletteImage = {
 		width: layout.size.x,
@@ -74,7 +74,7 @@ export function drawLayout(
 		image: images,
 		pos: spritePositions,
 	})) {
-		blitPaletteImage(image, sprite, pos);
+		blitPaletteImage(image, sprite, pos.pos);
 	}
 
 	return image;
