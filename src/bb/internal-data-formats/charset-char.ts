@@ -1,14 +1,14 @@
 import { ReadonlyTuple } from "../tuple";
 import { SubPaletteIndex } from "./palette";
 
-export type CharsetCharLine = ReadonlyTuple<SubPaletteIndex, 4>;
+export type ColorPixelByte = ReadonlyTuple<SubPaletteIndex, 4>;
 export interface CharsetChar {
-	readonly lines: ReadonlyTuple<CharsetCharLine, 8>;
+	readonly lines: ReadonlyTuple<ColorPixelByte, 8>;
 }
 export type CharBlock = ReadonlyTuple<CharsetChar, 4>;
 export type CharBlockIndex = 0 | 1 | 2 | 3;
 
-export function parseCharsetCharLine(byte: number): CharsetCharLine {
+export function parseCharsetCharLine(byte: number): ColorPixelByte {
 	return [
 		((byte >> 6) & 0b11) as SubPaletteIndex,
 		((byte >> 4) & 0b11) as SubPaletteIndex,

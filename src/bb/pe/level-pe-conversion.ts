@@ -21,7 +21,7 @@ import {
 } from "../game-definitions/character-name";
 import {
 	CharsetChar,
-	CharsetCharLine,
+	ColorPixelByte,
 } from "../internal-data-formats/charset-char";
 import { SubPaletteIndex } from "../internal-data-formats/palette";
 import { c64BuiltinCharsets } from "./c64-builtin-charsets";
@@ -520,7 +520,7 @@ export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 			(bitmap): CharsetChar => ({
 				lines: mapTuple(
 					bitmap,
-					(line): CharsetCharLine => [
+					(line): ColorPixelByte => [
 						((line >> 6) & 0b11) as SubPaletteIndex,
 						((line >> 4) & 0b11) as SubPaletteIndex,
 						((line >> 2) & 0b11) as SubPaletteIndex,
