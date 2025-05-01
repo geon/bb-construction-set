@@ -65,7 +65,7 @@ export function drawLayout(
 ): PaletteImage {
 	const rects = leafs(layout);
 
-	const image: PaletteImage = {
+	const collage: PaletteImage = {
 		width: layout.size.x,
 		height: layout.size.y,
 		data: [],
@@ -74,8 +74,8 @@ export function drawLayout(
 		image: images,
 		rect: rects,
 	})) {
-		blitPaletteImage(image, sprite, rect.pos);
+		blitPaletteImage(collage, sprite, rect.pos);
 	}
 
-	return image;
+	return collage;
 }
