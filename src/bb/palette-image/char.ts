@@ -17,7 +17,6 @@ export function drawChar(
 	const image = createPaletteImage({
 		width: 4,
 		height: 8,
-		data: [],
 	});
 
 	for (const [charY, line] of char.entries()) {
@@ -89,7 +88,6 @@ function drawCharblock(
 	const image = createPaletteImage({
 		width: item.length * 4,
 		height: item[0]!.length * 8,
-		data: [],
 	});
 
 	for (const [charBlockX, column] of item.entries()) {

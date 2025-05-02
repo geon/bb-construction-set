@@ -10,8 +10,11 @@ export type PaletteImage = {
 	data: Array<PaletteIndex | undefined>;
 };
 
-export function createPaletteImage(image: PaletteImage): PaletteImage {
-	return image;
+export function createPaletteImage(image: {
+	width: number;
+	height: number;
+}): PaletteImage {
+	return { ...image, data: [] };
 }
 
 export function blitPaletteImage(
@@ -42,7 +45,6 @@ export function drawGrid(
 	const gridImage = createPaletteImage({
 		width: size.x * numColumns + gap.x * (numColumns - 1),
 		height: size.y * numRows + gap.y * (numRows - 1),
-		data: [],
 	});
 
 	const stepSize = add(size, gap);
@@ -79,7 +81,6 @@ export function drawLayout(
 		createPaletteImage({
 			width: layout.size.x,
 			height: layout.size.y,
-			data: [],
 		})
 	);
 }
