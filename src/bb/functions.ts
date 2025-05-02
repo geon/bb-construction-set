@@ -40,14 +40,20 @@ export function sum(array: readonly number[]): number {
 	return array.reduce((a, b) => a + b, 0);
 }
 
-export function zipObject<TResult extends object>(arrays: {
-	readonly [TKey in keyof TResult]: ReadonlyArray<TResult[TKey]>;
-}): ReadonlyArray<TResult> {
-	// TODO: Why the cast?
-	const arraysEntries = Object.entries(arrays) as [
-		string,
-		ReadonlyArray<unknown>
-	][];
+type ZipObjectReturnElement<
+	TInput extends Record<string, ReadonlyArray<unknown> | undefined>
+> = {
+	[Key in keyof TInput]:
+		| Exclude<TInput[Key], undefined>[number]
+		| (TInput[Key] extends ReadonlyArray<unknown> ? never : undefined);
+};
+
+export function zipObject<
+	TInput extends Record<string, ReadonlyArray<unknown> | undefined>
+>(arrays: TInput): ReadonlyArray<ZipObjectReturnElement<TInput>> {
+	const arraysEntries = Object.entries(arrays)
+		.map(([key, value]) => value && ([key, value] as const))
+		.filter(isDefined);
 
 	const lengths = new Set(arraysEntries.map(([, array]) => array.length));
 	const [length] = lengths;
@@ -63,12 +69,12 @@ export function zipObject<TResult extends object>(arrays: {
 		);
 	}
 
-	const results: Array<TResult> = [];
+	const results: Array<ZipObjectReturnElement<TInput>> = [];
 	for (let index = 0; index < length; ++index) {
 		results.push(
 			Object.fromEntries(
 				arraysEntries.map(([name, array]) => [name, array[index]] as const)
-			) as TResult
+			) as ZipObjectReturnElement<TInput>
 		);
 	}
 	return results;
