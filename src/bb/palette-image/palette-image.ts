@@ -19,8 +19,9 @@ export function blitPaletteImage(
 		for (let x = 0; x < from.width; ++x) {
 			const toPixelIndex = (y + pos.y) * to.width + (x + pos.x);
 			const fromPixelIndex = y * from.width + x;
-			if (from.data[fromPixelIndex] !== undefined) {
-				to.data[toPixelIndex] = from.data[fromPixelIndex];
+			const pixel = from.data[fromPixelIndex];
+			if (pixel !== undefined) {
+				to.data[toPixelIndex] = pixel;
 			}
 		}
 	}
