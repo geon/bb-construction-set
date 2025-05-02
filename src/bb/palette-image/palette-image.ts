@@ -70,14 +70,8 @@ export function drawLayout(
 	return zipObject({
 		image: images,
 		rect: leafs(layout),
-	}).reduce(
-		(soFar, current) => {
-			blitPaletteImage(soFar, current.image, current.rect.pos);
-			return soFar;
-		},
-		createPaletteImage({
-			x: layout.size.x,
-			y: layout.size.y,
-		})
-	);
+	}).reduce((soFar, current) => {
+		blitPaletteImage(soFar, current.image, current.rect.pos);
+		return soFar;
+	}, createPaletteImage(layout.size));
 }
