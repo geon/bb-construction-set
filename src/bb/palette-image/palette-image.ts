@@ -10,6 +10,10 @@ export type PaletteImage = {
 	data: Array<PaletteIndex | undefined>;
 };
 
+export function createPaletteImage(image: PaletteImage): PaletteImage {
+	return image;
+}
+
 export function blitPaletteImage(
 	to: PaletteImage,
 	from: PaletteImage,
@@ -35,11 +39,11 @@ export function drawGrid(
 ): PaletteImage {
 	const numRows = Math.ceil(images.length / numColumns);
 
-	const gridImage: PaletteImage = {
+	const gridImage = createPaletteImage({
 		width: size.x * numColumns + gap.x * (numColumns - 1),
 		height: size.y * numRows + gap.y * (numRows - 1),
 		data: [],
-	};
+	});
 
 	const stepSize = add(size, gap);
 	outerLoop: for (let y = 0; y < numRows; ++y) {
@@ -72,10 +76,10 @@ export function drawLayout(
 			blitPaletteImage(soFar, current.image, current.rect.pos);
 			return soFar;
 		},
-		{
+		createPaletteImage({
 			width: layout.size.x,
 			height: layout.size.y,
 			data: [],
-		}
+		})
 	);
 }

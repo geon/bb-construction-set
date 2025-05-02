@@ -2,14 +2,23 @@ import { Char } from "../internal-data-formats/char";
 import { Item } from "../internal-data-formats/item";
 import { Level } from "../internal-data-formats/level";
 import { SubPalette } from "../internal-data-formats/palette";
-import { blitPaletteImage, drawGrid, PaletteImage } from "./palette-image";
+import {
+	blitPaletteImage,
+	createPaletteImage,
+	drawGrid,
+	PaletteImage,
+} from "./palette-image";
 
 export function drawChar(
 	char: Char,
 	charPalette: SubPalette,
 	mask?: Char
 ): PaletteImage {
-	const image: PaletteImage = { width: 4, height: 8, data: [] };
+	const image = createPaletteImage({
+		width: 4,
+		height: 8,
+		data: [],
+	});
 
 	for (const [charY, line] of char.entries()) {
 		for (const [charX, colorIndex] of line.entries()) {
@@ -77,11 +86,11 @@ function drawCharblock(
 	mask?: Item<number, number>
 ): PaletteImage {
 	// The chars are column-order just like in the game.
-	const image: PaletteImage = {
+	const image = createPaletteImage({
 		width: item.length * 4,
 		height: item[0]!.length * 8,
 		data: [],
-	};
+	});
 
 	for (const [charBlockX, column] of item.entries()) {
 		for (const [charBlockY, char] of column.entries()) {
