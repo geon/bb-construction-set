@@ -33,3 +33,13 @@ export const palette = mapTuple(
 
 export type SubPalette = ReadonlyTuple<PaletteIndex, 4>;
 export type SubPaletteIndex = 0 | 1 | 2 | 3;
+
+export function getSubPaletteIndex(
+	paletteIndex: PaletteIndex,
+	subPalette: SubPalette
+): SubPaletteIndex | undefined {
+	const subPaletteIndex = subPalette.indexOf(paletteIndex) as
+		| SubPaletteIndex
+		| -1;
+	return subPaletteIndex === -1 ? undefined : subPaletteIndex;
+}
