@@ -1,5 +1,5 @@
 import { add, Coord2, origo } from "../../math/coord2";
-import { LayoutRect, leafs } from "../../math/rect";
+import { bottomRight, LayoutRect, leafs, Rect } from "../../math/rect";
 import { range, zipObject } from "../functions";
 import { PaletteIndex } from "../internal-data-formats/palette";
 import { Tuple } from "../tuple";
@@ -36,6 +36,16 @@ export function blitPaletteImage(
 			}
 		}
 	}
+}
+
+export function cropPaletteImage(
+	image: PaletteImage,
+	rect: Rect
+): PaletteImage {
+	const br = bottomRight(rect);
+	return image
+		.slice(rect.pos.y, br.y)
+		.map((row) => row.slice(rect.pos.x, br.x));
 }
 
 export function drawGrid(

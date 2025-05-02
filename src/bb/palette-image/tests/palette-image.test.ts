@@ -1,5 +1,9 @@
 import { expect, test } from "vitest";
-import { blitPaletteImage, PaletteImage } from "../palette-image";
+import {
+	blitPaletteImage,
+	cropPaletteImage,
+	PaletteImage,
+} from "../palette-image";
 
 test("blitPaletteImage", () => {
 	const image: PaletteImage = [
@@ -55,5 +59,24 @@ test("blitPaletteImage", () => {
 		[1, 2, 2, 0],
 		[0, 2, 3, 0],
 		[0, 0, 0, 3],
+	]);
+});
+
+test("cropPaletteImage", () => {
+	const image: PaletteImage = [
+		[1, 1, 0, 0],
+		[1, 2, 2, 0],
+		[0, 2, 3, 0],
+		[0, 0, 0, 3],
+	];
+
+	expect(
+		cropPaletteImage(image, {
+			pos: { x: 1, y: 0 },
+			size: { x: 2, y: 2 },
+		})
+	).toStrictEqual([
+		[1, 0],
+		[2, 2],
 	]);
 });
