@@ -2,7 +2,12 @@ import { zipObject } from "../functions";
 import { Char } from "../internal-data-formats/char";
 import { Item } from "../internal-data-formats/item";
 import { Level } from "../internal-data-formats/level";
-import { SubPalette } from "../internal-data-formats/palette";
+import {
+	getSubPaletteIndex,
+	PaletteIndex,
+	SubPalette,
+} from "../internal-data-formats/palette";
+import { mapTuple } from "../tuple";
 import {
 	blitPaletteImage,
 	createPaletteImage,
@@ -20,6 +25,31 @@ export function drawChar(
 			pixel.mask === 0b11 ? undefined : charPalette[pixel.color]
 		)
 	);
+}
+
+export function parseChar(
+	image: PaletteImage<4, 8>,
+	charPalette: SubPalette
+): { readonly char: Char; readonly color: PaletteIndex | undefined } {
+	let color: PaletteIndex | undefined;
+	return {
+		char: mapTuple(image, (row) =>
+			mapTuple(
+				row,
+				(paletteIndex) =>
+					getSubPaletteIndex(
+						// For transparent pixels, default to the background color.
+						paletteIndex ?? 0,
+						charPalette
+					) ??
+					// Hack: For colors outside the givien charPalette:
+					// * Set the first unknown color to return
+					// * Assume they are the char color
+					((color = color ?? paletteIndex), 3)
+			)
+		),
+		color,
+	};
 }
 
 export function getCharPalette(level: Level): SubPalette {
