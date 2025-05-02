@@ -15,8 +15,8 @@ export function drawChar(
 	mask?: Char
 ): PaletteImage {
 	const image = createPaletteImage({
-		width: 4,
-		height: 8,
+		x: 4,
+		y: 8,
 	});
 
 	for (const [charY, line] of char.entries()) {
@@ -86,8 +86,8 @@ function drawCharblock(
 ): PaletteImage {
 	// The chars are column-order just like in the game.
 	const image = createPaletteImage({
-		width: item.length * 4,
-		height: item[0]!.length * 8,
+		x: item.length * 4,
+		y: item[0]!.length * 8,
 	});
 
 	for (const [charBlockX, column] of item.entries()) {

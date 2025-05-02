@@ -10,11 +10,8 @@ export type PaletteImage = {
 	data: Array<PaletteIndex | undefined>;
 };
 
-export function createPaletteImage(image: {
-	width: number;
-	height: number;
-}): PaletteImage {
-	return { ...image, data: [] };
+export function createPaletteImage(size: Coord2): PaletteImage {
+	return { width: size.x, height: size.y, data: [] };
 }
 
 export function blitPaletteImage(
@@ -43,8 +40,8 @@ export function drawGrid(
 	const numRows = Math.ceil(images.length / numColumns);
 
 	const gridImage = createPaletteImage({
-		width: size.x * numColumns + gap.x * (numColumns - 1),
-		height: size.y * numRows + gap.y * (numRows - 1),
+		x: size.x * numColumns + gap.x * (numColumns - 1),
+		y: size.y * numRows + gap.y * (numRows - 1),
 	});
 
 	const stepSize = add(size, gap);
@@ -79,8 +76,8 @@ export function drawLayout(
 			return soFar;
 		},
 		createPaletteImage({
-			width: layout.size.x,
-			height: layout.size.y,
+			x: layout.size.x,
+			y: layout.size.y,
 		})
 	);
 }
