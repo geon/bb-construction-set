@@ -1,7 +1,7 @@
 import { ReadonlyTuple } from "../tuple";
 import { SubPaletteIndex } from "./palette";
 
-export type ColorPixelByte = ReadonlyTuple<SubPaletteIndex, 4>;
+export interface ColorPixelByte extends ReadonlyTuple<SubPaletteIndex, 4> {}
 
 export function parseColorPixelByte(byte: number): ColorPixelByte {
 	return [

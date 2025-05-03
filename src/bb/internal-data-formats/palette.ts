@@ -31,7 +31,7 @@ export const palette = mapTuple(
 	hexToRgb
 );
 
-export type SubPalette = ReadonlyTuple<PaletteIndex, 4>;
+export interface SubPalette extends ReadonlyTuple<PaletteIndex, 4> {}
 export type SubPaletteIndex = 0 | 1 | 2 | 3;
 
 export function getSubPaletteIndex(
