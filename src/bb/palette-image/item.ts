@@ -85,12 +85,10 @@ function layOutItemChars(): LayoutRect {
 		grid(
 			itemRects,
 			{
-				bubbleBlow: 4,
-				bubblePop: 4,
-				specialBubbles: 4,
-				extendBubbles: 4,
+				drunkAndInvaderWeapon: 5,
+				lightning: 1,
 				items: Math.ceil(Math.sqrt(itemRectGroups.items.length)),
-			}[groupName as string] ?? 1000,
+			}[groupName as string] ?? 4,
 			{ x: 4, y: 8 }
 		)
 	);
