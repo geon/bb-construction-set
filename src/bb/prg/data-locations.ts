@@ -180,7 +180,10 @@ function getItemsStartAddress(itemSegmentName: ItemDataSegmentName): number {
 		mainItemsStartAddress +
 		sum(
 			itemDataSegmentNames
-				.slice(2, itemDataSegmentNames.indexOf(itemSegmentName))
+				.slice(
+					itemDataSegmentNames.indexOf("baronVonBlubba"),
+					itemDataSegmentNames.indexOf(itemSegmentName)
+				)
 				.map((characterName) => itemSegmentLengths[characterName])
 		)
 	);
