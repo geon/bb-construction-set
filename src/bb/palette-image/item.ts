@@ -1,10 +1,8 @@
 import { Coord2, origo } from "../../math/coord2";
 import { LayoutRect, boundingBox, flexbox, grid } from "../../math/rect";
 import { mapRecord, range, zipObject, unzipObject } from "../functions";
-import { ItemDataSegmentName } from "../game-definitions/item-segment-name";
 import { itemGroupMeta } from "../prg/items";
-import { ItemGroups, ItemGroup } from "../internal-data-formats/item";
-import { assertTuple } from "../tuple";
+import { ItemGroups } from "../internal-data-formats/item";
 import { drawLayout, PaletteImage } from "./palette-image";
 import { drawChar } from "./char";
 
@@ -128,36 +126,8 @@ function layOutItemChars(): LayoutRect {
 }
 
 function getAllItemChars(itemGroups: ItemGroups): ReadonlyArray<PaletteImage> {
-	const sharedBubbleMask = assertTuple(
-		itemGroups.bubbleBlow.slice(8).map((x) => x.mask!),
-		4
-	);
-	const overriddenMasks: Partial<
-		Record<
-			ItemDataSegmentName,
-			ReadonlyArray<(typeof sharedBubbleMask)[number]>
-		>
-	> = {
-		specialBubbles: range(0, 3).flatMap(() => sharedBubbleMask),
-		extendBubbles: range(0, 5).flatMap(() => sharedBubbleMask),
-		stonerWeapon: [sharedBubbleMask[0], sharedBubbleMask[2]],
-	};
-
-	const maskedItemGroups = mapRecord(
-		itemGroups,
-		(itemGroup, groupName): ItemGroup<number, number> => {
-			const masks = overriddenMasks[groupName];
-			return masks
-				? zipObject({
-						item: itemGroup.map(({ item }) => item),
-						mask: masks,
-				  })
-				: itemGroup;
-		}
-	);
-
 	return Object.values(
-		mapRecord(maskedItemGroups, (maskedItems) => {
+		mapRecord(itemGroups, (maskedItems) => {
 			const { item: items, mask: itemMasks } = unzipObject(maskedItems);
 			const chars = items.flat().flat();
 			const masks = itemMasks?.flat().flat() ?? chars.map(() => undefined);
