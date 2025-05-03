@@ -7,6 +7,7 @@ import { drawLayout, PaletteImage } from "./palette-image";
 import { drawChar } from "./char";
 import { assertTuple } from "../tuple";
 import { ItemDataSegmentName } from "../game-definitions/item-segment-name";
+import { Char } from "../internal-data-formats/char";
 import { SubPalette } from "../internal-data-formats/palette";
 
 function layoutLargeLightning(index: number) {
@@ -126,7 +127,11 @@ function layOutItemChars(): LayoutRect {
 	);
 }
 
-function getAllItemChars(itemGroups: ItemGroups): ReadonlyArray<PaletteImage> {
+function getAllItemChars(itemGroups: ItemGroups): ReadonlyArray<{
+	readonly char: Char;
+	readonly palette: SubPalette;
+	readonly mask?: Char;
+}> {
 	const sharedBubbleMask = assertTuple(itemGroups.bubbleBlow.slice(12 + 8), 4);
 	const bubbleBasedMasks: Partial<
 		Record<ItemDataSegmentName, ReadonlyArray<Item<number, number>>>
@@ -160,15 +165,13 @@ function getAllItemChars(itemGroups: ItemGroups): ReadonlyArray<PaletteImage> {
 			];
 			return maskedChars.map((maskedChar) => ({ ...maskedChar, palette }));
 		})
-	)
-		.flat()
-		.map((maskedChar) =>
-			drawChar(maskedChar.char, maskedChar.palette, maskedChar.mask)
-		);
+	).flat();
 }
 
 export function drawItems(itemGroups: ItemGroups): PaletteImage {
-	const charImages = getAllItemChars(itemGroups);
+	const charImages = getAllItemChars(itemGroups).map((maskedChar) =>
+		drawChar(maskedChar.char, maskedChar.palette, maskedChar.mask)
+	);
 	const layout = layOutItemChars();
 	return drawLayout(layout, charImages);
 }
