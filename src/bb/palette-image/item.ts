@@ -7,6 +7,7 @@ import { drawLayout, PaletteImage } from "./palette-image";
 import { drawChar } from "./char";
 import { assertTuple } from "../tuple";
 import { ItemDataSegmentName } from "../game-definitions/item-segment-name";
+import { SubPalette } from "../internal-data-formats/palette";
 
 function layoutLargeLightning(index: number) {
 	// 4x4 grid, but 2 corners are missing 3 chars each.
@@ -151,17 +152,15 @@ function getAllItemChars(itemGroups: ItemGroups): ReadonlyArray<PaletteImage> {
 				  })
 				: chars.map((char) => ({ char, mask: undefined }));
 
+			const palette: SubPalette = [
+				0, //black
+				9, // Brown
+				1, // White
+				5,
+			];
+
 			return maskedChars.map((maskedChar) =>
-				drawChar(
-					maskedChar.char,
-					[
-						0, //black
-						9, // Brown
-						1, // White
-						5, // Green
-					],
-					maskedChar.mask
-				)
+				drawChar(maskedChar.char, palette, maskedChar.mask)
 			);
 		})
 	).flat();
