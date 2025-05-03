@@ -108,3 +108,18 @@ export function imageDataFromPaletteImage(image: PaletteImage): ImageData {
 
 	return imageData;
 }
+
+export function imageDataToBlob(image: ImageData): Promise<Blob> {
+	var canvas = document.createElement("canvas");
+	var ctx = canvas.getContext("2d");
+	if (!ctx) {
+		throw new Error("Missing canvas 2d context.");
+	}
+	canvas.width = image.width;
+	canvas.height = image.height;
+	ctx.putImageData(image, 0, 0);
+
+	return new Promise((resolve, reject) => {
+		canvas.toBlob((blob) => (blob ? resolve(blob) : reject()));
+	});
+}
