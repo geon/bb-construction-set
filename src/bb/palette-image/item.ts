@@ -2,9 +2,11 @@ import { Coord2, origo } from "../../math/coord2";
 import { LayoutRect, boundingBox, flexbox, grid } from "../../math/rect";
 import { mapRecord, range, zipObject } from "../functions";
 import { itemGroupMeta } from "../prg/items";
-import { ItemGroups } from "../internal-data-formats/item";
+import { Item, ItemGroups } from "../internal-data-formats/item";
 import { drawLayout, PaletteImage } from "./palette-image";
 import { drawChar } from "./char";
+import { assertTuple } from "../tuple";
+import { ItemDataSegmentName } from "../game-definitions/item-segment-name";
 
 function layoutLargeLightning(index: number) {
 	// 4x4 grid, but 2 corners are missing 3 chars each.
@@ -124,11 +126,25 @@ function layOutItemChars(): LayoutRect {
 }
 
 function getAllItemChars(itemGroups: ItemGroups): ReadonlyArray<PaletteImage> {
+	const sharedBubbleMask = assertTuple(itemGroups.bubbleBlow.slice(12 + 8), 4);
+	const bubbleBasedMasks: Partial<
+		Record<ItemDataSegmentName, ReadonlyArray<Item<number, number>>>
+	> = {
+		specialBubbles: range(0, 3).flatMap(() => sharedBubbleMask),
+		extendBubbles: range(0, 5).flatMap(() => sharedBubbleMask),
+		stonerWeapon: [sharedBubbleMask[0], sharedBubbleMask[2]],
+	};
+
 	return Object.values(
 		mapRecord(itemGroups, (items, groupName) => {
 			const chars = items.flat().flat();
 
-			const maskedChars = itemGroupMeta[groupName].hasMask
+			const maskedChars = bubbleBasedMasks[groupName]
+				? zipObject({
+						char: chars,
+						mask: bubbleBasedMasks[groupName].flat().flat(),
+				  })
+				: itemGroupMeta[groupName].hasMask
 				? zipObject({
 						char: chars.slice(0, chars.length / 2),
 						mask: chars.slice(chars.length / 2),
