@@ -158,12 +158,13 @@ function getAllItemChars(itemGroups: ItemGroups): ReadonlyArray<PaletteImage> {
 				1, // White
 				5,
 			];
-
-			return maskedChars.map((maskedChar) =>
-				drawChar(maskedChar.char, palette, maskedChar.mask)
-			);
+			return maskedChars.map((maskedChar) => ({ ...maskedChar, palette }));
 		})
-	).flat();
+	)
+		.flat()
+		.map((maskedChar) =>
+			drawChar(maskedChar.char, maskedChar.palette, maskedChar.mask)
+		);
 }
 
 export function drawItems(itemGroups: ItemGroups): PaletteImage {
