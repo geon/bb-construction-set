@@ -1,7 +1,6 @@
 export const itemDataSegmentNames = [
 	"bubbleBlow",
 	"bubblePop",
-	// "rest",
 	"baronVonBlubba",
 	"specialBubbles",
 	"lightning",
