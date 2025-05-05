@@ -1,6 +1,6 @@
 import { Coord2, origo } from "../../math/coord2";
 import { LayoutRect, boundingBox, flexbox, grid } from "../../math/rect";
-import { mapRecord, range, zipObject, unzipObject } from "../functions";
+import { mapRecord, range, zipObject } from "../functions";
 import { itemGroupMeta } from "../prg/items";
 import { ItemGroups } from "../internal-data-formats/item";
 import { drawLayout, PaletteImage } from "./palette-image";
@@ -125,14 +125,15 @@ function layOutItemChars(): LayoutRect {
 
 function getAllItemChars(itemGroups: ItemGroups): ReadonlyArray<PaletteImage> {
 	return Object.values(
-		mapRecord(itemGroups, (maskedItems) => {
-			const { item: items, mask: itemMasks } = unzipObject(maskedItems);
-			const chars = items.flat().flat();
-			const masks = itemMasks?.flat().flat() ?? chars.map(() => undefined);
-			const maskedChars = zipObject({
-				char: chars,
-				mask: masks,
-			});
+		mapRecord(itemGroups, (items, groupName) => {
+			const chars = items.flatMap((item) => item.item).flat();
+
+			const maskedChars = itemGroupMeta[groupName].hasMask
+				? zipObject({
+						char: chars.slice(0, chars.length / 2),
+						mask: chars.slice(chars.length / 2),
+				  })
+				: chars.map((char) => ({ char, mask: undefined }));
 
 			return maskedChars.map((maskedChar) =>
 				drawChar(

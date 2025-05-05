@@ -1,6 +1,6 @@
 import { Char } from "../internal-data-formats/char";
 import { parseColorPixelByte } from "../internal-data-formats/color-pixel-byte";
-import { mapRecord, strictChunk, zipObject } from "../functions";
+import { mapRecord, strictChunk } from "../functions";
 import { linesPerChar } from "./charset-char";
 import { ItemDataSegmentName } from "../game-definitions/item-segment-name";
 import { DataSegment } from "./io";
@@ -112,12 +112,7 @@ export function readItems(
 				itemGroupMeta[segmentName].width
 			);
 
-			return itemGroupMeta[segmentName].hasMask
-				? zipObject({
-						item: items.slice(0, items.length / 2),
-						mask: items.slice(items.length / 2),
-				  })
-				: items.map((item) => ({ item }));
+			return items.map((item) => ({ item }));
 		}
 	);
 }
