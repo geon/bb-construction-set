@@ -9,9 +9,7 @@ export type Item<Height extends number, Width extends number> =
 export type ItemGroup<
 	Width extends number,
 	Height extends number
-> = ReadonlyArray<{
-	readonly item: Item<Height, Width>;
-}>;
+> = ReadonlyArray<Item<Height, Width>>;
 
 export type ItemGroups = {
 	readonly [Key in ItemDataSegmentName]: ItemGroup<number, number>;

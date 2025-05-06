@@ -126,7 +126,7 @@ function layOutItemChars(): LayoutRect {
 function getAllItemChars(itemGroups: ItemGroups): ReadonlyArray<PaletteImage> {
 	return Object.values(
 		mapRecord(itemGroups, (items, groupName) => {
-			const chars = items.flatMap((item) => item.item).flat();
+			const chars = items.flat().flat();
 
 			const maskedChars = itemGroupMeta[groupName].hasMask
 				? zipObject({

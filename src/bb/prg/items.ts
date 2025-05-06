@@ -112,7 +112,7 @@ export function readItems(
 				itemGroupMeta[segmentName].width
 			);
 
-			return items.map((item) => ({ item }));
+			return items;
 		}
 	);
 }
