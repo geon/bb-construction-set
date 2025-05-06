@@ -143,19 +143,19 @@ function getAllItemChars(itemGroups: ItemGroups): ReadonlyArray<{
 
 	return Object.values(
 		mapRecord(itemGroups, (items, groupName) => {
-			const chars = items.flat().flat();
+			const mixedChars = items.flat().flat();
 
 			const maskedChars = bubbleBasedMasks[groupName]
 				? zipObject({
-						char: chars,
+						char: mixedChars,
 						mask: bubbleBasedMasks[groupName].flat().flat(),
 				  })
 				: itemGroupMeta[groupName].hasMask
 				? zipObject({
-						char: chars.slice(0, chars.length / 2),
-						mask: chars.slice(chars.length / 2),
+						char: mixedChars.slice(0, mixedChars.length / 2),
+						mask: mixedChars.slice(mixedChars.length / 2),
 				  })
-				: chars.map((char) => ({ char, mask: undefined }));
+				: mixedChars.map((char) => ({ char, mask: undefined }));
 
 			const palette: SubPalette = [
 				0, //black
