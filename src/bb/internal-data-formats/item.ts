@@ -11,7 +11,6 @@ export type ItemGroup<
 	Height extends number
 > = ReadonlyArray<{
 	readonly item: Item<Height, Width>;
-	readonly mask?: Item<Height, Width>;
 }>;
 
 export type ItemGroups = {
