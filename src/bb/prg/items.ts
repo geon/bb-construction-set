@@ -11,7 +11,7 @@ export const itemGroupMeta = {
 	bubbleBlow: {
 		width: 3,
 		height: 2,
-		count: 12,
+		count: 12 * 2,
 		hasMask: true,
 	},
 	bubblePop: {
@@ -23,7 +23,7 @@ export const itemGroupMeta = {
 	baronVonBlubba: {
 		width: 3,
 		height: 2,
-		count: 4,
+		count: 4 * 2,
 		hasMask: true,
 	},
 	specialBubbles: {
@@ -35,13 +35,13 @@ export const itemGroupMeta = {
 	lightning: {
 		width: 2,
 		height: 2,
-		count: 1,
+		count: 1 * 2,
 		hasMask: true,
 	},
 	fire: {
 		width: 3,
 		height: 2,
-		count: 4,
+		count: 4 * 2,
 		hasMask: true,
 	},
 	extendBubbles: {
@@ -59,13 +59,13 @@ export const itemGroupMeta = {
 	drunkAndInvaderWeapon: {
 		width: 2,
 		height: 2,
-		count: 5,
+		count: 5 * 2,
 		hasMask: true,
 	},
 	incendoWeapon: {
 		width: 2,
 		height: 2,
-		count: 4,
+		count: 4 * 2,
 		hasMask: true,
 	},
 	items: {
@@ -77,7 +77,7 @@ export const itemGroupMeta = {
 	largeLightning: {
 		width: 5,
 		height: 2,
-		count: 1,
+		count: 1 * 2,
 		hasMask: true,
 	},
 	bonusRoundCircles: {

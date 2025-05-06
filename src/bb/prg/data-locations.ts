@@ -170,7 +170,7 @@ export const monsterSpriteColorsSegmentLocation: SegmentLocation = {
 
 const itemSegmentLengths = mapRecord(
 	itemGroupMeta,
-	(x) => 8 * x.count * x.width * x.height * (x.hasMask ? 2 : 1)
+	(x) => 8 * x.count * x.width * x.height
 );
 
 const mainItemsStartAddress = 0x8f00;

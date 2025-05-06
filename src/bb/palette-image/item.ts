@@ -53,7 +53,7 @@ function layOutItemChars(): LayoutRect {
 	const itemRectGroups = mapRecord(
 		itemGroupMeta,
 		(group, groupName): ReadonlyArray<LayoutRect> =>
-			range(0, group.count).map(() => {
+			range(0, group.count / (group.hasMask ? 2 : 1)).map(() => {
 				if (groupName === "largeLightning") {
 					const layout = layoutLargeLightning(index);
 					index += layout.children.length;
