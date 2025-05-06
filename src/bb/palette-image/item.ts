@@ -127,11 +127,23 @@ function layOutItemChars(): LayoutRect {
 	);
 }
 
-function getAllItemChars(itemGroups: ItemGroups): ReadonlyArray<{
-	readonly char: Char;
-	readonly palette: SubPalette;
-	readonly mask?: Char;
-}> {
+function getAllItemChars(itemGroups: ItemGroups): ReadonlyArray<Char> {
+	return Object.values(
+		mapRecord(itemGroups, (items, groupName) => {
+			const mixedChars = items.flat().flat();
+
+			const chars = itemGroupMeta[groupName].hasMask
+				? mixedChars.slice(0, mixedChars.length / 2)
+				: mixedChars;
+
+			return chars;
+		})
+	).flat();
+}
+
+function getAllItemCharMasks(
+	itemGroups: ItemGroups
+): ReadonlyArray<Char | undefined> {
 	const sharedBubbleMask = assertTuple(itemGroups.bubbleBlow.slice(12 + 8), 4);
 	const bubbleBasedMasks: Partial<
 		Record<ItemDataSegmentName, ReadonlyArray<Item<number, number>>>
@@ -145,33 +157,42 @@ function getAllItemChars(itemGroups: ItemGroups): ReadonlyArray<{
 		mapRecord(itemGroups, (items, groupName) => {
 			const mixedChars = items.flat().flat();
 
-			const chars = itemGroupMeta[groupName].hasMask
-				? mixedChars.slice(0, mixedChars.length / 2)
-				: mixedChars;
-
 			const masks = itemGroupMeta[groupName].hasMask
 				? mixedChars.slice(mixedChars.length / 2)
 				: bubbleBasedMasks[groupName]?.flat().flat() ??
 				  mixedChars.map(() => undefined);
 
-			const maskedChars = zipObject({
-				char: chars,
-				mask: masks,
-			});
+			return masks;
+		})
+	).flat();
+}
 
+function getAllItemCharPalettes(
+	itemGroups: ItemGroups
+): ReadonlyArray<SubPalette> {
+	return Object.values(
+		mapRecord(itemGroups, (items, groupName) => {
 			const palette: SubPalette = [
 				0, //black
 				9, // Brown
 				1, // White
 				5,
 			];
-			return maskedChars.map((maskedChar) => ({ ...maskedChar, palette }));
+
+			const meta = itemGroupMeta[groupName];
+			const numChars =
+				(items.length * meta.width * meta.height) / (meta.hasMask ? 2 : 1);
+			return range(0, numChars).map(() => palette);
 		})
 	).flat();
 }
 
 export function drawItems(itemGroups: ItemGroups): PaletteImage {
-	const charImages = getAllItemChars(itemGroups).map((maskedChar) =>
+	const charImages = zipObject({
+		char: getAllItemChars(itemGroups),
+		mask: getAllItemCharMasks(itemGroups),
+		palette: getAllItemCharPalettes(itemGroups),
+	}).map((maskedChar) =>
 		drawChar(maskedChar.char, maskedChar.palette, maskedChar.mask)
 	);
 	const layout = layOutItemChars();
