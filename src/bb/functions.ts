@@ -1,4 +1,4 @@
-import { ReadonlyTuple, Tuple } from "./tuple";
+import { NOfTuple, ReadonlyTuple, Tuple } from "./tuple";
 
 export function padRight<T>(
 	array: readonly T[],
@@ -49,8 +49,13 @@ type ZipObjectReturnElement<
 };
 
 export function zipObject<
-	TInput extends Record<string, ReadonlyArray<unknown> | undefined>
->(arrays: TInput): ReadonlyArray<ZipObjectReturnElement<TInput>> {
+	TInput extends Record<string, ReadonlyTuple<unknown, number> | undefined>
+>(
+	arrays: TInput
+): ReadonlyTuple<
+	ZipObjectReturnElement<TInput>,
+	NOfTuple<Exclude<TInput[keyof TInput], undefined>>
+> {
 	const arraysEntries = Object.entries(arrays)
 		.map(([key, value]) => value && ([key, value] as const))
 		.filter(isDefined);
@@ -77,7 +82,10 @@ export function zipObject<
 			) as ZipObjectReturnElement<TInput>
 		);
 	}
-	return results;
+	return results as ReadonlyTuple<
+		ZipObjectReturnElement<TInput>,
+		NOfTuple<Exclude<TInput[keyof TInput], undefined>>
+	>;
 }
 
 export function unzipObject<TInput extends object>(

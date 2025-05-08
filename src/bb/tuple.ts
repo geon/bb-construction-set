@@ -36,10 +36,10 @@ export function assertTuple<
 		: ReadonlyTuple<TOfTuple<TTuple>, N>;
 }
 
-type TOfTuple<TTuple> = TTuple extends ReadonlyTuple<infer T, number>
+export type TOfTuple<TTuple> = TTuple extends ReadonlyTuple<infer T, number>
 	? T
 	: never;
-type NOfTuple<TTuple extends ReadonlyArray<unknown>> = TTuple["length"];
+export type NOfTuple<TTuple extends ReadonlyArray<unknown>> = TTuple["length"];
 
 // Just a typed wrapper.
 export function mapTuple<

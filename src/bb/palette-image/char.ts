@@ -19,9 +19,9 @@ export function drawChar(
 	char: Char,
 	charPalette: SubPalette,
 	mask?: Char
-): PaletteImage {
-	return zipObject({ color: char, mask }).map((row) =>
-		zipObject(row).map((pixel) =>
+): PaletteImage<4, 8> {
+	return mapTuple(zipObject({ color: char, mask }), (row) =>
+		mapTuple(zipObject(row), (pixel) =>
 			pixel.mask === 0b11 ? undefined : charPalette[pixel.color]
 		)
 	);
