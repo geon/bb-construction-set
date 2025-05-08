@@ -17,7 +17,7 @@ test("Sanity check: layOutItemChars, getAllItemChars, getAllItemCharMasks, getAl
 	const layout = layOutItemChars();
 	const chars = getAllItemChars(itemGroups);
 	const masks = getAllItemCharMasks(itemGroups);
-	const palettes = getAllItemCharPalettes(itemGroups);
+	const palettes = getAllItemCharPalettes();
 
 	expect(leafs(layout).length).toStrictEqual(chars.length);
 	expect(masks.length).toStrictEqual(chars.length);
