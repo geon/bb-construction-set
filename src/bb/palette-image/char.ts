@@ -1,3 +1,4 @@
+import { zipObject } from "../functions";
 import { Char } from "../internal-data-formats/char";
 import { Item } from "../internal-data-formats/item";
 import { Level } from "../internal-data-formats/level";
@@ -14,23 +15,11 @@ export function drawChar(
 	charPalette: SubPalette,
 	mask?: Char
 ): PaletteImage {
-	const image = createPaletteImage({
-		x: 4,
-		y: 8,
-	});
-
-	for (const [charY, line] of char.entries()) {
-		for (const [charX, colorIndex] of line.entries()) {
-			const masked = mask?.[charY]?.[charX];
-			if (masked !== undefined && !(masked === 0b11 || masked === 0b00)) {
-				throw new Error("Invalid mask pixel");
-			}
-			const paletteIndex = masked ? undefined : charPalette[colorIndex];
-			const pixelIndex = charY * 4 + charX;
-			image.data[pixelIndex] = paletteIndex;
-		}
-	}
-	return image;
+	return zipObject({ color: char, mask }).map((row) =>
+		zipObject(row).map((pixel) =>
+			pixel.mask === 0b11 ? undefined : charPalette[pixel.color]
+		)
+	);
 }
 
 export function getCharPalette(level: Level): SubPalette {

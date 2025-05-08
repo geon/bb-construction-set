@@ -1,17 +1,24 @@
 import { add, Coord2, origo } from "../../math/coord2";
 import { LayoutRect, leafs } from "../../math/rect";
-import { zipObject } from "../functions";
+import { range, zipObject } from "../functions";
 import { PaletteIndex } from "../internal-data-formats/palette";
+import { Tuple } from "../tuple";
 
-export type PaletteImage = {
-	/** Double width pixels. */
-	width: number;
-	height: number;
-	data: Array<PaletteIndex | undefined>;
-};
+/** Double width pixels. */
+export type PaletteImage<
+	Width extends number = number,
+	Height extends number = number
+> = Tuple<Tuple<PaletteIndex | undefined, Width>, Height>;
 
-export function createPaletteImage(size: Coord2): PaletteImage {
-	return { width: size.x, height: size.y, data: [] };
+export function createPaletteImage<
+	Height extends number = number,
+	Width extends number = number
+>(size: { x: Width; y: Height }): PaletteImage {
+	return range(0, size.y).map(() => range(0, size.x).map(() => undefined));
+}
+
+export function getPaletteImageSize(image: PaletteImage): Coord2 {
+	return { x: image[0]?.length ?? 0, y: image.length };
 }
 
 export function blitPaletteImage(
@@ -19,13 +26,13 @@ export function blitPaletteImage(
 	from: PaletteImage,
 	pos: Coord2
 ) {
-	for (let y = 0; y < from.height; ++y) {
-		for (let x = 0; x < from.width; ++x) {
-			const toPixelIndex = (y + pos.y) * to.width + (x + pos.x);
-			const fromPixelIndex = y * from.width + x;
-			const pixel = from.data[fromPixelIndex];
+	for (const row of zipObject({
+		to: to.slice(pos.y, pos.y + from.length),
+		from,
+	})) {
+		for (const [x, pixel] of row.from.entries()) {
 			if (pixel !== undefined) {
-				to.data[toPixelIndex] = pixel;
+				row.to[pos.x + x] = pixel;
 			}
 		}
 	}

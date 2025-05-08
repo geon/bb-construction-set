@@ -1,7 +1,10 @@
 import { Color } from "../../math/color";
 import { add, Coord2, origo } from "../../math/coord2";
 import { palette } from "../internal-data-formats/palette";
-import { PaletteImage } from "../palette-image/palette-image";
+import {
+	getPaletteImageSize,
+	PaletteImage,
+} from "../palette-image/palette-image";
 
 // Just like ctx.putImageData
 export function blitImageData(
@@ -89,11 +92,11 @@ export function plotPixel(
 }
 
 export function imageDataFromPaletteImage(image: PaletteImage): ImageData {
-	const imageData = new ImageData(image.width * 2, image.height);
-	for (let y = 0; y < image.height; ++y) {
-		for (let x = 0; x < image.width; ++x) {
-			const index = y * image.width + x;
-			const paletteIndex = image.data[index];
+	const size = getPaletteImageSize(image);
+	const imageData = new ImageData(size.x * 2, size.y);
+	for (const [y, row] of image.entries()) {
+		for (const [x, paletteIndex] of row.entries()) {
+			const index = y * size.x + x;
 
 			if (paletteIndex !== undefined) {
 				const color = palette[paletteIndex];

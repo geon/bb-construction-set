@@ -1,4 +1,4 @@
-import { spriteSize, spriteSizePixels } from "../../c64/consts";
+import { spriteSize } from "../../c64/consts";
 import { origo } from "../../math/coord2";
 import { LayoutRect, flexbox } from "../../math/rect";
 import { mapRecord, range, chunk } from "../functions";
@@ -89,15 +89,11 @@ export function drawSprite(
 	sprite: Sprite,
 	spritePalette: SubPalette
 ): PaletteImage {
-	return {
-		width: spriteSizePixels.x,
-		height: spriteSizePixels.y,
-		data: sprite
-			.flat()
-			.map((pixelValue) =>
-				pixelValue ? spritePalette[pixelValue] : undefined
-			),
-	};
+	return sprite.map((row) =>
+		row.map((pixelValue) =>
+			pixelValue ? spritePalette[pixelValue] : undefined
+		)
+	);
 }
 
 export function getSpritePalette(color: PaletteIndex): SubPalette {
