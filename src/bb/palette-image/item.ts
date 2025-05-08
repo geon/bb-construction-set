@@ -160,11 +160,9 @@ export function getAllItemCharMasks(
 	).flat();
 }
 
-export function getAllItemCharPalettes(
-	itemGroups: ItemGroups
-): ReadonlyArray<SubPalette> {
+export function getAllItemCharPalettes(): ReadonlyArray<SubPalette> {
 	return Object.values(
-		mapRecord(itemGroups, (items, groupName) => {
+		mapRecord(itemGroupMeta, (meta) => {
 			const palette: SubPalette = [
 				0, //black
 				9, // Brown
@@ -172,8 +170,7 @@ export function getAllItemCharPalettes(
 				5,
 			];
 
-			const meta = itemGroupMeta[groupName];
-			const numChars = items.length * meta.width * meta.height;
+			const numChars = meta.count * meta.width * meta.height;
 			return range(0, numChars).map(() => palette);
 		})
 	).flat();
@@ -183,7 +180,7 @@ export function drawItems(itemGroups: ItemGroups): PaletteImage {
 	const charImages = zipObject({
 		char: getAllItemChars(itemGroups),
 		mask: getAllItemCharMasks(itemGroups),
-		palette: getAllItemCharPalettes(itemGroups),
+		palette: getAllItemCharPalettes(),
 	}).map((maskedChar) =>
 		drawChar(maskedChar.char, maskedChar.palette, maskedChar.mask)
 	);
