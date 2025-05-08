@@ -1,6 +1,6 @@
 import { add, Coord2, origo } from "../../math/coord2";
 import { bottomRight, LayoutRect, leafs, Rect } from "../../math/rect";
-import { range, zipObject } from "../functions";
+import { range, strictChunk, zipObject } from "../functions";
 import { PaletteIndex } from "../internal-data-formats/palette";
 import { Tuple } from "../tuple";
 
@@ -102,4 +102,12 @@ export function drawLayout(
 		blitPaletteImage(soFar, current.image, current.rect.pos);
 		return soFar;
 	}, createPaletteImage(layout.size));
+}
+
+export function doubleImageWidth(image: PaletteImage): PaletteImage {
+	return image.map((row) => row.flatMap((x) => [x, x]));
+}
+
+export function halfImageWidth(image: PaletteImage): PaletteImage {
+	return image.map((row) => strictChunk(row, 2).map(([x, _x]) => x));
 }

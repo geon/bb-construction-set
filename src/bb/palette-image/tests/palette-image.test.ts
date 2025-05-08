@@ -2,6 +2,8 @@ import { expect, test } from "vitest";
 import {
 	blitPaletteImage,
 	cropPaletteImage,
+	doubleImageWidth,
+	halfImageWidth,
 	PaletteImage,
 } from "../palette-image";
 
@@ -86,4 +88,27 @@ test("cropPaletteImage", () => {
 			size: { x: 2, y: 2 },
 		})
 	).toThrow();
+});
+
+test("doubleImageWidth & halfImageWidth", () => {
+	const image: PaletteImage = [
+		[1, 1, 0, 0],
+		[1, 2, 2, 0],
+		[0, 2, 3, 0],
+		[0, 0, 0, 3],
+	];
+
+	expect(doubleImageWidth(image)).toStrictEqual([
+		[1, 1, 1, 1, 0, 0, 0, 0],
+		[1, 1, 2, 2, 2, 2, 0, 0],
+		[0, 0, 2, 2, 3, 3, 0, 0],
+		[0, 0, 0, 0, 0, 0, 3, 3],
+	]);
+
+	expect(halfImageWidth(image)).toStrictEqual([
+		[1, 0],
+		[1, 2],
+		[0, 3],
+		[0, 0],
+	]);
 });
