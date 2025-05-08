@@ -52,7 +52,7 @@ function layoutLargeLightning(index: number) {
 	};
 }
 
-function layOutItemChars(): LayoutRect {
+export function layOutItemChars(): LayoutRect {
 	let index = 0;
 	const itemRectGroups = mapRecord(
 		itemGroupMeta,
@@ -127,7 +127,7 @@ function layOutItemChars(): LayoutRect {
 	);
 }
 
-function getAllItemChars(itemGroups: ItemGroups): ReadonlyArray<Char> {
+export function getAllItemChars(itemGroups: ItemGroups): ReadonlyArray<Char> {
 	return Object.values(
 		mapRecord(itemGroups, (items, groupName) => {
 			const mixedChars = items.flat().flat();
@@ -141,7 +141,7 @@ function getAllItemChars(itemGroups: ItemGroups): ReadonlyArray<Char> {
 	).flat();
 }
 
-function getAllItemCharMasks(
+export function getAllItemCharMasks(
 	itemGroups: ItemGroups
 ): ReadonlyArray<Char | undefined> {
 	const sharedBubbleMask = assertTuple(itemGroups.bubbleBlow.slice(12 + 8), 4);
@@ -167,7 +167,7 @@ function getAllItemCharMasks(
 	).flat();
 }
 
-function getAllItemCharPalettes(
+export function getAllItemCharPalettes(
 	itemGroups: ItemGroups
 ): ReadonlyArray<SubPalette> {
 	return Object.values(
