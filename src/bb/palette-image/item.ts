@@ -1,6 +1,6 @@
 import { Coord2, origo } from "../../math/coord2";
 import { LayoutRect, boundingBox, flexbox, grid } from "../../math/rect";
-import { mapRecord, range, zipObject } from "../functions";
+import { mapRecord, padRight, range, zipObject } from "../functions";
 import { itemGroupMeta } from "../prg/items";
 import { Item, ItemGroups } from "../internal-data-formats/item";
 import { drawLayout, PaletteImage } from "./palette-image";
@@ -57,7 +57,7 @@ export function layOutItemChars(): LayoutRect {
 	const itemRectGroups = mapRecord(
 		itemGroupMeta,
 		(group, groupName): ReadonlyArray<LayoutRect> =>
-			range(0, group.count / (group.hasMask ? 2 : 1)).map(() => {
+			range(0, group.count).map(() => {
 				if (groupName === "largeLightning") {
 					const layout = layoutLargeLightning(index);
 					index += layout.children.length;
@@ -128,17 +128,7 @@ export function layOutItemChars(): LayoutRect {
 }
 
 export function getAllItemChars(itemGroups: ItemGroups): ReadonlyArray<Char> {
-	return Object.values(
-		mapRecord(itemGroups, (items, groupName) => {
-			const mixedChars = items.flat().flat();
-
-			const chars = itemGroupMeta[groupName].hasMask
-				? mixedChars.slice(0, mixedChars.length / 2)
-				: mixedChars;
-
-			return chars;
-		})
-	).flat();
+	return Object.values(mapRecord(itemGroups, (items) => items)).flat(3);
 }
 
 export function getAllItemCharMasks(
@@ -157,10 +147,13 @@ export function getAllItemCharMasks(
 		mapRecord(itemGroups, (items, groupName) => {
 			const mixedChars = items.flat().flat();
 
-			const masks = itemGroupMeta[groupName].hasMask
-				? mixedChars.slice(mixedChars.length / 2)
-				: bubbleBasedMasks[groupName]?.flat().flat() ??
-				  mixedChars.map(() => undefined);
+			const masks = padRight(
+				itemGroupMeta[groupName].hasMask
+					? mixedChars.slice(mixedChars.length / 2)
+					: bubbleBasedMasks[groupName]?.flat().flat() ?? [],
+				mixedChars.length,
+				undefined
+			);
 
 			return masks;
 		})
@@ -180,8 +173,7 @@ export function getAllItemCharPalettes(
 			];
 
 			const meta = itemGroupMeta[groupName];
-			const numChars =
-				(items.length * meta.width * meta.height) / (meta.hasMask ? 2 : 1);
+			const numChars = items.length * meta.width * meta.height;
 			return range(0, numChars).map(() => palette);
 		})
 	).flat();
