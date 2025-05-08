@@ -79,4 +79,11 @@ test("cropPaletteImage", () => {
 		[1, 0],
 		[2, 2],
 	]);
+
+	expect(() =>
+		cropPaletteImage(image, {
+			pos: { x: 3, y: 0 },
+			size: { x: 2, y: 2 },
+		})
+	).toThrow();
 });

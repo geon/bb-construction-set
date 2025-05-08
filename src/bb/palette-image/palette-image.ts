@@ -43,6 +43,17 @@ export function cropPaletteImage(
 	rect: Rect
 ): PaletteImage {
 	const br = bottomRight(rect);
+
+	const imageSize = getPaletteImageSize(image);
+	if (
+		rect.pos.x < 0 ||
+		rect.pos.y < 0 ||
+		br.x > imageSize.x ||
+		br.y > imageSize.y
+	) {
+		throw new Error("Crop rect outside image.");
+	}
+
 	return image
 		.slice(rect.pos.y, br.y)
 		.map((row) => row.slice(rect.pos.x, br.x));
