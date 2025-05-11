@@ -1,10 +1,11 @@
-import { Color } from "../../math/color";
+import { black, Color } from "../../math/color";
 import { add, Coord2, origo } from "../../math/coord2";
 import { palette } from "../internal-data-formats/palette";
 import {
 	getPaletteImageSize,
 	PaletteImage,
 } from "../palette-image/palette-image";
+import { ReadonlyTuple } from "../tuple";
 
 // Just like ctx.putImageData
 export function blitImageData(
@@ -93,19 +94,20 @@ export function plotPixel(
 
 export function imageDataFromPaletteImage(image: PaletteImage): ImageData {
 	const size = getPaletteImageSize(image);
-	const imageData = new ImageData(size.x, size.y);
-	for (const [y, row] of image.entries()) {
-		for (const [x, paletteIndex] of row.entries()) {
-			const index = y * size.x + x;
+	return new ImageData(
+		new Uint8ClampedArray(
+			image.flat().flatMap((paletteIndex): ReadonlyTuple<number, 4> => {
+				const [color, alpha] =
+					paletteIndex !== undefined
+						? [palette[paletteIndex], 255]
+						: [black, 0];
 
-			if (paletteIndex !== undefined) {
-				const color = palette[paletteIndex];
-				plotPixel(imageData, index, color);
-			}
-		}
-	}
-
-	return imageData;
+				return [color.r, color.g, color.b, alpha];
+			})
+		),
+		size.x,
+		size.y
+	);
 }
 
 export function imageDataToBlob(image: ImageData): Promise<Blob> {
