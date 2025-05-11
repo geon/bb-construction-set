@@ -11,6 +11,7 @@ import {
 	imageDataFromPaletteImage,
 	imageDataToBlob,
 } from "../../bb/image-data/image-data";
+import { doubleImageWidth } from "../../bb/palette-image/palette-image";
 
 export function Levels({
 	parsedPrg,
@@ -31,10 +32,12 @@ export function Levels({
 			<br />
 			<ImageDataCanvas
 				imageData={imageDataFromPaletteImage(
-					drawLevel(
-						parsedPrg.levels[4]!,
-						parsedPrg.sprites,
-						parsedPrg.shadowStyle
+					doubleImageWidth(
+						drawLevel(
+							parsedPrg.levels[4]!,
+							parsedPrg.sprites,
+							parsedPrg.shadowStyle
+						)
 					)
 				)}
 			/>
@@ -46,7 +49,9 @@ export function Levels({
 						fileName: (index + 1).toString().padStart(3, "0") + ".png",
 						blob: await imageDataToBlob(
 							imageDataFromPaletteImage(
-								drawLevel(level, parsedPrg.sprites, parsedPrg.shadowStyle)
+								doubleImageWidth(
+									drawLevel(level, parsedPrg.sprites, parsedPrg.shadowStyle)
+								)
 							)
 						),
 					})),

@@ -14,6 +14,7 @@ import { drawPlatformCharsToCanvas } from "../../bb/palette-image/char";
 import { ImageDataCanvas } from "../ImageDataCanvas";
 import { FileInput } from "../FileInput";
 import { imageDataFromPaletteImage } from "../../bb/image-data/image-data";
+import { doubleImageWidth } from "../../bb/palette-image/palette-image";
 
 export function LevelGraphics({
 	parsedPrg,
@@ -26,7 +27,7 @@ export function LevelGraphics({
 		<>
 			<ImageDataCanvas
 				imageData={imageDataFromPaletteImage(
-					drawPlatformCharsToCanvas(parsedPrg.levels)
+					doubleImageWidth(drawPlatformCharsToCanvas(parsedPrg.levels))
 				)}
 			/>
 			<br />

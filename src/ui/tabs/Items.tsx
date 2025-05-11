@@ -7,6 +7,7 @@ import {
 	imageDataToBlob,
 } from "../../bb/image-data/image-data";
 import { BlobDownloadButton } from "../BlobDownloadButton";
+import { doubleImageWidth } from "../../bb/palette-image/palette-image";
 
 export function Items({
 	parsedPrg,
@@ -17,7 +18,9 @@ export function Items({
 	return (
 		<>
 			<ImageDataCanvas
-				imageData={imageDataFromPaletteImage(drawItems(parsedPrg.items))}
+				imageData={imageDataFromPaletteImage(
+					doubleImageWidth(drawItems(parsedPrg.items))
+				)}
 			/>
 			<br />
 			<br />
@@ -25,7 +28,9 @@ export function Items({
 				getBlob={async () => ({
 					fileName: "items.png",
 					blob: await imageDataToBlob(
-						imageDataFromPaletteImage(drawItems(parsedPrg.items))
+						imageDataFromPaletteImage(
+							doubleImageWidth(drawItems(parsedPrg.items))
+						)
 					),
 				})}
 				label="Download image"

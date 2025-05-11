@@ -10,6 +10,7 @@ import { ImageDataCanvas } from "../ImageDataCanvas";
 import { drawSpritesToCanvas } from "../../bb/palette-image/sprite";
 import { FileInput } from "../FileInput";
 import { imageDataFromPaletteImage } from "../../bb/image-data/image-data";
+import { doubleImageWidth } from "../../bb/palette-image/palette-image";
 
 export function Sprites({
 	parsedPrg,
@@ -22,7 +23,7 @@ export function Sprites({
 		<>
 			<ImageDataCanvas
 				imageData={imageDataFromPaletteImage(
-					drawSpritesToCanvas(parsedPrg.sprites)
+					doubleImageWidth(drawSpritesToCanvas(parsedPrg.sprites))
 				)}
 			/>
 			<br />

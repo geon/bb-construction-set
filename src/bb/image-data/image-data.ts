@@ -93,15 +93,14 @@ export function plotPixel(
 
 export function imageDataFromPaletteImage(image: PaletteImage): ImageData {
 	const size = getPaletteImageSize(image);
-	const imageData = new ImageData(size.x * 2, size.y);
+	const imageData = new ImageData(size.x, size.y);
 	for (const [y, row] of image.entries()) {
 		for (const [x, paletteIndex] of row.entries()) {
 			const index = y * size.x + x;
 
 			if (paletteIndex !== undefined) {
 				const color = palette[paletteIndex];
-				plotPixel(imageData, index * 2, color);
-				plotPixel(imageData, index * 2 + 1, color);
+				plotPixel(imageData, index, color);
 			}
 		}
 	}
