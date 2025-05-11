@@ -2,6 +2,7 @@ import { expect, test } from "vitest";
 import {
 	chunk,
 	curry,
+	indexOfMinBy,
 	minBy,
 	padRight,
 	range,
@@ -43,6 +44,10 @@ test("range", () => {
 test("curry", () => {
 	const foo = (a: number, b: number, c: number) => [a, b, c];
 	expect(curry(foo)(1)(2, 3)).toStrictEqual(foo(1, 2, 3));
+});
+
+test("indexOfMinBy", () => {
+	expect(indexOfMinBy([5, 2, 5, 7, 3], (x) => x)).toStrictEqual(1);
 });
 
 test("minBy", () => {

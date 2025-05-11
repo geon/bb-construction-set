@@ -225,6 +225,23 @@ export async function mapAsync<TIn, TOut>(
 	return result;
 }
 
+export function indexOfMinBy<T>(
+	array: OneOrMore<T>,
+	accessor: (value: T) => number
+): number {
+	let min = Number.POSITIVE_INFINITY;
+	let minIndex = 0;
+
+	for (const [index, value] of array.map(accessor).entries()) {
+		if (value < min) {
+			min = value;
+			minIndex = index;
+		}
+	}
+
+	return minIndex;
+}
+
 export function minBy<T>(
 	array: OneOrMore<T>,
 	accessor: (value: T) => number
