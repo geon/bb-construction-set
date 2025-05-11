@@ -104,6 +104,13 @@ export function drawLayout(
 	}, createPaletteImage(layout.size));
 }
 
+export function parseLayout(
+	layout: LayoutRect,
+	image: PaletteImage
+): ReadonlyArray<PaletteImage> {
+	return leafs(layout).map((rect) => cropPaletteImage(image, rect));
+}
+
 export function doubleImageWidth(image: PaletteImage): PaletteImage {
 	return image.map((row) => row.flatMap((x) => [x, x]));
 }

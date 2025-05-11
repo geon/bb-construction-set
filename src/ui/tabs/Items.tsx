@@ -1,16 +1,23 @@
 import { ReactNode } from "react";
 import { ParsedPrg } from "../../bb/internal-data-formats/parsed-prg";
 import { ImageDataCanvas } from "../ImageDataCanvas";
-import { drawItems } from "../../bb/palette-image/item";
+import { drawItems, parseItems } from "../../bb/palette-image/item";
 import {
 	imageDataFromPaletteImage,
 	imageDataToBlob,
+	paletteImageFromImageData,
 } from "../../bb/image-data/image-data";
+import { attempt } from "../../bb/functions";
 import { BlobDownloadButton } from "../BlobDownloadButton";
-import { doubleImageWidth } from "../../bb/palette-image/palette-image";
+import { FileInput } from "../FileInput";
+import {
+	doubleImageWidth,
+	halfImageWidth,
+} from "../../bb/palette-image/palette-image";
 
 export function Items({
 	parsedPrg,
+	setParsedPrg,
 }: {
 	readonly parsedPrg: ParsedPrg;
 	readonly setParsedPrg: (parsedPrg: ParsedPrg) => void;
@@ -35,6 +42,53 @@ export function Items({
 				})}
 				label="Download image"
 			/>
+			<FileInput
+				accept={["bin"]}
+				onChange={async (file) => {
+					const imageData = imageDataFromImage(await imageFromFile(file));
+
+					const parsedItems = attempt(() => {
+						const parsed = parseItems(
+							halfImageWidth(paletteImageFromImageData(imageData))
+						);
+						return parsed;
+					});
+
+					if (parsedItems.type !== "ok") {
+						alert(`Could not read bmp: ${parsedItems.error ?? "No reason."}`);
+						return;
+					}
+
+					setParsedPrg({ ...parsedPrg, items: parsedItems.result });
+				}}
+			>
+				Choose file
+			</FileInput>
 		</>
 	);
+}
+
+async function imageFromFile(file: File | Blob | MediaSource) {
+	return await new Promise<HTMLImageElement>((resolve) => {
+		const img = new Image();
+		img.onload = () => resolve(img);
+		img.src = URL.createObjectURL(file);
+	});
+}
+
+function imageDataFromImage(img: HTMLImageElement) {
+	// Da'faque?
+	// https://stackoverflow.com/a/79528941/446536
+	const videoframe = new VideoFrame(img, {
+		timestamp: 0,
+	});
+	const buffer = new ArrayBuffer(videoframe.allocationSize());
+	videoframe.copyTo(buffer, { format: "RGBA" });
+	videoframe.close();
+	const imageData = new ImageData(
+		new Uint8ClampedArray(buffer),
+		img.width,
+		img.height
+	);
+	return imageData;
 }

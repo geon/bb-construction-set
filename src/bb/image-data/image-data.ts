@@ -1,5 +1,6 @@
-import { black, Color } from "../../math/color";
+import { black, Color, quantize } from "../../math/color";
 import { add, Coord2, origo } from "../../math/coord2";
+import { strictChunk } from "../functions";
 import { palette } from "../internal-data-formats/palette";
 import {
 	getPaletteImageSize,
@@ -107,6 +108,15 @@ export function imageDataFromPaletteImage(image: PaletteImage): ImageData {
 		),
 		size.x,
 		size.y
+	);
+}
+
+export function paletteImageFromImageData(imageData: ImageData): PaletteImage {
+	return strictChunk(
+		strictChunk([...imageData.data], 4).map(([r, g, b, a]) =>
+			a < 128 ? undefined : quantize({ r, g, b }, palette)
+		),
+		imageData.width
 	);
 }
 

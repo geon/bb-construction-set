@@ -1,14 +1,20 @@
 import { Coord2, origo } from "../../math/coord2";
 import { LayoutRect, boundingBox, flexbox, grid } from "../../math/rect";
-import { mapRecord, padRight, range, zipObject } from "../functions";
+import {
+	mapRecord,
+	padRight,
+	range,
+	strictChunk,
+	zipObject,
+} from "../functions";
 import { itemGroupMeta } from "../prg/items";
-import { Item, ItemGroups } from "../internal-data-formats/item";
-import { drawLayout, PaletteImage } from "./palette-image";
-import { drawChar } from "./char";
+import { Item, ItemGroup, ItemGroups } from "../internal-data-formats/item";
+import { drawLayout, PaletteImage, parseLayout } from "./palette-image";
+import { drawChar, parseChar } from "./char";
 import { assertTuple } from "../tuple";
 import { ItemDataSegmentName } from "../game-definitions/item-segment-name";
 import { Char } from "../internal-data-formats/char";
-import { SubPalette } from "../internal-data-formats/palette";
+import { PaletteIndex, SubPalette } from "../internal-data-formats/palette";
 
 function layoutLargeLightning(index: number) {
 	// 4x4 grid, but 2 corners are missing 3 chars each.
@@ -186,4 +192,31 @@ export function drawItems(itemGroups: ItemGroups): PaletteImage {
 	);
 	const layout = layOutItemChars();
 	return drawLayout(layout, charImages);
+}
+
+function reassembleAllItemChars(
+	chars: readonly { char: Char; color: PaletteIndex | undefined }[]
+): ItemGroups {
+	let groupStart = 0;
+	return mapRecord(itemGroupMeta, (meta): ItemGroup<number, number> => {
+		const groupEnd = groupStart + meta.count * meta.width * meta.height;
+		const groupChars = chars
+			.slice(groupStart, groupEnd)
+			.map(({ char }) => char);
+		groupStart = groupEnd;
+
+		return strictChunk(strictChunk(groupChars, meta.height), meta.width);
+	});
+}
+
+export function parseItems(image: PaletteImage): ItemGroups {
+	const layout = layOutItemChars();
+
+	const chars = zipObject({
+		image: parseLayout(layout, image),
+		palette: getAllItemCharPalettes(),
+	}).map(({ image, palette }) =>
+		parseChar(image as PaletteImage<4, 8>, palette)
+	);
+	return reassembleAllItemChars(chars);
 }
