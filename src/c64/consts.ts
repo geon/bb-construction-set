@@ -20,3 +20,22 @@ export const spriteSizePixels = {
 } as const;
 
 export const spriteSizeBytes = 63;
+
+export const colorNames = [
+	"black",
+	"white",
+	"red",
+	"cyan",
+	"purple",
+	"green",
+	"blue",
+	"yellow",
+	"orange",
+	"brown",
+	"pink",
+	"darkGrey",
+	"grey",
+	"lightGreen",
+	"lightBlue",
+	"lightGrey",
+];
