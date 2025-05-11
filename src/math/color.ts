@@ -29,3 +29,7 @@ export function mixColors(colors: readonly Color[]): Color {
 		b: sum.b / colors.length,
 	};
 }
+
+export function distance(a: Color, b: Color): number {
+	return Math.sqrt((a.r - b.r) ** 2 + (a.g - b.g) ** 2 + (a.b - b.b) ** 2);
+}
