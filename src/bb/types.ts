@@ -8,3 +8,5 @@ export interface ReadonlyUint8Array
 		...args: Parameters<Uint8Array["subarray"]>
 	) => ReadonlyUint8Array;
 }
+
+export type OneOrMore<T> = readonly [T, ...ReadonlyArray<T>];

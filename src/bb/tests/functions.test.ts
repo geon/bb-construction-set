@@ -2,6 +2,7 @@ import { expect, test } from "vitest";
 import {
 	chunk,
 	curry,
+	minBy,
 	padRight,
 	range,
 	unzipObject,
@@ -42,4 +43,12 @@ test("range", () => {
 test("curry", () => {
 	const foo = (a: number, b: number, c: number) => [a, b, c];
 	expect(curry(foo)(1)(2, 3)).toStrictEqual(foo(1, 2, 3));
+});
+
+test("minBy", () => {
+	const strings = ["geon", "neon", "leon", "peon", "hello", "world"] as const;
+	expect(minBy(strings, (x) => x.length)).toStrictEqual("geon");
+	expect(minBy(strings, (x) => -x.length)).toStrictEqual("hello");
+	expect(minBy(strings, (x) => x.charCodeAt(0))).toStrictEqual("geon");
+	expect(minBy(strings, (x) => -x.charCodeAt(0))).toStrictEqual("world");
 });
