@@ -1,4 +1,4 @@
-import { hexToRgb } from "../../math/color";
+import { Color, hexToRgb } from "../../math/color";
 import { mapTuple, ReadonlyTuple } from "../tuple";
 
 // type Palette = ReadonlyTuple<Color, 16>;
@@ -19,8 +19,9 @@ export type PaletteIndex =
 	| 13
 	| 14
 	| 15;
+export type Palette = ReadonlyTuple<Color, 16>;
 
-export const palette = mapTuple(
+export const palette: Palette = mapTuple(
 	// https://www.pepto.de/projects/colorvic/2001
 	// https://www.c64-wiki.com/wiki/Color
 	[
