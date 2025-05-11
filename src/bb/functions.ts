@@ -246,16 +246,5 @@ export function minBy<T>(
 	array: OneOrMore<T>,
 	accessor: (value: T) => number
 ): T {
-	let min = Number.POSITIVE_INFINITY;
-	let minElement = array[0];
-
-	for (const element of array) {
-		const value = accessor(element);
-		if (value < min) {
-			min = value;
-			minElement = element;
-		}
-	}
-
-	return minElement;
+	return array[indexOfMinBy(array, accessor) ?? 0]!;
 }
