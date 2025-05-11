@@ -116,3 +116,28 @@ export function readItems(
 		}
 	);
 }
+
+export function serializeItems(
+	itemGroups: ItemGroups
+): Record<ItemDataSegmentName, DataSegment> {
+	return mapRecord(
+		itemGroups,
+		(itemGroup): DataSegment => ({
+			mask: 0xff,
+			buffer: new Uint8Array(
+				itemGroup
+					.flat()
+					.flat()
+					.flatMap((char) =>
+						char.map(
+							(line) =>
+								(line[0] << 6) +
+								(line[1] << 4) +
+								(line[2] << 2) +
+								(line[3] << 0)
+						)
+					)
+			),
+		})
+	);
+}

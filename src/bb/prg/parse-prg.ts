@@ -17,7 +17,7 @@ import {
 } from "./data-locations";
 import { LevelDataSegmentName } from "../game-definitions/level-segment-name";
 import { spriteGroupNames } from "../game-definitions/sprite-segment-name";
-import { readItems } from "./items";
+import { readItems, serializeItems } from "./items";
 import {
 	readBubbleCurrentRectangles,
 	writeBubbleCurrentRectangles,
@@ -37,6 +37,7 @@ import { detectShadowStyle, shadowChars, ShadowStyle } from "./shadow-chars";
 import { ReadonlyUint8Array } from "../types";
 import { ParsedPrg } from "../internal-data-formats/parsed-prg";
 import { serializeColorPixelByte } from "../internal-data-formats/color-pixel-byte";
+import { itemDataSegmentNames } from "../game-definitions/item-segment-name";
 
 export function parsePrg(prg: ArrayBuffer): ParsedPrg {
 	const levels = readLevels(getDataSegments(prg, levelSegmentLocations));
@@ -131,7 +132,7 @@ export function patchPrg(
 	parsedPrg: ParsedPrg,
 	shadowStyle: ShadowStyle
 ): ArrayBuffer {
-	const { levels, sprites: spriteGroups } = parsedPrg;
+	const { levels, sprites: spriteGroups, items: itemGroups } = parsedPrg;
 
 	const patchedPrg = prg.slice();
 
@@ -181,6 +182,17 @@ export function patchPrg(
 		monsterSpriteColorsSegmentLocation
 	);
 	prgSpriteColorsSegment.buffer.set(spriteColorsSegment);
+
+	const prgItemSegments = getMutableDataSegments(
+		patchedPrg,
+		itemDataSegmentLocations
+	);
+	const newItemSegments = serializeItems(itemGroups);
+	for (const segmentName of itemDataSegmentNames) {
+		prgItemSegments[segmentName].buffer.set(
+			newItemSegments[segmentName].buffer
+		);
+	}
 
 	return patchedPrg;
 }
