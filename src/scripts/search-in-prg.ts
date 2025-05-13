@@ -6,7 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const prg = new Uint8Array(
-	readFileSync(__dirname + "/../bb/tests/decompressed-bb.prg").buffer
+	readFileSync(__dirname + "/../bb/prg/tests/decompressed-bb.prg").buffer
 );
 
 const needle: number[] = [];
