@@ -14,6 +14,11 @@ const prg = new Uint8Array(
 // const needle: number[] = [127, 233, 255, 247, 191, 63, 222, 253];
 // One of the animated fire chars.
 // const needle: number[] = [4, 25, 25, 100, 100, 105, 105, 20];
+// Explosion hexagon sprite.
+// const needle: number[] = [
+// 	0, 40, 0, 0, 170, 0, 2, 170, 128, 2, 170, 128, 10, 170, 160, 10, 170, 160, 10,
+// 	170, 160, 10, 170, 160, 2, 170, 128, 2, 170, 128, 0, 170, 0, 0, 40, 0,
+// ];
 
 const needle: number[] = [];
 
