@@ -9,6 +9,9 @@ const prg = new Uint8Array(
 	readFileSync(__dirname + "/../bb/prg/tests/decompressed-bb.prg").buffer
 );
 
+// Water char.
+// const needle: number[] = [127, 233, 255, 247, 191, 63, 222, 253];
+
 const needle: number[] = [];
 
 const found = prg.findIndex((_, prgIndex) =>
