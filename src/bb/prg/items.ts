@@ -13,90 +13,105 @@ export const itemGroupMeta = {
 		height: 2,
 		count: 12 * 2,
 		hasMask: true,
+		transposed: false,
 	},
 	bubblePop: {
 		width: 3,
 		height: 2,
 		count: 8,
 		hasMask: false,
+		transposed: false,
 	},
 	baronVonBlubba: {
 		width: 3,
 		height: 2,
 		count: 4 * 2,
 		hasMask: true,
+		transposed: false,
 	},
 	specialBubbles: {
 		width: 3,
 		height: 2,
 		count: 12,
 		hasMask: false,
+		transposed: false,
 	},
 	lightning: {
 		width: 2,
 		height: 2,
 		count: 1 * 2,
 		hasMask: true,
+		transposed: false,
 	},
 	fire: {
 		width: 3,
 		height: 2,
 		count: 4 * 2,
 		hasMask: true,
+		transposed: false,
 	},
 	extendBubbles: {
 		width: 3,
 		height: 2,
 		count: 20,
 		hasMask: false,
+		transposed: false,
 	},
 	stonerWeapon: {
 		width: 3,
 		height: 2,
 		count: 2,
 		hasMask: false,
+		transposed: false,
 	},
 	drunkAndInvaderWeapon: {
 		width: 2,
 		height: 2,
 		count: 5 * 2,
 		hasMask: true,
+		transposed: false,
 	},
 	incendoWeapon: {
 		width: 2,
 		height: 2,
 		count: 4 * 2,
 		hasMask: true,
+		transposed: false,
 	},
 	items: {
 		width: 2,
 		height: 2,
 		count: 58,
 		hasMask: false,
+		transposed: false,
 	},
 	largeLightning: {
 		width: 5,
 		height: 2,
 		count: 1 * 2,
 		hasMask: true,
+		transposed: false,
 	},
 	bonusRoundCircles: {
 		width: 2,
 		height: 2,
 		count: 3,
 		hasMask: false,
+		transposed: false,
 	},
 	flowingWater: {
 		width: 1,
 		height: 1,
 		count: 1,
 		hasMask: false,
+		transposed: false,
 	},
 	fireOnGround: {
 		width: 1,
 		height: 1,
 		count: 2,
 		hasMask: false,
+		transposed: false,
 	},
 } as const satisfies Record<
 	ItemDataSegmentName,
@@ -105,6 +120,7 @@ export const itemGroupMeta = {
 		readonly height: number;
 		readonly count: number;
 		readonly hasMask: boolean;
+		readonly transposed: boolean;
 	}
 >;
 

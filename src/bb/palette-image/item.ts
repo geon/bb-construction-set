@@ -70,24 +70,43 @@ export function layOutItemChars(): LayoutRect {
 					return layout;
 				}
 
-				return flexbox(
-					range(0, group.width).map(
-						(): LayoutRect =>
-							flexbox(
-								range(0, group.height).map(
-									(): LayoutRect => ({
-										pos: origo,
-										size: { x: 4, y: 8 },
-										index: index++,
-									})
-								),
-								"column",
-								0
-							)
-					),
-					"row",
-					0
-				);
+				return itemGroupMeta[groupName].transposed
+					? flexbox(
+							range(0, group.height).map(
+								(): LayoutRect =>
+									flexbox(
+										range(0, group.width).map(
+											(): LayoutRect => ({
+												pos: origo,
+												size: { x: 4, y: 8 },
+												index: index++,
+											})
+										),
+										"row",
+										0
+									)
+							),
+							"column",
+							0
+					  )
+					: flexbox(
+							range(0, group.width).map(
+								(): LayoutRect =>
+									flexbox(
+										range(0, group.height).map(
+											(): LayoutRect => ({
+												pos: origo,
+												size: { x: 4, y: 8 },
+												index: index++,
+											})
+										),
+										"column",
+										0
+									)
+							),
+							"row",
+							0
+					  );
 			})
 	);
 
