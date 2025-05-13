@@ -64,6 +64,7 @@ export function layOutSpriteGroups(): LayoutRect {
 					8
 				),
 				spriteGroupRects.bonusDiamond,
+				spriteGroupRects.hexagonExplosion,
 			],
 		].map((chunk) => flexbox(chunk, "column", 3 * 8)),
 		"row",
@@ -123,4 +124,5 @@ export const spriteGroupMultiWidths: Record<SpriteGroupName, number> = {
 	bonusCupCake: 2,
 	bonusMelon: 2,
 	bonusDiamond: 2,
+	hexagonExplosion: 1,
 };

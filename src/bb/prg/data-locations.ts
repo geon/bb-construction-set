@@ -114,6 +114,7 @@ export const spriteCounts: Record<SpriteGroupName, number> = {
 	bonusCupCake: 4,
 	bonusMelon: 4,
 	bonusDiamond: 2,
+	hexagonExplosion: 1,
 };
 
 const charactersStartAddress = 22528;
@@ -154,6 +155,7 @@ const spriteSegmentAddresses: Readonly<Record<SpriteGroupName, number>> = {
 	bonusCupCake: 0xa320,
 	bonusMelon: 0xa420,
 	bonusDiamond: 0xa520,
+	hexagonExplosion: 0xa854,
 };
 
 export const spriteDataSegmentLocations: Readonly<
