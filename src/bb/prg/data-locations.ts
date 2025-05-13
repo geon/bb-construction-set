@@ -248,4 +248,8 @@ export const itemDataSegmentLocations: Readonly<
 		startAddress: 0x40f8,
 		length: itemSegmentLengths.flowingWater,
 	},
+	fireOnGround: {
+		startAddress: 0x4200,
+		length: itemSegmentLengths.fireOnGround,
+	},
 };

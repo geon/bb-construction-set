@@ -92,6 +92,12 @@ export const itemGroupMeta = {
 		count: 1,
 		hasMask: false,
 	},
+	fireOnGround: {
+		width: 1,
+		height: 1,
+		count: 2,
+		hasMask: false,
+	},
 } as const satisfies Record<
 	ItemDataSegmentName,
 	{
