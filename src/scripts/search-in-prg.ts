@@ -23,6 +23,8 @@ const prg = new Uint8Array(
 // const needle: number[] = [170, 149, 145, 149, 149, 149, 148, 145];
 // Secret level urn.
 // const needle: number[] = [0, 5, 63, 15, 14, 14, 15, 63];
+// Sectret level pedestal right edge.
+// const needle: number[] = [64, 64, 64, 64, 64, 64, 64, 64];
 
 const needle: number[] = [];
 
