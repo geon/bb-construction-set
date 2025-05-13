@@ -126,6 +126,7 @@ export function layOutItemChars(): LayoutRect {
 				laidOutItemGroups.items,
 				laidOutItemGroups.bonusRoundCircles,
 				laidOutItemGroups.largeLightning,
+				laidOutItemGroups.flowingWater,
 			],
 		].map((chunk) => flexbox(chunk, "column", 3 * 8)),
 		"row",

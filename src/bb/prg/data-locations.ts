@@ -244,4 +244,8 @@ export const itemDataSegmentLocations: Readonly<
 		startAddress: getItemsStartAddress("bonusRoundCircles"),
 		length: itemSegmentLengths.bonusRoundCircles,
 	},
+	flowingWater: {
+		startAddress: 0x40f8,
+		length: itemSegmentLengths.flowingWater,
+	},
 };

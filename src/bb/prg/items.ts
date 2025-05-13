@@ -86,6 +86,12 @@ export const itemGroupMeta = {
 		count: 3,
 		hasMask: false,
 	},
+	flowingWater: {
+		width: 1,
+		height: 1,
+		count: 1,
+		hasMask: false,
+	},
 } as const satisfies Record<
 	ItemDataSegmentName,
 	{

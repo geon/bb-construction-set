@@ -12,5 +12,6 @@ export const itemDataSegmentNames = [
 	"items",
 	"largeLightning",
 	"bonusRoundCircles",
+	"flowingWater",
 ] as const;
 export type ItemDataSegmentName = (typeof itemDataSegmentNames)[number];
