@@ -12,6 +12,8 @@ const prg = new Uint8Array(
 
 // Water char.
 // const needle: number[] = [127, 233, 255, 247, 191, 63, 222, 253];
+// One of the animated fire chars.
+// const needle: number[] = [4, 25, 25, 100, 100, 105, 105, 20];
 
 const needle: number[] = [];
 
