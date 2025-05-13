@@ -1,6 +1,7 @@
 import { readFileSync } from "fs";
 import { fileURLToPath } from "url";
 import path from "path";
+import { getPrgStartAddress } from "../bb/prg/io";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,4 +21,10 @@ const found = prg.findIndex((_, prgIndex) =>
 	)
 );
 
-console.log("found:", "0x" + found.toString(16));
+if (found === -1) {
+	console.log("not found");
+} else {
+	const startAddress = getPrgStartAddress(prg.buffer);
+	const address = startAddress + found - 2;
+	console.log("found:", "0x" + address.toString(16));
+}
