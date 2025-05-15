@@ -225,7 +225,7 @@ export function drawCharGroups(charGroups: CharGroups): PaletteImage {
 	return drawLayout(layout, charImages);
 }
 
-function reassembleAllItemChars(
+function reassembleAllChars(
 	chars: readonly { char: Char; color: PaletteIndex | undefined }[]
 ): CharGroups {
 	let groupStart = 0;
@@ -249,5 +249,6 @@ export function parseItems(image: PaletteImage): CharGroups {
 	}).map(({ image, palette }) =>
 		parseChar(image as PaletteImage<4, 8>, palette)
 	);
-	return reassembleAllItemChars(chars);
+
+	return reassembleAllChars(chars);
 }
