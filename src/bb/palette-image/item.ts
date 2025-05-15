@@ -114,9 +114,9 @@ export function layOutChars(): LayoutRect {
 			})
 	);
 
-	const laidOutCharGroups = mapRecord(rectGroups, (itemRects, groupName) =>
+	const laidOutCharGroups = mapRecord(rectGroups, (rects, groupName) =>
 		grid(
-			itemRects,
+			rects,
 			{
 				drunkAndInvaderWeapon: 5,
 				lightning: 1,
