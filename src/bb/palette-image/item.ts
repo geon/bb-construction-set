@@ -181,8 +181,8 @@ export function getAllCharMasks(
 	};
 
 	return Object.values(
-		mapRecord(charGroups, (items, groupName) => {
-			const mixedChars = items.flat().flat();
+		mapRecord(charGroups, (charGroup, groupName) => {
+			const mixedChars = charGroup.flat().flat();
 
 			const masks = padRight(
 				charGroupMeta[groupName].hasMask
