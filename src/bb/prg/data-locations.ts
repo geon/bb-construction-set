@@ -176,7 +176,7 @@ const charSegmentLengths = mapRecord(
 );
 
 const mainBlockStartAddress = 0x8f00;
-function getCharSegmentStartAddress(itemSegmentName: CharSegmentName): number {
+function getCharSegmentStartAddress(name: CharSegmentName): number {
 	// Sum up the length of all segments before the wanted one.
 	return (
 		mainBlockStartAddress +
@@ -184,7 +184,7 @@ function getCharSegmentStartAddress(itemSegmentName: CharSegmentName): number {
 			charSegmentNames
 				.slice(
 					charSegmentNames.indexOf("baronVonBlubba"),
-					charSegmentNames.indexOf(itemSegmentName)
+					charSegmentNames.indexOf(name)
 				)
 				.map((characterName) => charSegmentLengths[characterName])
 		)
