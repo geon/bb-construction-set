@@ -64,7 +64,7 @@ function layoutLargeLightning(index: number) {
 
 export function layOutChars(): LayoutRect {
 	let index = 0;
-	const itemRectGroups = mapRecord(
+	const rectGroups = mapRecord(
 		charGroupMeta,
 		(group, groupName): ReadonlyArray<LayoutRect> =>
 			range(0, group.count).map(() => {
@@ -114,13 +114,13 @@ export function layOutChars(): LayoutRect {
 			})
 	);
 
-	const laidOutCharGroups = mapRecord(itemRectGroups, (itemRects, groupName) =>
+	const laidOutCharGroups = mapRecord(rectGroups, (itemRects, groupName) =>
 		grid(
 			itemRects,
 			{
 				drunkAndInvaderWeapon: 5,
 				lightning: 1,
-				items: Math.ceil(Math.sqrt(itemRectGroups.items.length)),
+				items: Math.ceil(Math.sqrt(rectGroups.items.length)),
 			}[groupName as string] ?? 4,
 			{ x: 4, y: 8 }
 		)
