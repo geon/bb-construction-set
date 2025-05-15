@@ -1,7 +1,10 @@
 import { ReactNode } from "react";
 import { ParsedPrg } from "../../bb/internal-data-formats/parsed-prg";
 import { ImageDataCanvas } from "../ImageDataCanvas";
-import { drawCharGroups, parseCharGroups } from "../../bb/palette-image/item";
+import {
+	drawCharGroups,
+	parseCharGroups,
+} from "../../bb/palette-image/char-groups";
 import {
 	imageDataFromPaletteImage,
 	imageDataToBlob,

@@ -4,7 +4,7 @@ import {
 	getAllCharPalettes,
 	getAllChars,
 	layOutChars,
-} from "../item";
+} from "../char-groups";
 import { readFileSync } from "fs";
 import { parsePrg } from "../../prg/parse-prg";
 import { leafs } from "../../../math/rect";
