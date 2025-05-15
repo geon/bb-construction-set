@@ -175,11 +175,11 @@ const charSegmentLengths = mapRecord(
 	(x) => 8 * x.count * x.width * x.height
 );
 
-const mainItemsStartAddress = 0x8f00;
+const mainBlockStartAddress = 0x8f00;
 function getItemsStartAddress(itemSegmentName: CharSegmentName): number {
 	// Sum up the length of all segments before the wanted one.
 	return (
-		mainItemsStartAddress +
+		mainBlockStartAddress +
 		sum(
 			charSegmentNames
 				.slice(
