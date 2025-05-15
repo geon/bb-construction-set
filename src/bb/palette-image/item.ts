@@ -165,7 +165,7 @@ export function layOutChars(): LayoutRect {
 }
 
 export function getAllChars(charGroups: CharGroups): ReadonlyArray<Char> {
-	return Object.values(mapRecord(charGroups, (items) => items)).flat(3);
+	return Object.values(charGroups).flat(3);
 }
 
 export function getAllCharMasks(
