@@ -50,11 +50,11 @@ export function Chars({
 				onChange={async (file) => {
 					const imageData = imageDataFromImage(await imageFromFile(file));
 
-					const parsedItems = attempt(() => {
-						return parseCharGroups(
+					const parsedItems = attempt(() =>
+						parseCharGroups(
 							halfImageWidth(paletteImageFromImageData(imageData))
-						);
-					});
+						)
+					);
 
 					if (parsedItems.type !== "ok") {
 						alert(`Could not read bmp: ${parsedItems.error ?? "No reason."}`);
