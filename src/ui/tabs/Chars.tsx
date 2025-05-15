@@ -58,7 +58,7 @@ export function Chars({
 
 					if (parsedCharGroups.type !== "ok") {
 						alert(
-							`Could not read bmp: ${parsedCharGroups.error ?? "No reason."}`
+							`Could not read image: ${parsedCharGroups.error ?? "No reason."}`
 						);
 						return;
 					}
