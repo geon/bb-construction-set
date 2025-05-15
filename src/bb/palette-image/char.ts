@@ -1,6 +1,6 @@
 import { zipObject } from "../functions";
 import { Char } from "../internal-data-formats/char";
-import { Item } from "../internal-data-formats/item";
+import { CharBlock } from "../internal-data-formats/char-group";
 import { Level } from "../internal-data-formats/level";
 import {
 	getSubPaletteIndex,
@@ -99,9 +99,9 @@ function drawLevelPlatformChars(level: Level): PaletteImage {
 }
 
 function drawCharblock(
-	item: Item<number, number>,
+	item: CharBlock<number, number>,
 	charPalette: SubPalette,
-	mask?: Item<number, number>
+	mask?: CharBlock<number, number>
 ): PaletteImage {
 	// The chars are column-order just like in the game.
 	const image = createPaletteImage({

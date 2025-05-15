@@ -8,7 +8,11 @@ import {
 	zipObject,
 } from "../functions";
 import { charGroupMeta } from "../prg/items";
-import { Item, CharGroup, CharGroups } from "../internal-data-formats/item";
+import {
+	CharBlock,
+	CharGroup,
+	CharGroups,
+} from "../internal-data-formats/char-group";
 import { drawLayout, PaletteImage, parseLayout } from "./palette-image";
 import { drawChar, parseChar } from "./char";
 import { assertTuple } from "../tuple";
@@ -169,7 +173,7 @@ export function getAllCharMasks(
 ): ReadonlyArray<Char | undefined> {
 	const sharedBubbleMask = assertTuple(charGroups.bubbleBlow.slice(12 + 8), 4);
 	const bubbleBasedMasks: Partial<
-		Record<CharSegmentName, ReadonlyArray<Item<number, number>>>
+		Record<CharSegmentName, ReadonlyArray<CharBlock<number, number>>>
 	> = {
 		specialBubbles: range(0, 3).flatMap(() => sharedBubbleMask),
 		extendBubbles: range(0, 5).flatMap(() => sharedBubbleMask),

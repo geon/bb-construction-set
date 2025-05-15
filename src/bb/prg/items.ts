@@ -5,7 +5,7 @@ import { linesPerChar } from "./charset-char";
 import { CharSegmentName } from "../game-definitions/char-segment-name";
 import { DataSegment } from "./io";
 import { mapTuple } from "../tuple";
-import { CharGroups, CharGroup } from "../internal-data-formats/item";
+import { CharGroups, CharGroup } from "../internal-data-formats/char-group";
 
 export const charGroupMeta = {
 	bubbleBlow: {
