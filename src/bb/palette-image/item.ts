@@ -209,7 +209,7 @@ export function getAllItemCharPalettes(): ReadonlyArray<SubPalette> {
 	).flat();
 }
 
-export function drawItems(charGroups: CharGroups): PaletteImage {
+export function drawCharGroups(charGroups: CharGroups): PaletteImage {
 	const charImages = zipObject({
 		char: getAllItemChars(charGroups),
 		mask: getAllItemCharMasks(charGroups),
