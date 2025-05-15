@@ -45,13 +45,13 @@ export function parsePrg(prg: ArrayBuffer): ParsedPrg {
 		getDataSegments(prg, spriteDataSegmentLocations),
 		getDataSegment(prg, monsterSpriteColorsSegmentLocation)
 	);
-	const items = parseCharGroups(getDataSegments(prg, charSegmentLocations));
+	const chars = parseCharGroups(getDataSegments(prg, charSegmentLocations));
 
 	const shadowStyle = detectShadowStyle(
 		getDataSegments(prg, levelSegmentLocations).shadowChars
 	);
 
-	return { levels, sprites, chars: items, shadowStyle };
+	return { levels, sprites, chars, shadowStyle };
 }
 
 function readLevels(
