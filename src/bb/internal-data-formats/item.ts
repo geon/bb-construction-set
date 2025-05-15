@@ -1,4 +1,4 @@
-import { ItemDataSegmentName } from "../game-definitions/item-segment-name";
+import { CharSegmentName } from "../game-definitions/char-segment-name";
 import { Char } from "./char";
 import { ReadonlyTuple } from "../tuple";
 
@@ -12,5 +12,5 @@ export type CharGroup<
 > = ReadonlyArray<Item<Height, Width>>;
 
 export type CharGroups = {
-	readonly [Key in ItemDataSegmentName]: CharGroup<number, number>;
+	readonly [Key in CharSegmentName]: CharGroup<number, number>;
 };

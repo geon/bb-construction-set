@@ -37,7 +37,7 @@ import { detectShadowStyle, shadowChars, ShadowStyle } from "./shadow-chars";
 import { ReadonlyUint8Array } from "../types";
 import { ParsedPrg } from "../internal-data-formats/parsed-prg";
 import { serializeColorPixelByte } from "../internal-data-formats/color-pixel-byte";
-import { itemDataSegmentNames } from "../game-definitions/item-segment-name";
+import { charSegmentNames } from "../game-definitions/char-segment-name";
 
 export function parsePrg(prg: ArrayBuffer): ParsedPrg {
 	const levels = readLevels(getDataSegments(prg, levelSegmentLocations));
@@ -188,7 +188,7 @@ export function patchPrg(
 		itemDataSegmentLocations
 	);
 	const newItemSegments = serializeItems(charGroups);
-	for (const segmentName of itemDataSegmentNames) {
+	for (const segmentName of charSegmentNames) {
 		prgItemSegments[segmentName].buffer.set(
 			newItemSegments[segmentName].buffer
 		);

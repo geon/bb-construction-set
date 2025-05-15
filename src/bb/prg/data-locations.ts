@@ -3,9 +3,9 @@ import {
 	characterNames,
 } from "../game-definitions/character-name";
 import {
-	ItemDataSegmentName,
-	itemDataSegmentNames,
-} from "../game-definitions/item-segment-name";
+	CharSegmentName,
+	charSegmentNames,
+} from "../game-definitions/char-segment-name";
 import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
 import { LevelDataSegmentName } from "../game-definitions/level-segment-name";
 import { mapRecord, objectFromEntries, sum } from "../functions";
@@ -176,22 +176,22 @@ const itemSegmentLengths = mapRecord(
 );
 
 const mainItemsStartAddress = 0x8f00;
-function getItemsStartAddress(itemSegmentName: ItemDataSegmentName): number {
+function getItemsStartAddress(itemSegmentName: CharSegmentName): number {
 	// Sum up the length of all segments before the wanted one.
 	return (
 		mainItemsStartAddress +
 		sum(
-			itemDataSegmentNames
+			charSegmentNames
 				.slice(
-					itemDataSegmentNames.indexOf("baronVonBlubba"),
-					itemDataSegmentNames.indexOf(itemSegmentName)
+					charSegmentNames.indexOf("baronVonBlubba"),
+					charSegmentNames.indexOf(itemSegmentName)
 				)
 				.map((characterName) => itemSegmentLengths[characterName])
 		)
 	);
 }
 export const itemDataSegmentLocations: Readonly<
-	Record<ItemDataSegmentName, SegmentLocation>
+	Record<CharSegmentName, SegmentLocation>
 > = {
 	bubbleBlow: {
 		startAddress: 0x8000,

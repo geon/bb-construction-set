@@ -2,7 +2,7 @@ import { Char } from "../internal-data-formats/char";
 import { parseColorPixelByte } from "../internal-data-formats/color-pixel-byte";
 import { mapRecord, strictChunk } from "../functions";
 import { linesPerChar } from "./charset-char";
-import { ItemDataSegmentName } from "../game-definitions/item-segment-name";
+import { CharSegmentName } from "../game-definitions/char-segment-name";
 import { DataSegment } from "./io";
 import { mapTuple } from "../tuple";
 import { CharGroups, CharGroup } from "../internal-data-formats/item";
@@ -156,7 +156,7 @@ export const charGroupMeta = {
 		transposed: false,
 	},
 } as const satisfies Record<
-	ItemDataSegmentName,
+	CharSegmentName,
 	{
 		readonly width: number;
 		readonly height: number;
@@ -167,7 +167,7 @@ export const charGroupMeta = {
 >;
 
 export function readItems(
-	dataSegments: Record<ItemDataSegmentName, DataSegment>
+	dataSegments: Record<CharSegmentName, DataSegment>
 ): CharGroups {
 	return mapRecord(
 		dataSegments,
@@ -189,7 +189,7 @@ export function readItems(
 
 export function serializeItems(
 	charGroups: CharGroups
-): Record<ItemDataSegmentName, DataSegment> {
+): Record<CharSegmentName, DataSegment> {
 	return mapRecord(
 		charGroups,
 		(charGroup): DataSegment => ({

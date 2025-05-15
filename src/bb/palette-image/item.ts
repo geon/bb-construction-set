@@ -12,7 +12,7 @@ import { Item, CharGroup, CharGroups } from "../internal-data-formats/item";
 import { drawLayout, PaletteImage, parseLayout } from "./palette-image";
 import { drawChar, parseChar } from "./char";
 import { assertTuple } from "../tuple";
-import { ItemDataSegmentName } from "../game-definitions/item-segment-name";
+import { CharSegmentName } from "../game-definitions/char-segment-name";
 import { Char } from "../internal-data-formats/char";
 import { PaletteIndex, SubPalette } from "../internal-data-formats/palette";
 
@@ -169,7 +169,7 @@ export function getAllCharMasks(
 ): ReadonlyArray<Char | undefined> {
 	const sharedBubbleMask = assertTuple(charGroups.bubbleBlow.slice(12 + 8), 4);
 	const bubbleBasedMasks: Partial<
-		Record<ItemDataSegmentName, ReadonlyArray<Item<number, number>>>
+		Record<CharSegmentName, ReadonlyArray<Item<number, number>>>
 	> = {
 		specialBubbles: range(0, 3).flatMap(() => sharedBubbleMask),
 		extendBubbles: range(0, 5).flatMap(() => sharedBubbleMask),

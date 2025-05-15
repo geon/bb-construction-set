@@ -1,4 +1,4 @@
-export const itemDataSegmentNames = [
+export const charSegmentNames = [
 	"bubbleBlow",
 	"bubblePop",
 	"baronVonBlubba",
@@ -21,4 +21,4 @@ export const itemDataSegmentNames = [
 	"secretLevelPedestalDoor",
 	"secretLevelBasementDoor",
 ] as const;
-export type ItemDataSegmentName = (typeof itemDataSegmentNames)[number];
+export type CharSegmentName = (typeof charSegmentNames)[number];
