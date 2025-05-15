@@ -9,7 +9,7 @@ import { readFileSync } from "fs";
 import { parsePrg } from "../../prg/parse-prg";
 import { leafs } from "../../../math/rect";
 
-test("Sanity check: layOutItemChars, getAllItemChars, getAllItemCharMasks, getAllItemCharPalettes", () => {
+test("Sanity check: layOutChars, getAllChars, getAllCharMasks, getAllCharPalettes", () => {
 	const charGroups = parsePrg(
 		readFileSync(__dirname + "/../../prg/tests/decompressed-bb.prg").buffer
 	).chars;
