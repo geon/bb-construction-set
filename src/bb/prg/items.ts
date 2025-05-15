@@ -5,9 +5,9 @@ import { linesPerChar } from "./charset-char";
 import { ItemDataSegmentName } from "../game-definitions/item-segment-name";
 import { DataSegment } from "./io";
 import { mapTuple } from "../tuple";
-import { ItemGroups, ItemGroup } from "../internal-data-formats/item";
+import { CharGroups, CharGroup } from "../internal-data-formats/item";
 
-export const itemGroupMeta = {
+export const charGroupMeta = {
 	bubbleBlow: {
 		width: 3,
 		height: 2,
@@ -168,18 +168,18 @@ export const itemGroupMeta = {
 
 export function readItems(
 	dataSegments: Record<ItemDataSegmentName, DataSegment>
-): ItemGroups {
+): CharGroups {
 	return mapRecord(
 		dataSegments,
-		(dataSegment, segmentName): ItemGroup<number, number> => {
+		(dataSegment, segmentName): CharGroup<number, number> => {
 			const items = strictChunk(
 				strictChunk(
 					strictChunk([...dataSegment.buffer], linesPerChar).map(
 						(char): Char => mapTuple(char, parseColorPixelByte)
 					),
-					itemGroupMeta[segmentName].height
+					charGroupMeta[segmentName].height
 				),
-				itemGroupMeta[segmentName].width
+				charGroupMeta[segmentName].width
 			);
 
 			return items;
@@ -188,14 +188,14 @@ export function readItems(
 }
 
 export function serializeItems(
-	itemGroups: ItemGroups
+	charGroups: CharGroups
 ): Record<ItemDataSegmentName, DataSegment> {
 	return mapRecord(
-		itemGroups,
-		(itemGroup): DataSegment => ({
+		charGroups,
+		(charGroup): DataSegment => ({
 			mask: 0xff,
 			buffer: new Uint8Array(
-				itemGroup
+				charGroup
 					.flat()
 					.flat()
 					.flatMap((char) =>

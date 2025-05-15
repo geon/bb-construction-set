@@ -10,13 +10,13 @@ import { parsePrg } from "../../prg/parse-prg";
 import { leafs } from "../../../math/rect";
 
 test("Sanity check: layOutItemChars, getAllItemChars, getAllItemCharMasks, getAllItemCharPalettes", () => {
-	const itemGroups = parsePrg(
+	const charGroups = parsePrg(
 		readFileSync(__dirname + "/../../prg/tests/decompressed-bb.prg").buffer
 	).items;
 
 	const layout = layOutItemChars();
-	const chars = getAllItemChars(itemGroups);
-	const masks = getAllItemCharMasks(itemGroups);
+	const chars = getAllItemChars(charGroups);
+	const masks = getAllItemCharMasks(charGroups);
 	const palettes = getAllItemCharPalettes();
 
 	expect(leafs(layout).length).toStrictEqual(chars.length);

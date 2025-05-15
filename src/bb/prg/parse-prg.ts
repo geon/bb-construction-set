@@ -132,7 +132,7 @@ export function patchPrg(
 	parsedPrg: ParsedPrg,
 	shadowStyle: ShadowStyle
 ): ArrayBuffer {
-	const { levels, sprites: spriteGroups, items: itemGroups } = parsedPrg;
+	const { levels, sprites: spriteGroups, items: charGroups } = parsedPrg;
 
 	const patchedPrg = prg.slice();
 
@@ -187,7 +187,7 @@ export function patchPrg(
 		patchedPrg,
 		itemDataSegmentLocations
 	);
-	const newItemSegments = serializeItems(itemGroups);
+	const newItemSegments = serializeItems(charGroups);
 	for (const segmentName of itemDataSegmentNames) {
 		prgItemSegments[segmentName].buffer.set(
 			newItemSegments[segmentName].buffer

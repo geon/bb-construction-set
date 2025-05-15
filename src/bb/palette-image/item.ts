@@ -7,8 +7,8 @@ import {
 	strictChunk,
 	zipObject,
 } from "../functions";
-import { itemGroupMeta } from "../prg/items";
-import { Item, ItemGroup, ItemGroups } from "../internal-data-formats/item";
+import { charGroupMeta } from "../prg/items";
+import { Item, CharGroup, CharGroups } from "../internal-data-formats/item";
 import { drawLayout, PaletteImage, parseLayout } from "./palette-image";
 import { drawChar, parseChar } from "./char";
 import { assertTuple } from "../tuple";
@@ -35,7 +35,7 @@ function layoutLargeLightning(index: number) {
 		{ x: 1, y: 3 },
 	];
 
-	const { width, height } = itemGroupMeta.largeLightning;
+	const { width, height } = charGroupMeta.largeLightning;
 	if (positions.length !== width * height) {
 		throw new Error(
 			`Bad char count for largeLightning. Was ${positions.length}, should be ${
@@ -61,7 +61,7 @@ function layoutLargeLightning(index: number) {
 export function layOutItemChars(): LayoutRect {
 	let index = 0;
 	const itemRectGroups = mapRecord(
-		itemGroupMeta,
+		charGroupMeta,
 		(group, groupName): ReadonlyArray<LayoutRect> =>
 			range(0, group.count).map(() => {
 				if (groupName === "largeLightning") {
@@ -70,7 +70,7 @@ export function layOutItemChars(): LayoutRect {
 					return layout;
 				}
 
-				return itemGroupMeta[groupName].transposed
+				return charGroupMeta[groupName].transposed
 					? flexbox(
 							range(0, group.height).map(
 								(): LayoutRect =>
@@ -110,7 +110,7 @@ export function layOutItemChars(): LayoutRect {
 			})
 	);
 
-	const laidOutItemGroups = mapRecord(itemRectGroups, (itemRects, groupName) =>
+	const laidOutCharGroups = mapRecord(itemRectGroups, (itemRects, groupName) =>
 		grid(
 			itemRects,
 			{
@@ -125,34 +125,34 @@ export function layOutItemChars(): LayoutRect {
 	return flexbox(
 		[
 			[
-				laidOutItemGroups.bubbleBlow,
-				laidOutItemGroups.specialBubbles,
-				laidOutItemGroups.extendBubbles,
+				laidOutCharGroups.bubbleBlow,
+				laidOutCharGroups.specialBubbles,
+				laidOutCharGroups.extendBubbles,
 			],
 			[
-				laidOutItemGroups.bubblePop,
-				laidOutItemGroups.fire,
-				laidOutItemGroups.baronVonBlubba,
-				laidOutItemGroups.stonerWeapon,
-				laidOutItemGroups.drunkAndInvaderWeapon,
+				laidOutCharGroups.bubblePop,
+				laidOutCharGroups.fire,
+				laidOutCharGroups.baronVonBlubba,
+				laidOutCharGroups.stonerWeapon,
+				laidOutCharGroups.drunkAndInvaderWeapon,
 				flexbox(
-					[laidOutItemGroups.incendoWeapon, laidOutItemGroups.lightning],
+					[laidOutCharGroups.incendoWeapon, laidOutCharGroups.lightning],
 					"row",
 					4
 				),
 			],
 			[
-				laidOutItemGroups.items,
-				laidOutItemGroups.bonusRoundCircles,
-				laidOutItemGroups.largeLightning,
-				laidOutItemGroups.flowingWater,
-				laidOutItemGroups.fireOnGround,
-				laidOutItemGroups.secretLevelPlatform,
-				laidOutItemGroups.secretLevelSideDecor,
-				laidOutItemGroups.secretLevelPedestal,
-				laidOutItemGroups.secretLevelPedestalRightEdge,
-				laidOutItemGroups.secretLevelPedestalDoor,
-				laidOutItemGroups.secretLevelBasementDoor,
+				laidOutCharGroups.items,
+				laidOutCharGroups.bonusRoundCircles,
+				laidOutCharGroups.largeLightning,
+				laidOutCharGroups.flowingWater,
+				laidOutCharGroups.fireOnGround,
+				laidOutCharGroups.secretLevelPlatform,
+				laidOutCharGroups.secretLevelSideDecor,
+				laidOutCharGroups.secretLevelPedestal,
+				laidOutCharGroups.secretLevelPedestalRightEdge,
+				laidOutCharGroups.secretLevelPedestalDoor,
+				laidOutCharGroups.secretLevelBasementDoor,
 			],
 		].map((chunk) => flexbox(chunk, "column", 3 * 8)),
 		"row",
@@ -160,14 +160,14 @@ export function layOutItemChars(): LayoutRect {
 	);
 }
 
-export function getAllItemChars(itemGroups: ItemGroups): ReadonlyArray<Char> {
-	return Object.values(mapRecord(itemGroups, (items) => items)).flat(3);
+export function getAllItemChars(charGroups: CharGroups): ReadonlyArray<Char> {
+	return Object.values(mapRecord(charGroups, (items) => items)).flat(3);
 }
 
 export function getAllItemCharMasks(
-	itemGroups: ItemGroups
+	charGroups: CharGroups
 ): ReadonlyArray<Char | undefined> {
-	const sharedBubbleMask = assertTuple(itemGroups.bubbleBlow.slice(12 + 8), 4);
+	const sharedBubbleMask = assertTuple(charGroups.bubbleBlow.slice(12 + 8), 4);
 	const bubbleBasedMasks: Partial<
 		Record<ItemDataSegmentName, ReadonlyArray<Item<number, number>>>
 	> = {
@@ -177,11 +177,11 @@ export function getAllItemCharMasks(
 	};
 
 	return Object.values(
-		mapRecord(itemGroups, (items, groupName) => {
+		mapRecord(charGroups, (items, groupName) => {
 			const mixedChars = items.flat().flat();
 
 			const masks = padRight(
-				itemGroupMeta[groupName].hasMask
+				charGroupMeta[groupName].hasMask
 					? mixedChars.slice(mixedChars.length / 2)
 					: bubbleBasedMasks[groupName]?.flat().flat() ?? [],
 				mixedChars.length,
@@ -195,7 +195,7 @@ export function getAllItemCharMasks(
 
 export function getAllItemCharPalettes(): ReadonlyArray<SubPalette> {
 	return Object.values(
-		mapRecord(itemGroupMeta, (meta) => {
+		mapRecord(charGroupMeta, (meta) => {
 			const palette: SubPalette = [
 				0, //black
 				9, // Brown
@@ -209,10 +209,10 @@ export function getAllItemCharPalettes(): ReadonlyArray<SubPalette> {
 	).flat();
 }
 
-export function drawItems(itemGroups: ItemGroups): PaletteImage {
+export function drawItems(charGroups: CharGroups): PaletteImage {
 	const charImages = zipObject({
-		char: getAllItemChars(itemGroups),
-		mask: getAllItemCharMasks(itemGroups),
+		char: getAllItemChars(charGroups),
+		mask: getAllItemCharMasks(charGroups),
 		palette: getAllItemCharPalettes(),
 	}).map((maskedChar) =>
 		drawChar(maskedChar.char, maskedChar.palette, maskedChar.mask)
@@ -223,9 +223,9 @@ export function drawItems(itemGroups: ItemGroups): PaletteImage {
 
 function reassembleAllItemChars(
 	chars: readonly { char: Char; color: PaletteIndex | undefined }[]
-): ItemGroups {
+): CharGroups {
 	let groupStart = 0;
-	return mapRecord(itemGroupMeta, (meta): ItemGroup<number, number> => {
+	return mapRecord(charGroupMeta, (meta): CharGroup<number, number> => {
 		const groupEnd = groupStart + meta.count * meta.width * meta.height;
 		const groupChars = chars
 			.slice(groupStart, groupEnd)
@@ -236,7 +236,7 @@ function reassembleAllItemChars(
 	});
 }
 
-export function parseItems(image: PaletteImage): ItemGroups {
+export function parseItems(image: PaletteImage): CharGroups {
 	const layout = layOutItemChars();
 
 	const chars = zipObject({

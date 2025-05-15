@@ -9,7 +9,7 @@ import {
 import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
 import { LevelDataSegmentName } from "../game-definitions/level-segment-name";
 import { mapRecord, objectFromEntries, sum } from "../functions";
-import { itemGroupMeta } from "./items";
+import { charGroupMeta } from "./items";
 
 export const maxAsymmetric = 45;
 export const maxSidebars = 59;
@@ -171,7 +171,7 @@ export const monsterSpriteColorsSegmentLocation: SegmentLocation = {
 };
 
 const itemSegmentLengths = mapRecord(
-	itemGroupMeta,
+	charGroupMeta,
 	(x) => 8 * x.count * x.width * x.height
 );
 
