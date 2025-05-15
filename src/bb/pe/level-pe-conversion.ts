@@ -24,7 +24,7 @@ import { ColorPixelByte } from "../internal-data-formats/color-pixel-byte";
 import { SubPaletteIndex } from "../internal-data-formats/palette";
 import { c64BuiltinCharsets } from "./c64-builtin-charsets";
 import { PaletteIndex } from "../internal-data-formats/palette";
-import { ShadowStyle } from "../prg/shadow-chars";
+import { shadowChars, ShadowChars } from "../prg/shadow-chars";
 import { mapTuple } from "../tuple";
 import { Sprite } from "../internal-data-formats/sprite";
 import { CharName } from "../game-definitions/char-name";
@@ -117,7 +117,7 @@ export function levelsToPeFileData(data: {
 		...levelsToPeScreensAndCharsets(
 			data.levels,
 			mapRecord(data.sprites, ({ color }) => color),
-			"originalC64"
+			shadowChars.originalC64
 		),
 	});
 }
@@ -125,7 +125,7 @@ export function levelsToPeFileData(data: {
 export function levelsToPeScreensAndCharsets(
 	levels: readonly Level[],
 	spriteColors: Record<CharacterName, PaletteIndex>,
-	shadowStyle: ShadowStyle
+	shadowChars: ShadowChars
 ): Pick<PeFileData, "screens" | "charsets"> {
 	const peFileData: Pick<PeFileData, "screens" | "charsets"> = {
 		charsets: [
@@ -155,7 +155,7 @@ export function levelsToPeScreensAndCharsets(
 				charColor: 0, // Black to not tempt using it.
 				multiColor1: level.bgColorDark,
 				multiColor2: level.bgColorLight,
-				bitmaps: makeCharsetBitmaps(level, shadowStyle),
+				bitmaps: makeCharsetBitmaps(level, shadowChars),
 			})),
 		],
 		screens: levels.map((level, levelIndex) =>
@@ -473,7 +473,7 @@ function makeLevelCharAndColorData(
 
 function makeCharsetBitmaps(
 	level: Level,
-	shadowStyle: ShadowStyle
+	shadowChars: ShadowChars
 ): CharBitmap[] {
 	const charset = padRight(
 		[
@@ -485,7 +485,7 @@ function makeCharsetBitmaps(
 		emptyChar
 	);
 
-	for (const [name, char] of objectEntries(makeCharset(level, shadowStyle))) {
+	for (const [name, char] of objectEntries(makeCharset(level, shadowChars))) {
 		charset[charsetIndices[name]] = levelCharToPeChar(char);
 	}
 

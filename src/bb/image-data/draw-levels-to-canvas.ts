@@ -15,19 +15,19 @@ import { spritePosOffset, spriteSize } from "../../c64/consts";
 import { CharacterName, pl1, pl2 } from "../game-definitions/character-name";
 import { chunk, mapRecord } from "../functions";
 import { add, scale, subtract } from "../../math/coord2";
-import { ShadowStyle } from "../prg/shadow-chars";
+import { ShadowChars } from "../prg/shadow-chars";
 import { getCharPalette } from "../palette-image/char";
 import * as ImageDataFunctions from "./image-data";
 
 export function drawLevelsToCanvas(
 	levels: readonly Level[],
 	spriteColors: Record<CharacterName, PaletteIndex>,
-	shadowStyle: ShadowStyle
+	shadowChars: ShadowChars
 ): ImageData {
 	const gap = { x: 10, y: 10 };
 
 	return ImageDataFunctions.drawGrid(
-		levels.map((level) => drawLevelThumbnail(level, spriteColors, shadowStyle)),
+		levels.map((level) => drawLevelThumbnail(level, spriteColors, shadowChars)),
 		10,
 		{
 			x: levelWidth,
@@ -40,13 +40,13 @@ export function drawLevelsToCanvas(
 function drawLevelThumbnail(
 	level: Level,
 	spriteColors: Record<CharacterName, PaletteIndex>,
-	shadowStyle: ShadowStyle
+	shadowChars: ShadowChars
 ): ImageData {
 	const image = new ImageData(levelWidth, levelHeight);
 
 	// Draw level.
 	const charPalette = getCharPalette(level);
-	const charset = makeCharset(level, shadowStyle);
+	const charset = makeCharset(level, shadowChars);
 	const averageCharColors = mapRecord(charset, (char) =>
 		getAverageCharColor(char, charPalette)
 	);

@@ -3,7 +3,7 @@ import { ParsedPrg } from "../../bb/internal-data-formats/parsed-prg";
 import { drawLevel } from "../../bb/palette-image/level";
 import { ImageDataCanvas } from "../ImageDataCanvas";
 import styled from "styled-components";
-import { ShadowStyle } from "../../bb/prg/shadow-chars";
+import { shadowChars, ShadowStyle } from "../../bb/prg/shadow-chars";
 import { imageDataFromPaletteImage } from "../../bb/image-data/image-data";
 import { doubleImageWidth } from "../../bb/palette-image/palette-image";
 
@@ -22,7 +22,7 @@ export function PlatformShadows({
 						drawLevel(
 							parsedPrg.levels[4]!,
 							parsedPrg.sprites,
-							parsedPrg.shadowStyle
+							shadowChars[parsedPrg.shadowStyle]
 						)
 					)
 				)}

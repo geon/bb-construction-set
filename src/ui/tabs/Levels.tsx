@@ -12,6 +12,7 @@ import {
 	imageDataToBlob,
 } from "../../bb/image-data/image-data";
 import { doubleImageWidth } from "../../bb/palette-image/palette-image";
+import { shadowChars } from "../../bb/prg/shadow-chars";
 
 export function Levels({
 	parsedPrg,
@@ -25,7 +26,7 @@ export function Levels({
 				imageData={drawLevelsToCanvas(
 					parsedPrg.levels,
 					mapRecord(parsedPrg.sprites, ({ color }) => color),
-					parsedPrg.shadowStyle
+					shadowChars[parsedPrg.shadowStyle]
 				)}
 			/>
 			<br />
@@ -36,7 +37,7 @@ export function Levels({
 						drawLevel(
 							parsedPrg.levels[4]!,
 							parsedPrg.sprites,
-							parsedPrg.shadowStyle
+							shadowChars[parsedPrg.shadowStyle]
 						)
 					)
 				)}
@@ -50,7 +51,11 @@ export function Levels({
 						blob: await imageDataToBlob(
 							imageDataFromPaletteImage(
 								doubleImageWidth(
-									drawLevel(level, parsedPrg.sprites, parsedPrg.shadowStyle)
+									drawLevel(
+										level,
+										parsedPrg.sprites,
+										shadowChars[parsedPrg.shadowStyle]
+									)
 								)
 							)
 						),

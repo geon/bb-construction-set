@@ -9,7 +9,7 @@ import {
 	levelToCharNames,
 } from "../internal-data-formats/level";
 import { SpriteGroups } from "../internal-data-formats/sprite";
-import { ShadowStyle } from "../prg/shadow-chars";
+import { ShadowChars } from "../prg/shadow-chars";
 import { getCharPalette, drawChar } from "./char";
 import { PaletteImage, drawGrid, blitPaletteImage } from "./palette-image";
 import { drawSprite, getSpritePalette } from "./sprite";
@@ -17,11 +17,11 @@ import { drawSprite, getSpritePalette } from "./sprite";
 export function drawLevel(
 	level: Level,
 	spriteGroups: SpriteGroups,
-	shadowStyle: ShadowStyle
+	shadowChars: ShadowChars
 ): PaletteImage {
 	// Draw level.
 	const charPalette = getCharPalette(level);
-	const charset = mapRecord(makeCharset(level, shadowStyle), (char) =>
+	const charset = mapRecord(makeCharset(level, shadowChars), (char) =>
 		drawChar(char, charPalette)
 	);
 
