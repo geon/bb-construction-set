@@ -183,13 +183,13 @@ export function patchPrg(
 	);
 	prgSpriteColorsSegment.buffer.set(spriteColorsSegment);
 
-	const prgItemSegments = getMutableDataSegments(
+	const prgCharSegments = getMutableDataSegments(
 		patchedPrg,
 		charSegmentLocations
 	);
 	const newItemSegments = serializeCharGroups(charGroups);
 	for (const segmentName of charSegmentNames) {
-		prgItemSegments[segmentName].buffer.set(
+		prgCharSegments[segmentName].buffer.set(
 			newItemSegments[segmentName].buffer
 		);
 	}
