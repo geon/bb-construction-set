@@ -240,7 +240,7 @@ function reassembleAllChars(
 	});
 }
 
-export function parseItems(image: PaletteImage): CharGroups {
+export function parseCharGroups(image: PaletteImage): CharGroups {
 	const layout = layOutChars();
 
 	const chars = zipObject({

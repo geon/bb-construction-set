@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { ParsedPrg } from "../../bb/internal-data-formats/parsed-prg";
 import { ImageDataCanvas } from "../ImageDataCanvas";
-import { drawCharGroups, parseItems } from "../../bb/palette-image/item";
+import { drawCharGroups, parseCharGroups } from "../../bb/palette-image/item";
 import {
 	imageDataFromPaletteImage,
 	imageDataToBlob,
@@ -48,7 +48,7 @@ export function Chars({
 					const imageData = imageDataFromImage(await imageFromFile(file));
 
 					const parsedItems = attempt(() => {
-						const parsed = parseItems(
+						const parsed = parseCharGroups(
 							halfImageWidth(paletteImageFromImageData(imageData))
 						);
 						return parsed;
