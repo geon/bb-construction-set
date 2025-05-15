@@ -17,7 +17,7 @@ import {
 } from "./data-locations";
 import { LevelDataSegmentName } from "../game-definitions/level-segment-name";
 import { spriteGroupNames } from "../game-definitions/sprite-segment-name";
-import { readItems, serializeItems } from "./items";
+import { parseCharGroups, serializeItems } from "./items";
 import {
 	readBubbleCurrentRectangles,
 	writeBubbleCurrentRectangles,
@@ -45,7 +45,7 @@ export function parsePrg(prg: ArrayBuffer): ParsedPrg {
 		getDataSegments(prg, spriteDataSegmentLocations),
 		getDataSegment(prg, monsterSpriteColorsSegmentLocation)
 	);
-	const items = readItems(getDataSegments(prg, itemDataSegmentLocations));
+	const items = parseCharGroups(getDataSegments(prg, itemDataSegmentLocations));
 
 	const shadowStyle = detectShadowStyle(
 		getDataSegments(prg, levelSegmentLocations).shadowChars

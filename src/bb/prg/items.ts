@@ -166,7 +166,7 @@ export const charGroupMeta = {
 	}
 >;
 
-export function readItems(
+export function parseCharGroups(
 	dataSegments: Record<CharSegmentName, DataSegment>
 ): CharGroups {
 	return mapRecord(
