@@ -88,8 +88,8 @@ function drawLevelPlatformChars(level: Level): PaletteImage {
 		[ur, br],
 	];
 
-	const sidebarImage = drawCharblock(sidebarChars, charPalette);
-	const platformImage = drawCharblock(platformChars, charPalette);
+	const sidebarImage = drawCharBlock(sidebarChars, charPalette);
+	const platformImage = drawCharBlock(platformChars, charPalette);
 
 	return drawGrid(
 		[sidebarImage, platformImage, sidebarImage, platformImage],
@@ -98,7 +98,7 @@ function drawLevelPlatformChars(level: Level): PaletteImage {
 	);
 }
 
-function drawCharblock(
+function drawCharBlock(
 	charBlock: CharBlock<number, number>,
 	charPalette: SubPalette,
 	mask?: CharBlock<number, number>
