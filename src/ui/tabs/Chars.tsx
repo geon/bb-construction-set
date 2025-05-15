@@ -50,18 +50,20 @@ export function Chars({
 				onChange={async (file) => {
 					const imageData = imageDataFromImage(await imageFromFile(file));
 
-					const parsedItems = attempt(() =>
+					const parsedCharGroups = attempt(() =>
 						parseCharGroups(
 							halfImageWidth(paletteImageFromImageData(imageData))
 						)
 					);
 
-					if (parsedItems.type !== "ok") {
-						alert(`Could not read bmp: ${parsedItems.error ?? "No reason."}`);
+					if (parsedCharGroups.type !== "ok") {
+						alert(
+							`Could not read bmp: ${parsedCharGroups.error ?? "No reason."}`
+						);
 						return;
 					}
 
-					setParsedPrg({ ...parsedPrg, chars: parsedItems.result });
+					setParsedPrg({ ...parsedPrg, chars: parsedCharGroups.result });
 				}}
 			>
 				Choose file
