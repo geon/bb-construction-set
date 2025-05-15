@@ -170,7 +170,7 @@ export const monsterSpriteColorsSegmentLocation: SegmentLocation = {
 	length: characterNames.slice(1).length, // 8. The player color is not included.
 };
 
-const itemSegmentLengths = mapRecord(
+const charSegmentLengths = mapRecord(
 	charGroupMeta,
 	(x) => 8 * x.count * x.width * x.height
 );
@@ -186,7 +186,7 @@ function getItemsStartAddress(itemSegmentName: CharSegmentName): number {
 					charSegmentNames.indexOf("baronVonBlubba"),
 					charSegmentNames.indexOf(itemSegmentName)
 				)
-				.map((characterName) => itemSegmentLengths[characterName])
+				.map((characterName) => charSegmentLengths[characterName])
 		)
 	);
 }
@@ -195,87 +195,87 @@ export const itemDataSegmentLocations: Readonly<
 > = {
 	bubbleBlow: {
 		startAddress: 0x8000,
-		length: itemSegmentLengths.bubbleBlow,
+		length: charSegmentLengths.bubbleBlow,
 	},
 	bubblePop: {
 		startAddress: 0x8980,
-		length: itemSegmentLengths.bubblePop,
+		length: charSegmentLengths.bubblePop,
 	},
 	baronVonBlubba: {
 		startAddress: getItemsStartAddress("baronVonBlubba"),
-		length: itemSegmentLengths.baronVonBlubba,
+		length: charSegmentLengths.baronVonBlubba,
 	},
 	specialBubbles: {
 		startAddress: getItemsStartAddress("specialBubbles"),
-		length: itemSegmentLengths.specialBubbles,
+		length: charSegmentLengths.specialBubbles,
 	},
 	lightning: {
 		startAddress: getItemsStartAddress("lightning"),
-		length: itemSegmentLengths.lightning,
+		length: charSegmentLengths.lightning,
 	},
 	fire: {
 		startAddress: getItemsStartAddress("fire"),
-		length: itemSegmentLengths.fire,
+		length: charSegmentLengths.fire,
 	},
 	extendBubbles: {
 		startAddress: getItemsStartAddress("extendBubbles"),
-		length: itemSegmentLengths.extendBubbles,
+		length: charSegmentLengths.extendBubbles,
 	},
 	stonerWeapon: {
 		startAddress: getItemsStartAddress("stonerWeapon"),
-		length: itemSegmentLengths.stonerWeapon,
+		length: charSegmentLengths.stonerWeapon,
 	},
 	drunkAndInvaderWeapon: {
 		startAddress: getItemsStartAddress("drunkAndInvaderWeapon"),
-		length: itemSegmentLengths.drunkAndInvaderWeapon,
+		length: charSegmentLengths.drunkAndInvaderWeapon,
 	},
 	incendoWeapon: {
 		startAddress: getItemsStartAddress("incendoWeapon"),
-		length: itemSegmentLengths.incendoWeapon,
+		length: charSegmentLengths.incendoWeapon,
 	},
 	items: {
 		startAddress: getItemsStartAddress("items"),
-		length: itemSegmentLengths.items,
+		length: charSegmentLengths.items,
 	},
 	//  (4x4 chars, but only 12 chars are stored.)
 	largeLightning: {
 		startAddress: getItemsStartAddress("largeLightning"),
-		length: itemSegmentLengths.largeLightning,
+		length: charSegmentLengths.largeLightning,
 	},
 	bonusRoundCircles: {
 		startAddress: getItemsStartAddress("bonusRoundCircles"),
-		length: itemSegmentLengths.bonusRoundCircles,
+		length: charSegmentLengths.bonusRoundCircles,
 	},
 	flowingWater: {
 		startAddress: 0x40f8,
-		length: itemSegmentLengths.flowingWater,
+		length: charSegmentLengths.flowingWater,
 	},
 	fireOnGround: {
 		startAddress: 0x4200,
-		length: itemSegmentLengths.fireOnGround,
+		length: charSegmentLengths.fireOnGround,
 	},
 	secretLevelPlatform: {
 		startAddress: 0xa668 - 8,
-		length: itemSegmentLengths.secretLevelPlatform,
+		length: charSegmentLengths.secretLevelPlatform,
 	},
 	secretLevelSideDecor: {
 		startAddress: 0xa668,
-		length: itemSegmentLengths.secretLevelSideDecor,
+		length: charSegmentLengths.secretLevelSideDecor,
 	},
 	secretLevelPedestal: {
 		startAddress: 0xa668 + 8 * 4,
-		length: itemSegmentLengths.secretLevelPedestal,
+		length: charSegmentLengths.secretLevelPedestal,
 	},
 	secretLevelPedestalRightEdge: {
 		startAddress: 0x9594,
-		length: itemSegmentLengths.secretLevelPedestalRightEdge,
+		length: charSegmentLengths.secretLevelPedestalRightEdge,
 	},
 	secretLevelPedestalDoor: {
 		startAddress: 0xa668 + 8 * 4 + 8 * 7,
-		length: itemSegmentLengths.secretLevelPedestalDoor,
+		length: charSegmentLengths.secretLevelPedestalDoor,
 	},
 	secretLevelBasementDoor: {
 		startAddress: 0xa668 + 8 * 4 + 8 * 7 + 8 * 4,
-		length: itemSegmentLengths.secretLevelBasementDoor,
+		length: charSegmentLengths.secretLevelBasementDoor,
 	},
 };
