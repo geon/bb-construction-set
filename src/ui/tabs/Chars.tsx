@@ -36,7 +36,7 @@ export function Chars({
 			<br />
 			<BlobDownloadButton
 				getBlob={async () => ({
-					fileName: "items.png",
+					fileName: "chars.png",
 					blob: await imageDataToBlob(
 						imageDataFromPaletteImage(
 							doubleImageWidth(drawCharGroups(parsedPrg.chars))
