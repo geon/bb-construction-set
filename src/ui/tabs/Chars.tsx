@@ -51,10 +51,9 @@ export function Chars({
 					const imageData = imageDataFromImage(await imageFromFile(file));
 
 					const parsedItems = attempt(() => {
-						const parsed = parseCharGroups(
+						return parseCharGroups(
 							halfImageWidth(paletteImageFromImageData(imageData))
 						);
-						return parsed;
 					});
 
 					if (parsedItems.type !== "ok") {
