@@ -62,7 +62,7 @@ function layoutLargeLightning(index: number) {
 	};
 }
 
-export function layOutItemChars(): LayoutRect {
+export function layOutChars(): LayoutRect {
 	let index = 0;
 	const itemRectGroups = mapRecord(
 		charGroupMeta,
@@ -221,7 +221,7 @@ export function drawCharGroups(charGroups: CharGroups): PaletteImage {
 	}).map((maskedChar) =>
 		drawChar(maskedChar.char, maskedChar.palette, maskedChar.mask)
 	);
-	const layout = layOutItemChars();
+	const layout = layOutChars();
 	return drawLayout(layout, charImages);
 }
 
@@ -241,7 +241,7 @@ function reassembleAllItemChars(
 }
 
 export function parseItems(image: PaletteImage): CharGroups {
-	const layout = layOutItemChars();
+	const layout = layOutChars();
 
 	const chars = zipObject({
 		image: parseLayout(layout, image),

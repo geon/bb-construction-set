@@ -3,7 +3,7 @@ import {
 	getAllCharMasks,
 	getAllCharPalettes,
 	getAllChars,
-	layOutItemChars,
+	layOutChars,
 } from "../item";
 import { readFileSync } from "fs";
 import { parsePrg } from "../../prg/parse-prg";
@@ -14,7 +14,7 @@ test("Sanity check: layOutItemChars, getAllItemChars, getAllItemCharMasks, getAl
 		readFileSync(__dirname + "/../../prg/tests/decompressed-bb.prg").buffer
 	).chars;
 
-	const layout = layOutItemChars();
+	const layout = layOutChars();
 	const chars = getAllChars(charGroups);
 	const masks = getAllCharMasks(charGroups);
 	const palettes = getAllCharPalettes();
