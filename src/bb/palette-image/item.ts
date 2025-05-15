@@ -160,11 +160,11 @@ export function layOutItemChars(): LayoutRect {
 	);
 }
 
-export function getAllItemChars(charGroups: CharGroups): ReadonlyArray<Char> {
+export function getAllChars(charGroups: CharGroups): ReadonlyArray<Char> {
 	return Object.values(mapRecord(charGroups, (items) => items)).flat(3);
 }
 
-export function getAllItemCharMasks(
+export function getAllCharMasks(
 	charGroups: CharGroups
 ): ReadonlyArray<Char | undefined> {
 	const sharedBubbleMask = assertTuple(charGroups.bubbleBlow.slice(12 + 8), 4);
@@ -193,7 +193,7 @@ export function getAllItemCharMasks(
 	).flat();
 }
 
-export function getAllItemCharPalettes(): ReadonlyArray<SubPalette> {
+export function getAllCharPalettes(): ReadonlyArray<SubPalette> {
 	return Object.values(
 		mapRecord(charGroupMeta, (meta) => {
 			const palette: SubPalette = [
@@ -211,9 +211,9 @@ export function getAllItemCharPalettes(): ReadonlyArray<SubPalette> {
 
 export function drawCharGroups(charGroups: CharGroups): PaletteImage {
 	const charImages = zipObject({
-		char: getAllItemChars(charGroups),
-		mask: getAllItemCharMasks(charGroups),
-		palette: getAllItemCharPalettes(),
+		char: getAllChars(charGroups),
+		mask: getAllCharMasks(charGroups),
+		palette: getAllCharPalettes(),
 	}).map((maskedChar) =>
 		drawChar(maskedChar.char, maskedChar.palette, maskedChar.mask)
 	);
@@ -241,7 +241,7 @@ export function parseItems(image: PaletteImage): CharGroups {
 
 	const chars = zipObject({
 		image: parseLayout(layout, image),
-		palette: getAllItemCharPalettes(),
+		palette: getAllCharPalettes(),
 	}).map(({ image, palette }) =>
 		parseChar(image as PaletteImage<4, 8>, palette)
 	);

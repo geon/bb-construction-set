@@ -1,8 +1,8 @@
 import { expect, test } from "vitest";
 import {
-	getAllItemCharMasks,
-	getAllItemCharPalettes,
-	getAllItemChars,
+	getAllCharMasks,
+	getAllCharPalettes,
+	getAllChars,
 	layOutItemChars,
 } from "../item";
 import { readFileSync } from "fs";
@@ -15,9 +15,9 @@ test("Sanity check: layOutItemChars, getAllItemChars, getAllItemCharMasks, getAl
 	).items;
 
 	const layout = layOutItemChars();
-	const chars = getAllItemChars(charGroups);
-	const masks = getAllItemCharMasks(charGroups);
-	const palettes = getAllItemCharPalettes();
+	const chars = getAllChars(charGroups);
+	const masks = getAllCharMasks(charGroups);
+	const palettes = getAllCharPalettes();
 
 	expect(leafs(layout).length).toStrictEqual(chars.length);
 	expect(masks.length).toStrictEqual(chars.length);
