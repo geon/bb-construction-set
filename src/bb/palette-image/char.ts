@@ -99,17 +99,17 @@ function drawLevelPlatformChars(level: Level): PaletteImage {
 }
 
 function drawCharblock(
-	item: CharBlock<number, number>,
+	charBlock: CharBlock<number, number>,
 	charPalette: SubPalette,
 	mask?: CharBlock<number, number>
 ): PaletteImage {
 	// The chars are column-order just like in the game.
 	const image = createPaletteImage({
-		x: item.length * 4,
-		y: item[0]!.length * 8,
+		x: charBlock.length * 4,
+		y: charBlock[0]!.length * 8,
 	});
 
-	for (const [charBlockX, column] of item.entries()) {
+	for (const [charBlockX, column] of charBlock.entries()) {
 		for (const [charBlockY, char] of column.entries()) {
 			blitPaletteImage(
 				image,
