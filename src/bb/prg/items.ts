@@ -187,7 +187,7 @@ export function parseCharGroups(
 	);
 }
 
-export function serializeItems(
+export function serializeCharGroups(
 	charGroups: CharGroups
 ): Record<CharSegmentName, DataSegment> {
 	return mapRecord(

@@ -17,7 +17,7 @@ import {
 } from "./data-locations";
 import { LevelDataSegmentName } from "../game-definitions/level-segment-name";
 import { spriteGroupNames } from "../game-definitions/sprite-segment-name";
-import { parseCharGroups, serializeItems } from "./items";
+import { parseCharGroups, serializeCharGroups } from "./items";
 import {
 	readBubbleCurrentRectangles,
 	writeBubbleCurrentRectangles,
@@ -187,7 +187,7 @@ export function patchPrg(
 		patchedPrg,
 		itemDataSegmentLocations
 	);
-	const newItemSegments = serializeItems(charGroups);
+	const newItemSegments = serializeCharGroups(charGroups);
 	for (const segmentName of charSegmentNames) {
 		prgItemSegments[segmentName].buffer.set(
 			newItemSegments[segmentName].buffer
