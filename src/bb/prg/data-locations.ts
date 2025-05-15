@@ -190,7 +190,7 @@ function getCharSegmentStartAddress(name: CharSegmentName): number {
 		)
 	);
 }
-export const itemDataSegmentLocations: Readonly<
+export const charSegmentLocations: Readonly<
 	Record<CharSegmentName, SegmentLocation>
 > = {
 	bubbleBlow: {

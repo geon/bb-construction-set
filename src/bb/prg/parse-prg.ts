@@ -10,7 +10,7 @@ import {
 	getDataSegment,
 } from "./io";
 import {
-	itemDataSegmentLocations,
+	charSegmentLocations,
 	levelSegmentLocations,
 	monsterSpriteColorsSegmentLocation,
 	spriteDataSegmentLocations,
@@ -45,7 +45,7 @@ export function parsePrg(prg: ArrayBuffer): ParsedPrg {
 		getDataSegments(prg, spriteDataSegmentLocations),
 		getDataSegment(prg, monsterSpriteColorsSegmentLocation)
 	);
-	const items = parseCharGroups(getDataSegments(prg, itemDataSegmentLocations));
+	const items = parseCharGroups(getDataSegments(prg, charSegmentLocations));
 
 	const shadowStyle = detectShadowStyle(
 		getDataSegments(prg, levelSegmentLocations).shadowChars
@@ -185,7 +185,7 @@ export function patchPrg(
 
 	const prgItemSegments = getMutableDataSegments(
 		patchedPrg,
-		itemDataSegmentLocations
+		charSegmentLocations
 	);
 	const newItemSegments = serializeCharGroups(charGroups);
 	for (const segmentName of charSegmentNames) {
