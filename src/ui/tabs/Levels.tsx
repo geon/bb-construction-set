@@ -12,7 +12,7 @@ import {
 	imageDataToBlob,
 } from "../../bb/image-data/image-data";
 import { doubleImageWidth } from "../../bb/palette-image/palette-image";
-import { shadowChars } from "../../bb/prg/shadow-chars";
+import { shadowChars as shadow } from "../../bb/prg/shadow-chars";
 
 export function Levels({
 	parsedPrg,
@@ -20,13 +20,15 @@ export function Levels({
 	readonly parsedPrg: ParsedPrg;
 	readonly setParsedPrg: (parsedPrg: ParsedPrg) => void;
 }): ReactNode {
+	const shadowChars = shadow[parsedPrg.shadowStyle];
+
 	return (
 		<>
 			<ImageDataCanvas
 				imageData={drawLevelsToCanvas(
 					parsedPrg.levels,
 					mapRecord(parsedPrg.sprites, ({ color }) => color),
-					shadowChars[parsedPrg.shadowStyle]
+					shadowChars
 				)}
 			/>
 			<br />
@@ -34,11 +36,7 @@ export function Levels({
 			<ImageDataCanvas
 				imageData={imageDataFromPaletteImage(
 					doubleImageWidth(
-						drawLevel(
-							parsedPrg.levels[4]!,
-							parsedPrg.sprites,
-							shadowChars[parsedPrg.shadowStyle]
-						)
+						drawLevel(parsedPrg.levels[4]!, parsedPrg.sprites, shadowChars)
 					)
 				)}
 			/>
@@ -51,11 +49,7 @@ export function Levels({
 						blob: await imageDataToBlob(
 							imageDataFromPaletteImage(
 								doubleImageWidth(
-									drawLevel(
-										level,
-										parsedPrg.sprites,
-										shadowChars[parsedPrg.shadowStyle]
-									)
+									drawLevel(level, parsedPrg.sprites, shadowChars)
 								)
 							)
 						),
