@@ -172,7 +172,7 @@ export function parseCharGroups(
 	return mapRecord(
 		dataSegments,
 		(dataSegment, segmentName): CharGroup<number, number> => {
-			const items = strictChunk(
+			const charBlocks = strictChunk(
 				strictChunk(
 					strictChunk([...dataSegment.buffer], linesPerChar).map(
 						(char): Char => mapTuple(char, parseColorPixelByte)
@@ -182,7 +182,7 @@ export function parseCharGroups(
 				charGroupMeta[segmentName].width
 			);
 
-			return items;
+			return charBlocks;
 		}
 	);
 }
