@@ -187,10 +187,10 @@ export function patchPrg(
 		patchedPrg,
 		charSegmentLocations
 	);
-	const newItemSegments = serializeCharGroups(charGroups);
+	const newCharSegments = serializeCharGroups(charGroups);
 	for (const segmentName of charSegmentNames) {
 		prgCharSegments[segmentName].buffer.set(
-			newItemSegments[segmentName].buffer
+			newCharSegments[segmentName].buffer
 		);
 	}
 
