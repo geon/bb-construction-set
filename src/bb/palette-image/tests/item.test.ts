@@ -12,7 +12,7 @@ import { leafs } from "../../../math/rect";
 test("Sanity check: layOutItemChars, getAllItemChars, getAllItemCharMasks, getAllItemCharPalettes", () => {
 	const charGroups = parsePrg(
 		readFileSync(__dirname + "/../../prg/tests/decompressed-bb.prg").buffer
-	).items;
+	).chars;
 
 	const layout = layOutItemChars();
 	const chars = getAllChars(charGroups);

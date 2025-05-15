@@ -32,7 +32,7 @@ test("parsePrg", () => {
 
 test("parsePrg items", () => {
 	expect(
-		parsePrg(readFileSync(__dirname + "/decompressed-bb.prg").buffer).items
+		parsePrg(readFileSync(__dirname + "/decompressed-bb.prg").buffer).chars
 	).toMatchSnapshot();
 });
 

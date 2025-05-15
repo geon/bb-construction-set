@@ -51,7 +51,7 @@ export function parsePrg(prg: ArrayBuffer): ParsedPrg {
 		getDataSegments(prg, levelSegmentLocations).shadowChars
 	);
 
-	return { levels, sprites, items, shadowStyle };
+	return { levels, sprites, chars: items, shadowStyle };
 }
 
 function readLevels(
@@ -132,7 +132,7 @@ export function patchPrg(
 	parsedPrg: ParsedPrg,
 	shadowStyle: ShadowStyle
 ): ArrayBuffer {
-	const { levels, sprites: spriteGroups, items: charGroups } = parsedPrg;
+	const { levels, sprites: spriteGroups, chars: charGroups } = parsedPrg;
 
 	const patchedPrg = prg.slice();
 

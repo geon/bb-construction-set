@@ -6,6 +6,6 @@ import { ShadowStyle } from "../prg/shadow-chars";
 export type ParsedPrg = {
 	readonly levels: readonly Level[];
 	readonly sprites: SpriteGroups;
-	readonly items: CharGroups;
+	readonly chars: CharGroups;
 	readonly shadowStyle: ShadowStyle;
 };

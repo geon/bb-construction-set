@@ -26,7 +26,7 @@ export function Chars({
 		<>
 			<ImageDataCanvas
 				imageData={imageDataFromPaletteImage(
-					doubleImageWidth(drawCharGroups(parsedPrg.items))
+					doubleImageWidth(drawCharGroups(parsedPrg.chars))
 				)}
 			/>
 			<br />
@@ -36,7 +36,7 @@ export function Chars({
 					fileName: "items.png",
 					blob: await imageDataToBlob(
 						imageDataFromPaletteImage(
-							doubleImageWidth(drawCharGroups(parsedPrg.items))
+							doubleImageWidth(drawCharGroups(parsedPrg.chars))
 						)
 					),
 				})}
@@ -59,7 +59,7 @@ export function Chars({
 						return;
 					}
 
-					setParsedPrg({ ...parsedPrg, items: parsedItems.result });
+					setParsedPrg({ ...parsedPrg, chars: parsedItems.result });
 				}}
 			>
 				Choose file
