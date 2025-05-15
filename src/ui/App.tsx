@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Card } from "./Card";
 import { PrgSelector } from "./PrgSelector";
 import { useState } from "react";
-import { Levels } from "./tabs/Levels";
+// import { Levels } from "./tabs/Levels";
 import { Sprites } from "./tabs/Sprites";
 import { PrgDownloader } from "./PrgDownloader";
 import { Items } from "./tabs/Items";
@@ -64,24 +64,24 @@ export function App() {
 			</Card>
 			{parsedPrg && (
 				<TabBar
-					initialTabId={"levels"}
+					initialTabId={"levelGraphics"}
 					tabs={{
-						levels: {
-							title: "Levels",
-							render: (tab) => {
-								return (
-									<>
-										<Card>
-											<h2>{tab.title}</h2>
-											<Levels
-												parsedPrg={parsedPrg}
-												setParsedPrg={setParsedPrg}
-											/>
-										</Card>
-									</>
-								);
-							},
-						},
+						// levels: {
+						// 	title: "Levels",
+						// 	render: (tab) => {
+						// 		return (
+						// 			<>
+						// 				<Card>
+						// 					<h2>{tab.title}</h2>
+						// 					<Levels
+						// 						parsedPrg={parsedPrg}
+						// 						setParsedPrg={setParsedPrg}
+						// 					/>
+						// 				</Card>
+						// 			</>
+						// 		);
+						// 	},
+						// },
 						levelGraphics: {
 							title: "Level Graphics",
 							render: (tab) => {
