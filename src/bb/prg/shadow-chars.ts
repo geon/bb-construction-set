@@ -3,6 +3,8 @@ import { serializeColorPixelByte } from "../internal-data-formats/color-pixel-by
 import { ReadonlyTuple } from "../tuple";
 import { DataSegment } from "./io";
 
+export type ShadowChars = ReadonlyTuple<Char, 6>;
+
 export const shadowChars = {
 	originalC64: [
 		[
@@ -129,7 +131,7 @@ export const shadowChars = {
 			[0, 1, 0, 0],
 		],
 	],
-} satisfies Record<string, ReadonlyTuple<Char, 6>>;
+} satisfies Record<string, ShadowChars>;
 
 export type ShadowStyle = keyof typeof shadowChars;
 
