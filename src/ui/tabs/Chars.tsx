@@ -15,7 +15,7 @@ import {
 	halfImageWidth,
 } from "../../bb/palette-image/palette-image";
 
-export function Items({
+export function Chars({
 	parsedPrg,
 	setParsedPrg,
 }: {

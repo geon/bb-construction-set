@@ -6,7 +6,7 @@ import { useState } from "react";
 // import { Levels } from "./tabs/Levels";
 import { Sprites } from "./tabs/Sprites";
 import { PrgDownloader } from "./PrgDownloader";
-import { Items } from "./tabs/Items";
+import { Chars } from "./tabs/Chars";
 import { LevelGraphics } from "./tabs/LevelGraphics";
 import { parsePrg } from "../bb/prg/parse-prg";
 import { ParsedPrg } from "../bb/internal-data-formats/parsed-prg";
@@ -130,14 +130,14 @@ export function App() {
 								);
 							},
 						},
-						items: {
-							title: "Items",
+						chars: {
+							title: "Chars",
 							render: (tab) => {
 								return (
 									<>
 										<Card>
 											<h2>{tab.title}</h2>
-											<Items
+											<Chars
 												parsedPrg={parsedPrg}
 												setParsedPrg={setParsedPrg}
 											/>
