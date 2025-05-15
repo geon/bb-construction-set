@@ -64,9 +64,9 @@ export function App() {
 			</Card>
 			{parsedPrg && (
 				<TabBar
-					initialTabId={"patchLevels"}
+					initialTabId={"levels"}
 					tabs={{
-						patchLevels: {
+						levels: {
 							title: "Levels",
 							render: (tab) => {
 								return (
@@ -82,7 +82,7 @@ export function App() {
 								);
 							},
 						},
-						patchLevelGraphics: {
+						levelGraphics: {
 							title: "Level Graphics",
 							render: (tab) => {
 								return (
@@ -98,7 +98,7 @@ export function App() {
 								);
 							},
 						},
-						patchPlatformShadows: {
+						platformShadows: {
 							title: "Platform Shadows",
 							render: (tab) => {
 								return (
@@ -114,7 +114,7 @@ export function App() {
 								);
 							},
 						},
-						patchSprites: {
+						sprites: {
 							title: "Sprites",
 							render: (tab) => {
 								return (
@@ -130,7 +130,7 @@ export function App() {
 								);
 							},
 						},
-						patchItems: {
+						items: {
 							title: "Items",
 							render: (tab) => {
 								return (
