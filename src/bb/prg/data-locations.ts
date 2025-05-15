@@ -176,7 +176,7 @@ const charSegmentLengths = mapRecord(
 );
 
 const mainBlockStartAddress = 0x8f00;
-function getItemsStartAddress(itemSegmentName: CharSegmentName): number {
+function getCharSegmentStartAddress(itemSegmentName: CharSegmentName): number {
 	// Sum up the length of all segments before the wanted one.
 	return (
 		mainBlockStartAddress +
@@ -202,48 +202,48 @@ export const itemDataSegmentLocations: Readonly<
 		length: charSegmentLengths.bubblePop,
 	},
 	baronVonBlubba: {
-		startAddress: getItemsStartAddress("baronVonBlubba"),
+		startAddress: getCharSegmentStartAddress("baronVonBlubba"),
 		length: charSegmentLengths.baronVonBlubba,
 	},
 	specialBubbles: {
-		startAddress: getItemsStartAddress("specialBubbles"),
+		startAddress: getCharSegmentStartAddress("specialBubbles"),
 		length: charSegmentLengths.specialBubbles,
 	},
 	lightning: {
-		startAddress: getItemsStartAddress("lightning"),
+		startAddress: getCharSegmentStartAddress("lightning"),
 		length: charSegmentLengths.lightning,
 	},
 	fire: {
-		startAddress: getItemsStartAddress("fire"),
+		startAddress: getCharSegmentStartAddress("fire"),
 		length: charSegmentLengths.fire,
 	},
 	extendBubbles: {
-		startAddress: getItemsStartAddress("extendBubbles"),
+		startAddress: getCharSegmentStartAddress("extendBubbles"),
 		length: charSegmentLengths.extendBubbles,
 	},
 	stonerWeapon: {
-		startAddress: getItemsStartAddress("stonerWeapon"),
+		startAddress: getCharSegmentStartAddress("stonerWeapon"),
 		length: charSegmentLengths.stonerWeapon,
 	},
 	drunkAndInvaderWeapon: {
-		startAddress: getItemsStartAddress("drunkAndInvaderWeapon"),
+		startAddress: getCharSegmentStartAddress("drunkAndInvaderWeapon"),
 		length: charSegmentLengths.drunkAndInvaderWeapon,
 	},
 	incendoWeapon: {
-		startAddress: getItemsStartAddress("incendoWeapon"),
+		startAddress: getCharSegmentStartAddress("incendoWeapon"),
 		length: charSegmentLengths.incendoWeapon,
 	},
 	items: {
-		startAddress: getItemsStartAddress("items"),
+		startAddress: getCharSegmentStartAddress("items"),
 		length: charSegmentLengths.items,
 	},
 	//  (4x4 chars, but only 12 chars are stored.)
 	largeLightning: {
-		startAddress: getItemsStartAddress("largeLightning"),
+		startAddress: getCharSegmentStartAddress("largeLightning"),
 		length: charSegmentLengths.largeLightning,
 	},
 	bonusRoundCircles: {
-		startAddress: getItemsStartAddress("bonusRoundCircles"),
+		startAddress: getCharSegmentStartAddress("bonusRoundCircles"),
 		length: charSegmentLengths.bonusRoundCircles,
 	},
 	flowingWater: {
