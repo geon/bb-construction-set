@@ -17,7 +17,7 @@ import {
 } from "./data-locations";
 import { LevelDataSegmentName } from "../game-definitions/level-segment-name";
 import { spriteGroupNames } from "../game-definitions/sprite-segment-name";
-import { parseCharGroups, serializeCharGroups } from "./items";
+import { parseCharGroups, serializeCharGroups } from "./char-groups";
 import {
 	readBubbleCurrentRectangles,
 	writeBubbleCurrentRectangles,

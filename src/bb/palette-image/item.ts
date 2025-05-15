@@ -7,7 +7,7 @@ import {
 	strictChunk,
 	zipObject,
 } from "../functions";
-import { charGroupMeta } from "../prg/items";
+import { charGroupMeta } from "../prg/char-groups";
 import {
 	CharBlock,
 	CharGroup,

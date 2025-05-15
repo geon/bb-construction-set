@@ -9,7 +9,7 @@ import {
 import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
 import { LevelDataSegmentName } from "../game-definitions/level-segment-name";
 import { mapRecord, objectFromEntries, sum } from "../functions";
-import { charGroupMeta } from "./items";
+import { charGroupMeta } from "./char-groups";
 
 export const maxAsymmetric = 45;
 export const maxSidebars = 59;
