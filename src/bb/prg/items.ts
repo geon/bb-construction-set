@@ -113,6 +113,48 @@ export const itemGroupMeta = {
 		hasMask: false,
 		transposed: false,
 	},
+	secretLevelPlatform: {
+		width: 1,
+		height: 1,
+		count: 1,
+		hasMask: false,
+		transposed: false,
+	},
+	secretLevelSideDecor: {
+		width: 2,
+		height: 2,
+		count: 1,
+		hasMask: false,
+		transposed: true,
+	},
+	secretLevelPedestal: {
+		width: 7,
+		height: 1,
+		count: 1,
+		hasMask: false,
+		transposed: false,
+	},
+	secretLevelPedestalRightEdge: {
+		width: 1,
+		height: 1,
+		count: 1,
+		hasMask: false,
+		transposed: false,
+	},
+	secretLevelPedestalDoor: {
+		width: 2,
+		height: 2,
+		count: 1,
+		hasMask: false,
+		transposed: false,
+	},
+	secretLevelBasementDoor: {
+		width: 3,
+		height: 2,
+		count: 1,
+		hasMask: false,
+		transposed: false,
+	},
 } as const satisfies Record<
 	ItemDataSegmentName,
 	{

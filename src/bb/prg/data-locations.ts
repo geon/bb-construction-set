@@ -254,4 +254,28 @@ export const itemDataSegmentLocations: Readonly<
 		startAddress: 0x4200,
 		length: itemSegmentLengths.fireOnGround,
 	},
+	secretLevelPlatform: {
+		startAddress: 0xa668 - 8,
+		length: itemSegmentLengths.secretLevelPlatform,
+	},
+	secretLevelSideDecor: {
+		startAddress: 0xa668,
+		length: itemSegmentLengths.secretLevelSideDecor,
+	},
+	secretLevelPedestal: {
+		startAddress: 0xa668 + 8 * 4,
+		length: itemSegmentLengths.secretLevelPedestal,
+	},
+	secretLevelPedestalRightEdge: {
+		startAddress: 0x9594,
+		length: itemSegmentLengths.secretLevelPedestalRightEdge,
+	},
+	secretLevelPedestalDoor: {
+		startAddress: 0xa668 + 8 * 4 + 8 * 7,
+		length: itemSegmentLengths.secretLevelPedestalDoor,
+	},
+	secretLevelBasementDoor: {
+		startAddress: 0xa668 + 8 * 4 + 8 * 7 + 8 * 4,
+		length: itemSegmentLengths.secretLevelBasementDoor,
+	},
 };

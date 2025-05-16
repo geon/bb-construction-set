@@ -14,5 +14,11 @@ export const itemDataSegmentNames = [
 	"bonusRoundCircles",
 	"flowingWater",
 	"fireOnGround",
+	"secretLevelPlatform",
+	"secretLevelSideDecor",
+	"secretLevelPedestal",
+	"secretLevelPedestalRightEdge",
+	"secretLevelPedestalDoor",
+	"secretLevelBasementDoor",
 ] as const;
 export type ItemDataSegmentName = (typeof itemDataSegmentNames)[number];
