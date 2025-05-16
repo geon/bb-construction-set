@@ -24,7 +24,7 @@ import { ColorPixelByte } from "../internal-data-formats/color-pixel-byte";
 import { SubPaletteIndex } from "../internal-data-formats/palette";
 import { c64BuiltinCharsets } from "./c64-builtin-charsets";
 import { PaletteIndex } from "../internal-data-formats/palette";
-import { shadowChars, ShadowChars } from "../prg/shadow-chars";
+import { ShadowChars } from "../prg/shadow-chars";
 import { mapTuple } from "../tuple";
 import { Sprite } from "../internal-data-formats/sprite";
 import { CharName } from "../game-definitions/char-name";
@@ -111,13 +111,14 @@ const bubbleCurrentRectangleCharsetIndices = {
 export function levelsToPeFileData(data: {
 	levels: readonly Level[];
 	sprites: Sprites;
+	shadowChars: ShadowChars;
 }): PeFileData {
 	return createPeFileData({
 		spriteSets: spritesToPeSpriteSets(data.sprites),
 		...levelsToPeScreensAndCharsets(
 			data.levels,
 			mapRecord(data.sprites, ({ color }) => color),
-			shadowChars.originalC64
+			data.shadowChars
 		),
 	});
 }

@@ -7,6 +7,8 @@ import { characterNames } from "../../game-definitions/character-name";
 import { spriteSizePixels } from "../../../c64/consts";
 import { Sprite } from "../../internal-data-formats/sprite";
 import { assertTuple } from "../../tuple";
+import { shadowChars } from "../../prg/shadow-chars";
+import { parsePrg } from "../../prg/parse-prg";
 
 function makeFakeSprite(): Sprite {
 	return assertTuple(
@@ -21,6 +23,10 @@ function makeFakeSprite(): Sprite {
 }
 
 test("peFileDataToLevels & levelsToPeFileData", () => {
+	const parsedPrg = parsePrg(
+		readFileSync(__dirname + "/../../prg/tests/decompressed-bb.prg").buffer
+	);
+
 	const peFileData = deserializePeFileData(
 		readFileSync(__dirname + "/level-01.pe", "utf8")
 	);
@@ -39,6 +45,7 @@ test("peFileDataToLevels & levelsToPeFileData", () => {
 				},
 			])
 		),
+		shadowChars: shadowChars[parsedPrg.shadowStyle],
 	});
 
 	// Dummy data, not tested.
