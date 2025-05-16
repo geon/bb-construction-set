@@ -26,6 +26,8 @@ const prg = new Uint8Array(
 // const needle: number[] = [0, 5, 63, 15, 14, 14, 15, 63];
 // Sectret level pedestal right edge.
 // const needle: number[] = [64, 64, 64, 64, 64, 64, 64, 64];
+// Third fire frame
+// const needle: number[] = [0, 0, 4, 25, 100, 105, 105, 20];
 
 const needle: number[] = [];
 
