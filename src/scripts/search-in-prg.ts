@@ -2,6 +2,7 @@ import { readFileSync } from "fs";
 import { fileURLToPath } from "url";
 import path from "path";
 import { getPrgStartAddress } from "../bb/prg/io";
+import { range } from "../bb/functions";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -28,7 +29,7 @@ const prg = new Uint8Array(
 
 const needle: number[] = [];
 
-const found = prg.findIndex((_, prgIndex) =>
+const founds = range(0, prg.byteLength).filter((prgIndex) =>
 	needle.every(
 		(_, needleIndex) => prg[prgIndex + needleIndex] === needle[needleIndex]
 	)
@@ -45,8 +46,10 @@ function formatHex(address: number) {
 	return formatted;
 }
 
-if (found === -1) {
+if (!founds.length) {
 	console.log("not found");
 } else {
-	console.log("found:", formatHex(indexToAddress(found)));
+	for (const found of founds) {
+		console.log("found:", formatHex(indexToAddress(found)));
+	}
 }
