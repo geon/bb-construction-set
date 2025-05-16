@@ -34,10 +34,19 @@ const found = prg.findIndex((_, prgIndex) =>
 	)
 );
 
+function indexToAddress(index: number) {
+	const startAddress = getPrgStartAddress(prg.buffer);
+	const address = startAddress + index - 2;
+	return address;
+}
+
+function formatHex(address: number) {
+	const formatted = "0x" + address.toString(16);
+	return formatted;
+}
+
 if (found === -1) {
 	console.log("not found");
 } else {
-	const startAddress = getPrgStartAddress(prg.buffer);
-	const address = startAddress + found - 2;
-	console.log("found:", "0x" + address.toString(16));
+	console.log("found:", formatHex(indexToAddress(found)));
 }
