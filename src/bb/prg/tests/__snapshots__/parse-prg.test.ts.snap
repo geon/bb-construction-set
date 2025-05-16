@@ -979,7 +979,7 @@ exports[`parsePrg 1`] = `
 }
 `;
 
-exports[`parsePrg items 1`] = `
+exports[`parsePrg chars 1`] = `
 {
   "baronVonBlubba": [
     [

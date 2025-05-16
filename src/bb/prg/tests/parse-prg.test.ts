@@ -30,7 +30,7 @@ test("parsePrg", () => {
 	expect(levelFromPrg).toMatchSnapshot();
 });
 
-test("parsePrg items", () => {
+test("parsePrg chars", () => {
 	expect(
 		parsePrg(readFileSync(__dirname + "/decompressed-bb.prg").buffer).chars
 	).toMatchSnapshot();
