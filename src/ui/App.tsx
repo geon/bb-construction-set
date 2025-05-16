@@ -11,7 +11,6 @@ import { LevelGraphics } from "./tabs/LevelGraphics";
 import { parsePrg } from "../bb/prg/parse-prg";
 import { ParsedPrg } from "../bb/internal-data-formats/parsed-prg";
 import { attempt } from "../bb/functions";
-import { PlatformShadows } from "./tabs/PlatformShadows";
 
 const Page = styled.div`
 	width: 600px;
@@ -90,22 +89,6 @@ export function App() {
 										<Card>
 											<h2>{tab.title}</h2>
 											<LevelGraphics
-												parsedPrg={parsedPrg}
-												setParsedPrg={setParsedPrg}
-											/>
-										</Card>
-									</>
-								);
-							},
-						},
-						platformShadows: {
-							title: "Platform Shadows",
-							render: (tab) => {
-								return (
-									<>
-										<Card>
-											<h2>{tab.title}</h2>
-											<PlatformShadows
 												parsedPrg={parsedPrg}
 												setParsedPrg={setParsedPrg}
 											/>

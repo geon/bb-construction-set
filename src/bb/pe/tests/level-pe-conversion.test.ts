@@ -7,7 +7,6 @@ import { characterNames } from "../../game-definitions/character-name";
 import { spriteSizePixels } from "../../../c64/consts";
 import { Sprite } from "../../internal-data-formats/sprite";
 import { assertTuple } from "../../tuple";
-import { shadowChars } from "../../prg/shadow-chars";
 import { parsePrg } from "../../prg/parse-prg";
 
 function makeFakeSprite(): Sprite {
@@ -45,7 +44,7 @@ test("peFileDataToLevels & levelsToPeFileData", () => {
 				},
 			])
 		),
-		shadowChars: shadowChars[parsedPrg.shadowStyle],
+		shadowChars: assertTuple(parsedPrg.chars.shadows.flat().flat(), 6),
 	});
 
 	// Dummy data, not tested.

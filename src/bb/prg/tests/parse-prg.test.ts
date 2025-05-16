@@ -54,7 +54,7 @@ test("patchPrg", () => {
 	).buffer;
 
 	const parsedPrg = parsePrg(prgFileContent);
-	const patched = patchPrg(prgFileContent, parsedPrg, "originalC64");
+	const patched = patchPrg(prgFileContent, parsedPrg);
 
 	// Just comparing the ArrayBuffers is super slow and fails.
 	expect(Buffer.from(patched)).toStrictEqual(Buffer.from(prgFileContent));

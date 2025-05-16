@@ -8,6 +8,5 @@ export const levelDataSegmentNames = [
 	"holeMetadata",
 	"monsters",
 	"windCurrents",
-	"shadowChars",
 ] as const;
 export type LevelDataSegmentName = (typeof levelDataSegmentNames)[number];

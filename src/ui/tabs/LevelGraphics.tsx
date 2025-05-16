@@ -15,7 +15,7 @@ import { ImageDataCanvas } from "../ImageDataCanvas";
 import { FileInput } from "../FileInput";
 import { imageDataFromPaletteImage } from "../../bb/image-data/image-data";
 import { doubleImageWidth } from "../../bb/palette-image/palette-image";
-import { shadowChars } from "../../bb/prg/shadow-chars";
+import { assertTuple } from "../../bb/tuple";
 
 export function LevelGraphics({
 	parsedPrg,
@@ -42,7 +42,10 @@ export function LevelGraphics({
 									levelsToPeFileData({
 										...parsedPrg,
 										levels: [level],
-										shadowChars: shadowChars[parsedPrg.shadowStyle],
+										shadowChars: assertTuple(
+											parsedPrg.chars.shadows.flat().flat(),
+											6
+										),
 									})
 								),
 							],

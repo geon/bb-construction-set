@@ -157,6 +157,7 @@ export function layOutChars(): LayoutRect {
 				laidOutCharGroups.secretLevelPedestalRightEdge,
 				laidOutCharGroups.secretLevelPedestalDoor,
 				laidOutCharGroups.secretLevelBasementDoor,
+				laidOutCharGroups.shadows,
 			],
 		].map((chunk) => flexbox(chunk, "column", 3 * 8)),
 		"row",

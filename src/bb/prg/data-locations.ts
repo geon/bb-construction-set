@@ -90,10 +90,6 @@ export const levelSegmentLocations: Readonly<
 		// Determined through experimentation with ts code. Might be wrong.
 		length: 1145,
 	},
-	shadowChars: {
-		startAddress: 0x4050,
-		length: 6 * 8, // 6 chars of 8 bytes.
-	},
 };
 
 export const spriteCounts: Record<SpriteGroupName, number> = {
@@ -276,6 +272,11 @@ export const charSegmentLocations: Readonly<
 	},
 	secretLevelBasementDoor: {
 		startAddress: 0xa668 + 8 * 4 + 8 * 7 + 8 * 4,
+		length: charSegmentLengths.secretLevelBasementDoor,
+	},
+	shadows: {
+		startAddress: 0x4050,
+		// length: 6 * 8, // 6 chars of 8 bytes.
 		length: charSegmentLengths.secretLevelBasementDoor,
 	},
 };

@@ -12,7 +12,7 @@ import {
 	imageDataToBlob,
 } from "../../bb/image-data/image-data";
 import { doubleImageWidth } from "../../bb/palette-image/palette-image";
-import { shadowChars as shadow } from "../../bb/prg/shadow-chars";
+import { assertTuple } from "../../bb/tuple";
 
 export function Levels({
 	parsedPrg,
@@ -20,7 +20,7 @@ export function Levels({
 	readonly parsedPrg: ParsedPrg;
 	readonly setParsedPrg: (parsedPrg: ParsedPrg) => void;
 }): ReactNode {
-	const shadowChars = shadow[parsedPrg.shadowStyle];
+	const shadowChars = assertTuple(parsedPrg.chars.shadows.flat().flat(), 6);
 
 	return (
 		<>
@@ -69,7 +69,7 @@ export function Levels({
 									levelsToPeFileData({
 										...parsedPrg,
 										levels: [level],
-										shadowChars: shadowChars,
+										shadowChars,
 									})
 								),
 							],

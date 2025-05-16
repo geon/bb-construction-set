@@ -33,10 +33,8 @@ import { parseSpriteGroupsFromPrg, serializeSprite } from "./sprites";
 import { readTileBitmaps } from "./tile-bitmap";
 import { writeSymmetry, writeBitmaps, writeHoles } from "./misc-patch";
 import { readBubbleCurrentPerLineDefaults } from "./bubble-current-per-line-defaults";
-import { detectShadowStyle, shadowChars, ShadowStyle } from "./shadow-chars";
 import { ReadonlyUint8Array } from "../types";
 import { ParsedPrg } from "../internal-data-formats/parsed-prg";
-import { serializeColorPixelByte } from "../internal-data-formats/color-pixel-byte";
 import { charSegmentNames } from "../game-definitions/char-segment-name";
 
 export function parsePrg(prg: ArrayBuffer): ParsedPrg {
@@ -47,11 +45,7 @@ export function parsePrg(prg: ArrayBuffer): ParsedPrg {
 	);
 	const chars = parseCharGroups(getDataSegments(prg, charSegmentLocations));
 
-	const shadowStyle = detectShadowStyle(
-		getDataSegments(prg, levelSegmentLocations).shadowChars
-	);
-
-	return { levels, sprites, chars, shadowStyle };
+	return { levels, sprites, chars };
 }
 
 function readLevels(
@@ -83,8 +77,7 @@ function readLevels(
 
 export function levelsToSegments(
 	prgSegments: Record<LevelDataSegmentName, DataSegment>,
-	levels: readonly Level[],
-	shadowStyle: ShadowStyle
+	levels: readonly Level[]
 ) {
 	if (levels.length !== 100) {
 		throw new Error(`Wrong number of levels: ${levels.length}. Should be 100.`);
@@ -116,28 +109,18 @@ export function levelsToSegments(
 		windCurrents: writeBubbleCurrentRectangles(
 			unzippedLevels.bubbleCurrentRectangles
 		),
-		// TODO: Not part of the levels.
-		shadowChars: new Uint8Array(
-			shadowChars[shadowStyle].flatMap((char) =>
-				char.flatMap(serializeColorPixelByte)
-			)
-		),
 	};
 
 	return newSegments;
 }
 
-export function patchPrg(
-	prg: ArrayBuffer,
-	parsedPrg: ParsedPrg,
-	shadowStyle: ShadowStyle
-): ArrayBuffer {
+export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
 	const { levels, sprites: spriteGroups, chars: charGroups } = parsedPrg;
 
 	const patchedPrg = prg.slice();
 
 	const prgSegments = getMutableDataSegments(patchedPrg, levelSegmentLocations);
-	const newSegments = levelsToSegments(prgSegments, levels, shadowStyle);
+	const newSegments = levelsToSegments(prgSegments, levels);
 
 	for (const [segmentName, prgSegment] of objectEntries(prgSegments)) {
 		prgSegment.buffer.set(
