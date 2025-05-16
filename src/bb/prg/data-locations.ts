@@ -246,6 +246,10 @@ export const charSegmentLocations: Readonly<
 		startAddress: 0x40f8,
 		length: charSegmentLengths.flowingWater,
 	},
+	fireOnGroundA: {
+		startAddress: 0x40e0,
+		length: charSegmentLengths.fireOnGroundA,
+	},
 	fireOnGround: {
 		startAddress: 0x4200,
 		length: charSegmentLengths.fireOnGround,

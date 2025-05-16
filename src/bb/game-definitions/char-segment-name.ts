@@ -13,6 +13,7 @@ export const charSegmentNames = [
 	"largeLightning",
 	"bonusRoundCircles",
 	"flowingWater",
+	"fireOnGroundA",
 	"fireOnGround",
 	"secretLevelPlatform",
 	"secretLevelSideDecor",

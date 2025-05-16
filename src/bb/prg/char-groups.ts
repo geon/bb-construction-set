@@ -106,6 +106,13 @@ export const charGroupMeta = {
 		hasMask: false,
 		transposed: false,
 	},
+	fireOnGroundA: {
+		width: 1,
+		height: 1,
+		count: 1,
+		hasMask: false,
+		transposed: false,
+	},
 	fireOnGround: {
 		width: 1,
 		height: 1,

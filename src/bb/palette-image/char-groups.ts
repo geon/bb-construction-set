@@ -150,6 +150,7 @@ export function layOutChars(): LayoutRect {
 				laidOutCharGroups.bonusRoundCircles,
 				laidOutCharGroups.largeLightning,
 				laidOutCharGroups.flowingWater,
+				laidOutCharGroups.fireOnGroundA,
 				laidOutCharGroups.fireOnGround,
 				laidOutCharGroups.secretLevelPlatform,
 				laidOutCharGroups.secretLevelSideDecor,
