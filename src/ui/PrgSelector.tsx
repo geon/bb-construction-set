@@ -25,7 +25,7 @@ export function PrgSelector({
 				accept={["prg"]}
 				onChange={async (file) => setPrg(await file.arrayBuffer())}
 			>
-				Choose file
+				Open...
 			</FileInput>
 		</>
 	);

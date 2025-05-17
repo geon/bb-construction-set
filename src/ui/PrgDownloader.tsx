@@ -57,7 +57,7 @@ export function PrgDownloader({
 						fileName: "custom bubble bobble.prg",
 					};
 				}}
-				label="Save prg"
+				label="Save"
 			/>
 		</>
 	);
