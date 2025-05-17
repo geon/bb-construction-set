@@ -33,15 +33,6 @@ export function Levels({
 			/>
 			<br />
 			<br />
-			<ImageDataCanvas
-				imageData={imageDataFromPaletteImage(
-					doubleImageWidth(
-						drawLevel(parsedPrg.levels[4]!, parsedPrg.sprites, shadowChars)
-					)
-				)}
-			/>
-			<br />
-			<br />
 			<BlobDownloadButton
 				getBlob={async () => ({
 					parts: await mapAsync(parsedPrg.levels, async (level, index) => ({
