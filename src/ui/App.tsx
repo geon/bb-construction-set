@@ -54,13 +54,13 @@ export function App() {
 	return (
 		<Page>
 			<h1>BB Construction Set</h1>
-			<Card>
-				{prg ? (
-					<PrgDownloader prg={prg} parsedPrg={parsedPrg} />
-				) : (
+			{prg ? (
+				<PrgDownloader prg={prg} parsedPrg={parsedPrg} />
+			) : (
+				<Card>
 					<PrgSelector setPrg={setPrg} />
-				)}
-			</Card>
+				</Card>
+			)}
 			{parsedPrg && (
 				<TabBar
 					initialTabId={"levelGraphics"}

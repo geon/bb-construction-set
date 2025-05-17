@@ -7,6 +7,7 @@ import { drawLevel } from "../bb/palette-image/level";
 import { doubleImageWidth } from "../bb/palette-image/palette-image";
 import { ImageDataCanvas } from "./ImageDataCanvas";
 import { assertTuple } from "../bb/tuple";
+import { Card } from "./Card";
 
 export function PrgDownloader({
 	parsedPrg,
@@ -18,7 +19,7 @@ export function PrgDownloader({
 	const shadowChars = assertTuple(parsedPrg.chars.shadows.flat().flat(), 6);
 
 	return (
-		<>
+		<Card>
 			<ImageDataCanvas
 				imageData={imageDataFromPaletteImage(
 					doubleImageWidth(
@@ -59,6 +60,6 @@ export function PrgDownloader({
 				}}
 				label="Save"
 			/>
-		</>
+		</Card>
 	);
 }
