@@ -8,6 +8,22 @@ import { doubleImageWidth } from "../bb/palette-image/palette-image";
 import { ImageDataCanvas } from "./ImageDataCanvas";
 import { assertTuple } from "../bb/tuple";
 import { Card } from "./Card";
+import styled from "styled-components";
+
+const ImageCard = styled(Card)<{
+	readonly children: [JSX.Element, JSX.Element];
+}>`
+	padding: 0;
+	overflow: hidden;
+
+	> :first-child {
+		width: 100%;
+	}
+
+	> :last-child {
+		padding: 1em;
+	}
+`;
 
 export function PrgDownloader({
 	parsedPrg,
@@ -19,7 +35,7 @@ export function PrgDownloader({
 	const shadowChars = assertTuple(parsedPrg.chars.shadows.flat().flat(), 6);
 
 	return (
-		<Card>
+		<ImageCard>
 			<ImageDataCanvas
 				imageData={imageDataFromPaletteImage(
 					doubleImageWidth(
@@ -27,10 +43,9 @@ export function PrgDownloader({
 					)
 				)}
 			/>
-			<br />
-			<br />
-			{/* <h2>Save your prg-file</h2> */}
-			{/* <p>
+			<div>
+				{/* <h2>Save your prg-file</h2> */}
+				{/* <p>
 				Use the tools below to view and patch your prg-file. When you are done,
 				you can download the prg-file. You can also resume editing your saved
 				prg-file later.
@@ -47,19 +62,20 @@ export function PrgDownloader({
 				</a>
 				, placed in the same folder as Exomizer to pack it for execution.
 			</p> */}
-			<BlobDownloadButton
-				getBlob={async () => {
-					const patched = patchPrg(prg, parsedPrg);
+				<BlobDownloadButton
+					getBlob={async () => {
+						const patched = patchPrg(prg, parsedPrg);
 
-					return {
-						blob: new Blob([patched], {
-							type: "application/octet-stream",
-						}),
-						fileName: "custom bubble bobble.prg",
-					};
-				}}
-				label="Save"
-			/>
-		</Card>
+						return {
+							blob: new Blob([patched], {
+								type: "application/octet-stream",
+							}),
+							fileName: "custom bubble bobble.prg",
+						};
+					}}
+					label="Save"
+				/>
+			</div>
+		</ImageCard>
 	);
 }
