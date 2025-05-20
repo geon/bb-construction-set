@@ -75,7 +75,10 @@ export function Chars({
 async function imageFromFile(file: File | Blob | MediaSource) {
 	return await new Promise<HTMLImageElement>((resolve) => {
 		const img = new Image();
-		img.onload = () => resolve(img);
+		img.onload = () => {
+			URL.revokeObjectURL(img.src);
+			resolve(img);
+		};
 		img.src = URL.createObjectURL(file);
 	});
 }

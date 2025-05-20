@@ -42,6 +42,7 @@ export function BlobDownloadButton(props: {
 				link.download = fileName;
 				link.href = URL.createObjectURL(blob);
 				link.click();
+				URL.revokeObjectURL(link.href);
 			}}
 		>
 			{props.label}
