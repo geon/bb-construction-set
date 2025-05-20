@@ -108,7 +108,7 @@ export const spriteCounts: Record<SpriteGroupName, number> = {
 	bossInBubble: 9,
 	bossFacingRight: 9,
 	bonusCupCake: 4,
-	bonusMelon: 4,
+	bonusMelonBottom: 2,
 	bonusDiamond: 2,
 	hexagonExplosion: 1,
 };
@@ -149,7 +149,7 @@ const spriteSegmentAddresses: Readonly<Record<SpriteGroupName, number>> = {
 	bossInBubble: 0x7640 + 64 * 9,
 	bossFacingRight: 0x7c40,
 	bonusCupCake: 0xa320,
-	bonusMelon: 0xa420,
+	bonusMelonBottom: 0xa420 + 64 * 2,
 	bonusDiamond: 0xa520,
 	hexagonExplosion: 0xa854,
 };

@@ -59,7 +59,7 @@ export function layOutSpriteGroups(): LayoutRect {
 				spriteGroupRects.bossFacingRight,
 				spriteGroupRects.bossInBubble,
 				flexbox(
-					[spriteGroupRects.bonusCupCake, spriteGroupRects.bonusMelon],
+					[spriteGroupRects.bonusCupCake, spriteGroupRects.bonusMelonBottom],
 					"row",
 					8
 				),
@@ -122,7 +122,7 @@ export const spriteGroupMultiWidths: Record<SpriteGroupName, number> = {
 	bossInBubble: 3,
 	bossFacingRight: 3,
 	bonusCupCake: 2,
-	bonusMelon: 2,
+	bonusMelonBottom: 2,
 	bonusDiamond: 2,
 	hexagonExplosion: 1,
 };
