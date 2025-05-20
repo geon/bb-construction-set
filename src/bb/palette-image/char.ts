@@ -74,7 +74,7 @@ export function drawPlatformCharsToCanvas(
 	);
 }
 
-function drawLevelPlatformChars(level: Level): PaletteImage {
+export function drawLevelPlatformChars(level: Level): PaletteImage {
 	const charPalette = getCharPalette(level);
 
 	const platformChars = [

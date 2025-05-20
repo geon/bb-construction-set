@@ -98,6 +98,8 @@ export function App() {
 											<LevelGraphics
 												parsedPrg={parsedPrg}
 												setParsedPrg={setParsedPrg}
+												levelIndex={levelIndex}
+												setLevelIndex={setLevelIndex}
 											/>
 										</Card>
 									</>

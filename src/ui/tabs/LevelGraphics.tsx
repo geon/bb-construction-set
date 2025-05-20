@@ -10,26 +10,31 @@ import {
 import { BlobDownloadButton } from "../BlobDownloadButton";
 import { attempt, unzipObject, zipObject } from "../../bb/functions";
 import { ParsedPrg } from "../../bb/internal-data-formats/parsed-prg";
-import { drawPlatformCharsToCanvas } from "../../bb/palette-image/char";
+import { drawLevelPlatformChars } from "../../bb/palette-image/char";
 import { ImageDataCanvas } from "../ImageDataCanvas";
 import { FileInput } from "../FileInput";
 import { imageDataFromPaletteImage } from "../../bb/image-data/image-data";
 import { doubleImageWidth } from "../../bb/palette-image/palette-image";
 import { assertTuple } from "../../bb/tuple";
+import styled from "styled-components";
 
 export function LevelGraphics({
 	parsedPrg,
 	setParsedPrg,
+	levelIndex,
+	setLevelIndex,
 }: {
 	readonly parsedPrg: ParsedPrg;
 	readonly setParsedPrg: (parsedPrg: ParsedPrg) => void;
+	readonly levelIndex: number;
+	readonly setLevelIndex: (index: number) => void;
 }): ReactNode {
 	return (
 		<>
-			<ImageDataCanvas
-				imageData={imageDataFromPaletteImage(
-					doubleImageWidth(drawPlatformCharsToCanvas(parsedPrg.levels))
-				)}
+			<LevelSelector
+				parsedPrg={parsedPrg}
+				levelIndex={levelIndex}
+				setLevelIndex={setLevelIndex}
 			/>
 			<br />
 			<br />
@@ -115,3 +120,42 @@ export function LevelGraphics({
 		</>
 	);
 }
+
+const LevelSelector = styled(
+	(props: {
+		readonly parsedPrg: ParsedPrg;
+		readonly levelIndex: number;
+		readonly setLevelIndex: (index: number) => void;
+		readonly className?: string;
+	}): JSX.Element => {
+		return (
+			<nav className={props.className}>
+				{props.parsedPrg.levels.map((level, levelIndex) => (
+					<ImageDataCanvas
+						key={levelIndex}
+						className={levelIndex === props.levelIndex ? "active" : undefined}
+						imageData={imageDataFromPaletteImage(
+							doubleImageWidth(drawLevelPlatformChars(level))
+						)}
+						onClick={() => props.setLevelIndex(levelIndex)}
+						style={{ cursor: "pointer" }}
+					/>
+				))}
+			</nav>
+		);
+	}
+)`
+	display: grid;
+	grid-template-columns: repeat(10, auto);
+	grid-column-gap: 8px;
+	grid-row-gap: 8px;
+	justify-items: center;
+	justify-content: center;
+
+	> .active {
+		box-shadow: 0 0 0 2px black, 0 0 0 3px white;
+		@media (prefers-color-scheme: light) {
+			box-shadow: 0 0 0 2px white, 0 0 0 3px black;
+		}
+	}
+`;
