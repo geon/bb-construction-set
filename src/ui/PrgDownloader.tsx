@@ -9,12 +9,17 @@ import { ImageDataCanvas } from "./ImageDataCanvas";
 import { assertTuple } from "../bb/tuple";
 import { Card } from "./Card";
 import styled from "styled-components";
+import { drawLevelThumbnail } from "../bb/image-data/draw-levels-to-canvas";
+import { mapRecord } from "../bb/functions";
 
 const ImageCard = styled(Card)<{
 	readonly children: [JSX.Element, JSX.Element];
 }>`
 	padding: 0;
 	overflow: hidden;
+
+	display: flex;
+	flex-direction: column;
 
 	> :first-child {
 		width: 100%;
@@ -25,24 +30,96 @@ const ImageCard = styled(Card)<{
 	}
 `;
 
+const LevelSelector = styled(
+	(props: {
+		readonly parsedPrg: ParsedPrg;
+		readonly levelIndex: number;
+		readonly setLevelIndex: (index: number) => void;
+		readonly className?: string;
+	}): JSX.Element => {
+		const shadowChars = assertTuple(
+			props.parsedPrg.chars.shadows.flat().flat(),
+			6
+		);
+		const spriteColors = mapRecord(
+			props.parsedPrg.sprites,
+			({ color }) => color
+		);
+
+		return (
+			<nav className={props.className}>
+				{props.parsedPrg.levels.map((level, levelIndex) => (
+					<ImageDataCanvas
+						key={levelIndex}
+						className={levelIndex === props.levelIndex ? "active" : undefined}
+						imageData={drawLevelThumbnail(level, spriteColors, shadowChars)}
+						onClick={() => props.setLevelIndex(levelIndex)}
+						style={{ cursor: "pointer" }}
+					/>
+				))}
+			</nav>
+		);
+	}
+)`
+	display: grid;
+	grid-template-columns: repeat(20, auto);
+	grid-column-gap: 0px;
+	grid-row-gap: 0px;
+	justify-items: center;
+	justify-content: center;
+
+	> * {
+		// Cut one pixel from each side.
+		width: 30px;
+		height: 25px;
+		object-fit: cover;
+
+		opacity: 30%;
+		&.active {
+			opacity: 100%;
+		}
+	}
+`;
+
+const LevelPreview = styled.div`
+	display: flex;
+	flex-direction: column;
+`;
+
 export function PrgDownloader({
 	parsedPrg,
 	prg,
+	levelIndex,
+	setLevelIndex,
 }: {
 	readonly parsedPrg: ParsedPrg;
 	readonly prg: ArrayBuffer;
+	readonly levelIndex: number;
+	readonly setLevelIndex: React.Dispatch<React.SetStateAction<number>>;
 }): ReactNode {
 	const shadowChars = assertTuple(parsedPrg.chars.shadows.flat().flat(), 6);
 
 	return (
 		<ImageCard>
-			<ImageDataCanvas
-				imageData={imageDataFromPaletteImage(
-					doubleImageWidth(
-						drawLevel(parsedPrg.levels[4]!, parsedPrg.sprites, shadowChars)
-					)
-				)}
-			/>
+			<LevelPreview>
+				<ImageDataCanvas
+					style={{ width: "100%" }}
+					imageData={imageDataFromPaletteImage(
+						doubleImageWidth(
+							drawLevel(
+								parsedPrg.levels[levelIndex]!,
+								parsedPrg.sprites,
+								shadowChars
+							)
+						)
+					)}
+				/>
+				<LevelSelector
+					parsedPrg={parsedPrg}
+					levelIndex={levelIndex}
+					setLevelIndex={setLevelIndex}
+				/>
+			</LevelPreview>
 			<div>
 				{/* <h2>Save your prg-file</h2> */}
 				{/* <p>

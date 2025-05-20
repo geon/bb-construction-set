@@ -37,7 +37,7 @@ export function drawLevelsToCanvas(
 	);
 }
 
-function drawLevelThumbnail(
+export function drawLevelThumbnail(
 	level: Level,
 	spriteColors: Record<CharacterName, PaletteIndex>,
 	shadowChars: ShadowChars

@@ -51,11 +51,18 @@ export function App() {
 
 	const { parsedPrg, prg } = state ?? { parsedPrg: undefined, prg: undefined };
 
+	const [levelIndex, setLevelIndex] = useState<number>(0);
+
 	return (
 		<Page>
 			<h1>BB Construction Set</h1>
 			{prg ? (
-				<PrgDownloader prg={prg} parsedPrg={parsedPrg} />
+				<PrgDownloader
+					prg={prg}
+					parsedPrg={parsedPrg}
+					levelIndex={levelIndex}
+					setLevelIndex={setLevelIndex}
+				/>
 			) : (
 				<Card>
 					<PrgSelector setPrg={setPrg} />
