@@ -1,6 +1,8 @@
 import { useRef, useEffect } from "react";
 
-export function ImageDataCanvas(props: {
+export function ImageDataCanvas({
+	imageData,
+}: {
 	readonly imageData: ImageData;
 }): React.ReactNode {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -9,11 +11,11 @@ export function ImageDataCanvas(props: {
 		if (!canvasRef.current) {
 			return;
 		}
-		canvasRef.current.width = props.imageData.width;
-		canvasRef.current.height = props.imageData.height;
+		canvasRef.current.width = imageData.width;
+		canvasRef.current.height = imageData.height;
 		const ctx = canvasRef.current.getContext("2d");
-		ctx && ctx.putImageData(props.imageData, 0, 0);
-	}, [props.imageData]);
+		ctx && ctx.putImageData(imageData, 0, 0);
+	}, [imageData]);
 
 	return <canvas ref={canvasRef} style={{ imageRendering: "pixelated" }} />;
 }
