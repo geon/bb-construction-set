@@ -2,9 +2,10 @@ import { useRef, useEffect } from "react";
 
 export function ImageDataCanvas({
 	imageData,
+	...canvasProps
 }: {
 	readonly imageData: ImageData;
-}): React.ReactNode {
+} & React.CanvasHTMLAttributes<HTMLCanvasElement>): React.ReactNode {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 
 	useEffect(() => {
@@ -17,5 +18,11 @@ export function ImageDataCanvas({
 		ctx && ctx.putImageData(imageData, 0, 0);
 	}, [imageData]);
 
-	return <canvas ref={canvasRef} style={{ imageRendering: "pixelated" }} />;
+	return (
+		<canvas
+			{...canvasProps}
+			style={{ ...canvasProps.style, imageRendering: "pixelated" }}
+			ref={canvasRef}
+		/>
+	);
 }
