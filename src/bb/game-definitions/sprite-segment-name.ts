@@ -15,6 +15,7 @@ export const spriteGroupNames = [
 	"bossFacingRight",
 	"bonusCupCake",
 	"bonusMelonTopLeft",
+	"bonusMelonTopRight",
 	"bonusMelonBottom",
 	"bonusDiamond",
 	"hexagonExplosion",
