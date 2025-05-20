@@ -121,8 +121,8 @@ export function paletteImageFromImageData(imageData: ImageData): PaletteImage {
 }
 
 export function imageDataToBlob(image: ImageData): Promise<Blob> {
-	var canvas = document.createElement("canvas");
-	var ctx = canvas.getContext("2d");
+	const canvas = document.createElement("canvas");
+	const ctx = canvas.getContext("2d");
 	if (!ctx) {
 		throw new Error("Missing canvas 2d context.");
 	}

@@ -38,7 +38,7 @@ export function BlobDownloadButton(props: {
 							fileName: result.fileName,
 					  };
 
-				var link = document.createElement("a");
+				const link = document.createElement("a");
 				link.download = fileName;
 				link.href = URL.createObjectURL(blob);
 				link.click();

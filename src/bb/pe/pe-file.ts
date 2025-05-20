@@ -118,7 +118,7 @@ function unmangle(mangledString: string): string {
 	const unmangledCharArray = [currentMangledChar];
 	let lastUnmangledChar = currentMangledChar;
 	for (const char of mangledCharArray.slice(1)) {
-		var charCode = char.charCodeAt(0);
+		const charCode = char.charCodeAt(0);
 		const unmangledChar =
 			256 > charCode
 				? char
