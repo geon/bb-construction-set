@@ -1,5 +1,5 @@
 // // https://stackoverflow.com/a/52490977/446536
-export type Tuple<T, N extends number> = N extends N
+export type MutableTuple<T, N extends number> = N extends N
 	? number extends N
 		? T[]
 		: _TupleOf<T, N, []>
@@ -26,13 +26,13 @@ export function assertTuple<
 	array: TTuple,
 	n: N
 ): TTuple extends Array<unknown>
-	? Tuple<TOfTuple<TTuple>, N>
+	? MutableTuple<TOfTuple<TTuple>, N>
 	: ReadonlyTuple<TOfTuple<TTuple>, N> {
 	if (array.length !== n) {
 		throw new Error(`Bad length. Wanted: ${n} Actual: ${array.length}`);
 	}
 	return array as TTuple extends Array<unknown>
-		? Tuple<TOfTuple<TTuple>, N>
+		? MutableTuple<TOfTuple<TTuple>, N>
 		: ReadonlyTuple<TOfTuple<TTuple>, N>;
 }
 
@@ -48,7 +48,7 @@ export function mapTuple<
 >(
 	tuple: TTuple,
 	fn: (value: TOfTuple<TTuple>) => TOut
-): Tuple<TOut, NOfTuple<typeof tuple>> {
+): MutableTuple<TOut, NOfTuple<typeof tuple>> {
 	return assertTuple(
 		(tuple as ReadonlyArray<TOfTuple<TTuple>>).map(fn),
 		tuple.length as NOfTuple<typeof tuple>

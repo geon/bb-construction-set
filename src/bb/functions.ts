@@ -1,4 +1,4 @@
-import { NOfTuple, ReadonlyTuple, Tuple } from "./tuple";
+import { NOfTuple, ReadonlyTuple, MutableTuple } from "./tuple";
 
 export function padRight<T>(
 	array: readonly T[],
@@ -25,7 +25,7 @@ export function chunk<T>(array: readonly T[], chunkLength: number): T[][] {
 export function strictChunk<T, TChunkLength extends number>(
 	array: readonly T[],
 	chunkLength: TChunkLength
-): Tuple<T, TChunkLength>[] {
+): MutableTuple<T, TChunkLength>[] {
 	if (array.length % chunkLength !== 0) {
 		throw new Error(
 			"Strict chunked array.length must be a multiple of chunkLength." +
@@ -33,7 +33,7 @@ export function strictChunk<T, TChunkLength extends number>(
 				`array.length: ${array.length}, chunkLength: ${chunkLength}`
 		);
 	}
-	return chunk(array, chunkLength) as Tuple<T, TChunkLength>[];
+	return chunk(array, chunkLength) as MutableTuple<T, TChunkLength>[];
 }
 
 export function sum(array: readonly number[]): number {

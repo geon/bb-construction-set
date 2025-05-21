@@ -2,13 +2,13 @@ import { add, Coord2, origo } from "../../math/coord2";
 import { bottomRight, LayoutRect, leafs, Rect } from "../../math/rect";
 import { range, strictChunk, zipObject } from "../functions";
 import { PaletteIndex } from "../internal-data-formats/palette";
-import { Tuple } from "../tuple";
+import { MutableTuple } from "../tuple";
 
 /** Double width pixels. */
 export type PaletteImage<
 	Width extends number = number,
 	Height extends number = number
-> = Tuple<Tuple<PaletteIndex | undefined, Width>, Height>;
+> = MutableTuple<MutableTuple<PaletteIndex | undefined, Width>, Height>;
 
 export function createPaletteImage<
 	Height extends number = number,

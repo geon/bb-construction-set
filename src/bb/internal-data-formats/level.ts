@@ -1,7 +1,7 @@
 import { CharBlock } from "./char";
 import { Char } from "./char";
 import { PaletteIndex } from "./palette";
-import { assertTuple, mapTuple, ReadonlyTuple, Tuple } from "../tuple";
+import { assertTuple, mapTuple, ReadonlyTuple, MutableTuple } from "../tuple";
 import { levelHeight, levelWidth } from "../game-definitions/level-size";
 import { range } from "../functions";
 import { CharName } from "../game-definitions/char-name";
@@ -21,7 +21,7 @@ export type BubbleCurrentDirection = 0 | 1 | 2 | 3;
 type TileRow = ReadonlyTuple<boolean, 32>;
 export type Tiles = ReadonlyTuple<TileRow, 25>;
 
-export function createTiles(): Tuple<Tuple<boolean, 32>, 25> {
+export function createTiles(): MutableTuple<MutableTuple<boolean, 32>, 25> {
 	return mapTuple(range(levelHeight), () =>
 		mapTuple(range(levelWidth), () => false)
 	);

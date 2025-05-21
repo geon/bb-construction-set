@@ -1,7 +1,7 @@
-import { ReadonlyTuple, Tuple } from "../tuple.ts";
+import { ReadonlyTuple, MutableTuple } from "../tuple.ts";
 
 {
-	const tuple: Tuple<number, 2> = undefined!;
+	const tuple: MutableTuple<number, 2> = undefined!;
 
 	// @ts-expect-error Negative index is not allowed on tuples.
 	const num_1: number = tuple[-1];
@@ -17,7 +17,7 @@ import { ReadonlyTuple, Tuple } from "../tuple.ts";
 }
 
 {
-	const tuple: Tuple<number, 2> = undefined!;
+	const tuple: MutableTuple<number, 2> = undefined!;
 
 	// @ts-expect-error The length should be known.
 	const num1: 1 = tuple.length;
@@ -35,7 +35,7 @@ import { ReadonlyTuple, Tuple } from "../tuple.ts";
 	// @ts-expect-error Readonly should work.
 	readonlyTuple.reverse();
 	// @ts-expect-error Readonly should work.
-	const tuple: Tuple<number, 2> = readonlyTuple;
+	const tuple: MutableTuple<number, 2> = readonlyTuple;
 
 	readonlyTuple;
 	tuple;
