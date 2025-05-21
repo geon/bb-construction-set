@@ -9,11 +9,6 @@ export const spritePosOffset = {
 	y: 50,
 };
 
-export const spriteSize = {
-	x: spriteWidthBytes * 8,
-	y: spriteHeight,
-};
-
 export const spriteSizePixels = {
 	x: spriteWidthPixels,
 	y: spriteHeight,

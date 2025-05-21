@@ -11,7 +11,7 @@ import {
 } from "../internal-data-formats/palette";
 import { Color, mixColors } from "../../math/color";
 import { Char } from "../internal-data-formats/char";
-import { spritePosOffset, spriteSize } from "../../c64/consts";
+import { spritePosOffset, spriteSizePixels } from "../../c64/consts";
 import { CharacterName, pl1, pl2 } from "../game-definitions/character-name";
 import { chunk, mapRecord } from "../functions";
 import { add, scale, subtract } from "../../math/coord2";
@@ -64,7 +64,13 @@ export function drawLevelThumbnail(
 	}
 
 	const charBlockSize = { x: 16, y: 16 };
-	const fakeSpriteCharblockOffset = subtract(spriteSize, charBlockSize);
+	const fakeSpriteCharblockOffset = subtract(
+		{
+			x: spriteSizePixels.x * 2,
+			y: spriteSizePixels.y,
+		},
+		charBlockSize
+	);
 	for (const character of [pl1, pl2, ...level.monsters]) {
 		const spritePos = subtract(character.spawnPoint, spritePosOffset);
 		const pixelPos = scale(add(spritePos, fakeSpriteCharblockOffset), 1 / 8);

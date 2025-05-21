@@ -1,4 +1,4 @@
-import { spriteSize } from "../../c64/consts";
+import { spriteSizePixels } from "../../c64/consts";
 import { origo } from "../../math/coord2";
 import { LayoutRect, flexbox } from "../../math/rect";
 import { mapRecord, range, chunk } from "../functions";
@@ -16,7 +16,7 @@ export function layOutSpriteGroups(): LayoutRect {
 			range(count).map(
 				(): LayoutRect => ({
 					pos: origo,
-					size: { x: spriteSize.x / 2, y: spriteSize.y },
+					size: spriteSizePixels,
 					index: index++,
 				})
 			)
