@@ -67,7 +67,7 @@ export function layOutChars(): LayoutRect {
 	const rectGroups = mapRecord(
 		charGroupMeta,
 		(group, groupName): ReadonlyArray<LayoutRect> =>
-			range(0, group.count).map(() => {
+			range(group.count).map(() => {
 				if (groupName === "largeLightning") {
 					const layout = layoutLargeLightning(index);
 					index += layout.children.length;
@@ -76,10 +76,10 @@ export function layOutChars(): LayoutRect {
 
 				return charGroupMeta[groupName].transposed
 					? flexbox(
-							range(0, group.height).map(
+							range(group.height).map(
 								(): LayoutRect =>
 									flexbox(
-										range(0, group.width).map(
+										range(group.width).map(
 											(): LayoutRect => ({
 												pos: origo,
 												size: { x: 4, y: 8 },
@@ -94,10 +94,10 @@ export function layOutChars(): LayoutRect {
 							0
 					  )
 					: flexbox(
-							range(0, group.width).map(
+							range(group.width).map(
 								(): LayoutRect =>
 									flexbox(
-										range(0, group.height).map(
+										range(group.height).map(
 											(): LayoutRect => ({
 												pos: origo,
 												size: { x: 4, y: 8 },
@@ -177,8 +177,8 @@ export function getAllCharMasks(
 	const bubbleBasedMasks: Partial<
 		Record<CharSegmentName, ReadonlyArray<CharBlock<number, number>>>
 	> = {
-		specialBubbles: range(0, 3).flatMap(() => sharedBubbleMask),
-		extendBubbles: range(0, 5).flatMap(() => sharedBubbleMask),
+		specialBubbles: range(3).flatMap(() => sharedBubbleMask),
+		extendBubbles: range(5).flatMap(() => sharedBubbleMask),
 		stonerWeapon: [sharedBubbleMask[0], sharedBubbleMask[2]],
 	};
 
@@ -210,7 +210,7 @@ export function getAllCharPalettes(): ReadonlyArray<SubPalette> {
 			];
 
 			const numChars = meta.count * meta.width * meta.height;
-			return range(0, numChars).map(() => palette);
+			return range(numChars).map(() => palette);
 		})
 	).flat();
 }

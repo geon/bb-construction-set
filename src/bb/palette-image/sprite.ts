@@ -13,7 +13,7 @@ export function layOutSpriteGroups(): LayoutRect {
 	const spriteRects = mapRecord(
 		spriteCounts,
 		(count): ReadonlyArray<LayoutRect> =>
-			range(0, count).map(
+			range(count).map(
 				(): LayoutRect => ({
 					pos: origo,
 					size: { x: spriteSize.x / 2, y: spriteSize.y },

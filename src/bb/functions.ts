@@ -129,8 +129,8 @@ export function isDefined<T>(x: T | undefined): x is T {
 }
 
 export function range<N extends number>(
-	from: number,
-	length: N
+	length: N,
+	from: number = 0
 ): ReadonlyTuple<number, N> {
 	return Array(length)
 		.fill(undefined)

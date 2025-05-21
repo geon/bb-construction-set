@@ -14,7 +14,7 @@ export function createPaletteImage<
 	Height extends number = number,
 	Width extends number = number
 >(size: { x: Width; y: Height }): PaletteImage {
-	return range(0, size.y).map(() => range(0, size.x).map(() => undefined));
+	return range(size.y).map(() => range(size.x).map(() => undefined));
 }
 
 export function getPaletteImageSize(image: PaletteImage): Coord2 {

@@ -22,8 +22,8 @@ type TileRow = ReadonlyTuple<boolean, 32>;
 export type Tiles = ReadonlyTuple<TileRow, 25>;
 
 export function createTiles(): Tuple<Tuple<boolean, 32>, 25> {
-	return mapTuple(range(0, levelHeight), () =>
-		mapTuple(range(0, levelWidth), () => false)
+	return mapTuple(range(levelHeight), () =>
+		mapTuple(range(levelWidth), () => false)
 	);
 }
 
@@ -92,8 +92,8 @@ export function levelToCharNames(
 	typeof levelHeight
 > {
 	// Create canvas.
-	const chars: CharName[][] = range(0, levelHeight).map(() =>
-		range(0, levelWidth).map(() => "empty")
+	const chars: CharName[][] = range(levelHeight).map(() =>
+		range(levelWidth).map(() => "empty")
 	);
 
 	// Draw the platforms.

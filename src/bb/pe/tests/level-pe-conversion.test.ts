@@ -11,9 +11,9 @@ import { parsePrg } from "../../prg/parse-prg";
 
 function makeFakeSprite(): Sprite {
 	return assertTuple(
-		range(0, spriteSizePixels.y).map(() =>
+		range(spriteSizePixels.y).map(() =>
 			assertTuple(
-				range(0, spriteSizePixels.x).map(() => 0 as const),
+				range(spriteSizePixels.x).map(() => 0 as const),
 				spriteSizePixels.x
 			)
 		),
@@ -39,7 +39,7 @@ test("peFileDataToLevels & levelsToPeFileData", () => {
 			characterNames.map((name) => [
 				name,
 				{
-					sprites: range(0, 100).map(makeFakeSprite),
+					sprites: range(100).map(makeFakeSprite),
 					color: 0 as const,
 				},
 			])

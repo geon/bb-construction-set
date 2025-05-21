@@ -37,8 +37,8 @@ test("unzipObject", () => {
 });
 
 test("range", () => {
-	expect(range(0, 3)).toStrictEqual([0, 1, 2]);
-	expect(range(1, 3)).toStrictEqual([1, 2, 3]);
+	expect(range(3)).toStrictEqual([0, 1, 2]);
+	expect(range(3, 1)).toStrictEqual([1, 2, 3]);
 });
 
 test("curry", () => {

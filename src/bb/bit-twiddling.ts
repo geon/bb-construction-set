@@ -6,7 +6,7 @@ export function isBitSet(byte: number, bitIndex: number): boolean {
 }
 
 export function byteToBits(byte: number): ReadonlyTuple<boolean, 8> {
-	return mapTuple(range(0, 8), (bitIndex) => isBitSet(byte, bitIndex));
+	return mapTuple(range(8), (bitIndex) => isBitSet(byte, bitIndex));
 }
 
 export function bitsToByte(bits: ReadonlyArray<boolean>): number {

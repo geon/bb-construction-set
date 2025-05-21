@@ -331,11 +331,11 @@ function makeLevelCharAndColorData(
 	readonly colorData: number[][];
 } {
 	// Create canvas.
-	const charData: number[][] = range(0, sizeY).map(() =>
-		range(0, sizeX).map(() => 0)
+	const charData: number[][] = range(sizeY).map(() =>
+		range(sizeX).map(() => 0)
 	);
-	const colorData: number[][] = range(0, sizeY).map(() =>
-		range(0, sizeX).map(() => 13)
+	const colorData: number[][] = range(sizeY).map(() =>
+		range(sizeX).map(() => 13)
 	);
 
 	// Draw the level.
