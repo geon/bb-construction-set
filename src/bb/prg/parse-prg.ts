@@ -147,7 +147,10 @@ export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
 
 		for (const [spriteIndex, sprite] of sprites.entries()) {
 			const spriteBytes = serializeSprite(sprite);
-			prgSpriteSegments[segmentName].buffer.set(spriteBytes, spriteIndex * 64);
+			for (const [byteIndex, spriteByte] of spriteBytes.entries()) {
+				prgSpriteSegments[segmentName].buffer[spriteIndex * 64 + byteIndex] =
+					spriteByte;
+			}
 		}
 	}
 
