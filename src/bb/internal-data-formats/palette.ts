@@ -1,5 +1,5 @@
 import { Color, hexToRgb } from "../../math/color";
-import { mapTuple, ReadonlyTuple } from "../tuple";
+import { mapTuple, Tuple } from "../tuple";
 
 // type Palette = ReadonlyTuple<Color, 16>;
 export type PaletteIndex =
@@ -19,7 +19,7 @@ export type PaletteIndex =
 	| 13
 	| 14
 	| 15;
-export type Palette = ReadonlyTuple<Color, 16>;
+export type Palette = Tuple<Color, 16>;
 
 export const palette: Palette = mapTuple(
 	// https://www.pepto.de/projects/colorvic/2001
@@ -32,7 +32,7 @@ export const palette: Palette = mapTuple(
 	hexToRgb
 );
 
-export interface SubPalette extends ReadonlyTuple<PaletteIndex, 4> {}
+export interface SubPalette extends Tuple<PaletteIndex, 4> {}
 export type SubPaletteIndex = 0 | 1 | 2 | 3;
 
 export function getSubPaletteIndex(

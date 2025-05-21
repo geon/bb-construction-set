@@ -1,4 +1,4 @@
-import { ReadonlyTuple, MutableTuple } from "../tuple.ts";
+import { Tuple, MutableTuple } from "../tuple.ts";
 
 {
 	const tuple: MutableTuple<number, 2> = undefined!;
@@ -28,7 +28,7 @@ import { ReadonlyTuple, MutableTuple } from "../tuple.ts";
 }
 
 {
-	const readonlyTuple: ReadonlyTuple<number, 2> = undefined!;
+	const readonlyTuple: Tuple<number, 2> = undefined!;
 
 	// @ts-expect-error Readonly should work.
 	readonlyTuple[0] = 1;

@@ -1,4 +1,4 @@
-import { NOfTuple, ReadonlyTuple, MutableTuple } from "./tuple";
+import { NOfTuple, Tuple, MutableTuple } from "./tuple";
 
 export function padRight<T>(
 	array: readonly T[],
@@ -49,10 +49,10 @@ type ZipObjectReturnElement<
 };
 
 export function zipObject<
-	TInput extends Record<string, ReadonlyTuple<unknown, number> | undefined>
+	TInput extends Record<string, Tuple<unknown, number> | undefined>
 >(
 	arrays: TInput
-): ReadonlyTuple<
+): Tuple<
 	ZipObjectReturnElement<TInput>,
 	NOfTuple<Exclude<TInput[keyof TInput], undefined>>
 > {
@@ -82,7 +82,7 @@ export function zipObject<
 			) as ZipObjectReturnElement<TInput>
 		);
 	}
-	return results as ReadonlyTuple<
+	return results as Tuple<
 		ZipObjectReturnElement<TInput>,
 		NOfTuple<Exclude<TInput[keyof TInput], undefined>>
 	>;
@@ -131,10 +131,10 @@ export function isDefined<T>(x: T | undefined): x is T {
 export function range<N extends number>(
 	length: N,
 	from: number = 0
-): ReadonlyTuple<number, N> {
+): Tuple<number, N> {
 	return Array(length)
 		.fill(undefined)
-		.map((_, index) => index + from) as ReadonlyTuple<number, N>;
+		.map((_, index) => index + from) as Tuple<number, N>;
 }
 
 // https://stackoverflow.com/questions/69019873/how-can-i-get-typed-object-entries-and-object-fromentries-in-typescript

@@ -1,10 +1,10 @@
 import { CharSegmentName } from "../game-definitions/char-segment-name";
 import { Char } from "./char";
-import { ReadonlyTuple } from "../tuple";
+import { Tuple } from "../tuple";
 
 export type CharBlock<Height extends number, Width extends number> =
 	// The chars are column-order just like in the game.
-	ReadonlyTuple<ReadonlyTuple<Char, Height>, Width>;
+	Tuple<Tuple<Char, Height>, Width>;
 
 export type CharGroup<
 	Width extends number,

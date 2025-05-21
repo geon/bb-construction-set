@@ -1,11 +1,11 @@
 import { spriteSizePixels } from "../../c64/consts";
 import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
-import { ReadonlyTuple } from "../tuple";
+import { Tuple } from "../tuple";
 import { PaletteIndex, SubPaletteIndex } from "./palette";
 
 export interface Sprite
-	extends ReadonlyTuple<
-		ReadonlyTuple<SubPaletteIndex, typeof spriteSizePixels.x>,
+	extends Tuple<
+		Tuple<SubPaletteIndex, typeof spriteSizePixels.x>,
 		typeof spriteSizePixels.y
 	> {}
 

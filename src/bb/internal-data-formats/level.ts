@@ -1,7 +1,7 @@
 import { CharBlock } from "./char";
 import { Char } from "./char";
 import { PaletteIndex } from "./palette";
-import { assertTuple, mapTuple, ReadonlyTuple, MutableTuple } from "../tuple";
+import { assertTuple, mapTuple, Tuple, MutableTuple } from "../tuple";
 import { levelHeight, levelWidth } from "../game-definitions/level-size";
 import { range } from "../functions";
 import { CharName } from "../game-definitions/char-name";
@@ -18,8 +18,8 @@ export interface Character {
 // up, right, down, left
 export type BubbleCurrentDirection = 0 | 1 | 2 | 3;
 
-type TileRow = ReadonlyTuple<boolean, 32>;
-export type Tiles = ReadonlyTuple<TileRow, 25>;
+type TileRow = Tuple<boolean, 32>;
+export type Tiles = Tuple<TileRow, 25>;
 
 export function createTiles(): MutableTuple<MutableTuple<boolean, 32>, 25> {
 	return mapTuple(range(levelHeight), () =>
@@ -87,10 +87,7 @@ export function levelIsSymmetric(tiles: Tiles) {
 
 export function levelToCharNames(
 	level: Level
-): ReadonlyTuple<
-	ReadonlyTuple<CharName, typeof levelWidth>,
-	typeof levelHeight
-> {
+): Tuple<Tuple<CharName, typeof levelWidth>, typeof levelHeight> {
 	// Create canvas.
 	const chars: CharName[][] = range(levelHeight).map(() =>
 		range(levelWidth).map(() => "empty")

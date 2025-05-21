@@ -1,4 +1,4 @@
 import { Char } from "../internal-data-formats/char";
-import { ReadonlyTuple } from "../tuple";
+import { Tuple } from "../tuple";
 
-export type ShadowChars = ReadonlyTuple<Char, 6>;
+export type ShadowChars = Tuple<Char, 6>;

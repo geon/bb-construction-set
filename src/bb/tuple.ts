@@ -8,7 +8,7 @@ type _TupleOf<T, N extends number, R extends unknown[]> = R["length"] extends N
 	? R
 	: _TupleOf<T, N, [T, ...R]>;
 
-export type ReadonlyTuple<T, N extends number> = N extends N
+export type Tuple<T, N extends number> = N extends N
 	? number extends N
 		? readonly T[]
 		: _ReadonlyTupleOf<T, N, []>
@@ -27,25 +27,22 @@ export function assertTuple<
 	n: N
 ): TTuple extends Array<unknown>
 	? MutableTuple<TOfTuple<TTuple>, N>
-	: ReadonlyTuple<TOfTuple<TTuple>, N> {
+	: Tuple<TOfTuple<TTuple>, N> {
 	if (array.length !== n) {
 		throw new Error(`Bad length. Wanted: ${n} Actual: ${array.length}`);
 	}
 	return array as TTuple extends Array<unknown>
 		? MutableTuple<TOfTuple<TTuple>, N>
-		: ReadonlyTuple<TOfTuple<TTuple>, N>;
+		: Tuple<TOfTuple<TTuple>, N>;
 }
 
-export type TOfTuple<TTuple> = TTuple extends ReadonlyTuple<infer T, number>
+export type TOfTuple<TTuple> = TTuple extends Tuple<infer T, number>
 	? T
 	: never;
 export type NOfTuple<TTuple extends ReadonlyArray<unknown>> = TTuple["length"];
 
 // Just a typed wrapper.
-export function mapTuple<
-	const TTuple extends ReadonlyTuple<unknown, number>,
-	TOut
->(
+export function mapTuple<const TTuple extends Tuple<unknown, number>, TOut>(
 	tuple: TTuple,
 	fn: (value: TOfTuple<TTuple>) => TOut
 ): MutableTuple<TOut, NOfTuple<typeof tuple>> {

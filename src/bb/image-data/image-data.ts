@@ -6,7 +6,7 @@ import {
 	getPaletteImageSize,
 	PaletteImage,
 } from "../palette-image/palette-image";
-import { ReadonlyTuple } from "../tuple";
+import { Tuple } from "../tuple";
 
 // Just like ctx.putImageData
 export function blitImageData(
@@ -97,7 +97,7 @@ export function imageDataFromPaletteImage(image: PaletteImage): ImageData {
 	const size = getPaletteImageSize(image);
 	return new ImageData(
 		new Uint8ClampedArray(
-			image.flat().flatMap((paletteIndex): ReadonlyTuple<number, 4> => {
+			image.flat().flatMap((paletteIndex): Tuple<number, 4> => {
 				const [color, alpha] =
 					paletteIndex !== undefined
 						? [palette[paletteIndex], 255]

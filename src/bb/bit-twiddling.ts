@@ -1,11 +1,11 @@
 import { range, sum } from "./functions";
-import { mapTuple, ReadonlyTuple } from "./tuple";
+import { mapTuple, Tuple } from "./tuple";
 
 export function isBitSet(byte: number, bitIndex: number): boolean {
 	return !!(byte & (0b10000000 >> bitIndex));
 }
 
-export function byteToBits(byte: number): ReadonlyTuple<boolean, 8> {
+export function byteToBits(byte: number): Tuple<boolean, 8> {
 	return mapTuple(range(8), (bitIndex) => isBitSet(byte, bitIndex));
 }
 
