@@ -14,6 +14,7 @@ import {
 	levelSegmentLocations,
 	monsterSpriteColorsSegmentLocation,
 	spriteDataSegmentLocations,
+	spriteMasks,
 } from "./data-locations";
 import { LevelDataSegmentName } from "../game-definitions/level-segment-name";
 import { spriteGroupNames } from "../game-definitions/sprite-segment-name";
@@ -146,10 +147,13 @@ export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
 		const sprites = spriteGroups[segmentName].sprites;
 
 		for (const [spriteIndex, sprite] of sprites.entries()) {
+			const mask = spriteMasks[segmentName];
 			const spriteBytes = serializeSprite(sprite);
 			for (const [byteIndex, spriteByte] of spriteBytes.entries()) {
-				prgSpriteSegments[segmentName].buffer[spriteIndex * 64 + byteIndex] =
-					spriteByte;
+				if (mask?.[byteIndex] !== false) {
+					prgSpriteSegments[segmentName].buffer[spriteIndex * 64 + byteIndex] =
+						spriteByte;
+				}
 			}
 		}
 	}

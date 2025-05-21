@@ -22,6 +22,7 @@ import {
 	parseColorPixelByte,
 	serializeColorPixelByte,
 } from "../internal-data-formats/color-pixel-byte";
+import { spriteMasks } from "./data-locations";
 
 const spriteColors: Record<"player", PaletteIndex> = {
 	player: 5,
@@ -48,8 +49,13 @@ export function parseSpriteGroupsFromPrg(
 	return mapRecord(
 		mapRecord(spriteSegments, (x) => x.buffer),
 		(segment, groupName): SpriteGroup => {
+			const mask = spriteMasks[groupName];
 			return {
-				sprites: parseSprites([...segment]),
+				sprites: parseSprites(
+					[...segment].map((byte, byteIndex) =>
+						mask?.[byteIndex % mask?.length] !== false ? byte : 0
+					)
+				),
 				color: getSpriteGroupColor(groupName, characterSpriteColors),
 			};
 		}

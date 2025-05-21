@@ -8,8 +8,10 @@ import {
 } from "../game-definitions/char-segment-name";
 import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
 import { LevelDataSegmentName } from "../game-definitions/level-segment-name";
-import { mapRecord, objectFromEntries, sum } from "../functions";
+import { mapRecord, objectFromEntries, range, sum } from "../functions";
 import { charGroupMeta } from "./char-groups";
+import { spriteSizeBytes, spriteWidthBytes } from "../../c64/consts";
+import { mapTuple } from "../tuple";
 
 export const maxAsymmetric = 45;
 export const maxSidebars = 59;
@@ -113,6 +115,23 @@ export const spriteCounts: Record<SpriteGroupName, number> = {
 	bonusMelonBottom: 2,
 	bonusDiamond: 2,
 	hexagonExplosion: 1,
+};
+
+export const spriteMasks: Partial<
+	Record<SpriteGroupName, ReadonlyArray<boolean>>
+> = {
+	// The last 8 bytes are used.
+	bonusMelonTopLeft: mapTuple(range(spriteSizeBytes), (index) =>
+		index < spriteSizeBytes - 8 ? false : true
+	),
+	// The last 9 bytes are used except the last.
+	bonusMelonTopRight: mapTuple(range(spriteSizeBytes), (index) =>
+		index < spriteSizeBytes - 9 || index == spriteSizeBytes - 1 ? false : true
+	),
+	// The first 12 lines are used.
+	hexagonExplosion: mapTuple(range(spriteSizeBytes), (index) =>
+		index >= 12 * spriteWidthBytes ? false : true
+	),
 };
 
 const charactersStartAddress = 22528;
