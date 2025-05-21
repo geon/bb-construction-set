@@ -47,10 +47,12 @@ export function parseSpriteGroupsFromPrg(
 
 	return mapRecord(
 		mapRecord(spriteSegments, (x) => x.buffer),
-		(segment, groupName): SpriteGroup => ({
-			sprites: parseSprites([...segment]),
-			color: getSpriteGroupColor(groupName, characterSpriteColors),
-		})
+		(segment, groupName): SpriteGroup => {
+			return {
+				sprites: parseSprites([...segment]),
+				color: getSpriteGroupColor(groupName, characterSpriteColors),
+			};
+		}
 	);
 }
 
