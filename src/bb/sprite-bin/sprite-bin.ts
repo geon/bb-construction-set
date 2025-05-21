@@ -56,7 +56,7 @@ export function parseSpriteGroups(binFileContents: Uint8Array): SpriteGroups {
 	return mapRecord(
 		spriteSegments,
 		(segment, groupName): SpriteGroup => ({
-			sprites: parseSprites(segment),
+			sprites: parseSprites([...segment]),
 			color: getSpriteGroupColor(groupName, characterSpriteColors),
 		})
 	);
