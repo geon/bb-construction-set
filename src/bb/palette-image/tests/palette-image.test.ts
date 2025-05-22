@@ -64,6 +64,33 @@ test("blitPaletteImage", () => {
 	]);
 });
 
+test("blitPaletteImage outside", () => {
+	const image: PaletteImage = [
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+	];
+
+	blitPaletteImage(
+		image,
+		[
+			[1, 1, 1, 1],
+			[1, 1, 1, 1],
+			[1, 1, 1, 1],
+			[1, 1, 1, 1],
+		],
+		{ x: 2, y: -2 }
+	);
+
+	expect(image).toStrictEqual([
+		[0, 0, 1, 1],
+		[0, 0, 1, 1],
+		[0, 0, 0, 0],
+		[0, 0, 0, 0],
+	]);
+});
+
 test("cropPaletteImage", () => {
 	const image: PaletteImage = [
 		[1, 1, 0, 0],

@@ -117,3 +117,36 @@ function _leafs(
 export function leafs(rect: LayoutRect): ReadonlyArray<Rect> {
 	return _leafs(rect, origo).sort((a, b) => a.index - b.index);
 }
+
+// Separating axis test for axis-aligned rectangles.
+export function rectIntersects(a: Rect, b: Rect): boolean {
+	const bra = bottomRight(a);
+	const brb = bottomRight(b);
+
+	if (b.pos.x >= bra.x) return false;
+	if (brb.x <= a.pos.x) return false;
+
+	if (b.pos.y >= bra.y) return false;
+	if (brb.y <= a.pos.y) return false;
+
+	return true;
+}
+
+export function rectIntersection(a: Rect, b: Rect): Rect | undefined {
+	if (!rectIntersects(a, b)) {
+		return undefined;
+	}
+
+	const bra = bottomRight(a);
+	const brb = bottomRight(b);
+
+	const left = Math.max(a.pos.x, b.pos.x);
+	const width = Math.min(bra.x, brb.x) - left;
+	const top = Math.max(a.pos.y, b.pos.y);
+	const height = Math.min(bra.y, brb.y) - top;
+
+	return {
+		pos: { x: left, y: top },
+		size: { x: width, y: height },
+	};
+}

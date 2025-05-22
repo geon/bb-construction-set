@@ -1,5 +1,11 @@
-import { add, Coord2, origo } from "../../math/coord2";
-import { bottomRight, LayoutRect, leafs, Rect } from "../../math/rect";
+import { add, Coord2, origo, subtract } from "../../math/coord2";
+import {
+	bottomRight,
+	LayoutRect,
+	leafs,
+	Rect,
+	rectIntersection,
+} from "../../math/rect";
 import { range, strictChunk, zipObject } from "../functions";
 import { PaletteIndex } from "../internal-data-formats/palette";
 import { MutableTuple } from "../tuple";
@@ -22,6 +28,35 @@ export function getPaletteImageSize(image: PaletteImage): Coord2 {
 }
 
 export function blitPaletteImage(
+	to: PaletteImage,
+	from: PaletteImage,
+	pos: Coord2
+) {
+	// All rects in to-space coordinates.
+	const toRect = {
+		pos: origo,
+		size: getPaletteImageSize(to),
+	};
+	const fromRect = {
+		pos,
+		size: getPaletteImageSize(from),
+	};
+	const clippedFromRect = rectIntersection(toRect, fromRect);
+
+	if (!clippedFromRect) {
+		return;
+	}
+
+	const clippedFromRectInFromSpace = {
+		pos: subtract(clippedFromRect.pos, pos),
+		size: clippedFromRect.size,
+	};
+	const clippedFrom = cropPaletteImage(from, clippedFromRectInFromSpace);
+
+	blitUnclippedPaletteImage(to, clippedFrom, clippedFromRect.pos);
+}
+
+export function blitUnclippedPaletteImage(
 	to: PaletteImage,
 	from: PaletteImage,
 	pos: Coord2
