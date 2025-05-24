@@ -53,12 +53,26 @@ export function parseChar(
 }
 
 export function getLevelCharPalette(level: Level): SubPalette {
-	return [
-		0,
-		level.bgColorDark,
-		level.bgColorLight,
+	return getCharPalette(
 		// The color ram gets cleared to green at the beginning of the game.
 		5,
+		level
+	);
+}
+
+export function getCharPalette(
+	charColor: PaletteIndex,
+	bgColors: {
+		readonly bgColorDark: PaletteIndex;
+		readonly bgColorLight: PaletteIndex;
+	}
+): SubPalette {
+	return [
+		// The background is black by default.
+		0,
+		bgColors.bgColorDark,
+		bgColors.bgColorLight,
+		charColor,
 	];
 }
 
