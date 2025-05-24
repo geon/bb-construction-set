@@ -14,7 +14,7 @@ import {
 	CharGroups,
 } from "../internal-data-formats/char-group";
 import { drawLayout, PaletteImage, parseLayout } from "./palette-image";
-import { drawChar, parseChar } from "./char";
+import { drawChar, getCharPalette, parseChar } from "./char";
 import { assertTuple } from "../tuple";
 import { CharSegmentName } from "../game-definitions/char-segment-name";
 import { Char } from "../internal-data-formats/char";
@@ -202,12 +202,10 @@ export function getAllCharMasks(
 export function getAllCharPalettes(): ReadonlyArray<SubPalette> {
 	return Object.values(
 		mapRecord(charGroupMeta, (meta) => {
-			const palette: SubPalette = [
-				0, //black
-				9, // Brown
-				1, // White
-				5,
-			];
+			const palette = getCharPalette(5, {
+				bgColorDark: 9, // Brown
+				bgColorLight: 1, // White
+			});
 
 			const numChars = meta.count * meta.width * meta.height;
 			return range(numChars).map(() => palette);
