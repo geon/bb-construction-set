@@ -16,7 +16,7 @@ import { CharacterName, pl1, pl2 } from "../game-definitions/character-name";
 import { chunk, mapRecord } from "../functions";
 import { add, scale, subtract } from "../../math/coord2";
 import { ShadowChars } from "../prg/shadow-chars";
-import { getCharPalette } from "../palette-image/char";
+import { getLevelCharPalette } from "../palette-image/char";
 import * as ImageDataFunctions from "./image-data";
 
 export function drawLevelsToCanvas(
@@ -45,7 +45,7 @@ export function drawLevelThumbnail(
 	const image = new ImageData(levelWidth, levelHeight);
 
 	// Draw level.
-	const charPalette = getCharPalette(level);
+	const charPalette = getLevelCharPalette(level);
 	const charset = makeCharset(level, shadowChars);
 	const averageCharColors = mapRecord(charset, (char) =>
 		getAverageCharColor(char, charPalette)

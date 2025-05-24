@@ -52,7 +52,7 @@ export function parseChar(
 	};
 }
 
-export function getCharPalette(level: Level): SubPalette {
+export function getLevelCharPalette(level: Level): SubPalette {
 	return [
 		0,
 		level.bgColorDark,
@@ -75,7 +75,7 @@ export function drawPlatformCharsToCanvas(
 }
 
 export function drawLevelPlatformChars(level: Level): PaletteImage {
-	const charPalette = getCharPalette(level);
+	const charPalette = getLevelCharPalette(level);
 
 	const platformChars = [
 		[level.platformChar, level.platformChar],
