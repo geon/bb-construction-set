@@ -200,12 +200,14 @@ export function getAllCharMasks(
 }
 
 export function getAllCharPalettes(): ReadonlyArray<SubPalette> {
+	const bgColors = {
+		bgColorDark: 9, // Brown
+		bgColorLight: 1, // White
+	} as const;
+
 	return Object.values(
 		mapRecord(charGroupMeta, (meta) => {
-			const palette = getCharPalette(5, {
-				bgColorDark: 9, // Brown
-				bgColorLight: 1, // White
-			});
+			const palette = getCharPalette(5, bgColors);
 
 			const numChars = meta.count * meta.width * meta.height;
 			return range(numChars).map(() => palette);
