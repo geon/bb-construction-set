@@ -207,10 +207,8 @@ export function getAllCharPalettes(): ReadonlyArray<SubPalette> {
 
 	return Object.values(
 		mapRecord(charGroupMeta, (meta) => {
-			const palette = getCharPalette(5, bgColors);
-
 			const numChars = meta.count * meta.width * meta.height;
-			return range(numChars).map(() => palette);
+			return range(numChars).map(() => getCharPalette(5, bgColors));
 		})
 	).flat();
 }
