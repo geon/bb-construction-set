@@ -1,6 +1,7 @@
 import { add, Coord2, origo, subtract } from "../../math/coord2";
 import {
 	bottomRight,
+	flexbox,
 	LayoutRect,
 	leafs,
 	Rect,
@@ -124,6 +125,26 @@ export function drawGrid(
 	}
 
 	return gridImage;
+}
+
+export function paletteImageFlexBox(
+	images: readonly PaletteImage[],
+	direction: "row" | "column",
+	gap: number
+): PaletteImage {
+	const layout = flexbox(
+		images.map(
+			(image, index): LayoutRect => ({
+				pos: origo,
+				size: getPaletteImageSize(image),
+				index,
+			})
+		),
+		direction,
+		gap
+	);
+
+	return drawLayout(layout, images);
 }
 
 export function drawLayout(

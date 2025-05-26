@@ -117,6 +117,7 @@ export function mapRecord<TKey extends string, TIn, TOut>(
 	) as Readonly<Record<TKey, TOut>>;
 }
 
+// TODO: Add &{[UnknownKey in string]: undefined} to mapRecord return typ to enable indexing.
 export function mapPartialRecord<TKey extends string, TIn, TOut>(
 	record: Partial<Readonly<Record<TKey, TIn>>>,
 	transform: (value: TIn, key: TKey) => TOut
@@ -247,4 +248,18 @@ export function minBy<T>(
 	accessor: (value: T) => number
 ): T {
 	return array[indexOfMinBy(array, accessor) ?? 0]!;
+}
+
+export function checkedAccess<Indexable, Key extends keyof Indexable>(
+	record: Indexable,
+	key: Key
+	// https://www.reddit.com/r/typescript/comments/18ya5sv/type_narrowing_and_t_null/
+): Exclude<Indexable[Key], undefined> {
+	const value = record[key];
+	if (value === undefined) {
+		throw new Error("Missing value.");
+	}
+
+	// Casting because the actual type `Indexable[Key] & ({} | null)` is confusing.
+	return value as Exclude<Indexable[Key], undefined>;
 }

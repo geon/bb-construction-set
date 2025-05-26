@@ -307,3 +307,33 @@ export const charSegmentLocations: Readonly<
 		length: charSegmentLengths.secretLevelBasementDoor,
 	},
 };
+
+export type ItemCategoryName = "points" | "powerups";
+export const itemSegmentLocations: Record<
+	ItemCategoryName,
+	{
+		readonly charBlockIndices: SegmentLocation;
+		readonly colorIndices: SegmentLocation;
+	}
+> = {
+	points: {
+		charBlockIndices: {
+			startAddress: 0xa892,
+			length: 47,
+		},
+		colorIndices: {
+			startAddress: 0xa8e4,
+			length: 47,
+		},
+	},
+	powerups: {
+		charBlockIndices: {
+			startAddress: 0xa8c1,
+			length: 35,
+		},
+		colorIndices: {
+			startAddress: 0xa913,
+			length: 35,
+		},
+	},
+};

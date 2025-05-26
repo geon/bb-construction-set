@@ -1,4 +1,4 @@
-import { objectEntries, unzipObject, zipObject } from "../functions";
+import { mapRecord, objectEntries, unzipObject, zipObject } from "../functions";
 import { Level } from "../internal-data-formats/level";
 import { writeBgColors, readBgColors } from "./bg-colors";
 import { characterNames } from "../game-definitions/character-name";
@@ -11,6 +11,7 @@ import {
 } from "./io";
 import {
 	charSegmentLocations,
+	itemSegmentLocations,
 	levelSegmentLocations,
 	monsterSpriteColorsSegmentLocation,
 	spriteDataSegmentLocations,
@@ -19,6 +20,7 @@ import {
 import { LevelDataSegmentName } from "../game-definitions/level-segment-name";
 import { spriteGroupNames } from "../game-definitions/sprite-segment-name";
 import { parseCharGroups, serializeCharGroups } from "./char-groups";
+import { parseItems } from "./items";
 import {
 	readBubbleCurrentRectangles,
 	writeBubbleCurrentRectangles,
@@ -45,8 +47,13 @@ export function parsePrg(prg: ArrayBuffer): ParsedPrg {
 		getDataSegment(prg, monsterSpriteColorsSegmentLocation)
 	);
 	const chars = parseCharGroups(getDataSegments(prg, charSegmentLocations));
+	const items = parseItems(
+		mapRecord(itemSegmentLocations, (sublocations) =>
+			getDataSegments(prg, sublocations)
+		)
+	);
 
-	return { levels, sprites, chars };
+	return { levels, sprites, chars, items };
 }
 
 function readLevels(

@@ -112,7 +112,7 @@ export function drawLevelPlatformChars(level: Level): PaletteImage {
 	);
 }
 
-function drawCharBlock(
+export function drawCharBlock(
 	charBlock: CharBlock<number, number>,
 	charPalette: SubPalette,
 	mask?: CharBlock<number, number>
