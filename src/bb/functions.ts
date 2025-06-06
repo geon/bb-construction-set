@@ -263,3 +263,18 @@ export function checkedAccess<Indexable, Key extends keyof Indexable>(
 	// Casting because the actual type `Indexable[Key] & ({} | null)` is confusing.
 	return value as Exclude<Indexable[Key], undefined>;
 }
+
+export function stringPadLeft(
+	string: string,
+	length: number,
+	padding: string
+): string {
+	while (string.length < length) {
+		string = padding + string;
+	}
+	return string;
+}
+
+export function byteToHex(byte: number): string {
+	return "0x" + stringPadLeft(byte.toString(16), 2, "0");
+}
