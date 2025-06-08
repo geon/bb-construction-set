@@ -15,7 +15,7 @@
 		"export-character-sprites-as-bin": "npx tsx src/scripts/export-character-sprites-as-bin.ts",
 		"export-all-sprites-as-bin": "npx tsx src/scripts/export-all-sprites-as-bin.ts",
 		"rng": "npx tsx src/scripts/rng.ts",
-		"points-items": "npx tsx src/scripts/points-items.ts",
+		"items-probability": "npx tsx src/scripts/items-probability.ts",
 		"search-in-prg": "npx tsx src/scripts/search-in-prg.ts"
 	},
 	"dependencies": {

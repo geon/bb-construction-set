@@ -18,7 +18,9 @@ const itemIndices = range(frameMax - frameMin).map((index) => {
 	console.time();
 	const state = createState();
 	initializeRandomSeedForFirstLevel(state, index + frameMin);
-	const items = getRandomItemIndices(state);
+
+	const items = getRandomItemIndices(state, 0);
+
 	console.timeEnd();
 	console.log(index);
 

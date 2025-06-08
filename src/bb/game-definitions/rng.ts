@@ -4,8 +4,11 @@ import { byteToHex, range } from "../functions";
 type State = {
 	regs: {
 		A: number;
+		X: number;
+		Y: number;
 	};
 	zp: {
+		"04": number;
 		"26": number;
 		"27": number;
 		"58": number;
@@ -21,8 +24,11 @@ export function createState(): State {
 	return {
 		regs: {
 			A: 0,
+			X: 0,
+			Y: 0,
 		},
 		zp: {
+			"04": 0,
 			"26": 0,
 			"27": 0,
 			"58": 0,
@@ -35,14 +41,36 @@ export function createState(): State {
 	};
 }
 
+function load(state: State, reg: keyof State["regs"], value: number) {
+	state.regs[reg] = value;
+	state.flags.zero = state.regs[reg] === 0;
+	state.flags.negative = !!(state.regs[reg] & 0x80);
+}
+
+export function lda(state: State, value: number): void {
+	load(state, "A", value);
+}
+
 export function ldaZp(state: State, address: keyof State["zp"]): void {
-	state.regs.A = state.zp[address];
-	state.flags.zero = state.regs.A === 0;
-	state.flags.negative = !!(state.regs.A & 0x80);
+	load(state, "A", state.zp[address]);
+}
+
+export function ldxZp(state: State, address: keyof State["zp"]): void {
+	load(state, "X", state.zp[address]);
+}
+
+export function ldyZp(state: State, address: keyof State["zp"]): void {
+	load(state, "Y", state.zp[address]);
 }
 
 export function staZp(state: State, address: keyof State["zp"]): void {
 	state.zp[address] = state.regs.A;
+}
+export function stxZp(state: State, address: keyof State["zp"]): void {
+	state.zp[address] = state.regs.X;
+}
+export function styZp(state: State, address: keyof State["zp"]): void {
+	state.zp[address] = state.regs.Y;
 }
 
 export function asl(state: State): void {
@@ -76,6 +104,22 @@ export function adcZp(state: State, address: keyof State["zp"]): void {
 	state.flags.negative = !!(state.regs.A & 0x80);
 }
 
+export function adc(state: State, value: number): void {
+	state.regs.A += value + (state.flags.carry ? 1 : 0);
+	state.flags.zero = state.regs.A === 0;
+	state.flags.carry = !!(state.regs.A & 0x100);
+	state.regs.A &= 0xff;
+	state.flags.negative = !!(state.regs.A & 0x80);
+}
+
+export function sbc(state: State, value: number): void {
+	state.regs.A += (~value & 0xff) + (!state.flags.carry ? 1 : 0);
+	state.flags.carry = !!(state.regs.A & 0x100);
+	state.regs.A &= 0xff;
+	state.flags.zero = state.regs.A == 0;
+	state.flags.negative = !!(state.regs.A & 0x80);
+}
+
 export function eorAbs(state: State, value: number): void {
 	state.regs.A ^= value;
 	state.flags.zero = state.regs.A === 0;
@@ -88,12 +132,18 @@ export function and(state: State, value: number): void {
 	state.flags.negative = !!(state.regs.A & 0x80);
 }
 
-export function adc(state: State, value: number): void {
-	state.regs.A += value + (state.flags.carry ? 1 : 0);
+export function ora(state: State, value: number): void {
+	state.regs.A |= value;
 	state.flags.zero = state.regs.A === 0;
-	state.flags.carry = !!(state.regs.A & 0x100);
-	state.regs.A &= 0xff;
 	state.flags.negative = !!(state.regs.A & 0x80);
+}
+
+export function cmp(state: State, value: number): void {
+	let result = state.regs.A + (~value & 0xff) + (!state.flags.carry ? 1 : 0);
+	state.flags.carry = !!(result & 0x100);
+	result &= 0xff;
+	state.flags.zero = result == 0;
+	state.flags.negative = !!(result & 0x80);
 }
 
 // e9ea lda 26
@@ -223,20 +273,6 @@ function _2bb0(state: State) {
 	// state.zp["58"] = 0;
 }
 
-// 2c2d jsr e9ea
-// 2c30 and #1f
-// 2c32 tax
-function _2c2d(state: State) {
-	// 2c2d jsr e9ea
-	_e9ea(state);
-
-	// 2c30 and #1f
-	// There are 32 normal powerup items + 3 special. 0x1f == dec31
-	and(state, 0x1f);
-
-	// 2c32 tax
-}
-
 export function initializeRandomSeedForFirstLevel(
 	state: State,
 	waitFrames: number
@@ -253,10 +289,155 @@ export function initializeRandomSeedForFirstLevel(
 	}
 }
 
-export function getRandomItemIndices(state: State): {
+// 2bfc ldx 26
+// 2bfe ldy 27
+// 2c00 lda 10
+// 2c02 sta 26
+// 2c04 sta 27
+// 2c06 jsr e9ea
+// 2c09 clc
+// 2c0a adc #01
+// 2c0c and #1f
+// 2c0e stx 26
+// 2c10 sty 27
+// 2c12 sta 04
+
+// 2c14 jsr e9ea
+// 2c17 and #0f
+// 2c19 bne 2c24
+// 2c1b jsr e9ea
+// 2c1e and #01
+// 2c20 ora #1e
+// 2c22 bne 2c32
+// 2c24 cmp #07
+// 2c26 bcc 2c2d
+// 2c28 lda 04
+// 2c2a jmp 2c32
+// 2c2d jsr e9ea
+// 2c30 and #1f
+// 2c32 tax
+
+function _2bfc(state: State, levelIndex: number): void {
+	const rows = [];
+
+	// 2bfc ldx 26
+	rows.push(getStateRow(state, "2bfc"));
+	ldxZp(state, "26");
+
+	// 2bfe ldy 27
+	rows.push(getStateRow(state, "2bfe"));
+	ldyZp(state, "27");
+
+	// 2c00 lda 10
+	rows.push(getStateRow(state, "2c00"));
+	// zp10 is the level index.
+	lda(state, levelIndex);
+
+	// 2c02 sta 26
+	rows.push(getStateRow(state, "2c02"));
+	staZp(state, "26");
+
+	// 2c04 sta 27
+	rows.push(getStateRow(state, "2c04"));
+	staZp(state, "27");
+
+	// 2c06 jsr e9ea
+	rows.push(getStateRow(state, "2c06"));
+	_e9ea(state);
+
+	// 2c09 clc
+	rows.push(getStateRow(state, "2c09"));
+	state.flags.carry = false;
+
+	// 2c0a adc #01
+	rows.push(getStateRow(state, "2c0a"));
+	adc(state, 0x01);
+
+	// 2c0c and #1f
+	rows.push(getStateRow(state, "2c0c"));
+	and(state, 0x1f);
+
+	// 2c0e stx 26
+	rows.push(getStateRow(state, "2c0e"));
+	stxZp(state, "26");
+
+	// 2c10 sty 27
+	rows.push(getStateRow(state, "2c10"));
+	styZp(state, "27");
+
+	// 2c12 sta 04
+	rows.push(getStateRow(state, "2c12"));
+	staZp(state, "04");
+
+	// 2c14 jsr e9ea
+	rows.push(getStateRow(state, "2c14"));
+	_e9ea(state);
+
+	// 2c17 and #0f
+	rows.push(getStateRow(state, "2c17"));
+	and(state, 0x0f);
+
+	// 2c19 bne 2c24
+	rows.push(getStateRow(state, "2c19"));
+	if (state.flags.zero) {
+		// 2c1b jsr e9ea
+		rows.push(getStateRow(state, "2c1b"));
+		_e9ea(state);
+
+		// 2c1e and #01
+		rows.push(getStateRow(state, "2c1e"));
+		and(state, 0x01);
+
+		// 2c20 ora #1e
+		rows.push(getStateRow(state, "2c20"));
+		ora(state, 0x1e);
+
+		// 2c22 bne 2c32
+		rows.push(getStateRow(state, "2c22"));
+		if (!state.flags.zero) {
+			// console.table(rows);
+			return;
+		}
+	}
+
+	// 2c24 cmp #07
+	rows.push(getStateRow(state, "2c24"));
+	cmp(state, 0x07);
+
+	// 2c26 bcc 2c2d
+	rows.push(getStateRow(state, "2c26"));
+	if (state.flags.carry) {
+		// 2c28 lda 04
+		ldaZp(state, "04");
+
+		// 2c2a jmp 2c32
+		rows.push(getStateRow(state, "2c2a"));
+		// console.table(rows);
+
+		return;
+	}
+
+	// 2c2d jsr e9ea
+	rows.push(getStateRow(state, "2c2d"));
+	// console.table(rows);
+	_e9ea(state);
+
+	// 2c30 and #1f
+	// There are 32 normal powerup items + 3 special. 0x1f == dec31
+	and(state, 0x1f);
+
+	// 2c32 tax
+}
+
+export function getRandomItemIndices(
+	state: State,
+	levelIndex: number
+): {
 	readonly points: number;
 	readonly powerups: number;
 } {
+	console.table([getStateRow(state, "")]);
+
 	_093f(state);
 
 	// Called inbetween from unrelated code.
@@ -267,46 +448,8 @@ export function getRandomItemIndices(state: State): {
 	_2bb0(state);
 	const points = state.regs.A;
 
-	// Called inbetween from unrelated code.
-	_e9ea(state);
-	_e9ea(state);
-
-	_2c2d(state);
+	_2bfc(state, levelIndex);
 	const powerups = state.regs.A;
 
 	return { points, powerups };
 }
-
-const randomItemIndicesWithStartStates = [
-	{
-		"26": 0xb1,
-		"27": 0x06,
-		points: 0x0e,
-		powerup: 0x00,
-	},
-	{
-		"26": 0x38,
-		"27": 0xcc,
-		points: 0x2d,
-		powerup: 0x00,
-	},
-	{
-		"26": 0x45,
-		"27": 0xda,
-		points: 0x1a,
-		powerup: 0x00,
-	},
-	{
-		"26": 0x93,
-		"27": 0xd0,
-		points: 0x24,
-		powerup: 0x0c,
-	},
-	{
-		"26": 0x95,
-		"27": 0x10,
-		points: 0x1f,
-		powerup: 0x00,
-	},
-];
-randomItemIndicesWithStartStates;
