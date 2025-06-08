@@ -12,30 +12,35 @@ export function range(length: number, from: number = 0): ReadonlyArray<number> {
 		.map((_, index) => index + from);
 }
 
-const frameMin = 25;
-const frameMax = 200;
-const itemIndices = range(frameMax - frameMin).map((index) => {
-	console.time();
+for (const levelIndex of range(100)) {
+	console.log("level " + (levelIndex + 1));
+
 	const state = createState();
-	initializeRandomSeedForFirstLevel(state, index + frameMin);
 
-	const items = getRandomItemIndices(state, 0);
+	const itemIndices = range(0xffff).map(() => {
+		// console.time();
 
-	console.timeEnd();
-	console.log(index);
+		initializeRandomSeedForFirstLevel(state);
+		const items = getRandomItemIndices(state, levelIndex);
 
-	return items;
-});
+		// console.timeEnd();
+		// console.log(index);
 
-const distributions = mapRecord(unzipObject(itemIndices), (indices) =>
-	mapRecord(
-		groupBy(indices, (x) => x.toString()),
-		(x) => x?.length ?? 0
-	)
-);
+		return items;
+	});
 
-mapRecord(distributions, (distribution, itemsCategoryName) => {
-	console.log(itemsCategoryName);
+	const distributions = mapRecord(unzipObject(itemIndices), (indices) =>
+		mapRecord(
+			groupBy(indices, (x) => x.toString()),
+			(x) => x?.length ?? 0
+		)
+	);
+
+	// mapRecord(distributions, (distribution, itemsCategoryName) => {
+	// console.log(itemsCategoryName);
+
+	const distribution = distributions.powerups;
+	const itemsCategoryName = "powerups";
 
 	const allIndices = range(
 		(
@@ -52,10 +57,13 @@ mapRecord(distributions, (distribution, itemsCategoryName) => {
 		max: Math.max(...Object.values(distribution).filter(isDefined)),
 	};
 
-	console.log("distribution");
+	// console.log("distribution");
 	console.table(
 		allIndices.map((itemIndex) => [
 			itemNames[itemsCategoryName][itemIndex],
+
+			Math.round(((distribution[itemIndex] ?? 0) / itemIndices.length) * 100) +
+				" %",
 			range(
 				Math.ceil(
 					((distribution[itemIndex] ?? 0) / distributionMinMax.max) * 20
@@ -65,16 +73,17 @@ mapRecord(distributions, (distribution, itemsCategoryName) => {
 				.join(""),
 		])
 	);
-	console.log(
-		"distribution min/max",
-		distributionMinMax.min,
-		distributionMinMax.max
-	);
-	const allIndicesSet = new Set(allIndices);
-	console.log(
-		"missing",
-		Object.keys(distribution)
-			.map((x) => parseInt(x, 10))
-			.filter((x) => !allIndicesSet.has(x))
-	);
-});
+	// console.log(
+	// 	"distribution min/max",
+	// 	distributionMinMax.min,
+	// 	distributionMinMax.max
+	// );
+	// const allIndicesSet = new Set(allIndices);
+	// console.log(
+	// 	"missing",
+	// 	Object.keys(distribution)
+	// 		.map((x) => parseInt(x, 10))
+	// 		.filter((x) => !allIndicesSet.has(x))
+	// );
+	// });
+}

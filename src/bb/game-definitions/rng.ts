@@ -1,4 +1,4 @@
-import { byteToHex, range } from "../functions";
+import { byteToHex } from "../functions";
 
 // Mutable state. Watch out.
 type State = {
@@ -157,61 +157,61 @@ export function cmp(state: State, value: number): void {
 // e9fa sta 26
 // e9fc rts
 function _e9ea(state: State) {
-	const rows = [];
+	// const rows = [];
 
 	// e9ea lda 26
-	rows.push(getStateRow(state, "e9ea"));
+	// rows.push(getStateRow(state, "e9ea"));
 	ldaZp(state, "26");
 
 	// e9ec asl
-	rows.push(getStateRow(state, "e9ec"));
+	// rows.push(getStateRow(state, "e9ec"));
 	asl(state);
 
 	// e9ed rol 27
-	rows.push(getStateRow(state, "e9ed"));
+	// rows.push(getStateRow(state, "e9ed"));
 	rolZp(state, "27");
 
 	// e9ef rol 26
-	rows.push(getStateRow(state, "e9ef"));
+	// rows.push(getStateRow(state, "e9ef"));
 	rolZp(state, "26");
 
 	// e9f1 lda 27
-	rows.push(getStateRow(state, "e9f1"));
+	// rows.push(getStateRow(state, "e9f1"));
 	ldaZp(state, "27");
 
 	// e9f3 eor 26
-	rows.push(getStateRow(state, "e9f3"));
+	// rows.push(getStateRow(state, "e9f3"));
 	eorZp(state, "26");
 
 	// e9f5 adc 27
-	rows.push(getStateRow(state, "e9f5"));
+	// rows.push(getStateRow(state, "e9f5"));
 	adcZp(state, "27");
 
 	// e9f7 eor dc06
-	rows.push(getStateRow(state, "e9f7"));
+	// rows.push(getStateRow(state, "e9f7"));
 	const dc06 = 0xff;
 	eorAbs(state, dc06);
 
 	// e9fa sta 26
-	rows.push(getStateRow(state, "e9fa"));
+	// rows.push(getStateRow(state, "e9fa"));
 	staZp(state, "26");
 
 	// e9fc rts
-	rows.push(getStateRow(state, "e9fc"));
+	// rows.push(getStateRow(state, "e9fc"));
 
 	// console.log("function _e9ea");
 	// console.table(rows, ["pc", "A", "C", "zp26", "zp27"]);
 }
 
-function getStateRow(state: State, pc: string) {
-	return {
-		pc,
-		A: byteToHex(state.regs.A),
-		C: state.flags.carry ? 1 : 0,
-		zp26: byteToHex(state.zp["26"]),
-		zp27: byteToHex(state.zp["27"]),
-	};
-}
+// function getStateRow(state: State, pc: string) {
+// 	return {
+// 		pc,
+// 		A: byteToHex(state.regs.A),
+// 		C: state.flags.carry ? 1 : 0,
+// 		zp26: byteToHex(state.zp["26"]),
+// 		zp27: byteToHex(state.zp["27"]),
+// 	};
+// }
 
 export function createRng(state: State): () => number {
 	return () => {
@@ -273,20 +273,14 @@ function _2bb0(state: State) {
 	// state.zp["58"] = 0;
 }
 
-export function initializeRandomSeedForFirstLevel(
-	state: State,
-	waitFrames: number
-) {
+export function initializeRandomSeedForFirstLevel(state: State) {
 	const rng = createRng(state);
 
-	// The rng is updated once per frame.
-	for (const _ of range(waitFrames)) {
-		do {
-			rng();
-			// 08b6 cmp #$19 // dec25
-			// 08b8 bcs 08b3 // loop until A <= 24
-		} while (state.regs.A >= 0x19);
-	}
+	do {
+		rng();
+		// 08b6 cmp #$19 // dec25
+		// 08b8 bcs 08b3 // loop until A <= 24
+	} while (state.regs.A >= 0x19);
 }
 
 // 2bfc ldx 26
@@ -318,82 +312,82 @@ export function initializeRandomSeedForFirstLevel(
 // 2c32 tax
 
 function _2bfc(state: State, levelIndex: number): void {
-	const rows = [];
+	// const rows = [];
 
 	// 2bfc ldx 26
-	rows.push(getStateRow(state, "2bfc"));
+	// rows.push(getStateRow(state, "2bfc"));
 	ldxZp(state, "26");
 
 	// 2bfe ldy 27
-	rows.push(getStateRow(state, "2bfe"));
+	// rows.push(getStateRow(state, "2bfe"));
 	ldyZp(state, "27");
 
 	// 2c00 lda 10
-	rows.push(getStateRow(state, "2c00"));
+	// rows.push(getStateRow(state, "2c00"));
 	// zp10 is the level index.
 	lda(state, levelIndex);
 
 	// 2c02 sta 26
-	rows.push(getStateRow(state, "2c02"));
+	// rows.push(getStateRow(state, "2c02"));
 	staZp(state, "26");
 
 	// 2c04 sta 27
-	rows.push(getStateRow(state, "2c04"));
+	// rows.push(getStateRow(state, "2c04"));
 	staZp(state, "27");
 
 	// 2c06 jsr e9ea
-	rows.push(getStateRow(state, "2c06"));
+	// rows.push(getStateRow(state, "2c06"));
 	_e9ea(state);
 
 	// 2c09 clc
-	rows.push(getStateRow(state, "2c09"));
+	// rows.push(getStateRow(state, "2c09"));
 	state.flags.carry = false;
 
 	// 2c0a adc #01
-	rows.push(getStateRow(state, "2c0a"));
+	// rows.push(getStateRow(state, "2c0a"));
 	adc(state, 0x01);
 
 	// 2c0c and #1f
-	rows.push(getStateRow(state, "2c0c"));
+	// rows.push(getStateRow(state, "2c0c"));
 	and(state, 0x1f);
 
 	// 2c0e stx 26
-	rows.push(getStateRow(state, "2c0e"));
+	// rows.push(getStateRow(state, "2c0e"));
 	stxZp(state, "26");
 
 	// 2c10 sty 27
-	rows.push(getStateRow(state, "2c10"));
+	// rows.push(getStateRow(state, "2c10"));
 	styZp(state, "27");
 
 	// 2c12 sta 04
-	rows.push(getStateRow(state, "2c12"));
+	// rows.push(getStateRow(state, "2c12"));
 	staZp(state, "04");
 
 	// 2c14 jsr e9ea
-	rows.push(getStateRow(state, "2c14"));
+	// rows.push(getStateRow(state, "2c14"));
 	_e9ea(state);
 
 	// 2c17 and #0f
-	rows.push(getStateRow(state, "2c17"));
+	// rows.push(getStateRow(state, "2c17"));
 	and(state, 0x0f);
 
 	// 2c19 bne 2c24
-	rows.push(getStateRow(state, "2c19"));
+	// rows.push(getStateRow(state, "2c19"));
 	if (state.flags.zero) {
 		// 2c1b jsr e9ea
-		rows.push(getStateRow(state, "2c1b"));
+		// rows.push(getStateRow(state, "2c1b"));
 		_e9ea(state);
 
 		// 2c1e and #01
-		rows.push(getStateRow(state, "2c1e"));
+		// rows.push(getStateRow(state, "2c1e"));
 		and(state, 0x01);
 
 		// 2c20 ora #1e
-		rows.push(getStateRow(state, "2c20"));
+		// rows.push(getStateRow(state, "2c20"));
 		ora(state, 0x1e);
 
 		// 2c22 bne 2c32
-		rows.push(getStateRow(state, "2c22"));
+		// rows.push(getStateRow(state, "2c22"));
 		if (!state.flags.zero) {
 			// console.table(rows);
 			return;
@@ -401,24 +395,24 @@ function _2bfc(state: State, levelIndex: number): void {
 	}
 
 	// 2c24 cmp #07
-	rows.push(getStateRow(state, "2c24"));
+	// rows.push(getStateRow(state, "2c24"));
 	cmp(state, 0x07);
 
 	// 2c26 bcc 2c2d
-	rows.push(getStateRow(state, "2c26"));
+	// rows.push(getStateRow(state, "2c26"));
 	if (state.flags.carry) {
 		// 2c28 lda 04
 		ldaZp(state, "04");
 
 		// 2c2a jmp 2c32
-		rows.push(getStateRow(state, "2c2a"));
+		// rows.push(getStateRow(state, "2c2a"));
 		// console.table(rows);
 
 		return;
 	}
 
 	// 2c2d jsr e9ea
-	rows.push(getStateRow(state, "2c2d"));
+	// rows.push(getStateRow(state, "2c2d"));
 	// console.table(rows);
 	_e9ea(state);
 
@@ -436,7 +430,7 @@ export function getRandomItemIndices(
 	readonly points: number;
 	readonly powerups: number;
 } {
-	console.table([getStateRow(state, "")]);
+	// console.table([getStateRow(state, "")]);
 
 	_093f(state);
 
