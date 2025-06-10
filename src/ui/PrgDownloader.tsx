@@ -2,7 +2,10 @@ import { ReactNode } from "react";
 import { BlobDownloadButton } from "./BlobDownloadButton";
 import { patchPrg } from "../bb/prg/parse-prg";
 import { ParsedPrg } from "../bb/internal-data-formats/parsed-prg";
-import { imageDataFromPaletteImage } from "../bb/image-data/image-data";
+import {
+	imageDataFromPaletteImage,
+	imageDataToBlob,
+} from "../bb/image-data/image-data";
 import { drawLevel } from "../bb/palette-image/level";
 import { doubleImageWidth } from "../bb/palette-image/palette-image";
 import { ImageDataCanvas } from "./ImageDataCanvas";
@@ -10,7 +13,7 @@ import { assertTuple } from "../bb/tuple";
 import { Card } from "./Card";
 import styled from "styled-components";
 import { drawLevelThumbnail } from "../bb/image-data/draw-levels-to-canvas";
-import { mapRecord } from "../bb/functions";
+import { mapAsync, mapRecord } from "../bb/functions";
 
 const ImageCard = styled(Card)<{
 	readonly children: [JSX.Element, JSX.Element];
@@ -139,6 +142,23 @@ export function PrgDownloader({
 				</a>
 				, placed in the same folder as Exomizer to pack it for execution.
 			</p> */}
+
+				<BlobDownloadButton
+					getBlob={async () => ({
+						parts: await mapAsync(parsedPrg.levels, async (level, index) => ({
+							fileName: (index + 1).toString().padStart(3, "0") + ".png",
+							blob: await imageDataToBlob(
+								imageDataFromPaletteImage(
+									doubleImageWidth(
+										drawLevel(level, parsedPrg.sprites, shadowChars)
+									)
+								)
+							),
+						})),
+						fileName: "bubble bobble c64 - all level images.zip",
+					})}
+					label="Save level images"
+				/>
 				<BlobDownloadButton
 					getBlob={async () => {
 						const patched = patchPrg(prg, parsedPrg);

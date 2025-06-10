@@ -2,16 +2,10 @@ import { ReactNode } from "react";
 import { levelsToPeFileData } from "../../bb/pe/level-pe-conversion";
 import { serializePeFileData } from "../../bb/pe/pe-file";
 import { BlobDownloadButton } from "../BlobDownloadButton";
-import { mapAsync, mapRecord } from "../../bb/functions";
+import { mapRecord } from "../../bb/functions";
 import { ParsedPrg } from "../../bb/internal-data-formats/parsed-prg";
 import { drawLevelsToCanvas } from "../../bb/image-data/draw-levels-to-canvas";
-import { drawLevel } from "../../bb/palette-image/level";
 import { ImageDataCanvas } from "../ImageDataCanvas";
-import {
-	imageDataFromPaletteImage,
-	imageDataToBlob,
-} from "../../bb/image-data/image-data";
-import { doubleImageWidth } from "../../bb/palette-image/palette-image";
 import { assertTuple } from "../../bb/tuple";
 
 export function Levels({
@@ -30,24 +24,6 @@ export function Levels({
 					mapRecord(parsedPrg.sprites, ({ color }) => color),
 					shadowChars
 				)}
-			/>
-			<br />
-			<br />
-			<BlobDownloadButton
-				getBlob={async () => ({
-					parts: await mapAsync(parsedPrg.levels, async (level, index) => ({
-						fileName: (index + 1).toString().padStart(3, "0") + ".png",
-						blob: await imageDataToBlob(
-							imageDataFromPaletteImage(
-								doubleImageWidth(
-									drawLevel(level, parsedPrg.sprites, shadowChars)
-								)
-							)
-						),
-					})),
-					fileName: "bubble bobble c64 - all level images.zip",
-				})}
-				label="Download level images"
 			/>
 			<br />
 			<br />
