@@ -84,6 +84,19 @@ const LevelSelector = styled(
 	}
 `;
 
+const SaveLevelImagesButton = styled(BlobDownloadButton)``;
+
+const ButtonRow = styled.div`
+	display: flex;
+	justify-content: end;
+	gap: 1em;
+
+	${SaveLevelImagesButton} {
+		/* Place the images-button to the left. */
+		margin-right: auto;
+	}
+`;
+
 const LevelPreview = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -142,8 +155,8 @@ export function PrgDownloader({
 				, placed in the same folder as Exomizer to pack it for execution.
 				</p> */}
 
-			<div>
-				<BlobDownloadButton
+			<ButtonRow>
+				<SaveLevelImagesButton
 					getBlob={async () => ({
 						parts: await mapAsync(parsedPrg.levels, async (level, index) => ({
 							fileName: (index + 1).toString().padStart(3, "0") + ".png",
@@ -172,7 +185,7 @@ export function PrgDownloader({
 					}}
 					label="Save"
 				/>
-			</div>
+			</ButtonRow>
 		</ImageCard>
 	);
 }
