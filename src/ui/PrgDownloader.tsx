@@ -123,26 +123,26 @@ export function PrgDownloader({
 					setLevelIndex={setLevelIndex}
 				/>
 			</LevelPreview>
-			<div>
-				{/* <h2>Save your prg-file</h2> */}
-				{/* <p>
+			{/* <h2>Save your prg-file</h2> */}
+			{/* <p>
 				Use the tools below to view and patch your prg-file. When you are done,
 				you can download the prg-file. You can also resume editing your saved
 				prg-file later.
-			</p>
-			<p>
+				</p>
+				<p>
 				Before running your custom prg-file, it needs to be compressed with a
 				tool like{" "}
 				<a href="https://bitbucket.org/magli143/exomizer/wiki/downloads/exomizer-3.1.2.zip">
-					Exomizer
+				Exomizer
 				</a>
 				. Drag an unpacked prg onto this{" "}
 				<a href={new URL("/pack.bat", import.meta.url).href} download>
-					.bat-file
+				.bat-file
 				</a>
 				, placed in the same folder as Exomizer to pack it for execution.
-			</p> */}
+				</p> */}
 
+			<div>
 				<BlobDownloadButton
 					getBlob={async () => ({
 						parts: await mapAsync(parsedPrg.levels, async (level, index) => ({
