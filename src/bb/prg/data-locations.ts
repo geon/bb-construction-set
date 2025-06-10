@@ -325,6 +325,7 @@ export const itemSegmentLocations: Record<
 		colorIndices: {
 			startAddress: 0xa8e4,
 			length: 47,
+			mask: 0x0f,
 		},
 	},
 	powerups: {
@@ -335,6 +336,7 @@ export const itemSegmentLocations: Record<
 		colorIndices: {
 			startAddress: 0xa913,
 			length: 35,
+			mask: 0x0f,
 		},
 	},
 };

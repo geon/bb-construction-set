@@ -20,7 +20,7 @@ import {
 import { LevelDataSegmentName } from "../game-definitions/level-segment-name";
 import { spriteGroupNames } from "../game-definitions/sprite-segment-name";
 import { parseCharGroups, serializeCharGroups } from "./char-groups";
-import { parseItems } from "./items";
+import { parseItems, serializeItems } from "./items";
 import {
 	readBubbleCurrentRectangles,
 	writeBubbleCurrentRectangles,
@@ -123,7 +123,12 @@ export function levelsToSegments(
 }
 
 export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
-	const { levels, sprites: spriteGroups, chars: charGroups } = parsedPrg;
+	const {
+		levels,
+		sprites: spriteGroups,
+		chars: charGroups,
+		items: itemGroups,
+	} = parsedPrg;
 
 	const patchedPrg = prg.slice();
 
@@ -187,6 +192,25 @@ export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
 		prgCharSegments[segmentName].buffer.set(
 			newCharSegments[segmentName].buffer
 		);
+	}
+
+	const newItemSegments = serializeItems(itemGroups);
+	for (const [itemCategoryName, segmentLocation] of objectEntries(
+		itemSegmentLocations
+	)) {
+		for (const [segmentName, prgSegment] of objectEntries(
+			getMutableDataSegments(patchedPrg, segmentLocation)
+		)) {
+			const newSegment = newItemSegments[itemCategoryName][segmentName];
+			prgSegment.buffer.set(
+				zipObject({
+					originalByte: [...prgSegment.buffer],
+					newByte: [...newSegment.buffer],
+				}).map(({ originalByte, newByte }) =>
+					mixByte(newByte, originalByte, newSegment.mask ?? 0b11111111)
+				)
+			);
+		}
 	}
 
 	return patchedPrg;

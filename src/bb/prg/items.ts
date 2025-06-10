@@ -1,4 +1,4 @@
-import { mapRecord, zipObject } from "../functions";
+import { mapRecord, unzipObject, zipObject } from "../functions";
 import { ItemGroup, ItemGroups } from "../internal-data-formats/item-groups";
 import { PaletteIndex } from "../internal-data-formats/palette";
 import { ItemCategoryName } from "./data-locations";
@@ -23,5 +23,39 @@ export function parseItems(
 					(byte) => (byte & 0b111) as PaletteIndex
 				),
 			})
+	);
+}
+
+export function serializeItems(itemGroups: ItemGroups): Record<
+	ItemCategoryName,
+	{
+		readonly charBlockIndices: DataSegment;
+		readonly colorIndices: DataSegment;
+	}
+> {
+	return mapRecord(
+		itemGroups,
+		(
+			itemGroup
+		): {
+			readonly charBlockIndices: DataSegment;
+			readonly colorIndices: DataSegment;
+		} => {
+			const newLocal = unzipObject(itemGroup);
+			return {
+				charBlockIndices: {
+					mask: undefined,
+					buffer: new Uint8Array(newLocal.charBlockIndex),
+				},
+				colorIndices: {
+					mask: undefined,
+					buffer: new Uint8Array(
+						newLocal.paletteIndex
+							// Put back the multi color bit.
+							.map((color) => color | 0b1000)
+					),
+				},
+			};
+		}
 	);
 }
