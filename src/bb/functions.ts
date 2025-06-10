@@ -248,3 +248,33 @@ export function minBy<T>(
 ): T {
 	return array[indexOfMinBy(array, accessor) ?? 0]!;
 }
+
+export function checkedAccess<Indexable, Key extends keyof Indexable>(
+	record: Indexable,
+	key: Key
+	// https://www.reddit.com/r/typescript/comments/18ya5sv/type_narrowing_and_t_null/
+): Exclude<Indexable[Key], undefined> {
+	const value = record[key];
+	if (value === undefined) {
+		throw new Error("Missing value.");
+	}
+
+	// Casting because the actual type `Indexable[Key] & ({} | null)` is confusing.
+	return value as Exclude<Indexable[Key], undefined>;
+}
+
+export function updateArrayAtIndex<T>(
+	array: ReadonlyArray<T>,
+	index: number,
+	updater: (oldElement: T) => T
+): ReadonlyArray<T> {
+	if (index >= array.length) {
+		throw new Error(
+			`Index out of bounds. index: ${index}, array.length: ${array.length}`
+		);
+	}
+
+	const newArray = array.slice();
+	newArray.splice(index, 1, updater(array[index]!));
+	return newArray;
+}

@@ -11,6 +11,7 @@ import { LevelGraphics } from "./tabs/LevelGraphics";
 import { parsePrg } from "../bb/prg/parse-prg";
 import { ParsedPrg } from "../bb/internal-data-formats/parsed-prg";
 import { attempt } from "../bb/functions";
+import { Items } from "./tabs/Items";
 
 const Page = styled.div`
 	width: 600px;
@@ -132,6 +133,23 @@ export function App() {
 											<Chars
 												parsedPrg={parsedPrg}
 												setParsedPrg={setParsedPrg}
+											/>
+										</Card>
+									</>
+								);
+							},
+						},
+						items: {
+							title: "Items",
+							render: (tab) => {
+								return (
+									<>
+										<Card>
+											<h2>{tab.title}</h2>
+											<Items
+												parsedPrg={parsedPrg}
+												setParsedPrg={setParsedPrg}
+												levelIndex={levelIndex}
 											/>
 										</Card>
 									</>
