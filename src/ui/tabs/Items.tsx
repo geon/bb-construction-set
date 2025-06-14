@@ -43,7 +43,7 @@ export function Items({
 		powerups: objectFromUseState(useState<number | undefined>()),
 	};
 
-	const itemIndex =
+	const selectedItemIndex =
 		selectedItemCategoryName && itemStates[selectedItemCategoryName].value;
 
 	return (
@@ -57,7 +57,7 @@ export function Items({
 					itemIndex={
 						selectedItemCategoryName !== itemCategoryName
 							? undefined
-							: itemIndex
+							: selectedItemIndex
 					}
 					setItemIndex={(itemIndex) => {
 						setSelectedItemCategoryName(itemCategoryName);
@@ -67,7 +67,7 @@ export function Items({
 			))}
 			<Palette
 				onPick={(paletteIndex) => {
-					if (!(selectedItemCategoryName && itemIndex !== undefined)) {
+					if (!(selectedItemCategoryName && selectedItemIndex !== undefined)) {
 						return;
 					}
 
@@ -77,7 +77,7 @@ export function Items({
 							...parsedPrg.items,
 							[selectedItemCategoryName]: updateArrayAtIndex(
 								parsedPrg.items[selectedItemCategoryName],
-								itemIndex,
+								selectedItemIndex,
 								(item) => ({
 									...item,
 									paletteIndex,
