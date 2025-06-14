@@ -56,8 +56,8 @@ type Tab<TId extends string> = {
 	) => ReactNode | ReadonlyArray<ReactNode>;
 };
 
-export function TabBar<TId extends string, TInitialTabId extends TId>(props: {
-	readonly initialTabId: TInitialTabId;
+export function TabBar<TId extends string>(props: {
+	readonly initialTabId: NoInfer<TId>;
 	readonly tabs: Record<TId, Tab<TId>>;
 }): ReactNode {
 	const [activeTabId, setActiveTabId] = React.useState<TId>(props.initialTabId);
