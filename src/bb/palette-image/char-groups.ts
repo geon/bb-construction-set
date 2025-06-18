@@ -151,11 +151,17 @@ export function layOutChars(): LayoutRect {
 					4
 				),
 				laidOutCharGroups.secretLevelPlatform,
-				laidOutCharGroups.secretLevelSideDecor,
 				laidOutCharGroups.secretLevelPedestal,
 				laidOutCharGroups.secretLevelPedestalRightEdge,
-				laidOutCharGroups.secretLevelPedestalDoor,
-				laidOutCharGroups.secretLevelBasementDoor,
+				flexbox(
+					[
+						laidOutCharGroups.secretLevelSideDecor,
+						laidOutCharGroups.secretLevelPedestalDoor,
+						laidOutCharGroups.secretLevelBasementDoor,
+					],
+					"row",
+					4
+				),
 				laidOutCharGroups.shadows,
 			],
 		].map((chunk) => flexbox(chunk, "column", 3 * 8)),
