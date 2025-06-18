@@ -8,15 +8,9 @@ import {
 	zipObject,
 } from "../functions";
 import { charGroupMeta } from "../prg/char-groups";
-import {
-	CharBlock,
-	CharGroup,
-	CharGroups,
-} from "../internal-data-formats/char-group";
+import { CharGroup, CharGroups } from "../internal-data-formats/char-group";
 import { drawLayout, PaletteImage, parseLayout } from "./palette-image";
 import { drawChar, getCharPalette, parseChar } from "./char";
-import { assertTuple } from "../tuple";
-import { CharSegmentName } from "../game-definitions/char-segment-name";
 import { Char } from "../internal-data-formats/char";
 import { PaletteIndex, SubPalette } from "../internal-data-formats/palette";
 
@@ -173,15 +167,6 @@ export function getAllChars(charGroups: CharGroups): ReadonlyArray<Char> {
 export function getAllCharMasks(
 	charGroups: CharGroups
 ): ReadonlyArray<Char | undefined> {
-	const sharedBubbleMask = assertTuple(charGroups.bubbleBlow.slice(12 + 8), 4);
-	const bubbleBasedMasks: Partial<
-		Record<CharSegmentName, ReadonlyArray<CharBlock<number, number>>>
-	> = {
-		specialBubbles: range(3).flatMap(() => sharedBubbleMask),
-		extendBubbles: range(5).flatMap(() => sharedBubbleMask),
-		stonerWeapon: [sharedBubbleMask[0], sharedBubbleMask[2]],
-	};
-
 	return Object.values(
 		mapRecord(charGroups, (charGroup, groupName) => {
 			const mixedChars = charGroup.flat().flat();
@@ -189,7 +174,8 @@ export function getAllCharMasks(
 			const masks = padRight(
 				charGroupMeta[groupName].hasMask
 					? mixedChars.slice(mixedChars.length / 2)
-					: bubbleBasedMasks[groupName]?.flat().flat() ?? [],
+					: [],
+
 				mixedChars.length,
 				undefined
 			);
