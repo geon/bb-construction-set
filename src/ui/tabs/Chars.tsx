@@ -13,7 +13,6 @@ import {
 import { attempt } from "../../bb/functions";
 import { BlobDownloadButton } from "../BlobDownloadButton";
 import { FileInput } from "../FileInput";
-import { halfImageWidth } from "../../bb/palette-image/palette-image";
 
 export function Chars({
 	parsedPrg,
@@ -44,9 +43,7 @@ export function Chars({
 					const imageData = imageDataFromImage(await imageFromFile(file));
 
 					const parsedCharGroups = attempt(() =>
-						parseCharGroups(
-							halfImageWidth(paletteImageFromImageData(imageData))
-						)
+						parseCharGroups(paletteImageFromImageData(imageData))
 					);
 
 					if (parsedCharGroups.type !== "ok") {

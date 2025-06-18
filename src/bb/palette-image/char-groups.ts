@@ -12,6 +12,7 @@ import { CharGroup, CharGroups } from "../internal-data-formats/char-group";
 import {
 	doubleImageWidth,
 	drawLayout,
+	halfImageWidth,
 	PaletteImage,
 	parseLayout,
 } from "./palette-image";
@@ -312,7 +313,9 @@ function reassembleAllChars(
 	});
 }
 
-export function parseCharGroups(image: PaletteImage): CharGroups {
+export function parseCharGroups(doubleWidthImage: PaletteImage): CharGroups {
+	const image = halfImageWidth(doubleWidthImage);
+
 	const layout = layOutChars();
 
 	const chars = zipObject({
