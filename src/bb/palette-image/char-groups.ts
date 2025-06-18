@@ -9,7 +9,12 @@ import {
 } from "../functions";
 import { charGroupMeta } from "../prg/char-groups";
 import { CharGroup, CharGroups } from "../internal-data-formats/char-group";
-import { drawLayout, PaletteImage, parseLayout } from "./palette-image";
+import {
+	doubleImageWidth,
+	drawLayout,
+	PaletteImage,
+	parseLayout,
+} from "./palette-image";
 import { drawChar, getCharPalette, parseChar } from "./char";
 import { Char } from "../internal-data-formats/char";
 import { PaletteIndex, SubPalette } from "../internal-data-formats/palette";
@@ -289,7 +294,7 @@ export function drawCharGroups(charGroups: CharGroups): PaletteImage {
 		drawChar(maskedChar.char, maskedChar.palette, maskedChar.mask)
 	);
 	const layout = layOutChars();
-	return drawLayout(layout, charImages);
+	return doubleImageWidth(drawLayout(layout, charImages));
 }
 
 function reassembleAllChars(

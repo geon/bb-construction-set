@@ -13,10 +13,7 @@ import {
 import { attempt } from "../../bb/functions";
 import { BlobDownloadButton } from "../BlobDownloadButton";
 import { FileInput } from "../FileInput";
-import {
-	doubleImageWidth,
-	halfImageWidth,
-} from "../../bb/palette-image/palette-image";
+import { halfImageWidth } from "../../bb/palette-image/palette-image";
 
 export function Chars({
 	parsedPrg,
@@ -28,9 +25,7 @@ export function Chars({
 	return (
 		<>
 			<ImageDataCanvas
-				imageData={imageDataFromPaletteImage(
-					doubleImageWidth(drawCharGroups(parsedPrg.chars))
-				)}
+				imageData={imageDataFromPaletteImage(drawCharGroups(parsedPrg.chars))}
 			/>
 			<br />
 			<br />
@@ -38,9 +33,7 @@ export function Chars({
 				getBlob={async () => ({
 					fileName: "chars.png",
 					blob: await imageDataToBlob(
-						imageDataFromPaletteImage(
-							doubleImageWidth(drawCharGroups(parsedPrg.chars))
-						)
+						imageDataFromPaletteImage(drawCharGroups(parsedPrg.chars))
 					),
 				})}
 				label="Download image"
