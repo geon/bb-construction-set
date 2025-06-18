@@ -24,5 +24,11 @@ export const charSegmentNames = [
 	"shadows",
 	"fontHurryUp",
 	"fontLevelNumbers6px",
+	"fontNumeric",
+	"fontFatneck",
+	"fontLifeDotLines",
+	"fontAlpha",
+	"fontPunctuation",
+	"fontRuddyHelloThere",
 ] as const;
 export type CharSegmentName = (typeof charSegmentNames)[number];

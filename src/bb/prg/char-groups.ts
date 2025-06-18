@@ -183,6 +183,48 @@ export const charGroupMeta = {
 		hasMask: false,
 		transposed: false,
 	},
+	fontNumeric: {
+		width: 1,
+		height: 1,
+		count: 10,
+		hasMask: false,
+		transposed: false,
+	},
+	fontFatneck: {
+		width: 1,
+		height: 1,
+		count: 11,
+		hasMask: false,
+		transposed: false,
+	},
+	fontLifeDotLines: {
+		width: 1,
+		height: 1,
+		count: 2,
+		hasMask: false,
+		transposed: false,
+	},
+	fontAlpha: {
+		width: 1,
+		height: 1,
+		count: 26,
+		hasMask: false,
+		transposed: false,
+	},
+	fontPunctuation: {
+		width: 1,
+		height: 1,
+		count: 5,
+		hasMask: false,
+		transposed: false,
+	},
+	fontRuddyHelloThere: {
+		width: 1,
+		height: 1,
+		count: 30,
+		hasMask: false,
+		transposed: false,
+	},
 } as const satisfies Record<
 	CharSegmentName,
 	{

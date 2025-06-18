@@ -116,6 +116,12 @@ export function layOutChars(): LayoutRect {
 				lightning: 1,
 				items: Math.ceil(Math.sqrt(rectGroups.items.length)),
 				shadows: 6,
+				fontNumeric: 1000,
+				fontFatneck: 1000,
+				fontLifeDotLines: 1000,
+				fontAlpha: 1000,
+				fontPunctuation: 1000,
+				fontRuddyHelloThere: 1000,
 			}[groupName as string] ?? 4,
 			{ x: 4, y: 8 }
 		)
@@ -123,85 +129,115 @@ export function layOutChars(): LayoutRect {
 
 	return flexbox(
 		[
-			[
-				laidOutCharGroups.bubbleBlow,
-				laidOutCharGroups.specialBubbles,
-				laidOutCharGroups.extendBubbles,
-			],
-			[
-				laidOutCharGroups.bubblePop,
-				laidOutCharGroups.fire,
-				laidOutCharGroups.baronVonBlubba,
-				laidOutCharGroups.stonerWeapon,
-				laidOutCharGroups.drunkAndInvaderWeapon,
-				flexbox(
-					[laidOutCharGroups.incendoWeapon, laidOutCharGroups.lightning],
-					"row",
-					4
-				),
-			],
-			[
-				laidOutCharGroups.items,
-				laidOutCharGroups.bonusRoundCircles,
-				flexbox(
+			flexbox(
+				[
 					[
-						laidOutCharGroups.largeLightning,
+						laidOutCharGroups.bubbleBlow,
+						laidOutCharGroups.specialBubbles,
+						laidOutCharGroups.extendBubbles,
+					],
+					[
+						laidOutCharGroups.bubblePop,
+						laidOutCharGroups.fire,
+						laidOutCharGroups.baronVonBlubba,
+						laidOutCharGroups.stonerWeapon,
+						laidOutCharGroups.drunkAndInvaderWeapon,
 						flexbox(
-							[
-								flexbox(
-									[
-										laidOutCharGroups.secretLevelPlatform,
-										laidOutCharGroups.secretLevelPedestal,
-										laidOutCharGroups.secretLevelPedestalRightEdge,
-									],
-									"row",
-									4
-								),
-								flexbox(
-									[
-										laidOutCharGroups.secretLevelSideDecor,
-										laidOutCharGroups.secretLevelPedestalDoor,
-										laidOutCharGroups.secretLevelBasementDoor,
-									],
-									"row",
-									4
-								),
-							],
-							"column",
+							[laidOutCharGroups.incendoWeapon, laidOutCharGroups.lightning],
+							"row",
 							4
 						),
 					],
-					"row",
-					12
-				),
-				flexbox(
 					[
+						laidOutCharGroups.items,
+						laidOutCharGroups.bonusRoundCircles,
 						flexbox(
 							[
-								laidOutCharGroups.shadows,
+								laidOutCharGroups.largeLightning,
 								flexbox(
 									[
-										laidOutCharGroups.flowingWater,
-										laidOutCharGroups.fireOnGroundA,
-										laidOutCharGroups.fireOnGround,
+										flexbox(
+											[
+												laidOutCharGroups.secretLevelPlatform,
+												laidOutCharGroups.secretLevelPedestal,
+												laidOutCharGroups.secretLevelPedestalRightEdge,
+											],
+											"row",
+											4
+										),
+										flexbox(
+											[
+												laidOutCharGroups.secretLevelSideDecor,
+												laidOutCharGroups.secretLevelPedestalDoor,
+												laidOutCharGroups.secretLevelBasementDoor,
+											],
+											"row",
+											4
+										),
 									],
-									"row",
+									"column",
 									4
 								),
-								flexbox(rectGroups.fontHurryUp, "row", 0),
 							],
-							"column",
+							"row",
 							12
 						),
-						flexbox(rectGroups.fontLevelNumbers6px, "column", 0),
+						flexbox(
+							[
+								flexbox(
+									[
+										laidOutCharGroups.shadows,
+										flexbox(
+											[
+												laidOutCharGroups.flowingWater,
+												laidOutCharGroups.fireOnGroundA,
+												laidOutCharGroups.fireOnGround,
+											],
+											"row",
+											4
+										),
+										flexbox(rectGroups.fontHurryUp, "row", 0),
+									],
+									"column",
+									12
+								),
+								flexbox(rectGroups.fontLevelNumbers6px, "column", 0),
+							],
+							"row",
+							4 * 3
+						),
 					],
-					"row",
-					4 * 3
-				),
-			],
-		].map((chunk) => flexbox(chunk, "column", 3 * 8)),
-		"row",
-		4 * 4
+				].map((chunk) => flexbox(chunk, "column", 3 * 8)),
+				"row",
+				4 * 4
+			),
+			flexbox(
+				[
+					flexbox(
+						[
+							flexbox(rectGroups.fontAlpha, "row", 0),
+							flexbox(rectGroups.fontNumeric, "row", 0),
+							laidOutCharGroups.fontLifeDotLines,
+							laidOutCharGroups.fontPunctuation,
+						],
+						"row",
+						4 * 3
+					),
+					flexbox(
+						[
+							flexbox(rectGroups.fontFatneck, "row", 0),
+							flexbox(rectGroups.fontRuddyHelloThere, "row", 0),
+						],
+						"row",
+						8
+					),
+				],
+				"column",
+				8
+			),
+		],
+		"column",
+		8 * 4
 	);
 }
 

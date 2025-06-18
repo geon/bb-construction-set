@@ -314,6 +314,30 @@ export const charSegmentLocations: Readonly<
 		startAddress: 0xad75,
 		length: charSegmentLengths.fontLevelNumbers6px,
 	},
+	fontNumeric: {
+		startAddress: 0x4000,
+		length: charSegmentLengths.fontNumeric,
+	},
+	fontFatneck: {
+		startAddress: 0x4080,
+		length: charSegmentLengths.fontFatneck,
+	},
+	fontLifeDotLines: {
+		startAddress: 0x40e8,
+		length: charSegmentLengths.fontLifeDotLines,
+	},
+	fontAlpha: {
+		startAddress: 0x4108,
+		length: charSegmentLengths.fontAlpha,
+	},
+	fontPunctuation: {
+		startAddress: 0x41d8,
+		length: charSegmentLengths.fontPunctuation,
+	},
+	fontRuddyHelloThere: {
+		startAddress: 0x4210,
+		length: charSegmentLengths.fontRuddyHelloThere,
+	},
 };
 
 export const validItemCategoryNames = ["points", "powerups"] as const;
