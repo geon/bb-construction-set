@@ -159,20 +159,26 @@ export function layOutChars(): LayoutRect {
 				),
 				flexbox(
 					[
-						laidOutCharGroups.secretLevelPlatform,
-						laidOutCharGroups.secretLevelPedestal,
-						laidOutCharGroups.secretLevelPedestalRightEdge,
+						flexbox(
+							[
+								laidOutCharGroups.secretLevelPlatform,
+								laidOutCharGroups.secretLevelPedestal,
+								laidOutCharGroups.secretLevelPedestalRightEdge,
+							],
+							"row",
+							4
+						),
+						flexbox(
+							[
+								laidOutCharGroups.secretLevelSideDecor,
+								laidOutCharGroups.secretLevelPedestalDoor,
+								laidOutCharGroups.secretLevelBasementDoor,
+							],
+							"row",
+							4
+						),
 					],
-					"row",
-					4
-				),
-				flexbox(
-					[
-						laidOutCharGroups.secretLevelSideDecor,
-						laidOutCharGroups.secretLevelPedestalDoor,
-						laidOutCharGroups.secretLevelBasementDoor,
-					],
-					"row",
+					"column",
 					4
 				),
 			],
