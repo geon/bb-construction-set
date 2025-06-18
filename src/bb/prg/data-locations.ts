@@ -306,6 +306,14 @@ export const charSegmentLocations: Readonly<
 		// length: 6 * 8, // 6 chars of 8 bytes.
 		length: charSegmentLengths.secretLevelBasementDoor,
 	},
+	fontHurryUp: {
+		startAddress: 0xadb1,
+		length: charSegmentLengths.fontHurryUp,
+	},
+	fontLevelNumbers6px: {
+		startAddress: 0xad75,
+		length: charSegmentLengths.fontLevelNumbers6px,
+	},
 };
 
 export const validItemCategoryNames = ["points", "powerups"] as const;

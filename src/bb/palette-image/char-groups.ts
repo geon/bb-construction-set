@@ -188,6 +188,14 @@ export function layOutChars(): LayoutRect {
 					"row",
 					12
 				),
+				flexbox(
+					[
+						flexbox(rectGroups.fontHurryUp, "row", 0),
+						flexbox(rectGroups.fontLevelNumbers6px, "column", 0),
+					],
+					"row",
+					4 * 3
+				),
 			],
 		].map((chunk) => flexbox(chunk, "column", 3 * 8)),
 		"row",

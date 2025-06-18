@@ -22,5 +22,7 @@ export const charSegmentNames = [
 	"secretLevelPedestalDoor",
 	"secretLevelBasementDoor",
 	"shadows",
+	"fontHurryUp",
+	"fontLevelNumbers6px",
 ] as const;
 export type CharSegmentName = (typeof charSegmentNames)[number];

@@ -169,6 +169,20 @@ export const charGroupMeta = {
 		hasMask: false,
 		transposed: false,
 	},
+	fontHurryUp: {
+		width: 1,
+		height: 1,
+		count: 9,
+		hasMask: false,
+		transposed: false,
+	},
+	fontLevelNumbers6px: {
+		width: 1,
+		height: 1,
+		count: 6,
+		hasMask: false,
+		transposed: false,
+	},
 } as const satisfies Record<
 	CharSegmentName,
 	{
