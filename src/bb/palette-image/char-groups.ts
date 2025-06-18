@@ -143,7 +143,38 @@ export function layOutChars(): LayoutRect {
 			[
 				laidOutCharGroups.items,
 				laidOutCharGroups.bonusRoundCircles,
-				laidOutCharGroups.largeLightning,
+				flexbox(
+					[
+						laidOutCharGroups.largeLightning,
+						flexbox(
+							[
+								flexbox(
+									[
+										laidOutCharGroups.secretLevelPlatform,
+										laidOutCharGroups.secretLevelPedestal,
+										laidOutCharGroups.secretLevelPedestalRightEdge,
+									],
+									"row",
+									4
+								),
+								flexbox(
+									[
+										laidOutCharGroups.secretLevelSideDecor,
+										laidOutCharGroups.secretLevelPedestalDoor,
+										laidOutCharGroups.secretLevelBasementDoor,
+									],
+									"row",
+									4
+								),
+							],
+							"column",
+							4
+						),
+					],
+					"row",
+					12
+				),
+
 				flexbox(
 					[
 						laidOutCharGroups.shadows,
@@ -155,30 +186,6 @@ export function layOutChars(): LayoutRect {
 						),
 					],
 					"row",
-					4
-				),
-				flexbox(
-					[
-						flexbox(
-							[
-								laidOutCharGroups.secretLevelPlatform,
-								laidOutCharGroups.secretLevelPedestal,
-								laidOutCharGroups.secretLevelPedestalRightEdge,
-							],
-							"row",
-							4
-						),
-						flexbox(
-							[
-								laidOutCharGroups.secretLevelSideDecor,
-								laidOutCharGroups.secretLevelPedestalDoor,
-								laidOutCharGroups.secretLevelBasementDoor,
-							],
-							"row",
-							4
-						),
-					],
-					"column",
 					4
 				),
 			],
