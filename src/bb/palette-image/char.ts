@@ -1,6 +1,11 @@
+import { bitsToByte, byteToBits } from "../bit-twiddling";
 import { zipObject } from "../functions";
 import { Char } from "../internal-data-formats/char";
 import { CharBlock } from "../internal-data-formats/char-group";
+import {
+	parseColorPixelByte,
+	serializeColorPixelByte,
+} from "../internal-data-formats/color-pixel-byte";
 import { Level } from "../internal-data-formats/level";
 import {
 	getSubPaletteIndex,
@@ -27,6 +32,17 @@ export function drawChar(
 	);
 }
 
+export function drawHiresChar(
+	char: Char,
+	paletteIndex: PaletteIndex
+): PaletteImage<8, 8> {
+	return mapTuple(char, (row) =>
+		mapTuple(byteToBits(serializeColorPixelByte(row)), (pixel) =>
+			pixel ? paletteIndex : 0
+		)
+	);
+}
+
 export function parseChar(
 	image: PaletteImage<4, 8>,
 	charPalette: SubPalette
@@ -46,6 +62,22 @@ export function parseChar(
 					// * Set the first unknown color to return
 					// * Assume they are the char color
 					((color = color ?? paletteIndex), 3)
+			)
+		),
+		color,
+	};
+}
+
+export function parseHiresChar(image: PaletteImage<8, 8>): {
+	readonly char: Char;
+	readonly color: PaletteIndex | undefined;
+} {
+	let color: PaletteIndex | undefined;
+	return {
+		char: mapTuple(image, (row) =>
+			// Reinterpret the hires char as multicolor.
+			parseColorPixelByte(
+				bitsToByte(mapTuple(row, (paletteIndex) => paletteIndex !== 0))
 			)
 		),
 		color,

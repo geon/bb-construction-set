@@ -13,10 +13,17 @@ import {
 	doubleImageWidth,
 	drawLayout,
 	halfImageWidth,
+	mapLayout,
 	PaletteImage,
 	parseLayout,
 } from "./palette-image";
-import { drawChar, getCharPalette, parseChar } from "./char";
+import {
+	drawChar,
+	drawHiresChar,
+	getCharPalette,
+	parseChar,
+	parseHiresChar,
+} from "./char";
 import { Char } from "../internal-data-formats/char";
 import { PaletteIndex, SubPalette } from "../internal-data-formats/palette";
 
@@ -272,6 +279,15 @@ export function getAllCharMasks(
 	).flat();
 }
 
+export function getAllCharMulticolor(): ReadonlyArray<boolean> {
+	return Object.values(
+		mapRecord(charGroupMeta, (meta) => {
+			const numChars = meta.count * meta.width * meta.height;
+			return range(numChars).map(() => meta.multicolor);
+		})
+	).flat();
+}
+
 export function getAllCharPalettes(): ReadonlyArray<SubPalette> {
 	const bgColors = {
 		bgColorDark: 9, // Brown
@@ -291,11 +307,28 @@ export function drawCharGroups(charGroups: CharGroups): PaletteImage {
 		char: getAllChars(charGroups),
 		mask: getAllCharMasks(charGroups),
 		palette: getAllCharPalettes(),
+		multicolor: getAllCharMulticolor(),
 	}).map((maskedChar) =>
-		drawChar(maskedChar.char, maskedChar.palette, maskedChar.mask)
+		maskedChar.multicolor
+			? doubleImageWidth(
+					drawChar(maskedChar.char, maskedChar.palette, maskedChar.mask)
+			  )
+			: drawHiresChar(maskedChar.char, maskedChar.palette[3])
 	);
 	const layout = layOutChars();
-	return doubleImageWidth(drawLayout(layout, charImages));
+	return drawLayout(
+		mapLayout(layout, (rect) => ({
+			pos: {
+				x: rect.pos.x * 2,
+				y: rect.pos.y,
+			},
+			size: {
+				x: rect.size.x * 2,
+				y: rect.size.y,
+			},
+		})),
+		charImages
+	);
 }
 
 function reassembleAllChars(
@@ -313,16 +346,26 @@ function reassembleAllChars(
 	});
 }
 
-export function parseCharGroups(doubleWidthImage: PaletteImage): CharGroups {
-	const image = halfImageWidth(doubleWidthImage);
-
-	const layout = layOutChars();
+export function parseCharGroups(image: PaletteImage): CharGroups {
+	const layout = mapLayout(layOutChars(), (rect) => ({
+		pos: {
+			x: rect.pos.x * 2,
+			y: rect.pos.y,
+		},
+		size: {
+			x: rect.size.x * 2,
+			y: rect.size.y,
+		},
+	}));
 
 	const chars = zipObject({
 		image: parseLayout(layout, image),
 		palette: getAllCharPalettes(),
-	}).map(({ image, palette }) =>
-		parseChar(image as PaletteImage<4, 8>, palette)
+		multicolor: getAllCharMulticolor(),
+	}).map(({ image, palette, multicolor }) =>
+		multicolor
+			? parseChar(halfImageWidth(image) as PaletteImage<4, 8>, palette)
+			: parseHiresChar(image as PaletteImage<8, 8>)
 	);
 
 	return reassembleAllChars(chars);

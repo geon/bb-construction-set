@@ -139,6 +139,24 @@ export function drawLayout(
 	}, createPaletteImage(layout.size));
 }
 
+export function mapLayout(
+	layout: LayoutRect,
+	transform: (rect: Rect) => Rect
+): LayoutRect {
+	const newRect = transform(layout);
+	if (!("children" in layout)) {
+		return {
+			...newRect,
+			index: layout.index,
+		};
+	} else {
+		return {
+			...newRect,
+			children: layout.children.map((child) => mapLayout(child, transform)),
+		};
+	}
+}
+
 export function parseLayout(
 	layout: LayoutRect,
 	image: PaletteImage

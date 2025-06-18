@@ -14,6 +14,7 @@ export const charGroupMeta = {
 		count: 12 * 2,
 		hasMask: true,
 		transposed: false,
+		multicolor: true,
 	},
 	bubblePop: {
 		width: 3,
@@ -21,6 +22,7 @@ export const charGroupMeta = {
 		count: 8,
 		hasMask: false,
 		transposed: false,
+		multicolor: true,
 	},
 	baronVonBlubba: {
 		width: 3,
@@ -28,6 +30,7 @@ export const charGroupMeta = {
 		count: 4 * 2,
 		hasMask: true,
 		transposed: false,
+		multicolor: true,
 	},
 	specialBubbles: {
 		width: 3,
@@ -35,6 +38,7 @@ export const charGroupMeta = {
 		count: 12,
 		hasMask: false,
 		transposed: false,
+		multicolor: true,
 	},
 	lightning: {
 		width: 2,
@@ -42,6 +46,7 @@ export const charGroupMeta = {
 		count: 1 * 2,
 		hasMask: true,
 		transposed: false,
+		multicolor: true,
 	},
 	fire: {
 		width: 3,
@@ -49,6 +54,7 @@ export const charGroupMeta = {
 		count: 4 * 2,
 		hasMask: true,
 		transposed: false,
+		multicolor: true,
 	},
 	extendBubbles: {
 		width: 3,
@@ -56,6 +62,7 @@ export const charGroupMeta = {
 		count: 20,
 		hasMask: false,
 		transposed: false,
+		multicolor: true,
 	},
 	stonerWeapon: {
 		width: 3,
@@ -63,6 +70,7 @@ export const charGroupMeta = {
 		count: 2,
 		hasMask: false,
 		transposed: false,
+		multicolor: true,
 	},
 	drunkAndInvaderWeapon: {
 		width: 2,
@@ -70,6 +78,7 @@ export const charGroupMeta = {
 		count: 5 * 2,
 		hasMask: true,
 		transposed: false,
+		multicolor: true,
 	},
 	incendoWeapon: {
 		width: 2,
@@ -77,6 +86,7 @@ export const charGroupMeta = {
 		count: 4 * 2,
 		hasMask: true,
 		transposed: false,
+		multicolor: true,
 	},
 	items: {
 		width: 2,
@@ -84,6 +94,7 @@ export const charGroupMeta = {
 		count: 58,
 		hasMask: false,
 		transposed: false,
+		multicolor: true,
 	},
 	largeLightning: {
 		width: 5,
@@ -91,6 +102,7 @@ export const charGroupMeta = {
 		count: 1 * 2,
 		hasMask: true,
 		transposed: false,
+		multicolor: true,
 	},
 	bonusRoundCircles: {
 		width: 2,
@@ -98,6 +110,7 @@ export const charGroupMeta = {
 		count: 3,
 		hasMask: false,
 		transposed: false,
+		multicolor: true,
 	},
 	flowingWater: {
 		width: 1,
@@ -105,6 +118,7 @@ export const charGroupMeta = {
 		count: 1,
 		hasMask: false,
 		transposed: false,
+		multicolor: true,
 	},
 	fireOnGroundA: {
 		width: 1,
@@ -112,6 +126,7 @@ export const charGroupMeta = {
 		count: 1,
 		hasMask: false,
 		transposed: false,
+		multicolor: true,
 	},
 	fireOnGround: {
 		width: 1,
@@ -119,6 +134,7 @@ export const charGroupMeta = {
 		count: 2,
 		hasMask: false,
 		transposed: false,
+		multicolor: true,
 	},
 	secretLevelPlatform: {
 		width: 1,
@@ -126,6 +142,7 @@ export const charGroupMeta = {
 		count: 1,
 		hasMask: false,
 		transposed: false,
+		multicolor: true,
 	},
 	secretLevelSideDecor: {
 		width: 2,
@@ -133,6 +150,7 @@ export const charGroupMeta = {
 		count: 1,
 		hasMask: false,
 		transposed: true,
+		multicolor: true,
 	},
 	secretLevelPedestal: {
 		width: 7,
@@ -140,6 +158,7 @@ export const charGroupMeta = {
 		count: 1,
 		hasMask: false,
 		transposed: false,
+		multicolor: true,
 	},
 	secretLevelPedestalRightEdge: {
 		width: 1,
@@ -147,6 +166,7 @@ export const charGroupMeta = {
 		count: 1,
 		hasMask: false,
 		transposed: false,
+		multicolor: true,
 	},
 	secretLevelPedestalDoor: {
 		width: 2,
@@ -154,6 +174,7 @@ export const charGroupMeta = {
 		count: 1,
 		hasMask: false,
 		transposed: false,
+		multicolor: true,
 	},
 	secretLevelBasementDoor: {
 		width: 3,
@@ -161,6 +182,7 @@ export const charGroupMeta = {
 		count: 1,
 		hasMask: false,
 		transposed: false,
+		multicolor: true,
 	},
 	shadows: {
 		width: 1,
@@ -168,6 +190,7 @@ export const charGroupMeta = {
 		count: 6,
 		hasMask: false,
 		transposed: false,
+		multicolor: true,
 	},
 	fontHurryUp: {
 		width: 1,
@@ -175,6 +198,7 @@ export const charGroupMeta = {
 		count: 9,
 		hasMask: false,
 		transposed: false,
+		multicolor: true,
 	},
 	fontLevelNumbers6px: {
 		width: 1,
@@ -182,6 +206,7 @@ export const charGroupMeta = {
 		count: 6,
 		hasMask: false,
 		transposed: false,
+		multicolor: true,
 	},
 	fontNumeric: {
 		width: 1,
@@ -189,6 +214,7 @@ export const charGroupMeta = {
 		count: 10,
 		hasMask: false,
 		transposed: false,
+		multicolor: false,
 	},
 	fontFatneck: {
 		width: 1,
@@ -196,6 +222,7 @@ export const charGroupMeta = {
 		count: 11,
 		hasMask: false,
 		transposed: false,
+		multicolor: false,
 	},
 	fontLifeDotLines: {
 		width: 1,
@@ -203,6 +230,7 @@ export const charGroupMeta = {
 		count: 2,
 		hasMask: false,
 		transposed: false,
+		multicolor: false,
 	},
 	fontAlpha: {
 		width: 1,
@@ -210,6 +238,7 @@ export const charGroupMeta = {
 		count: 26,
 		hasMask: false,
 		transposed: false,
+		multicolor: false,
 	},
 	fontPunctuation: {
 		width: 1,
@@ -217,6 +246,7 @@ export const charGroupMeta = {
 		count: 5,
 		hasMask: false,
 		transposed: false,
+		multicolor: false,
 	},
 	fontRuddyHelloThere: {
 		width: 1,
@@ -224,6 +254,7 @@ export const charGroupMeta = {
 		count: 30,
 		hasMask: false,
 		transposed: false,
+		multicolor: false,
 	},
 } as const satisfies Record<
 	CharSegmentName,
@@ -233,6 +264,7 @@ export const charGroupMeta = {
 		readonly count: number;
 		readonly hasMask: boolean;
 		readonly transposed: boolean;
+		readonly multicolor: boolean;
 	}
 >;
 

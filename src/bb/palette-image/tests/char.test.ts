@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { drawChar, parseChar } from "../char";
+import { drawChar, parseChar, parseHiresChar } from "../char";
 
 test("drawChar", () => {
 	expect(
@@ -118,5 +118,32 @@ test("parseChar", () => {
 			[2, 1, 1, 1],
 		],
 		color: 2,
+	});
+});
+
+test("parseHiresChar", () => {
+	expect(
+		parseHiresChar([
+			[0, 1, 2, 3, 4, 5, 6, 7],
+			[1, 1, 1, 1, 1, 1, 1, 1],
+			[1, 0, 1, 0, 1, 0, 1, 0],
+			[0, 1, 0, 1, 0, 1, 0, 1],
+			[0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0, 0, 0, 0],
+		])
+	).toStrictEqual({
+		char: [
+			[1, 3, 3, 3],
+			[3, 3, 3, 3],
+			[2, 2, 2, 2],
+			[1, 1, 1, 1],
+			[0, 0, 0, 0],
+			[0, 0, 0, 0],
+			[0, 0, 0, 0],
+			[0, 0, 0, 0],
+		],
+		color: undefined,
 	});
 });
