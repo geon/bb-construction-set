@@ -174,23 +174,25 @@ export function layOutChars(): LayoutRect {
 					"row",
 					12
 				),
-
 				flexbox(
 					[
-						laidOutCharGroups.shadows,
-						laidOutCharGroups.flowingWater,
 						flexbox(
-							[laidOutCharGroups.fireOnGroundA, laidOutCharGroups.fireOnGround],
-							"row",
-							4
+							[
+								laidOutCharGroups.shadows,
+								flexbox(
+									[
+										laidOutCharGroups.flowingWater,
+										laidOutCharGroups.fireOnGroundA,
+										laidOutCharGroups.fireOnGround,
+									],
+									"row",
+									4
+								),
+								flexbox(rectGroups.fontHurryUp, "row", 0),
+							],
+							"column",
+							12
 						),
-					],
-					"row",
-					12
-				),
-				flexbox(
-					[
-						flexbox(rectGroups.fontHurryUp, "row", 0),
 						flexbox(rectGroups.fontLevelNumbers6px, "column", 0),
 					],
 					"row",
