@@ -115,6 +115,7 @@ export function layOutChars(): LayoutRect {
 				drunkAndInvaderWeapon: 5,
 				lightning: 1,
 				items: Math.ceil(Math.sqrt(rectGroups.items.length)),
+				shadows: 6,
 			}[groupName as string] ?? 4,
 			{ x: 4, y: 8 }
 		)
