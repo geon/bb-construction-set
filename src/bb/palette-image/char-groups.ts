@@ -150,9 +150,15 @@ export function layOutChars(): LayoutRect {
 					"row",
 					4
 				),
-				laidOutCharGroups.secretLevelPlatform,
-				laidOutCharGroups.secretLevelPedestal,
-				laidOutCharGroups.secretLevelPedestalRightEdge,
+				flexbox(
+					[
+						laidOutCharGroups.secretLevelPlatform,
+						laidOutCharGroups.secretLevelPedestal,
+						laidOutCharGroups.secretLevelPedestalRightEdge,
+					],
+					"row",
+					4
+				),
 				flexbox(
 					[
 						laidOutCharGroups.secretLevelSideDecor,
