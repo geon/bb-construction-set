@@ -144,9 +144,16 @@ export function layOutChars(): LayoutRect {
 				laidOutCharGroups.items,
 				laidOutCharGroups.bonusRoundCircles,
 				laidOutCharGroups.largeLightning,
-				laidOutCharGroups.flowingWater,
 				flexbox(
-					[laidOutCharGroups.fireOnGroundA, laidOutCharGroups.fireOnGround],
+					[
+						laidOutCharGroups.shadows,
+						laidOutCharGroups.flowingWater,
+						flexbox(
+							[laidOutCharGroups.fireOnGroundA, laidOutCharGroups.fireOnGround],
+							"row",
+							4
+						),
+					],
 					"row",
 					4
 				),
@@ -168,7 +175,6 @@ export function layOutChars(): LayoutRect {
 					"row",
 					4
 				),
-				laidOutCharGroups.shadows,
 			],
 		].map((chunk) => flexbox(chunk, "column", 3 * 8)),
 		"row",
