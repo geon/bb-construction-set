@@ -144,8 +144,11 @@ export function layOutChars(): LayoutRect {
 				laidOutCharGroups.bonusRoundCircles,
 				laidOutCharGroups.largeLightning,
 				laidOutCharGroups.flowingWater,
-				laidOutCharGroups.fireOnGroundA,
-				laidOutCharGroups.fireOnGround,
+				flexbox(
+					[laidOutCharGroups.fireOnGroundA, laidOutCharGroups.fireOnGround],
+					"row",
+					4
+				),
 				laidOutCharGroups.secretLevelPlatform,
 				laidOutCharGroups.secretLevelSideDecor,
 				laidOutCharGroups.secretLevelPedestal,
