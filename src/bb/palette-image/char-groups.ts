@@ -131,6 +131,7 @@ export function layOutChars(): LayoutRect {
 				shadows: 6,
 				fontLifeDotLines: 1000,
 				fontPunctuation: 1000,
+				fontHurryUp: 1,
 			}[groupName as string] ?? 4,
 			{ x: 4, y: 8 }
 		)

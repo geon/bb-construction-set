@@ -195,8 +195,8 @@ export const charGroupMeta = {
 	fontHurryUp: {
 		width: 9,
 		height: 1,
-		count: 1,
-		hasMask: false,
+		count: 2,
+		hasMask: true,
 		transposed: false,
 		multicolor: true,
 	},
