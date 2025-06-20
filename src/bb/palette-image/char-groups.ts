@@ -129,12 +129,8 @@ export function layOutChars(): LayoutRect {
 				lightning: 1,
 				items: Math.ceil(Math.sqrt(rectGroups.items.length)),
 				shadows: 6,
-				fontNumeric: 1000,
-				fontFatneck: 1000,
 				fontLifeDotLines: 1000,
-				fontAlpha: 1000,
 				fontPunctuation: 1000,
-				fontRuddyHelloThere: 1000,
 			}[groupName as string] ?? 4,
 			{ x: 4, y: 8 }
 		)
@@ -209,12 +205,13 @@ export function layOutChars(): LayoutRect {
 											"row",
 											4
 										),
-										flexbox(rectGroups.fontHurryUp, "row", 0),
+
+										laidOutCharGroups.fontHurryUp,
 									],
 									"column",
 									12
 								),
-								flexbox(rectGroups.fontLevelNumbers6px, "column", 0),
+								laidOutCharGroups.fontLevelNumbers6px,
 							],
 							"row",
 							4 * 3
@@ -228,8 +225,8 @@ export function layOutChars(): LayoutRect {
 				[
 					flexbox(
 						[
-							flexbox(rectGroups.fontAlpha, "row", 0),
-							flexbox(rectGroups.fontNumeric, "row", 0),
+							laidOutCharGroups.fontAlpha,
+							laidOutCharGroups.fontNumeric,
 							laidOutCharGroups.fontLifeDotLines,
 							laidOutCharGroups.fontPunctuation,
 						],
@@ -238,8 +235,8 @@ export function layOutChars(): LayoutRect {
 					),
 					flexbox(
 						[
-							flexbox(rectGroups.fontFatneck, "row", 0),
-							flexbox(rectGroups.fontRuddyHelloThere, "row", 0),
+							laidOutCharGroups.fontFatneck,
+							laidOutCharGroups.fontRuddyHelloThere,
 						],
 						"row",
 						8
