@@ -24,14 +24,33 @@ export function bottomRight(rect: Rect): Coord2 {
 export function flexboxChildPositions(
 	sizes: ReadonlyArray<Coord2>,
 	direction: "row" | "column",
-	gap: number
+	gap: number,
+	alignItems: "start" | "end" = "start"
 ): ReadonlyArray<Coord2> {
 	const axis = ({ row: "x", column: "y" } as const)[direction];
+	const orthogonalAxis = ({ row: "y", column: "x" } as const)[direction];
+
+	const end =
+		alignItems === "start"
+			? 0
+			: boundingBox(sizes.map((size) => ({ pos: origo, size }))).size[
+					orthogonalAxis
+			  ];
 
 	let pos = origo;
 	const positions: Array<Coord2> = [];
 	for (const size of sizes) {
-		positions.push(pos);
+		if (alignItems === "start") {
+			positions.push(pos);
+		} else {
+			const offsetDistance = end - size[orthogonalAxis];
+			const alignVector: Coord2 = {
+				x: 0,
+				y: 0,
+				[orthogonalAxis]: offsetDistance,
+			};
+			positions.push(add(pos, alignVector));
+		}
 
 		const offsetDistance = size[axis] + gap;
 		const offsetVector: Coord2 = { x: 0, y: 0, [axis]: offsetDistance };
@@ -64,12 +83,14 @@ export function boundingBox(rects: ReadonlyArray<Rect>): Rect {
 export function flexbox(
 	rects: ReadonlyArray<LayoutRect>,
 	direction: "row" | "column",
-	gap: number
+	gap: number,
+	alignItems: "start" | "end" = "start"
 ): LayoutRect {
 	const childPositions = flexboxChildPositions(
 		rects.map(({ size }) => size),
 		direction,
-		gap
+		gap,
+		alignItems
 	);
 
 	const children = rects.map((rect, index) => ({

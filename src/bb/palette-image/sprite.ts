@@ -80,6 +80,7 @@ export function layOutSpriteGroups(): LayoutRect {
 					],
 					"row",
 					4,
+					"end"
 				),
 				spriteGroupRects.hexagonExplosion,
 			],
