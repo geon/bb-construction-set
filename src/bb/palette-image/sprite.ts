@@ -76,11 +76,11 @@ export function layOutSpriteGroups(): LayoutRect {
 							"column",
 							0
 						),
+						spriteGroupRects.bonusDiamond,
 					],
 					"row",
-					8
+					4,
 				),
-				spriteGroupRects.bonusDiamond,
 				spriteGroupRects.hexagonExplosion,
 			],
 		].map((chunk) => flexbox(chunk, "column", 3 * 8)),
