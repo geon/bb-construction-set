@@ -19,5 +19,6 @@ export const spriteGroupNames = [
 	"bonusMelonBottom",
 	"bonusDiamond",
 	"hexagonExplosion",
+	"boxyExplosion",
 ] as const;
 export type SpriteGroupName = (typeof spriteGroupNames)[number];

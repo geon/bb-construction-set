@@ -115,6 +115,7 @@ export const spriteCounts: Record<SpriteGroupName, number> = {
 	bonusMelonBottom: 2,
 	bonusDiamond: 2,
 	hexagonExplosion: 1,
+	boxyExplosion: 1,
 };
 
 export const spriteMasks: Partial<
@@ -131,6 +132,10 @@ export const spriteMasks: Partial<
 	// The first 12 lines are used.
 	hexagonExplosion: mapTuple(range(spriteSizeBytes), (index) =>
 		index >= 12 * spriteWidthBytes ? false : true
+	),
+	// The first 9 lines are used.
+	boxyExplosion: mapTuple(range(spriteSizeBytes), (index) =>
+		index >= 9 * spriteWidthBytes ? false : true
 	),
 };
 
@@ -175,6 +180,7 @@ const spriteSegmentAddresses: Readonly<Record<SpriteGroupName, number>> = {
 	bonusMelonBottom: 0xa420 + 64 * 2,
 	bonusDiamond: 0xa520,
 	hexagonExplosion: 0xa854,
+	boxyExplosion: 0xa877,
 };
 
 export const spriteDataSegmentLocations: Readonly<
