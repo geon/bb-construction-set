@@ -12,6 +12,7 @@ import {
 import {
 	charSegmentLocations,
 	itemSegmentLocations,
+	largeBonusSpriteColorsSegmentLocation,
 	levelSegmentLocations,
 	monsterSpriteColorsSegmentLocation,
 	spriteDataSegmentLocations,
@@ -39,12 +40,14 @@ import { readBubbleCurrentPerLineDefaults } from "./bubble-current-per-line-defa
 import { ReadonlyUint8Array } from "../types";
 import { ParsedPrg } from "../internal-data-formats/parsed-prg";
 import { charSegmentNames } from "../game-definitions/char-segment-name";
+import { largeBonusSpriteGroupNames } from "../game-definitions/large-bonus-name";
 
 export function parsePrg(prg: ArrayBuffer): ParsedPrg {
 	const levels = readLevels(getDataSegments(prg, levelSegmentLocations));
 	const sprites = parseSpriteGroupsFromPrg(
 		getDataSegments(prg, spriteDataSegmentLocations),
-		getDataSegment(prg, monsterSpriteColorsSegmentLocation)
+		getDataSegment(prg, monsterSpriteColorsSegmentLocation),
+		getDataSegment(prg, largeBonusSpriteColorsSegmentLocation)
 	);
 	const chars = parseCharGroups(getDataSegments(prg, charSegmentLocations));
 	const items = parseItems(
@@ -182,6 +185,23 @@ export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
 		monsterSpriteColorsSegmentLocation
 	);
 	prgSpriteColorsSegment.buffer.set(spriteColorsSegment);
+
+	const largeBonusColors = mapRecord(
+		largeBonusSpriteGroupNames,
+		(name) => spriteGroups[name].color
+	);
+	// Hardcoded because I don't have 3 diamonds in the sprite sheet.
+	largeBonusColors.yellowDiamond = 7;
+	largeBonusColors.purpleDiamond = 4;
+	const largeBonusColorsSegment = new Uint8Array(
+		Object.values(largeBonusColors)
+	);
+
+	const prgSpriteColorsSegment2 = getDataSegment(
+		patchedPrg,
+		largeBonusSpriteColorsSegmentLocation
+	);
+	prgSpriteColorsSegment2.buffer.set(largeBonusColorsSegment);
 
 	const prgCharSegments = getMutableDataSegments(
 		patchedPrg,

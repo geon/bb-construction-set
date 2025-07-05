@@ -189,6 +189,12 @@ export const monsterSpriteColorsSegmentLocation: SegmentLocation = {
 	length: characterNames.slice(1).length, // 8. The player color is not included.
 };
 
+export const largeBonusSpriteColorsSegmentLocation: SegmentLocation = {
+	startAddress: 0xa81f,
+	// [cupcake, melon, yellow diamond, blue diamond, purple diamond]
+	length: 5,
+};
+
 const charSegmentLengths = mapRecord(
 	charGroupMeta,
 	(x) => 8 * x.count * x.width * x.height

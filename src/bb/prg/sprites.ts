@@ -1,4 +1,9 @@
-import { mapRecord, objectFromEntries, strictChunk } from "../functions";
+import {
+	mapRecord,
+	objectEntries,
+	objectFromEntries,
+	strictChunk,
+} from "../functions";
 import { PaletteIndex } from "../internal-data-formats/palette";
 import {
 	Sprite,
@@ -23,6 +28,11 @@ import {
 	serializeColorPixelByte,
 } from "../internal-data-formats/color-pixel-byte";
 import { spriteMasks } from "./data-locations";
+import {
+	LargeBonusName,
+	largeBonusSpriteGroupNames,
+	largeBonusSpriteGroupNames_inverse,
+} from "../game-definitions/large-bonus-name";
 
 const spriteColors: Record<"player", PaletteIndex> = {
 	player: 5,
@@ -40,10 +50,14 @@ const hardcodedPlayerColor = spriteColors.player;
 
 export function parseSpriteGroupsFromPrg(
 	spriteSegments: Record<SpriteGroupName, DataSegment>,
-	monsterColorSegment: DataSegment
+	monsterColorSegment: DataSegment,
+	largeBonusColorSegment: DataSegment
 ): SpriteGroups {
 	const characterSpriteColors = parseCharacterSpriteColorsFromBuffer(
 		monsterColorSegment.buffer
+	);
+	const largeBonusColors = parseLargeBonusSpriteColorsFromBuffer(
+		largeBonusColorSegment.buffer
 	);
 
 	return mapRecord(
@@ -56,7 +70,11 @@ export function parseSpriteGroupsFromPrg(
 						mask?.[byteIndex % mask?.length] !== false ? byte : 0
 					)
 				),
-				color: getSpriteGroupColor(groupName, characterSpriteColors),
+				color: getSpriteGroupColor(
+					groupName,
+					characterSpriteColors,
+					largeBonusColors
+				),
 			};
 		}
 	);
@@ -78,6 +96,19 @@ function parseCharacterSpriteColorsFromBuffer(
 	);
 
 	return characterSpriteColors;
+}
+
+function parseLargeBonusSpriteColorsFromBuffer(
+	largeBonusColorSegment: ReadonlyUint8Array
+): Record<LargeBonusName, PaletteIndex> {
+	return objectFromEntries(
+		objectEntries(largeBonusSpriteGroupNames)
+			.map(([key]) => key)
+			.map((name, index) => [
+				name,
+				largeBonusColorSegment[index]! as PaletteIndex,
+			])
+	);
 }
 
 export function parseSprite(spriteBytes: ReadonlyArray<number>): Sprite {
@@ -108,16 +139,12 @@ export function parseSprites(
 
 export function getSpriteGroupColor(
 	groupName: SpriteGroupName,
-	characterSpriteColors: Partial<Record<SpriteGroupName, PaletteIndex>>
+	characterSpriteColors: Partial<Record<SpriteGroupName, PaletteIndex>>,
+	largeBonusSpriteColors: Record<LargeBonusName, PaletteIndex>
 ) {
-	const hardCodedGroupColors: Partial<Record<SpriteGroupName, PaletteIndex>> = {
-		bonusDiamond: 3,
-		bonusCupCake: 8,
-	};
-
 	return (
 		characterSpriteColors[groupName] ??
-		hardCodedGroupColors[groupName] ??
+		largeBonusSpriteColors[largeBonusSpriteGroupNames_inverse[groupName]!] ??
 		hardcodedPlayerColor
 	);
 }

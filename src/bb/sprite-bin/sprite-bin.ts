@@ -1,5 +1,6 @@
 import { mapRecord, objectFromEntries, sum } from "../functions";
 import { characterNames } from "../game-definitions/character-name";
+import { largeBonusSpriteGroupNames } from "../game-definitions/large-bonus-name";
 import {
 	spriteGroupNames,
 	SpriteGroupName,
@@ -53,11 +54,31 @@ export function parseSpriteGroups(binFileContents: Uint8Array): SpriteGroups {
 			})
 	);
 
+	const largeBonusSpriteColors = mapRecord(
+		largeBonusSpriteGroupNames,
+		(segmentName) => {
+			const segment = spriteSegments[segmentName];
+			const colorByte = segment[63];
+
+			if (colorByte === undefined) {
+				throw new Error(`Missing color byte ${segmentName}.`);
+			}
+
+			const color = (colorByte & 0b00001111) as PaletteIndex;
+
+			return color;
+		}
+	);
+
 	return mapRecord(
 		spriteSegments,
 		(segment, groupName): SpriteGroup => ({
 			sprites: parseSprites([...segment]),
-			color: getSpriteGroupColor(groupName, characterSpriteColors),
+			color: getSpriteGroupColor(
+				groupName,
+				characterSpriteColors,
+				largeBonusSpriteColors
+			),
 		})
 	);
 }

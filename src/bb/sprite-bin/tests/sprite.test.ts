@@ -4,6 +4,7 @@ import { serializeSpriteGroups } from "../sprite-bin";
 import { getDataSegments, getDataSegment } from "../../prg/io";
 import { readFileSync } from "fs";
 import {
+	largeBonusSpriteColorsSegmentLocation,
 	monsterSpriteColorsSegmentLocation,
 	spriteDataSegmentLocations,
 } from "../../prg/data-locations";
@@ -17,9 +18,17 @@ test("readSpritesBin snapshot", () => {
 		prg,
 		monsterSpriteColorsSegmentLocation
 	);
+	const largeBonusSpriteColorsSegment = getDataSegment(
+		prg,
+		largeBonusSpriteColorsSegmentLocation
+	);
 
 	const sprites = serializeSpriteGroups(
-		parseSpriteGroupsFromPrg(segments, monsterColorsSegment)
+		parseSpriteGroupsFromPrg(
+			segments,
+			monsterColorsSegment,
+			largeBonusSpriteColorsSegment
+		)
 	);
 
 	expect(sprites).toMatchSnapshot();
