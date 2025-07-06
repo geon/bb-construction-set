@@ -88,7 +88,7 @@ function readLevels(
 	});
 }
 
-export function levelsToSegments(
+export function levelsToPatch(
 	TODO_REMOVE_THIS_prgSegments: Record<LevelDataSegmentName, DataSegment>,
 	levels: readonly Level[]
 ) {
@@ -124,7 +124,10 @@ export function levelsToSegments(
 		),
 	};
 
-	return newSegments;
+	return objectEntries(levelSegmentLocations).flatMap(
+		([segmentName, levelSegmentLocation]) =>
+			patchFromSegment(levelSegmentLocation, newSegments[segmentName])
+	);
 }
 
 export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
@@ -139,12 +142,7 @@ export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
 		prg,
 		levelSegmentLocations
 	);
-	const newSegments = levelsToSegments(TODO_REMOVE_THIS_prgSegments, levels);
-
-	const levelPatch = objectEntries(levelSegmentLocations).flatMap(
-		([segmentName, levelSegmentLocation]) =>
-			patchFromSegment(levelSegmentLocation, newSegments[segmentName])
-	);
+	const levelPatch = levelsToPatch(TODO_REMOVE_THIS_prgSegments, levels);
 
 	const spritePatch = spriteGroupNames.flatMap((segmentName) => {
 		const sprites = spriteGroups[segmentName].sprites;
