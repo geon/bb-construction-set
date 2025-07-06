@@ -7,7 +7,7 @@ import {
 	strictChunk,
 	zipObject,
 } from "../functions";
-import { charGroupMeta } from "../prg/char-groups";
+import { charGroupMeta } from "../game-definitions/char-segment-name";
 import { CharGroup, CharGroups } from "../internal-data-formats/char-group";
 import {
 	doubleImageWidth,

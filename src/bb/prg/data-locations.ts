@@ -3,13 +3,13 @@ import {
 	characterNames,
 } from "../game-definitions/character-name";
 import {
+	charGroupMeta,
 	CharSegmentName,
 	charSegmentNames,
 } from "../game-definitions/char-segment-name";
 import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
 import { LevelDataSegmentName } from "../game-definitions/level-segment-name";
 import { mapRecord, objectFromEntries, range, sum } from "../functions";
-import { charGroupMeta } from "./char-groups";
 import { spriteSizeBytes, spriteWidthBytes } from "../../c64/consts";
 import { mapTuple } from "../tuple";
 
