@@ -200,11 +200,10 @@ export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
 		Object.values(largeBonusColors)
 	);
 
-	const prgSpriteColorsSegment2 = getDataSegment(
-		patchedPrg,
-		largeBonusSpriteColorsSegmentLocation
+	const largeBonusColorsPatch = patchFromSegment(
+		largeBonusSpriteColorsSegmentLocation,
+		largeBonusColorsSegment
 	);
-	prgSpriteColorsSegment2.buffer.set(largeBonusColorsSegment);
 
 	const newCharSegments = serializeCharGroups(charGroups);
 	const charPatch = charSegmentNames.flatMap((segmentName) =>
@@ -230,6 +229,7 @@ export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
 		patchedPrg,
 		[
 			//
+			largeBonusColorsPatch,
 			charPatch,
 			itemPatch,
 		].flat()
