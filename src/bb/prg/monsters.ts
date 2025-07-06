@@ -47,7 +47,7 @@ function readMonster(monsterBytes: ReadonlyUint8Array): Character {
 }
 
 export function writeMonsters(
-	oldByteArray: ReadonlyUint8Array,
+	TODO_REMOVE_THIS_oldByteArray: ReadonlyUint8Array,
 	monsterses: readonly Character[][]
 ): Uint8Array {
 	const numMonsters = monsterses.flatMap((monsters) => monsters).length;
@@ -67,10 +67,12 @@ export function writeMonsters(
 					(characterNames.indexOf(monster.characterName) - 1),
 				((monster.spawnPoint.y - 21) & 0b11111110) +
 					// TODO: No idea what the rest of the bits are.
-					(oldByteArray[currentMonsterStartByte + 1]! & 0b00000001),
+					(TODO_REMOVE_THIS_oldByteArray[currentMonsterStartByte + 1]! &
+						0b00000001),
 				((monster.facingLeft ? 1 : 0) << 7) +
 					// TODO: No idea what the rest of the bits are.
-					(oldByteArray[currentMonsterStartByte + 2]! & 0b01111111),
+					(TODO_REMOVE_THIS_oldByteArray[currentMonsterStartByte + 2]! &
+						0b01111111),
 			];
 			monsterStartByte += 3;
 			return subSubBytes;

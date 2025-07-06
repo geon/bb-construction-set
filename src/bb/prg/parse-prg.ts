@@ -89,7 +89,7 @@ function readLevels(
 }
 
 export function levelsToSegments(
-	prgSegments: Record<LevelDataSegmentName, DataSegment>,
+	TODO_REMOVE_THIS_prgSegments: Record<LevelDataSegmentName, DataSegment>,
 	levels: readonly Level[]
 ) {
 	if (levels.length !== 100) {
@@ -116,7 +116,7 @@ export function levelsToSegments(
 			unzippedLevels.bubbleCurrentPerLineDefaults
 		),
 		monsters: writeMonsters(
-			prgSegments.monsters.buffer,
+			TODO_REMOVE_THIS_prgSegments.monsters.buffer,
 			unzippedLevels.monsters
 		),
 		windCurrents: writeBubbleCurrentRectangles(
@@ -135,8 +135,11 @@ export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
 		items: itemGroups,
 	} = parsedPrg;
 
-	const prgSegments = getDataSegments(prg, levelSegmentLocations);
-	const newSegments = levelsToSegments(prgSegments, levels);
+	const TODO_REMOVE_THIS_prgSegments = getDataSegments(
+		prg,
+		levelSegmentLocations
+	);
+	const newSegments = levelsToSegments(TODO_REMOVE_THIS_prgSegments, levels);
 
 	const levelPatch = objectEntries(levelSegmentLocations).flatMap(
 		([segmentName, levelSegmentLocation]) =>
