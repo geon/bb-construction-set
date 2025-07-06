@@ -39,7 +39,6 @@ import { parseSpriteGroupsFromPrg, serializeSprite } from "./sprites";
 import { readTileBitmaps } from "./tile-bitmap";
 import { writeSymmetry, writeBitmaps, writeHoles } from "./misc-patch";
 import { readBubbleCurrentPerLineDefaults } from "./bubble-current-per-line-defaults";
-import { ReadonlyUint8Array } from "../types";
 import { ParsedPrg } from "../internal-data-formats/parsed-prg";
 import { charSegmentNames } from "../game-definitions/char-segment-name";
 import { largeBonusSpriteGroupNames } from "../game-definitions/large-bonus-name";
@@ -98,7 +97,7 @@ export function levelsToPatch(
 
 	const unzippedLevels = unzipObject(levels);
 
-	const newSegments: Record<LevelDataSegmentName, ReadonlyUint8Array> = {
+	const newSegments = {
 		platformChars: writePlatformChars(unzippedLevels.platformChar),
 		sidebarChars: writeSidebarChars(unzippedLevels.sidebarChars),
 		bgColors: writeBgColors(
@@ -115,18 +114,24 @@ export function levelsToPatch(
 			unzippedLevels.tiles,
 			unzippedLevels.bubbleCurrentPerLineDefaults
 		),
-		monsters: writeMonsters(
-			TODO_REMOVE_THIS_prgSegments.monsters.buffer,
-			unzippedLevels.monsters
-		),
 		windCurrents: writeBubbleCurrentRectangles(
 			unzippedLevels.bubbleCurrentRectangles
 		),
-	};
+	} as const;
 
-	return objectEntries(newSegments).flatMap(([segmentName, newSegment]) =>
-		patchFromSegment(levelSegmentLocations[segmentName], newSegment)
-	);
+	return [
+		objectEntries(newSegments).flatMap(([segmentName, newSegment]) =>
+			patchFromSegment(levelSegmentLocations[segmentName], newSegment)
+		),
+
+		patchFromSegment(
+			levelSegmentLocations.monsters,
+			writeMonsters(
+				TODO_REMOVE_THIS_prgSegments.monsters.buffer,
+				unzippedLevels.monsters
+			)
+		),
+	].flat();
 }
 
 export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
