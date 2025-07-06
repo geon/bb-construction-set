@@ -7,7 +7,7 @@ import {
 } from "./data-locations";
 import { ReadonlyUint8Array } from "../types";
 import { characterNames } from "../game-definitions/character-name";
-import { Patch, patchFromSegment } from "./io";
+import { Patch, SingleBytePatch } from "./io";
 
 export function readMonsters(monsterBytes: ReadonlyUint8Array) {
 	const monstersForAllLevels: Character[][] = [];
@@ -51,10 +51,7 @@ function readMonster(monsterBytes: ReadonlyUint8Array): Character {
 	};
 }
 
-export function writeMonsters(
-	TODO_REMOVE_THIS_oldByteArray: ReadonlyUint8Array,
-	monsterses: readonly Character[][]
-): Patch {
+export function writeMonsters(monsterses: readonly Character[][]): Patch {
 	const numMonsters = monsterses.flatMap((monsters) => monsters).length;
 	if (numMonsters > maxMonsters) {
 		throw new Error(
@@ -63,32 +60,24 @@ export function writeMonsters(
 	}
 
 	// Write monsters.
-	let monsterStartByte = 0;
-	const bytes = monsterses.flatMap((monsters) => {
-		const subBytes = monsters.flatMap((monster) => {
-			const currentMonsterStartByte = monsterStartByte;
-			const subSubBytes = [
-				((monster.spawnPoint.x - 20) & 0b11111000) +
-					(characterNames.indexOf(monster.characterName) - 1),
-				((monster.spawnPoint.y - 21) & 0b11111110) +
-					// TODO: No idea what the rest of the bits are.
-					(TODO_REMOVE_THIS_oldByteArray[currentMonsterStartByte + 1]! &
-						0b00000001),
-				((monster.facingLeft ? 1 : 0) << 7) +
-					// TODO: No idea what the rest of the bits are.
-					(TODO_REMOVE_THIS_oldByteArray[currentMonsterStartByte + 2]! &
-						0b01111111),
-			];
-			monsterStartByte += 3;
-			return subSubBytes;
-		});
-		monsterStartByte += 1;
-		// Terminate each level with a zero.
-		return [...subBytes, 0];
-	});
-
-	return patchFromSegment(
-		levelSegmentLocations.monsters,
-		new Uint8Array(bytes)
-	);
+	return monsterses
+		.flatMap((monsters) => {
+			const subBytes = monsters.flatMap((monster) => [
+				[
+					((monster.spawnPoint.x - 20) & 0b11111000) +
+						(characterNames.indexOf(monster.characterName) - 1),
+				],
+				[monster.spawnPoint.y - 21, 0b11111110],
+				[(monster.facingLeft ? 1 : 0) << 7, 0b10000000],
+			]);
+			// Terminate each level with a zero.
+			return [...subBytes, [0] as const];
+		})
+		.map(
+			([value, mask], index): SingleBytePatch => [
+				levelSegmentLocations.monsters.startAddress + index,
+				value,
+				mask,
+			]
+		);
 }

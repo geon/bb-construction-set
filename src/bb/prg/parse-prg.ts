@@ -87,10 +87,7 @@ function readLevels(
 	});
 }
 
-export function levelsToPatch(
-	TODO_REMOVE_THIS_prgSegments: Record<LevelDataSegmentName, DataSegment>,
-	levels: readonly Level[]
-) {
+export function levelsToPatch(levels: readonly Level[]) {
 	if (levels.length !== 100) {
 		throw new Error(`Wrong number of levels: ${levels.length}. Should be 100.`);
 	}
@@ -123,10 +120,7 @@ export function levelsToPatch(
 		objectEntries(newSegments).flatMap(([segmentName, newSegment]) =>
 			patchFromSegment(levelSegmentLocations[segmentName], newSegment)
 		),
-		getPatchMonsters(
-			TODO_REMOVE_THIS_prgSegments.monsters.buffer,
-			unzippedLevels.monsters
-		),
+		getPatchMonsters(unzippedLevels.monsters),
 	].flat();
 }
 
@@ -138,11 +132,7 @@ export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
 		items: itemGroups,
 	} = parsedPrg;
 
-	const TODO_REMOVE_THIS_prgSegments = getDataSegments(
-		prg,
-		levelSegmentLocations
-	);
-	const levelPatch = levelsToPatch(TODO_REMOVE_THIS_prgSegments, levels);
+	const levelPatch = levelsToPatch(levels);
 
 	const spritePatch = spriteGroupNames.flatMap((segmentName) => {
 		const sprites = spriteGroups[segmentName].sprites;
