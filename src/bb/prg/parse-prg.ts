@@ -36,32 +36,14 @@ export function parsePrg(prg: ArrayBuffer): ParsedPrg {
 }
 
 export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
-	const {
-		levels,
-		sprites: spriteGroups,
-		chars: charGroups,
-		items: itemGroups,
-	} = parsedPrg;
-
-	const levelPatch = getLevelsPatch(levels);
-
-	const spritePatch = getSpritesPatch(spriteGroups);
-
-	const spriteColorsPatch = getSpriteColorsPatch(spriteGroups);
-
-	const charPatch = getCharGroupsPatch(charGroups);
-
-	const itemPatch = getItemsPatch(itemGroups);
-
 	return applyPatch(
 		prg,
 		[
-			//
-			levelPatch,
-			spritePatch,
-			spriteColorsPatch,
-			charPatch,
-			itemPatch,
+			getLevelsPatch(parsedPrg.levels),
+			getSpritesPatch(parsedPrg.sprites),
+			getSpriteColorsPatch(parsedPrg.sprites),
+			getCharGroupsPatch(parsedPrg.chars),
+			getItemsPatch(parsedPrg.items),
 		].flat()
 	);
 }
