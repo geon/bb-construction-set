@@ -19,7 +19,7 @@ import {
 } from "./data-locations";
 import { LevelDataSegmentName } from "../game-definitions/level-segment-name";
 import { getCharGroupsPatch, parseCharGroups } from "./char-groups";
-import { getItemPatch, parseItems } from "./items";
+import { getItemPatch as getItemsPatch, parseItems } from "./items";
 import {
 	readBubbleCurrentRectangles,
 	writeBubbleCurrentRectangles,
@@ -138,7 +138,7 @@ export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
 
 	const charPatch = getCharGroupsPatch(charGroups);
 
-	const itemPatch = getItemPatch(itemGroups);
+	const itemPatch = getItemsPatch(itemGroups);
 
 	return applyPatch(
 		prg,
