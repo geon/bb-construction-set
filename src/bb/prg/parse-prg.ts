@@ -6,7 +6,6 @@ import { readPlatformChars, writePlatformChars } from "./charset-char";
 import {
 	getDataSegments,
 	DataSegment,
-	getMutableDataSegments,
 	getDataSegment,
 	patchFromSegment,
 	applyPatch,
@@ -138,7 +137,7 @@ export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
 
 	const patchedPrg = prg.slice();
 
-	const prgSegments = getMutableDataSegments(patchedPrg, levelSegmentLocations);
+	const prgSegments = getDataSegments(patchedPrg, levelSegmentLocations);
 	const newSegments = levelsToSegments(prgSegments, levels);
 
 	const levelPatch = objectEntries(levelSegmentLocations).flatMap(

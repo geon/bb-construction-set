@@ -13,7 +13,6 @@ type _DataSegment<BufferType extends ReadonlyUint8Array> = {
 };
 
 export type DataSegment = _DataSegment<ReadonlyUint8Array>;
-export type MutableDataSegment = _DataSegment<Uint8Array>;
 
 export function getDataSegment(
 	prg: ArrayBuffer,
@@ -32,15 +31,10 @@ export function getDataSegment(
 	};
 }
 
-function _getDataSegments<
-	TReadonlyOrMutable extends "readonly" | "mutable",
-	TDataSegmentName extends string
->(
+function _getDataSegments<TDataSegmentName extends string>(
 	prg: ArrayBuffer,
 	levelSegmentLocations: Readonly<Record<TDataSegmentName, SegmentLocation>>
-): TReadonlyOrMutable extends "readonly"
-	? Record<TDataSegmentName, DataSegment>
-	: Record<TDataSegmentName, MutableDataSegment> {
+): Record<TDataSegmentName, DataSegment> {
 	return mapRecord(levelSegmentLocations, curry(getDataSegment)(prg));
 }
 
@@ -48,19 +42,7 @@ export function getDataSegments<TDataSegmentName extends string>(
 	prg: ArrayBuffer,
 	levelSegmentLocations: Readonly<Record<TDataSegmentName, SegmentLocation>>
 ): Record<TDataSegmentName, DataSegment> {
-	return _getDataSegments<"readonly", TDataSegmentName>(
-		prg,
-		levelSegmentLocations
-	);
-}
-export function getMutableDataSegments<TDataSegmentName extends string>(
-	prg: ArrayBuffer,
-	levelSegmentLocations: Readonly<Record<TDataSegmentName, SegmentLocation>>
-): Record<TDataSegmentName, MutableDataSegment> {
-	return _getDataSegments<"mutable", TDataSegmentName>(
-		prg,
-		levelSegmentLocations
-	);
+	return _getDataSegments<TDataSegmentName>(prg, levelSegmentLocations);
 }
 
 // https://stackoverflow.com/a/43933693/446536
