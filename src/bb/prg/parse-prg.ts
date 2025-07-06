@@ -34,7 +34,7 @@ import {
 	writeSidebarCharsIndex,
 } from "./sidebar-chars";
 import { readTiles } from "./tiles";
-import { writeMonsters, readMonsters } from "./monsters";
+import { writeMonsters as getPatchMonsters, readMonsters } from "./monsters";
 import { parseSpriteGroupsFromPrg, serializeSprite } from "./sprites";
 import { readTileBitmaps } from "./tile-bitmap";
 import { writeSymmetry, writeBitmaps, writeHoles } from "./misc-patch";
@@ -123,13 +123,9 @@ export function levelsToPatch(
 		objectEntries(newSegments).flatMap(([segmentName, newSegment]) =>
 			patchFromSegment(levelSegmentLocations[segmentName], newSegment)
 		),
-
-		patchFromSegment(
-			levelSegmentLocations.monsters,
-			writeMonsters(
-				TODO_REMOVE_THIS_prgSegments.monsters.buffer,
-				unzippedLevels.monsters
-			)
+		getPatchMonsters(
+			TODO_REMOVE_THIS_prgSegments.monsters.buffer,
+			unzippedLevels.monsters
 		),
 	].flat();
 }

@@ -1,8 +1,13 @@
 import { Character } from "../internal-data-formats/level";
 import { isBitSet } from "../bit-twiddling";
-import { bytesPerMonster, maxMonsters } from "./data-locations";
+import {
+	bytesPerMonster,
+	levelSegmentLocations,
+	maxMonsters,
+} from "./data-locations";
 import { ReadonlyUint8Array } from "../types";
 import { characterNames } from "../game-definitions/character-name";
+import { Patch, patchFromSegment } from "./io";
 
 export function readMonsters(monsterBytes: ReadonlyUint8Array) {
 	const monstersForAllLevels: Character[][] = [];
@@ -49,7 +54,7 @@ function readMonster(monsterBytes: ReadonlyUint8Array): Character {
 export function writeMonsters(
 	TODO_REMOVE_THIS_oldByteArray: ReadonlyUint8Array,
 	monsterses: readonly Character[][]
-): Uint8Array {
+): Patch {
 	const numMonsters = monsterses.flatMap((monsters) => monsters).length;
 	if (numMonsters > maxMonsters) {
 		throw new Error(
@@ -82,5 +87,8 @@ export function writeMonsters(
 		return [...subBytes, 0];
 	});
 
-	return new Uint8Array(bytes);
+	return patchFromSegment(
+		levelSegmentLocations.monsters,
+		new Uint8Array(bytes)
+	);
 }
