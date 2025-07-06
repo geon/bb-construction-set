@@ -158,11 +158,6 @@ export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
 			.map((name) => spriteGroups[name].color)
 	);
 
-	const spriteColorsPatch = patchFromSegment(
-		monsterSpriteColorsSegmentLocation,
-		spriteColorsSegment
-	);
-
 	const largeBonusColors = mapRecord(
 		largeBonusSpriteGroupNames,
 		(name) => spriteGroups[name].color
@@ -174,10 +169,13 @@ export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
 		Object.values(largeBonusColors)
 	);
 
-	const largeBonusColorsPatch = patchFromSegment(
-		largeBonusSpriteColorsSegmentLocation,
-		largeBonusColorsSegment
-	);
+	const spriteColorsPatch = [
+		patchFromSegment(monsterSpriteColorsSegmentLocation, spriteColorsSegment),
+		patchFromSegment(
+			largeBonusSpriteColorsSegmentLocation,
+			largeBonusColorsSegment
+		),
+	].flat();
 
 	const charPatch = getCharGroupsPatch(charGroups);
 
@@ -186,10 +184,10 @@ export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
 	return applyPatch(
 		prg,
 		[
+			//
 			levelPatch,
 			spritePatch,
 			spriteColorsPatch,
-			largeBonusColorsPatch,
 			charPatch,
 			itemPatch,
 		].flat()
