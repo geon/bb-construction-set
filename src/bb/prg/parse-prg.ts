@@ -40,7 +40,6 @@ import { readTileBitmaps } from "./tile-bitmap";
 import { writeSymmetry, writeBitmaps, writeHoles } from "./misc-patch";
 import { readBubbleCurrentPerLineDefaults } from "./bubble-current-per-line-defaults";
 import { ParsedPrg } from "../internal-data-formats/parsed-prg";
-import { charSegmentNames } from "../game-definitions/char-segment-name";
 import { largeBonusSpriteGroupNames } from "../game-definitions/large-bonus-name";
 
 export function parsePrg(prg: ArrayBuffer): ParsedPrg {
@@ -181,11 +180,9 @@ export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
 	);
 
 	const newCharSegments = serializeCharGroups(charGroups);
-	const charPatch = charSegmentNames.flatMap((segmentName) =>
-		patchFromSegment(
-			charSegmentLocations[segmentName],
-			newCharSegments[segmentName].buffer
-		)
+	const charPatch = objectEntries(newCharSegments).flatMap(
+		([segmentName, newCharSegment]) =>
+			patchFromSegment(charSegmentLocations[segmentName], newCharSegment.buffer)
 	);
 
 	const itemPatch = getItemPatch(itemGroups);
