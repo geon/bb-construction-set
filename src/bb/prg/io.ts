@@ -1,4 +1,4 @@
-import { curry, mapRecord } from "../functions";
+import { checkedAccess, curry, mapRecord } from "../functions";
 import { SegmentLocation } from "./data-locations";
 import { ReadonlyUint8Array } from "../types";
 
@@ -86,4 +86,35 @@ export function mixByte(
 	mask: number
 ): number {
 	return (newByte & mask) | (originalByte & ~mask);
+}
+
+export type SingleBytePatch = [address: number, value: number, mask?: number];
+export type Patch = ReadonlyArray<SingleBytePatch>;
+
+export function applyPatch(prg: ArrayBuffer, patch: Patch): ArrayBuffer {
+	const prgStartAddress = getPrgStartAddress(prg);
+
+	const patchedPrg = new Uint8Array(prg.slice());
+	for (const [address, value, mask] of patch) {
+		const index = address - prgStartAddress + 2;
+		patchedPrg[index] = mixByte(
+			value,
+			checkedAccess(patchedPrg, index),
+			mask ?? 0xff
+		);
+	}
+	return patchedPrg;
+}
+
+export function patchFromSegment(
+	segmentLocation: SegmentLocation,
+	buffer: ReadonlyUint8Array
+): Patch {
+	return [...buffer].map(
+		(value, index): SingleBytePatch => [
+			segmentLocation.startAddress + index,
+			value,
+			segmentLocation.mask,
+		]
+	);
 }

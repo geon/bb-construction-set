@@ -9,6 +9,8 @@ import {
 	getMutableDataSegments,
 	getDataSegment,
 	mixByte,
+	patchFromSegment,
+	applyPatch,
 } from "./io";
 import {
 	charSegmentLocations,
@@ -216,23 +218,22 @@ export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
 	}
 
 	const newItemSegments = serializeItems(itemGroups);
-	for (const [itemCategoryName, segmentLocation] of objectEntries(
-		itemSegmentLocations
-	)) {
-		for (const [segmentName, prgSegment] of objectEntries(
-			getMutableDataSegments(patchedPrg, segmentLocation)
-		)) {
-			const newSegment = newItemSegments[itemCategoryName][segmentName];
-			prgSegment.buffer.set(
-				zipObject({
-					originalByte: [...prgSegment.buffer],
-					newByte: [...newSegment.buffer],
-				}).map(({ originalByte, newByte }) =>
-					mixByte(newByte, originalByte, newSegment.mask ?? 0b11111111)
-				)
-			);
-		}
-	}
+	const itemPatch = objectEntries(itemSegmentLocations).flatMap(
+		([itemCategoryName, segmentLocations]) =>
+			objectEntries(segmentLocations).flatMap(
+				([segmentName, segmentLocation]) =>
+					patchFromSegment(
+						segmentLocation,
+						newItemSegments[itemCategoryName][segmentName].buffer
+					)
+			)
+	);
 
-	return patchedPrg;
+	return applyPatch(
+		patchedPrg,
+		[
+			//
+			itemPatch,
+		].flat()
+	);
 }
