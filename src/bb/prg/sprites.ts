@@ -15,8 +15,11 @@ import {
 	characterNames,
 } from "../game-definitions/character-name";
 import { assertTuple, mapTuple } from "../tuple";
-import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
-import { DataSegment, patchFromSegment } from "./io";
+import {
+	SpriteGroupName,
+	spriteGroupNames,
+} from "../game-definitions/sprite-segment-name";
+import { DataSegment, patchFromSegment, SingleBytePatch } from "./io";
 import { ReadonlyUint8Array } from "../types";
 import {
 	spriteSizeBytes,
@@ -30,6 +33,7 @@ import {
 import {
 	largeBonusSpriteColorsSegmentLocation,
 	monsterSpriteColorsSegmentLocation,
+	spriteDataSegmentLocations,
 	spriteMasks,
 } from "./data-locations";
 import {
@@ -151,6 +155,26 @@ export function getSpriteGroupColor(
 		largeBonusSpriteColors[largeBonusSpriteGroupNames_inverse[groupName]!] ??
 		hardcodedPlayerColor
 	);
+}
+
+export function getSpritesPatch(spriteGroups: SpriteGroups) {
+	return spriteGroupNames.flatMap((segmentName) => {
+		const sprites = spriteGroups[segmentName].sprites;
+
+		return sprites.flatMap((sprite, spriteIndex) => {
+			const mask = spriteMasks[segmentName];
+			const spriteBytes = serializeSprite(sprite);
+			return spriteBytes.map((spriteByte, byteIndex): SingleBytePatch => {
+				return [
+					spriteDataSegmentLocations[segmentName].startAddress +
+						spriteIndex * 64 +
+						byteIndex,
+					spriteByte,
+					mask?.[byteIndex] !== false ? undefined : 0x00,
+				];
+			});
+		});
+	});
 }
 
 export function getSpriteColorsPatch(spriteGroups: SpriteGroups) {

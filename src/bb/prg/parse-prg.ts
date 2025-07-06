@@ -8,7 +8,6 @@ import {
 	getDataSegment,
 	patchFromSegment,
 	applyPatch,
-	SingleBytePatch,
 } from "./io";
 import {
 	charSegmentLocations,
@@ -17,10 +16,8 @@ import {
 	levelSegmentLocations,
 	monsterSpriteColorsSegmentLocation,
 	spriteDataSegmentLocations,
-	spriteMasks,
 } from "./data-locations";
 import { LevelDataSegmentName } from "../game-definitions/level-segment-name";
-import { spriteGroupNames } from "../game-definitions/sprite-segment-name";
 import { getCharGroupsPatch, parseCharGroups } from "./char-groups";
 import { getItemPatch, parseItems } from "./items";
 import {
@@ -36,8 +33,8 @@ import { readTiles } from "./tiles";
 import { writeMonsters as getPatchMonsters, readMonsters } from "./monsters";
 import {
 	getSpriteColorsPatch,
+	getSpritesPatch,
 	parseSpriteGroupsFromPrg,
-	serializeSprite,
 } from "./sprites";
 import { readTileBitmaps } from "./tile-bitmap";
 import { writeSymmetry, writeBitmaps, writeHoles } from "./misc-patch";
@@ -135,23 +132,7 @@ export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
 
 	const levelPatch = levelsToPatch(levels);
 
-	const spritePatch = spriteGroupNames.flatMap((segmentName) => {
-		const sprites = spriteGroups[segmentName].sprites;
-
-		return sprites.flatMap((sprite, spriteIndex) => {
-			const mask = spriteMasks[segmentName];
-			const spriteBytes = serializeSprite(sprite);
-			return spriteBytes.map((spriteByte, byteIndex): SingleBytePatch => {
-				return [
-					spriteDataSegmentLocations[segmentName].startAddress +
-						spriteIndex * 64 +
-						byteIndex,
-					spriteByte,
-					mask?.[byteIndex] !== false ? undefined : 0x00,
-				];
-			});
-		});
-	});
+	const spritePatch = getSpritesPatch(spriteGroups);
 
 	const spriteColorsPatch = getSpriteColorsPatch(spriteGroups);
 
