@@ -124,9 +124,8 @@ export function levelsToPatch(
 		),
 	};
 
-	return objectEntries(levelSegmentLocations).flatMap(
-		([segmentName, levelSegmentLocation]) =>
-			patchFromSegment(levelSegmentLocation, newSegments[segmentName])
+	return objectEntries(newSegments).flatMap(([segmentName, newSegment]) =>
+		patchFromSegment(levelSegmentLocations[segmentName], newSegment)
 	);
 }
 
