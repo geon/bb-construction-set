@@ -206,16 +206,13 @@ export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
 	);
 	prgSpriteColorsSegment2.buffer.set(largeBonusColorsSegment);
 
-	const prgCharSegments = getMutableDataSegments(
-		patchedPrg,
-		charSegmentLocations
-	);
 	const newCharSegments = serializeCharGroups(charGroups);
-	for (const segmentName of charSegmentNames) {
-		prgCharSegments[segmentName].buffer.set(
+	const charPatch = charSegmentNames.flatMap((segmentName) =>
+		patchFromSegment(
+			charSegmentLocations[segmentName],
 			newCharSegments[segmentName].buffer
-		);
-	}
+		)
+	);
 
 	const newItemSegments = serializeItems(itemGroups);
 	const itemPatch = objectEntries(itemSegmentLocations).flatMap(
@@ -233,6 +230,7 @@ export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
 		patchedPrg,
 		[
 			//
+			charPatch,
 			itemPatch,
 		].flat()
 	);
