@@ -1,14 +1,15 @@
 import { Char } from "../internal-data-formats/char";
 import { parseColorPixelByte } from "../internal-data-formats/color-pixel-byte";
-import { mapRecord, strictChunk } from "../functions";
+import { mapRecord, objectEntries, strictChunk } from "../functions";
 import { linesPerChar } from "./charset-char";
 import {
 	charGroupMeta,
 	CharSegmentName,
 } from "../game-definitions/char-segment-name";
-import { DataSegment } from "./io";
+import { DataSegment, Patch, patchFromSegment } from "./io";
 import { mapTuple } from "../tuple";
 import { CharGroups, CharGroup } from "../internal-data-formats/char-group";
+import { charSegmentLocations } from "./data-locations";
 
 export function parseCharGroups(
 	dataSegments: Record<CharSegmentName, DataSegment>
@@ -53,5 +54,13 @@ export function serializeCharGroups(
 					)
 			),
 		})
+	);
+}
+
+export function getCharGroupsPatch(charGroups: CharGroups): Patch {
+	const newCharSegments = serializeCharGroups(charGroups);
+	return objectEntries(newCharSegments).flatMap(
+		([segmentName, newCharSegment]) =>
+			patchFromSegment(charSegmentLocations[segmentName], newCharSegment.buffer)
 	);
 }

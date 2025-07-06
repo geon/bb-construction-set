@@ -22,7 +22,7 @@ import {
 } from "./data-locations";
 import { LevelDataSegmentName } from "../game-definitions/level-segment-name";
 import { spriteGroupNames } from "../game-definitions/sprite-segment-name";
-import { parseCharGroups, serializeCharGroups } from "./char-groups";
+import { getCharGroupsPatch, parseCharGroups } from "./char-groups";
 import { getItemPatch, parseItems } from "./items";
 import {
 	readBubbleCurrentRectangles,
@@ -179,11 +179,7 @@ export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
 		largeBonusColorsSegment
 	);
 
-	const newCharSegments = serializeCharGroups(charGroups);
-	const charPatch = objectEntries(newCharSegments).flatMap(
-		([segmentName, newCharSegment]) =>
-			patchFromSegment(charSegmentLocations[segmentName], newCharSegment.buffer)
-	);
+	const charPatch = getCharGroupsPatch(charGroups);
 
 	const itemPatch = getItemPatch(itemGroups);
 
