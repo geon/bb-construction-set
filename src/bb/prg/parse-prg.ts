@@ -85,7 +85,7 @@ function readLevels(
 	});
 }
 
-export function levelsToPatch(levels: readonly Level[]) {
+export function getLevelsPatch(levels: readonly Level[]) {
 	if (levels.length !== 100) {
 		throw new Error(`Wrong number of levels: ${levels.length}. Should be 100.`);
 	}
@@ -130,7 +130,7 @@ export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
 		items: itemGroups,
 	} = parsedPrg;
 
-	const levelPatch = levelsToPatch(levels);
+	const levelPatch = getLevelsPatch(levels);
 
 	const spritePatch = getSpritesPatch(spriteGroups);
 
