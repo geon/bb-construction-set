@@ -135,9 +135,7 @@ export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
 		items: itemGroups,
 	} = parsedPrg;
 
-	const patchedPrg = prg.slice();
-
-	const prgSegments = getDataSegments(patchedPrg, levelSegmentLocations);
+	const prgSegments = getDataSegments(prg, levelSegmentLocations);
 	const newSegments = levelsToSegments(prgSegments, levels);
 
 	const levelPatch = objectEntries(levelSegmentLocations).flatMap(
@@ -212,7 +210,7 @@ export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
 	);
 
 	return applyPatch(
-		patchedPrg,
+		prg,
 		[
 			levelPatch,
 			spritePatch,
