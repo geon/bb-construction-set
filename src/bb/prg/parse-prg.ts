@@ -8,6 +8,7 @@ import {
 	DataSegment,
 	getMutableDataSegments,
 	getDataSegment,
+	mixByte,
 } from "./io";
 import {
 	charSegmentLocations,
@@ -234,8 +235,4 @@ export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
 	}
 
 	return patchedPrg;
-}
-
-function mixByte(newByte: number, originalByte: number, mask: number): number {
-	return (newByte & mask) | (originalByte & ~mask);
 }

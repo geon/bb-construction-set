@@ -79,3 +79,11 @@ export function uint8ArrayConcatenate(
 	}
 	return result;
 }
+
+export function mixByte(
+	newByte: number,
+	originalByte: number,
+	mask: number
+): number {
+	return (newByte & mask) | (originalByte & ~mask);
+}
