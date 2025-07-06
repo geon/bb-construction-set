@@ -23,7 +23,7 @@ import {
 import { LevelDataSegmentName } from "../game-definitions/level-segment-name";
 import { spriteGroupNames } from "../game-definitions/sprite-segment-name";
 import { parseCharGroups, serializeCharGroups } from "./char-groups";
-import { parseItems, serializeItems } from "./items";
+import { getItemPatch, parseItems } from "./items";
 import {
 	readBubbleCurrentRectangles,
 	writeBubbleCurrentRectangles,
@@ -188,17 +188,7 @@ export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
 		)
 	);
 
-	const newItemSegments = serializeItems(itemGroups);
-	const itemPatch = objectEntries(itemSegmentLocations).flatMap(
-		([itemCategoryName, segmentLocations]) =>
-			objectEntries(segmentLocations).flatMap(
-				([segmentName, segmentLocation]) =>
-					patchFromSegment(
-						segmentLocation,
-						newItemSegments[itemCategoryName][segmentName].buffer
-					)
-			)
-	);
+	const itemPatch = getItemPatch(itemGroups);
 
 	return applyPatch(
 		prg,

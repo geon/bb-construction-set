@@ -1,8 +1,8 @@
-import { mapRecord, unzipObject, zipObject } from "../functions";
+import { mapRecord, objectEntries, unzipObject, zipObject } from "../functions";
 import { ItemGroup, ItemGroups } from "../internal-data-formats/item-groups";
 import { PaletteIndex } from "../internal-data-formats/palette";
-import { ItemCategoryName } from "./data-locations";
-import { DataSegment } from "./io";
+import { ItemCategoryName, itemSegmentLocations } from "./data-locations";
+import { DataSegment, Patch, patchFromSegment } from "./io";
 
 export function parseItems(
 	dataSegments: Record<
@@ -57,5 +57,20 @@ export function serializeItems(itemGroups: ItemGroups): Record<
 				},
 			};
 		}
+	);
+}
+
+export function getItemPatch(itemGroups: ItemGroups): Patch {
+	const newItemSegments = serializeItems(itemGroups);
+
+	return objectEntries(itemSegmentLocations).flatMap(
+		([itemCategoryName, segmentLocations]) =>
+			objectEntries(segmentLocations).flatMap(
+				([segmentName, segmentLocation]) =>
+					patchFromSegment(
+						segmentLocation,
+						newItemSegments[itemCategoryName][segmentName].buffer
+					)
+			)
 	);
 }
