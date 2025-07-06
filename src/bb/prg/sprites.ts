@@ -16,7 +16,7 @@ import {
 } from "../game-definitions/character-name";
 import { assertTuple, mapTuple } from "../tuple";
 import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
-import { DataSegment } from "./io";
+import { DataSegment, patchFromSegment } from "./io";
 import { ReadonlyUint8Array } from "../types";
 import {
 	spriteSizeBytes,
@@ -27,7 +27,11 @@ import {
 	parseColorPixelByte,
 	serializeColorPixelByte,
 } from "../internal-data-formats/color-pixel-byte";
-import { spriteMasks } from "./data-locations";
+import {
+	largeBonusSpriteColorsSegmentLocation,
+	monsterSpriteColorsSegmentLocation,
+	spriteMasks,
+} from "./data-locations";
 import {
 	LargeBonusName,
 	largeBonusSpriteGroupNames,
@@ -147,4 +151,33 @@ export function getSpriteGroupColor(
 		largeBonusSpriteColors[largeBonusSpriteGroupNames_inverse[groupName]!] ??
 		hardcodedPlayerColor
 	);
+}
+
+export function getSpriteColorsPatch(spriteGroups: SpriteGroups) {
+	const spriteColorsSegment = new Uint8Array(
+		characterNames
+			// The player color is not included in the segment.
+			.slice(1)
+			.map((name) => spriteGroups[name].color)
+	);
+
+	const largeBonusColors = mapRecord(
+		largeBonusSpriteGroupNames,
+		(name) => spriteGroups[name].color
+	);
+	// Hardcoded because I don't have 3 diamonds in the sprite sheet.
+	largeBonusColors.yellowDiamond = 7;
+	largeBonusColors.purpleDiamond = 4;
+	const largeBonusColorsSegment = new Uint8Array(
+		Object.values(largeBonusColors)
+	);
+
+	const spriteColorsPatch = [
+		patchFromSegment(monsterSpriteColorsSegmentLocation, spriteColorsSegment),
+		patchFromSegment(
+			largeBonusSpriteColorsSegmentLocation,
+			largeBonusColorsSegment
+		),
+	].flat();
+	return spriteColorsPatch;
 }

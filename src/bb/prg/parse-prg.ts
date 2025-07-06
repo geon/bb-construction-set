@@ -1,7 +1,6 @@
 import { mapRecord, objectEntries, unzipObject, zipObject } from "../functions";
 import { Level } from "../internal-data-formats/level";
 import { writeBgColors, readBgColors } from "./bg-colors";
-import { characterNames } from "../game-definitions/character-name";
 import { readPlatformChars, writePlatformChars } from "./charset-char";
 import {
 	getDataSegments,
@@ -35,12 +34,15 @@ import {
 } from "./sidebar-chars";
 import { readTiles } from "./tiles";
 import { writeMonsters as getPatchMonsters, readMonsters } from "./monsters";
-import { parseSpriteGroupsFromPrg, serializeSprite } from "./sprites";
+import {
+	getSpriteColorsPatch,
+	parseSpriteGroupsFromPrg,
+	serializeSprite,
+} from "./sprites";
 import { readTileBitmaps } from "./tile-bitmap";
 import { writeSymmetry, writeBitmaps, writeHoles } from "./misc-patch";
 import { readBubbleCurrentPerLineDefaults } from "./bubble-current-per-line-defaults";
 import { ParsedPrg } from "../internal-data-formats/parsed-prg";
-import { largeBonusSpriteGroupNames } from "../game-definitions/large-bonus-name";
 
 export function parsePrg(prg: ArrayBuffer): ParsedPrg {
 	const levels = readLevels(getDataSegments(prg, levelSegmentLocations));
@@ -151,31 +153,7 @@ export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
 		});
 	});
 
-	const spriteColorsSegment = new Uint8Array(
-		characterNames
-			// The player color is not included in the segment.
-			.slice(1)
-			.map((name) => spriteGroups[name].color)
-	);
-
-	const largeBonusColors = mapRecord(
-		largeBonusSpriteGroupNames,
-		(name) => spriteGroups[name].color
-	);
-	// Hardcoded because I don't have 3 diamonds in the sprite sheet.
-	largeBonusColors.yellowDiamond = 7;
-	largeBonusColors.purpleDiamond = 4;
-	const largeBonusColorsSegment = new Uint8Array(
-		Object.values(largeBonusColors)
-	);
-
-	const spriteColorsPatch = [
-		patchFromSegment(monsterSpriteColorsSegmentLocation, spriteColorsSegment),
-		patchFromSegment(
-			largeBonusSpriteColorsSegmentLocation,
-			largeBonusColorsSegment
-		),
-	].flat();
+	const spriteColorsPatch = getSpriteColorsPatch(spriteGroups);
 
 	const charPatch = getCharGroupsPatch(charGroups);
 
