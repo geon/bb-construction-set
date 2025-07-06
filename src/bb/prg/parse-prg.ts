@@ -11,6 +11,7 @@ import {
 	mixByte,
 	patchFromSegment,
 	applyPatch,
+	SingleBytePatch,
 } from "./io";
 import {
 	charSegmentLocations,
@@ -156,25 +157,23 @@ export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
 		);
 	}
 
-	const prgSpriteSegments = getMutableDataSegments(
-		patchedPrg,
-		spriteDataSegmentLocations
-	);
-
-	for (const segmentName of spriteGroupNames) {
+	const spritePatch = spriteGroupNames.flatMap((segmentName) => {
 		const sprites = spriteGroups[segmentName].sprites;
 
-		for (const [spriteIndex, sprite] of sprites.entries()) {
+		return sprites.flatMap((sprite, spriteIndex) => {
 			const mask = spriteMasks[segmentName];
 			const spriteBytes = serializeSprite(sprite);
-			for (const [byteIndex, spriteByte] of spriteBytes.entries()) {
-				if (mask?.[byteIndex] !== false) {
-					prgSpriteSegments[segmentName].buffer[spriteIndex * 64 + byteIndex] =
-						spriteByte;
-				}
-			}
-		}
-	}
+			return spriteBytes.map((spriteByte, byteIndex): SingleBytePatch => {
+				return [
+					spriteDataSegmentLocations[segmentName].startAddress +
+						spriteIndex * 64 +
+						byteIndex,
+					spriteByte,
+					mask?.[byteIndex] !== false ? undefined : 0x00,
+				];
+			});
+		});
+	});
 
 	const spriteColorsSegment = new Uint8Array(
 		characterNames
@@ -227,7 +226,7 @@ export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
 	return applyPatch(
 		patchedPrg,
 		[
-			//
+			spritePatch,
 			spriteColorsPatch,
 			largeBonusColorsPatch,
 			charPatch,
