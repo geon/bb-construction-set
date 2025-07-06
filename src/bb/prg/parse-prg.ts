@@ -8,7 +8,6 @@ import {
 	DataSegment,
 	getMutableDataSegments,
 	getDataSegment,
-	mixByte,
 	patchFromSegment,
 	applyPatch,
 	SingleBytePatch,
@@ -142,20 +141,10 @@ export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
 	const prgSegments = getMutableDataSegments(patchedPrg, levelSegmentLocations);
 	const newSegments = levelsToSegments(prgSegments, levels);
 
-	for (const [segmentName, prgSegment] of objectEntries(prgSegments)) {
-		prgSegment.buffer.set(
-			zipObject({
-				originalByte: [...prgSegment.buffer],
-				newByte: [...newSegments[segmentName]],
-			}).map(({ originalByte, newByte }) =>
-				mixByte(
-					newByte,
-					originalByte,
-					levelSegmentLocations[segmentName].mask ?? 0b11111111
-				)
-			)
-		);
-	}
+	const levelPatch = objectEntries(levelSegmentLocations).flatMap(
+		([segmentName, levelSegmentLocation]) =>
+			patchFromSegment(levelSegmentLocation, newSegments[segmentName])
+	);
 
 	const spritePatch = spriteGroupNames.flatMap((segmentName) => {
 		const sprites = spriteGroups[segmentName].sprites;
@@ -226,6 +215,7 @@ export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
 	return applyPatch(
 		patchedPrg,
 		[
+			levelPatch,
 			spritePatch,
 			spriteColorsPatch,
 			largeBonusColorsPatch,
