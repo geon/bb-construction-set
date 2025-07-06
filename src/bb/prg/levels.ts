@@ -11,7 +11,7 @@ import { readPlatformChars, writePlatformChars } from "./charset-char";
 import { levelSegmentLocations } from "./data-locations";
 import { DataSegment, patchFromSegment } from "./io";
 import { writeHoles, writeSymmetry, writeBitmaps } from "./misc-patch";
-import { readMonsters, writeMonsters as getPatchMonsters } from "./monsters";
+import { readMonsters, getMonstersPatch } from "./monsters";
 import {
 	readSidebarChars,
 	writeSidebarChars,
@@ -80,6 +80,6 @@ export function getLevelsPatch(levels: readonly Level[]) {
 		objectEntries(newSegments).flatMap(([segmentName, newSegment]) =>
 			patchFromSegment(levelSegmentLocations[segmentName], newSegment)
 		),
-		getPatchMonsters(unzippedLevels.monsters),
+		getMonstersPatch(unzippedLevels.monsters),
 	].flat();
 }
