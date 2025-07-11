@@ -64,7 +64,7 @@ export function LevelGraphics({
 
 					return {
 						parts,
-						fileName: "bubble bobble c64 - all levels.pe",
+						fileName: "bubble bobble c64 - all levels.zip",
 					};
 				}}
 				label="Download PETSCII Editor file"
