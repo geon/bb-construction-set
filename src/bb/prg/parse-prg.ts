@@ -1,5 +1,5 @@
 import { mapRecord } from "../functions";
-import { getDataSegments, getDataSegment, applyPatch } from "./io";
+import { getDataSegments, getDataSegment, applyPatch, Patch } from "./io";
 import {
 	charSegmentLocations,
 	itemSegmentLocations,
@@ -35,7 +35,11 @@ export function parsePrg(prg: ArrayBuffer): ParsedPrg {
 	return { levels, sprites, chars, items };
 }
 
-export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
+export function patchPrg(
+	prg: ArrayBuffer,
+	parsedPrg: ParsedPrg,
+	manualPatch: Patch
+): ArrayBuffer {
 	return applyPatch(
 		prg,
 		[
@@ -44,6 +48,7 @@ export function patchPrg(prg: ArrayBuffer, parsedPrg: ParsedPrg): ArrayBuffer {
 			getSpriteColorsPatch(parsedPrg.sprites),
 			getCharGroupsPatch(parsedPrg.chars),
 			getItemsPatch(parsedPrg.items),
+			manualPatch,
 		].flat()
 	);
 }

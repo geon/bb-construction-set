@@ -14,6 +14,7 @@ import { Card } from "./Card";
 import styled from "styled-components";
 import { drawLevelThumbnail } from "../bb/image-data/draw-levels-to-canvas";
 import { mapAsync, mapRecord } from "../bb/functions";
+import { Patch } from "../bb/prg/io";
 
 const ImageCard = styled(Card)<{
 	readonly children: [JSX.Element, JSX.Element];
@@ -105,11 +106,13 @@ const LevelPreview = styled.div`
 export function PrgDownloader({
 	parsedPrg,
 	prg,
+	manualPatch,
 	levelIndex,
 	setLevelIndex,
 }: {
 	readonly parsedPrg: ParsedPrg;
 	readonly prg: ArrayBuffer;
+	readonly manualPatch: Patch;
 	readonly levelIndex: number;
 	readonly setLevelIndex: React.Dispatch<React.SetStateAction<number>>;
 }): ReactNode {
@@ -174,7 +177,7 @@ export function PrgDownloader({
 				/>
 				<BlobDownloadButton
 					getBlob={async () => {
-						const patched = patchPrg(prg, parsedPrg);
+						const patched = patchPrg(prg, parsedPrg, manualPatch);
 
 						return {
 							blob: new Blob([patched], {

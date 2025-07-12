@@ -12,6 +12,8 @@ import { parsePrg } from "../bb/prg/parse-prg";
 import { ParsedPrg } from "../bb/internal-data-formats/parsed-prg";
 import { attempt } from "../bb/functions";
 import { Items } from "./tabs/Items";
+import { Custom } from "./tabs/Custom";
+import { Patch } from "../bb/prg/io";
 
 const Page = styled.div`
 	width: 600px;
@@ -54,6 +56,8 @@ export function App() {
 
 	const [levelIndex, setLevelIndex] = useState<number>(0);
 
+	const [manualPatch, setManualPatch] = useState<Patch>([]);
+
 	return (
 		<Page>
 			<h1>BB Construction Set</h1>
@@ -61,6 +65,7 @@ export function App() {
 				<PrgDownloader
 					prg={prg}
 					parsedPrg={parsedPrg}
+					manualPatch={manualPatch}
 					levelIndex={levelIndex}
 					setLevelIndex={setLevelIndex}
 				/>
@@ -150,6 +155,22 @@ export function App() {
 												parsedPrg={parsedPrg}
 												setParsedPrg={setParsedPrg}
 												levelIndex={levelIndex}
+											/>
+										</Card>
+									</>
+								);
+							},
+						},
+						custom: {
+							title: "Custom",
+							render: (tab) => {
+								return (
+									<>
+										<Card>
+											<h2>{tab.title}</h2>
+											<Custom
+												manualPatch={manualPatch}
+												setManualPatch={setManualPatch}
 											/>
 										</Card>
 									</>
