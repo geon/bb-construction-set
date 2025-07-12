@@ -201,8 +201,8 @@ Error generating stack: `+l.message+`
 	box-sizing: border-box;
 	width: 100%;
 	height: 20em;
-`;function Rg(e){const[t,n]=se.useState(Tg(e.manualPatch)),[r,o]=se.useState(!1);return x.jsx(x.Fragment,{children:x.jsx(Bg,{onChange:l=>{const i=l.target.value;n(i);const s=Ag(i);o(!s),s&&e.setManualPatch(s)},$error:r,children:t})})}function Ag(e){try{return e.split(`
-`).map(t=>{const n=t.split(" ").filter(s=>s!=="");if(n.shift()!==">")throw new Error("Lines must start with a >");const o=n.map(s=>parseInt(s,16)).filter(s=>!Number.isNaN(s)),[l,i]=o;if(!(l!==void 0&&i!==void 0))throw new Error("Lines must have exactly one address and one value, separated with a space.");return[l,i]})}catch{return}}function Tg(e){return e.map(t=>`> ${t[1].toString(16)} ${t[1].toString(16)}`).join(`
+`;function Rg(e){const[t,n]=se.useState(Tg(e.manualPatch)),[r,o]=se.useState(!1);return x.jsx(x.Fragment,{children:x.jsx(Bg,{value:t,$error:r,onChange:l=>{const i=l.target.value;n(i);const s=Ag(i);o(!s),s&&e.setManualPatch(s)}})})}function Ag(e){try{return e.split(`
+`).map(t=>{const n=t.split(" ").filter(s=>s!=="");if(n.shift()!==">")throw new Error("Lines must start with a >");const o=n.map(s=>parseInt(s,16)).filter(s=>!Number.isNaN(s)),[l,i]=o;if(!(l!==void 0&&i!==void 0))throw new Error("Lines must have exactly one address and one value, separated with a space.");return[l,i]})}catch{return}}function Tg(e){return e.map(t=>`> ${t[0].toString(16)} ${t[1].toString(16)}`).join(`
 `)}const zg=de.div`
 	width: 600px;
 	margin: 0 auto;
