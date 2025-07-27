@@ -4,7 +4,7 @@ import { ImageDataCanvas } from "../ImageDataCanvas";
 import { imageDataFromPaletteImage } from "../../bb/image-data/image-data";
 import { doubleImageWidth } from "../../bb/palette-image/palette-image";
 import { drawItem } from "../../bb/palette-image/item";
-import { CharBlock } from "../../bb/internal-data-formats/char-group";
+import { CharGroup } from "../../bb/internal-data-formats/char-group";
 import styled from "styled-components";
 import { palette, PaletteIndex } from "../../bb/internal-data-formats/palette";
 import { checkedAccess, range, updateArrayAtIndex } from "../../bb/functions";
@@ -20,6 +20,7 @@ import { Level } from "../../bb/internal-data-formats/level";
 const ItemSelector = styled(
 	(props: {
 		readonly parsedPrg: ParsedPrg;
+		readonly chars: CharGroup<2, 2>;
 		readonly bgColors: Pick<Level, "bgColorDark" | "bgColorLight">;
 		readonly itemCategoryName: ItemCategoryName;
 		readonly itemIndex: number | undefined;
@@ -45,15 +46,7 @@ const ItemSelector = styled(
 								key={itemIndex}
 								className={itemIndex === props.itemIndex ? "active" : undefined}
 								imageData={imageDataFromPaletteImage(
-									doubleImageWidth(
-										drawItem(
-											item,
-											props.parsedPrg.chars.items as ReadonlyArray<
-												CharBlock<2, 2>
-											>,
-											props.bgColors
-										)
-									)
+									doubleImageWidth(drawItem(item, props.chars, props.bgColors))
 								)}
 								onClick={() => props.setItemIndex(itemIndex)}
 								style={{ cursor: "pointer", width: "32px" }}
@@ -233,6 +226,7 @@ export function Items({
 				<ItemSelector
 					key={itemCategoryName}
 					parsedPrg={parsedPrg}
+					chars={parsedPrg.chars.items as CharGroup<2, 2>}
 					bgColors={checkedAccess(parsedPrg.levels, levelIndex)}
 					itemCategoryName={itemCategoryName}
 					itemIndex={
