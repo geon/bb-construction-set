@@ -4,7 +4,10 @@ import { ImageDataCanvas } from "../ImageDataCanvas";
 import { imageDataFromPaletteImage } from "../../bb/image-data/image-data";
 import { doubleImageWidth } from "../../bb/palette-image/palette-image";
 import { drawItem } from "../../bb/palette-image/item";
-import { CharGroup } from "../../bb/internal-data-formats/char-group";
+import {
+	CharBlock,
+	CharGroup,
+} from "../../bb/internal-data-formats/char-group";
 import styled from "styled-components";
 import {
 	palette,
@@ -115,7 +118,7 @@ const Palette = styled(
 
 const CharBlockSelector = styled(
 	(props: {
-		readonly parsedPrg: ParsedPrg;
+		readonly charBlocks: ReadonlyArray<CharBlock<2, 2>>;
 		readonly palette: SubPalette;
 		readonly charBlockIndex: number;
 		readonly setCharBlockIndex: (index: number) => void;
@@ -123,7 +126,7 @@ const CharBlockSelector = styled(
 	}): JSX.Element => {
 		return (
 			<nav className={props.className}>
-				{props.parsedPrg.chars.items.map((item, itemIndex) => (
+				{props.charBlocks.map((item, itemIndex) => (
 					<ImageDataCanvas
 						key={itemIndex}
 						className={
@@ -262,7 +265,9 @@ export function Items({
 						render: () => {
 							return (
 								<CharBlockSelector
-									parsedPrg={parsedPrg}
+									charBlocks={
+										parsedPrg.chars.items as ReadonlyArray<CharBlock<2, 2>>
+									}
 									palette={getCharPalette(
 										checkedAccess(
 											parsedPrg.items[selectedItemCategoryName],
