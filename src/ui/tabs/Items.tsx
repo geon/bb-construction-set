@@ -19,7 +19,7 @@ import { Level } from "../../bb/internal-data-formats/level";
 
 const ItemSelector = styled(
 	(props: {
-		readonly parsedPrg: ParsedPrg;
+		readonly items: ReadonlyArray<Item>;
 		readonly chars: CharGroup<2, 2>;
 		readonly bgColors: Pick<Level, "bgColorDark" | "bgColorLight">;
 		readonly itemCategoryName: ItemCategoryName;
@@ -40,19 +40,17 @@ const ItemSelector = styled(
 					}
 				</h3>
 				<nav>
-					{props.parsedPrg.items[props.itemCategoryName].map(
-						(item, itemIndex) => (
-							<ImageDataCanvas
-								key={itemIndex}
-								className={itemIndex === props.itemIndex ? "active" : undefined}
-								imageData={imageDataFromPaletteImage(
-									doubleImageWidth(drawItem(item, props.chars, props.bgColors))
-								)}
-								onClick={() => props.setItemIndex(itemIndex)}
-								style={{ cursor: "pointer", width: "32px" }}
-							/>
-						)
-					)}
+					{props.items.map((item, itemIndex) => (
+						<ImageDataCanvas
+							key={itemIndex}
+							className={itemIndex === props.itemIndex ? "active" : undefined}
+							imageData={imageDataFromPaletteImage(
+								doubleImageWidth(drawItem(item, props.chars, props.bgColors))
+							)}
+							onClick={() => props.setItemIndex(itemIndex)}
+							style={{ cursor: "pointer", width: "32px" }}
+						/>
+					))}
 				</nav>
 			</div>
 		);
@@ -225,7 +223,7 @@ export function Items({
 			{validItemCategoryNames.map((itemCategoryName) => (
 				<ItemSelector
 					key={itemCategoryName}
-					parsedPrg={parsedPrg}
+					items={parsedPrg.items[itemCategoryName]}
 					chars={parsedPrg.chars.items as CharGroup<2, 2>}
 					bgColors={checkedAccess(parsedPrg.levels, levelIndex)}
 					itemCategoryName={itemCategoryName}
