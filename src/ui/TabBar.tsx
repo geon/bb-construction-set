@@ -19,6 +19,7 @@ const TabBarItemStyle = styled(
 export const TabBarStyle = styled.div`
 	display: flex;
 	flex-direction: row;
+	flex-wrap: wrap;
 	gap: 1em;
 
 	${TabBarItemStyle} {
