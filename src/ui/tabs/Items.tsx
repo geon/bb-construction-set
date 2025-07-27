@@ -3,7 +3,6 @@ import { ParsedPrg } from "../../bb/internal-data-formats/parsed-prg";
 import { ImageDataCanvas } from "../ImageDataCanvas";
 import { imageDataFromPaletteImage } from "../../bb/image-data/image-data";
 import { doubleImageWidth } from "../../bb/palette-image/palette-image";
-import { drawItem } from "../../bb/palette-image/item";
 import {
 	CharBlock,
 	CharGroup,
@@ -40,7 +39,12 @@ const ItemSelector = styled(
 						key={itemIndex}
 						className={itemIndex === props.itemIndex ? "active" : undefined}
 						imageData={imageDataFromPaletteImage(
-							doubleImageWidth(drawItem(item, props.chars, props.bgColors))
+							doubleImageWidth(
+								drawCharBlock(
+									checkedAccess(props.chars, item.charBlockIndex),
+									getCharPalette(item.paletteIndex, props.bgColors)
+								)
+							)
 						)}
 						onClick={() => props.setItemIndex(itemIndex)}
 						style={{ cursor: "pointer", width: "32px" }}
