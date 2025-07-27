@@ -14,6 +14,7 @@ import { attempt } from "../bb/functions";
 import { Items } from "./tabs/Items";
 import { Custom } from "./tabs/Custom";
 import { Patch } from "../bb/prg/io";
+import { EnemyBonuses } from "./tabs/EnemyBonuses";
 
 const Page = styled.div`
 	width: 600px;
@@ -155,6 +156,22 @@ export function App() {
 												parsedPrg={parsedPrg}
 												setParsedPrg={setParsedPrg}
 												levelIndex={levelIndex}
+											/>
+										</Card>
+									</>
+								);
+							},
+						},
+						enemyBonuses: {
+							title: "Enemy Bonuses",
+							render: (tab) => {
+								return (
+									<>
+										<Card>
+											<h2>{tab.title}</h2>
+											<EnemyBonuses
+												parsedPrg={parsedPrg}
+												setParsedPrg={setParsedPrg}
 											/>
 										</Card>
 									</>
