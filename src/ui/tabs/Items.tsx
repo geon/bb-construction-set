@@ -6,7 +6,11 @@ import { doubleImageWidth } from "../../bb/palette-image/palette-image";
 import { drawItem } from "../../bb/palette-image/item";
 import { CharGroup } from "../../bb/internal-data-formats/char-group";
 import styled from "styled-components";
-import { palette, PaletteIndex } from "../../bb/internal-data-formats/palette";
+import {
+	palette,
+	PaletteIndex,
+	SubPalette,
+} from "../../bb/internal-data-formats/palette";
 import { checkedAccess, range, updateArrayAtIndex } from "../../bb/functions";
 import {
 	ItemCategoryName,
@@ -112,9 +116,7 @@ const Palette = styled(
 const CharBlockSelector = styled(
 	(props: {
 		readonly parsedPrg: ParsedPrg;
-		readonly levelIndex: number;
-		readonly itemCategoryName: ItemCategoryName;
-		readonly selectedItemIndex: number;
+		readonly palette: SubPalette;
 		readonly charBlockIndex: number;
 		readonly setCharBlockIndex: (index: number) => void;
 		readonly className?: string;
@@ -128,18 +130,7 @@ const CharBlockSelector = styled(
 							itemIndex === props.charBlockIndex ? "active" : undefined
 						}
 						imageData={imageDataFromPaletteImage(
-							doubleImageWidth(
-								drawCharBlock(
-									item,
-									getCharPalette(
-										checkedAccess(
-											props.parsedPrg.items[props.itemCategoryName],
-											props.selectedItemIndex
-										).paletteIndex,
-										checkedAccess(props.parsedPrg.levels, props.levelIndex)
-									)
-								)
-							)
+							doubleImageWidth(drawCharBlock(item, props.palette))
 						)}
 						onClick={() => props.setCharBlockIndex(itemIndex)}
 						style={{ cursor: "pointer", width: "32px" }}
@@ -272,9 +263,13 @@ export function Items({
 							return (
 								<CharBlockSelector
 									parsedPrg={parsedPrg}
-									levelIndex={levelIndex}
-									itemCategoryName={selectedItemCategoryName}
-									selectedItemIndex={selectedItemIndex}
+									palette={getCharPalette(
+										checkedAccess(
+											parsedPrg.items[selectedItemCategoryName],
+											selectedItemIndex
+										).paletteIndex,
+										checkedAccess(parsedPrg.levels, levelIndex)
+									)}
 									charBlockIndex={
 										checkedAccess(
 											parsedPrg.items[selectedItemCategoryName],
