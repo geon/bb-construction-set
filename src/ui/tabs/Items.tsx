@@ -22,53 +22,38 @@ const ItemSelector = styled(
 		readonly items: ReadonlyArray<Item>;
 		readonly chars: CharGroup<2, 2>;
 		readonly bgColors: Pick<Level, "bgColorDark" | "bgColorLight">;
-		readonly itemCategoryName: ItemCategoryName;
 		readonly itemIndex: number | undefined;
 		readonly setItemIndex: (index: number) => void;
 		readonly className?: string;
 	}): JSX.Element => {
 		return (
-			<div className={props.className}>
-				<h3>
-					{
-						(
-							{
-								points: "Points",
-								powerups: "Power-Ups",
-							} as const
-						)[props.itemCategoryName]
-					}
-				</h3>
-				<nav>
-					{props.items.map((item, itemIndex) => (
-						<ImageDataCanvas
-							key={itemIndex}
-							className={itemIndex === props.itemIndex ? "active" : undefined}
-							imageData={imageDataFromPaletteImage(
-								doubleImageWidth(drawItem(item, props.chars, props.bgColors))
-							)}
-							onClick={() => props.setItemIndex(itemIndex)}
-							style={{ cursor: "pointer", width: "32px" }}
-						/>
-					))}
-				</nav>
-			</div>
+			<nav className={props.className}>
+				{props.items.map((item, itemIndex) => (
+					<ImageDataCanvas
+						key={itemIndex}
+						className={itemIndex === props.itemIndex ? "active" : undefined}
+						imageData={imageDataFromPaletteImage(
+							doubleImageWidth(drawItem(item, props.chars, props.bgColors))
+						)}
+						onClick={() => props.setItemIndex(itemIndex)}
+						style={{ cursor: "pointer", width: "32px" }}
+					/>
+				))}
+			</nav>
 		);
 	}
 )`
-	& > nav {
-		display: grid;
-		grid-template-columns: repeat(10, auto);
-		grid-column-gap: 16px;
-		grid-row-gap: 16px;
-		justify-items: center;
-		justify-content: center;
+	display: grid;
+	grid-template-columns: repeat(10, auto);
+	grid-column-gap: 16px;
+	grid-row-gap: 16px;
+	justify-items: center;
+	justify-content: center;
 
-		> .active {
-			box-shadow: 0 0 0 2px black, 0 0 0 3px white;
-			@media (prefers-color-scheme: light) {
-				box-shadow: 0 0 0 2px white, 0 0 0 3px black;
-			}
+	> .active {
+		box-shadow: 0 0 0 2px black, 0 0 0 3px white;
+		@media (prefers-color-scheme: light) {
+			box-shadow: 0 0 0 2px white, 0 0 0 3px black;
 		}
 	}
 `;
@@ -184,10 +169,8 @@ const Styling = styled.div`
 	flex-direction: column;
 	gap: 3em;
 
-	> ${ItemSelector} {
-		h3 {
-			text-align: left;
-		}
+	h3 {
+		text-align: left;
 	}
 `;
 
@@ -221,22 +204,32 @@ export function Items({
 	return (
 		<Styling>
 			{validItemCategoryNames.map((itemCategoryName) => (
-				<ItemSelector
-					key={itemCategoryName}
-					items={parsedPrg.items[itemCategoryName]}
-					chars={parsedPrg.chars.items as CharGroup<2, 2>}
-					bgColors={checkedAccess(parsedPrg.levels, levelIndex)}
-					itemCategoryName={itemCategoryName}
-					itemIndex={
-						selectedItemCategoryName !== itemCategoryName
-							? undefined
-							: selectedItemIndex
-					}
-					setItemIndex={(itemIndex) => {
-						setSelectedItemCategoryName(itemCategoryName);
-						itemStates[itemCategoryName].set(itemIndex);
-					}}
-				/>
+				<div key={itemCategoryName}>
+					<h3>
+						{
+							(
+								{
+									points: "Points",
+									powerups: "Power-Ups",
+								} as const
+							)[itemCategoryName]
+						}
+					</h3>
+					<ItemSelector
+						items={parsedPrg.items[itemCategoryName]}
+						chars={parsedPrg.chars.items as CharGroup<2, 2>}
+						bgColors={checkedAccess(parsedPrg.levels, levelIndex)}
+						itemIndex={
+							selectedItemCategoryName !== itemCategoryName
+								? undefined
+								: selectedItemIndex
+						}
+						setItemIndex={(itemIndex) => {
+							setSelectedItemCategoryName(itemCategoryName);
+							itemStates[itemCategoryName].set(itemIndex);
+						}}
+					/>
+				</div>
 			))}
 
 			<TabBar
