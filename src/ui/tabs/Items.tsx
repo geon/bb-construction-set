@@ -120,8 +120,10 @@ const Palette = styled(
 
 const CharBlockSelector = styled(
 	(props: {
-		readonly charBlocks: ReadonlyArray<CharBlock<2, 2>>;
-		readonly paletteIndex: PaletteIndex;
+		readonly charBlocks: ReadonlyArray<{
+			readonly charBlock: CharBlock<2, 2>;
+			readonly paletteIndex: PaletteIndex;
+		}>;
 		readonly bgColors: Pick<Level, "bgColorDark" | "bgColorLight">;
 		readonly charBlockIndex: number;
 		readonly setCharBlockIndex: (index: number) => void;
@@ -138,8 +140,8 @@ const CharBlockSelector = styled(
 						imageData={imageDataFromPaletteImage(
 							doubleImageWidth(
 								drawCharBlock(
-									item,
-									getCharPalette(props.paletteIndex, props.bgColors)
+									item.charBlock,
+									getCharPalette(item.paletteIndex, props.bgColors)
 								)
 							)
 						)}
@@ -276,17 +278,19 @@ export function Items({
 					charBlockIndex: {
 						title: "Chars",
 						render: () => {
+							const paletteIndex = checkedAccess(
+								parsedPrg.items[selectedItemCategoryName],
+								selectedItemIndex
+							).paletteIndex;
+
 							return (
 								<CharBlockSelector
-									charBlocks={
+									charBlocks={(
 										parsedPrg.chars.items as ReadonlyArray<CharBlock<2, 2>>
-									}
-									paletteIndex={
-										checkedAccess(
-											parsedPrg.items[selectedItemCategoryName],
-											selectedItemIndex
-										).paletteIndex
-									}
+									).map((charBlock) => ({
+										charBlock,
+										paletteIndex,
+									}))}
 									bgColors={checkedAccess(parsedPrg.levels, levelIndex)}
 									charBlockIndex={
 										checkedAccess(
