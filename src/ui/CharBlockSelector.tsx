@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import { imageDataFromPaletteImage } from "../bb/image-data/image-data";
-import { Level } from "../bb/internal-data-formats/level";
-import { PaletteIndex } from "../bb/internal-data-formats/palette";
-import { drawCharBlock, getCharPalette } from "../bb/palette-image/char";
+import { SubPalette } from "../bb/internal-data-formats/palette";
+import { drawCharBlock } from "../bb/palette-image/char";
 import { doubleImageWidth } from "../bb/palette-image/palette-image";
 import { ImageDataCanvas } from "./ImageDataCanvas";
 import { CharBlock } from "../bb/internal-data-formats/char-group";
@@ -11,9 +10,8 @@ export const CharBlockSelector = styled(
 	(props: {
 		readonly charBlocks: ReadonlyArray<{
 			readonly charBlock: CharBlock<2, 2>;
-			readonly paletteIndex: PaletteIndex;
+			readonly palette: SubPalette;
 		}>;
-		readonly bgColors: Pick<Level, "bgColorDark" | "bgColorLight">;
 		readonly charBlockIndex?: number;
 		readonly setCharBlockIndex: (index: number) => void;
 		readonly className?: string;
@@ -27,12 +25,7 @@ export const CharBlockSelector = styled(
 							itemIndex === props.charBlockIndex ? "active" : undefined
 						}
 						imageData={imageDataFromPaletteImage(
-							doubleImageWidth(
-								drawCharBlock(
-									item.charBlock,
-									getCharPalette(item.paletteIndex, props.bgColors)
-								)
-							)
+							doubleImageWidth(drawCharBlock(item.charBlock, item.palette))
 						)}
 						onClick={() => props.setCharBlockIndex(itemIndex)}
 						style={{ cursor: "pointer", width: "32px" }}

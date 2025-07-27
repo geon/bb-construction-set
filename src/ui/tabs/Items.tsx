@@ -14,6 +14,7 @@ import {
 import { Item } from "../../bb/internal-data-formats/item-groups";
 import { TabBar } from "../TabBar";
 import { CharBlockSelector } from "../CharBlockSelector";
+import { getCharPalette } from "../../bb/palette-image/char";
 
 const pickerSize = "2em";
 const PaletteIndexButton = styled.button.attrs<{ selected: boolean }>(
@@ -123,9 +124,11 @@ export function Items({
 								parsedPrg.chars.items as CharGroup<2, 2>,
 								item.charBlockIndex
 							),
-							paletteIndex: item.paletteIndex,
+							palette: getCharPalette(
+								item.paletteIndex,
+								checkedAccess(parsedPrg.levels, levelIndex)
+							),
 						}))}
-						bgColors={checkedAccess(parsedPrg.levels, levelIndex)}
 						charBlockIndex={
 							selectedItemCategoryName !== itemCategoryName
 								? undefined
@@ -187,9 +190,11 @@ export function Items({
 										parsedPrg.chars.items as ReadonlyArray<CharBlock<2, 2>>
 									).map((charBlock) => ({
 										charBlock,
-										paletteIndex,
+										palette: getCharPalette(
+											paletteIndex,
+											checkedAccess(parsedPrg.levels, levelIndex)
+										),
 									}))}
-									bgColors={checkedAccess(parsedPrg.levels, levelIndex)}
 									charBlockIndex={
 										checkedAccess(
 											parsedPrg.items[selectedItemCategoryName],
