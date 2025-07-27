@@ -301,10 +301,6 @@ export const charSegmentLocations: Readonly<
 		startAddress: 0xa668 + 8 * 4,
 		length: charSegmentLengths.secretLevelPedestal,
 	},
-	secretLevelPedestalRightEdge: {
-		startAddress: 0x9594,
-		length: charSegmentLengths.secretLevelPedestalRightEdge,
-	},
 	secretLevelPedestalDoor: {
 		startAddress: 0xa668 + 8 * 4 + 8 * 7,
 		length: charSegmentLengths.secretLevelPedestalDoor,

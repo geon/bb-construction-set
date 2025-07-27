@@ -18,7 +18,6 @@ export const charSegmentNames = [
 	"secretLevelPlatform",
 	"secretLevelSideDecor",
 	"secretLevelPedestal",
-	"secretLevelPedestalRightEdge",
 	"secretLevelPedestalDoor",
 	"secretLevelBasementDoor",
 	"shadows",
@@ -180,14 +179,6 @@ export const charGroupMeta = {
 	},
 	secretLevelPedestal: {
 		width: 7,
-		height: 1,
-		count: 1,
-		hasMask: false,
-		transposed: false,
-		multicolor: true,
-	},
-	secretLevelPedestalRightEdge: {
-		width: 1,
 		height: 1,
 		count: 1,
 		hasMask: false,

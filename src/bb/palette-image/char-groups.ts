@@ -170,7 +170,6 @@ export function layOutChars(): LayoutRect {
 											[
 												laidOutCharGroups.secretLevelPlatform,
 												laidOutCharGroups.secretLevelPedestal,
-												laidOutCharGroups.secretLevelPedestalRightEdge,
 											],
 											"row",
 											4
