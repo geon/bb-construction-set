@@ -19,54 +19,6 @@ import { Item } from "../../bb/internal-data-formats/item-groups";
 import { TabBar } from "../TabBar";
 import { Level } from "../../bb/internal-data-formats/level";
 
-const ItemSelector = styled(
-	(props: {
-		readonly charBlocks: ReadonlyArray<{
-			readonly charBlock: CharBlock<2, 2>;
-			readonly paletteIndex: PaletteIndex;
-		}>;
-		readonly bgColors: Pick<Level, "bgColorDark" | "bgColorLight">;
-		readonly itemIndex: number | undefined;
-		readonly setItemIndex: (index: number) => void;
-		readonly className?: string;
-	}): JSX.Element => {
-		return (
-			<nav className={props.className}>
-				{props.charBlocks.map((item, itemIndex) => (
-					<ImageDataCanvas
-						key={itemIndex}
-						className={itemIndex === props.itemIndex ? "active" : undefined}
-						imageData={imageDataFromPaletteImage(
-							doubleImageWidth(
-								drawCharBlock(
-									item.charBlock,
-									getCharPalette(item.paletteIndex, props.bgColors)
-								)
-							)
-						)}
-						onClick={() => props.setItemIndex(itemIndex)}
-						style={{ cursor: "pointer", width: "32px" }}
-					/>
-				))}
-			</nav>
-		);
-	}
-)`
-	display: grid;
-	grid-template-columns: repeat(10, auto);
-	grid-column-gap: 16px;
-	grid-row-gap: 16px;
-	justify-items: center;
-	justify-content: center;
-
-	> .active {
-		box-shadow: 0 0 0 2px black, 0 0 0 3px white;
-		@media (prefers-color-scheme: light) {
-			box-shadow: 0 0 0 2px white, 0 0 0 3px black;
-		}
-	}
-`;
-
 const pickerSize = "2em";
 const PaletteIndexButton = styled.button.attrs<{ selected: boolean }>(
 	(props) => ({
@@ -125,7 +77,7 @@ const CharBlockSelector = styled(
 			readonly paletteIndex: PaletteIndex;
 		}>;
 		readonly bgColors: Pick<Level, "bgColorDark" | "bgColorLight">;
-		readonly charBlockIndex: number;
+		readonly charBlockIndex?: number;
 		readonly setCharBlockIndex: (index: number) => void;
 		readonly className?: string;
 	}): JSX.Element => {
@@ -219,7 +171,7 @@ export function Items({
 							)[itemCategoryName]
 						}
 					</h3>
-					<ItemSelector
+					<CharBlockSelector
 						charBlocks={parsedPrg.items[itemCategoryName].map((item) => ({
 							charBlock: checkedAccess(
 								parsedPrg.chars.items as CharGroup<2, 2>,
@@ -228,12 +180,12 @@ export function Items({
 							paletteIndex: item.paletteIndex,
 						}))}
 						bgColors={checkedAccess(parsedPrg.levels, levelIndex)}
-						itemIndex={
+						charBlockIndex={
 							selectedItemCategoryName !== itemCategoryName
 								? undefined
 								: selectedItemIndex
 						}
-						setItemIndex={(itemIndex) => {
+						setCharBlockIndex={(itemIndex) => {
 							setSelectedItemCategoryName(itemCategoryName);
 							itemStates[itemCategoryName].set(itemIndex);
 						}}
