@@ -25,8 +25,10 @@ import { Level } from "../../bb/internal-data-formats/level";
 
 const ItemSelector = styled(
 	(props: {
-		readonly items: ReadonlyArray<Item>;
-		readonly chars: CharGroup<2, 2>;
+		readonly charBlocks: ReadonlyArray<{
+			readonly charBlock: CharBlock<2, 2>;
+			readonly paletteIndex: PaletteIndex;
+		}>;
 		readonly bgColors: Pick<Level, "bgColorDark" | "bgColorLight">;
 		readonly itemIndex: number | undefined;
 		readonly setItemIndex: (index: number) => void;
@@ -34,14 +36,14 @@ const ItemSelector = styled(
 	}): JSX.Element => {
 		return (
 			<nav className={props.className}>
-				{props.items.map((item, itemIndex) => (
+				{props.charBlocks.map((item, itemIndex) => (
 					<ImageDataCanvas
 						key={itemIndex}
 						className={itemIndex === props.itemIndex ? "active" : undefined}
 						imageData={imageDataFromPaletteImage(
 							doubleImageWidth(
 								drawCharBlock(
-									checkedAccess(props.chars, item.charBlockIndex),
+									item.charBlock,
 									getCharPalette(item.paletteIndex, props.bgColors)
 								)
 							)
@@ -214,8 +216,13 @@ export function Items({
 						}
 					</h3>
 					<ItemSelector
-						items={parsedPrg.items[itemCategoryName]}
-						chars={parsedPrg.chars.items as CharGroup<2, 2>}
+						charBlocks={parsedPrg.items[itemCategoryName].map((item) => ({
+							charBlock: checkedAccess(
+								parsedPrg.chars.items as CharGroup<2, 2>,
+								item.charBlockIndex
+							),
+							paletteIndex: item.paletteIndex,
+						}))}
 						bgColors={checkedAccess(parsedPrg.levels, levelIndex)}
 						itemIndex={
 							selectedItemCategoryName !== itemCategoryName
