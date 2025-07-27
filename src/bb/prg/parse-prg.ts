@@ -2,6 +2,7 @@ import { mapRecord } from "../functions";
 import { getDataSegments, getDataSegment, applyPatch, Patch } from "./io";
 import {
 	charSegmentLocations,
+	enemyDeathBonusItemIndicesSegmentLocation,
 	itemSegmentLocations,
 	largeBonusSpriteColorsSegmentLocation,
 	levelSegmentLocations,
@@ -17,6 +18,10 @@ import {
 } from "./sprites";
 import { ParsedPrg } from "../internal-data-formats/parsed-prg";
 import { readLevels, getLevelsPatch } from "./levels";
+import {
+	getEnemyDeathBonusIndicesPatch,
+	parseEnemyDeathBonusIndices,
+} from "./enemy-death-bonuses";
 
 export function parsePrg(prg: ArrayBuffer): ParsedPrg {
 	const levels = readLevels(getDataSegments(prg, levelSegmentLocations));
@@ -31,8 +36,11 @@ export function parsePrg(prg: ArrayBuffer): ParsedPrg {
 			getDataSegments(prg, sublocations)
 		)
 	);
+	const enemyDeathBonusIndices = parseEnemyDeathBonusIndices(
+		getDataSegment(prg, enemyDeathBonusItemIndicesSegmentLocation)
+	);
 
-	return { levels, sprites, chars, items };
+	return { levels, sprites, chars, items, enemyDeathBonusIndices };
 }
 
 export function patchPrg(
@@ -48,6 +56,7 @@ export function patchPrg(
 			getSpriteColorsPatch(parsedPrg.sprites),
 			getCharGroupsPatch(parsedPrg.chars),
 			getItemsPatch(parsedPrg.items),
+			getEnemyDeathBonusIndicesPatch(parsedPrg.enemyDeathBonusIndices),
 			manualPatch,
 		].flat()
 	);

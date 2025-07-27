@@ -384,3 +384,8 @@ export const itemSegmentLocations: Record<
 		},
 	},
 };
+
+export const enemyDeathBonusItemIndicesSegmentLocation: SegmentLocation = {
+	startAddress: 0xa791, // 0xa790 in the code
+	length: 6,
+};
