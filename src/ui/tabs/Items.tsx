@@ -8,11 +8,7 @@ import {
 	CharGroup,
 } from "../../bb/internal-data-formats/char-group";
 import styled from "styled-components";
-import {
-	palette,
-	PaletteIndex,
-	SubPalette,
-} from "../../bb/internal-data-formats/palette";
+import { palette, PaletteIndex } from "../../bb/internal-data-formats/palette";
 import { checkedAccess, range, updateArrayAtIndex } from "../../bb/functions";
 import {
 	ItemCategoryName,
@@ -125,7 +121,8 @@ const Palette = styled(
 const CharBlockSelector = styled(
 	(props: {
 		readonly charBlocks: ReadonlyArray<CharBlock<2, 2>>;
-		readonly palette: SubPalette;
+		readonly paletteIndex: PaletteIndex;
+		readonly bgColors: Pick<Level, "bgColorDark" | "bgColorLight">;
 		readonly charBlockIndex: number;
 		readonly setCharBlockIndex: (index: number) => void;
 		readonly className?: string;
@@ -139,7 +136,12 @@ const CharBlockSelector = styled(
 							itemIndex === props.charBlockIndex ? "active" : undefined
 						}
 						imageData={imageDataFromPaletteImage(
-							doubleImageWidth(drawCharBlock(item, props.palette))
+							doubleImageWidth(
+								drawCharBlock(
+									item,
+									getCharPalette(props.paletteIndex, props.bgColors)
+								)
+							)
 						)}
 						onClick={() => props.setCharBlockIndex(itemIndex)}
 						style={{ cursor: "pointer", width: "32px" }}
@@ -279,13 +281,13 @@ export function Items({
 									charBlocks={
 										parsedPrg.chars.items as ReadonlyArray<CharBlock<2, 2>>
 									}
-									palette={getCharPalette(
+									paletteIndex={
 										checkedAccess(
 											parsedPrg.items[selectedItemCategoryName],
 											selectedItemIndex
-										).paletteIndex,
-										checkedAccess(parsedPrg.levels, levelIndex)
-									)}
+										).paletteIndex
+									}
+									bgColors={checkedAccess(parsedPrg.levels, levelIndex)}
 									charBlockIndex={
 										checkedAccess(
 											parsedPrg.items[selectedItemCategoryName],
