@@ -15,11 +15,12 @@ import {
 import { drawCharBlock, getCharPalette } from "../../bb/palette-image/char";
 import { Item } from "../../bb/internal-data-formats/item-groups";
 import { TabBar } from "../TabBar";
+import { Level } from "../../bb/internal-data-formats/level";
 
 const ItemSelector = styled(
 	(props: {
 		readonly parsedPrg: ParsedPrg;
-		readonly levelIndex: number;
+		readonly bgColors: Pick<Level, "bgColorDark" | "bgColorLight">;
 		readonly itemCategoryName: ItemCategoryName;
 		readonly itemIndex: number | undefined;
 		readonly setItemIndex: (index: number) => void;
@@ -50,7 +51,7 @@ const ItemSelector = styled(
 											props.parsedPrg.chars.items as ReadonlyArray<
 												CharBlock<2, 2>
 											>,
-											checkedAccess(props.parsedPrg.levels, props.levelIndex)
+											props.bgColors
 										)
 									)
 								)}
@@ -232,7 +233,7 @@ export function Items({
 				<ItemSelector
 					key={itemCategoryName}
 					parsedPrg={parsedPrg}
-					levelIndex={levelIndex}
+					bgColors={checkedAccess(parsedPrg.levels, levelIndex)}
 					itemCategoryName={itemCategoryName}
 					itemIndex={
 						selectedItemCategoryName !== itemCategoryName
