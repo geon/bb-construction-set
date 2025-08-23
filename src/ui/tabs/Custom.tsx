@@ -20,9 +20,9 @@ export function Custom(props: {
 	);
 	const [error, setError] = useState(false);
 
-	function setManualPatch(patch: Patch, newInputState: string): void {
+	function setManualPatch(patch: Patch): void {
 		props.setManualPatch(patch);
-		setInputState(newInputState);
+		setInputState(formatViceMonitorPokes(patch));
 	}
 
 	return (
@@ -35,7 +35,7 @@ export function Custom(props: {
 					const patch = parseViceMonitorPokes(newInputState);
 					setError(!patch);
 					if (patch) {
-						setManualPatch(patch, newInputState);
+						setManualPatch(patch);
 					} else {
 						setInputState(newInputState);
 					}
