@@ -48,7 +48,9 @@ function parseViceMonitorPokes(value: string): Patch | undefined {
 			}
 
 			const numbers = strings
-				.map((x) => parseInt(x, 16))
+				.map((x) => {
+					return parseInt(x, 16);
+				})
 				.filter((x) => !Number.isNaN(x));
 			const [address, value] = numbers;
 			if (!(address !== undefined && value !== undefined)) {
