@@ -50,6 +50,9 @@ function parseViceMonitorPokes(value: string): Patch | undefined {
 			const numbers = strings
 				.map((x) => {
 					const number = parseInt(x, 16);
+					if (Number.isNaN(number)) {
+						throw new Error("Not a number: " + x);
+					}
 					return number;
 				})
 				.filter((x) => !Number.isNaN(x));
