@@ -19,6 +19,12 @@ export function Custom(props: {
 		formatViceMonitorPokes(props.manualPatch)
 	);
 	const [error, setError] = useState(false);
+
+	function setManualPatch(patch: Patch, newInputState: string): void {
+		props.setManualPatch(patch);
+		setInputState(newInputState);
+	}
+
 	return (
 		<>
 			<TextArea
@@ -29,8 +35,7 @@ export function Custom(props: {
 					const patch = parseViceMonitorPokes(newInputState);
 					setError(!patch);
 					if (patch) {
-						props.setManualPatch(patch);
-						setInputState(newInputState);
+						setManualPatch(patch, newInputState);
 					} else {
 						setInputState(newInputState);
 					}
