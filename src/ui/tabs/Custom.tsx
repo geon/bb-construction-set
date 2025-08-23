@@ -1,6 +1,7 @@
 import { ReactNode, useState } from "react";
 import styled from "styled-components";
 import { Patch, SingleBytePatch } from "../../bb/prg/io";
+import { assertTuple } from "../../bb/tuple";
 
 const TextArea = styled.textarea<{ $error?: boolean }>`
 	color: ${({ $error }) => ($error ? "#a00" : "inherit")};
@@ -54,14 +55,15 @@ function parseViceMonitorPokes(value: string): Patch | undefined {
 				}
 				return number;
 			});
-			const [address, value] = numbers;
-			if (!(address !== undefined && value !== undefined)) {
+
+			try {
+				return assertTuple(numbers, 2);
+			} catch (_) {
+				// Nicer error message than assertTuple.
 				throw new Error(
 					"Lines must have exactly one address and one value, separated with a space."
 				);
 			}
-
-			return [address, value];
 		});
 	} catch (e) {
 		return undefined;
