@@ -5,9 +5,9 @@ export default defineConfig({
 		coverage: {
 			reporter: ["text"],
 			exclude: [
+				//
 				...coverageConfigDefaults.exclude,
-				"**/*.tsx",
-				"src/global-style.ts",
+				"src/ui",
 			],
 		},
 	},
