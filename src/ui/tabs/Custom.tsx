@@ -1,7 +1,9 @@
 import { ReactNode, useState } from "react";
 import styled from "styled-components";
-import { Patch, SingleBytePatch } from "../../bb/prg/io";
+import { Patch, patchFromSegment, SingleBytePatch } from "../../bb/prg/io";
 import { assertTuple } from "../../bb/tuple";
+import { FileInput } from "../FileInput";
+import { sidSegmentLocation } from "../../bb/prg/data-locations";
 
 const TextArea = styled.textarea<{ $error?: boolean }>`
 	color: ${({ $error }) => ($error ? "#a00" : "inherit")};
@@ -41,6 +43,19 @@ export function Custom(props: {
 					}
 				}}
 			/>
+			<FileInput
+				accept={["sid"]}
+				onChange={async (file: File): Promise<void> =>
+					setManualPatch(
+						patchFromSegment(
+							sidSegmentLocation,
+							parseSid(await file.arrayBuffer())
+						)
+					)
+				}
+			>
+				Load sid-file
+			</FileInput>
 		</>
 	);
 }
@@ -81,4 +96,21 @@ function formatViceMonitorPokes(manual: Patch): string {
 	return manual
 		.map((byte) => `> ${byte[0].toString(16)} ${byte[1].toString(16)}`)
 		.join("\n");
+}
+
+function parseSid(buffer: ArrayBuffer): Uint8Array {
+	const view = new DataView(buffer);
+
+	// https://www.hvsc.c64.org/download/C64Music/DOCUMENTS/SID_file_format.txt
+	const version = view.getUint16(
+		4,
+		// Sid headers are big endian!
+		false
+	);
+	const headerLength = version === 1 ? 0x76 : 0x7c;
+
+	// 2 bytes little endian address. The data section is basically a prg.
+	const binaryStart = headerLength + 2;
+
+	return new Uint8Array(buffer, binaryStart);
 }

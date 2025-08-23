@@ -385,3 +385,11 @@ export const enemyDeathBonusItemIndicesSegmentLocation: SegmentLocation = {
 	startAddress: 0xa791, // 0xa790 in the code
 	length: 6,
 };
+
+export const sidSegmentLocation = {
+	// https://csdb.dk/sid/?id=5640
+	// CSDB claims load address 0xea40, but fragments the data were originally at 0x7040.
+	// startAddress: 0xea40,
+	startAddress: 0x7040,
+	length: 0x1448,
+};
