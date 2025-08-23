@@ -211,7 +211,7 @@ export function groupBy<Key extends string | number, Item, Value>(
 			keyItems.push(value);
 		}
 	}
-	return grouped as Grouped<Key, Value>;
+	return grouped;
 }
 
 export async function mapAsync<TIn, TOut>(
