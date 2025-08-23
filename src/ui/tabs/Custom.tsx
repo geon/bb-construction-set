@@ -26,12 +26,12 @@ export function Custom(props: {
 				$error={error}
 				onChange={(e) => {
 					const newInputState = e.target.value;
-					setInputState(newInputState);
 					const patch = parseViceMonitorPokes(newInputState);
 					setError(!patch);
 					if (patch) {
 						props.setManualPatch(patch);
 					}
+					setInputState(newInputState);
 				}}
 			/>
 		</>
