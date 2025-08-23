@@ -30,8 +30,10 @@ export function Custom(props: {
 					setError(!patch);
 					if (patch) {
 						props.setManualPatch(patch);
+						setInputState(newInputState);
+					} else {
+						setInputState(newInputState);
 					}
-					setInputState(newInputState);
 				}}
 			/>
 		</>
