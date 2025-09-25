@@ -15,6 +15,7 @@ import { Items } from "./tabs/Items";
 import { Custom } from "./tabs/Custom";
 import { Patch } from "../bb/prg/io";
 import { EnemyBonuses } from "./tabs/EnemyBonuses";
+import { Levels } from "./tabs/Levels";
 
 const Page = styled.div`
 	width: 600px;
@@ -77,24 +78,26 @@ export function App() {
 			)}
 			{parsedPrg && (
 				<TabBar
-					initialTabId={"levelGraphics"}
+					initialTabId={"levels"}
 					tabs={{
-						// levels: {
-						// 	title: "Levels",
-						// 	render: (tab) => {
-						// 		return (
-						// 			<>
-						// 				<Card>
-						// 					<h2>{tab.title}</h2>
-						// 					<Levels
-						// 						parsedPrg={parsedPrg}
-						// 						setParsedPrg={setParsedPrg}
-						// 					/>
-						// 				</Card>
-						// 			</>
-						// 		);
-						// 	},
-						// },
+						levels: {
+							title: "Levels",
+							render: (tab) => {
+								return (
+									<>
+										<Card>
+											<h2>{tab.title}</h2>
+											<Levels
+												parsedPrg={parsedPrg}
+												setParsedPrg={setParsedPrg}
+												levelIndex={levelIndex}
+												setLevelIndex={setLevelIndex}
+											/>
+										</Card>
+									</>
+								);
+							},
+						},
 						levelGraphics: {
 							title: "Level Graphics",
 							render: (tab) => {
