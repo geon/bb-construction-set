@@ -1,6 +1,7 @@
 import { spritePosOffset } from "../../c64/consts";
-import { subtract } from "../../math/coord2";
-import { mapRecord } from "../functions";
+import { origo, subtract } from "../../math/coord2";
+import { grid } from "../../math/rect";
+import { mapRecord, range } from "../functions";
 import { pl1, pl2, spriteLeftIndex } from "../game-definitions/character-name";
 import { levelHeight, levelWidth } from "../game-definitions/level-size";
 import {
@@ -12,7 +13,12 @@ import {
 import { SpriteGroups } from "../internal-data-formats/sprite";
 import { ShadowChars } from "../prg/shadow-chars";
 import { getLevelCharPalette, drawChar } from "./char";
-import { PaletteImage, drawGrid, blitPaletteImage } from "./palette-image";
+import {
+	PaletteImage,
+	drawGrid,
+	blitPaletteImage,
+	drawLayout,
+} from "./palette-image";
 import { drawSprite, getSpritePalette } from "./sprite";
 
 export function drawLevel(
@@ -56,6 +62,24 @@ export function drawLevel(
 	return image;
 }
 
+export function layOutLevelThumbnails() {
+	const levelSize = {
+		x: levelWidth,
+		y: levelHeight,
+	};
+	const gap = { x: 10, y: 10 };
+
+	return grid(
+		range(100).map((index) => ({
+			index,
+			size: levelSize,
+			pos: origo,
+		})),
+		10,
+		gap
+	);
+}
+
 export function drawLevelTiles(tiles: Tiles): PaletteImage {
 	const solidColor = 1;
 	const emptyColor = 0;
@@ -66,16 +90,10 @@ export function drawLevelTiles(tiles: Tiles): PaletteImage {
 }
 
 export function drawLevelsTiles(levels: readonly Level[]): PaletteImage {
-	const levelSize = {
-		x: levelWidth,
-		y: levelHeight,
-	};
-	const gap = { x: 10, y: 10 };
+	const layout = layOutLevelThumbnails();
 
-	return drawGrid(
-		levels.map((level) => drawLevelTiles(level.tiles)),
-		10,
-		levelSize,
-		gap
+	return drawLayout(
+		layout,
+		levels.map((level) => drawLevelTiles(level.tiles))
 	);
 }
