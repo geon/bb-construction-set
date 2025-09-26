@@ -1,5 +1,5 @@
 import { ReactNode, useState } from "react";
-import { updateArrayAtIndex } from "../../bb/functions";
+import { attempt, updateArrayAtIndex, zipObject } from "../../bb/functions";
 import { ParsedPrg } from "../../bb/internal-data-formats/parsed-prg";
 import { ImageDataCanvas } from "../ImageDataCanvas";
 import { assertTuple } from "../../bb/tuple";
@@ -8,11 +8,19 @@ import { Tiles } from "../../bb/internal-data-formats/level";
 import { Coord2, scale, subtract } from "../../math/coord2";
 import { levelWidth, levelHeight } from "../../bb/game-definitions/level-size";
 import {
+	imageDataFromImage,
 	imageDataFromPaletteImage,
 	imageDataToBlob,
+	imageFromFile,
+	paletteImageFromImageData,
 } from "../../bb/image-data/image-data";
-import { drawLevelsTiles, drawLevelTiles } from "../../bb/palette-image/level";
+import {
+	drawLevelsTiles,
+	drawLevelTiles,
+	parseLevelsTiles,
+} from "../../bb/palette-image/level";
 import { BlobDownloadButton } from "../BlobDownloadButton";
+import { FileInput } from "../FileInput";
 
 const Styling = styled.div`
 	display: flex;
@@ -86,6 +94,7 @@ function getTileCoord(event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
 const ImageButtons = styled.div`
 	display: flex;
 	flex-direction: row;
+	gap: 1em;
 `;
 
 export function Levels({
@@ -119,6 +128,33 @@ export function Levels({
 				imageData={levelsTilesImageData}
 			/>
 			<ImageButtons>
+				<FileInput
+					accept={["image/*"]}
+					onChange={async (file) => {
+						const imageData = imageDataFromImage(await imageFromFile(file));
+
+						const parsedTiles = attempt(() =>
+							parseLevelsTiles(paletteImageFromImageData(imageData))
+						);
+
+						if (parsedTiles.type !== "ok") {
+							alert(
+								`Could not read image: ${parsedTiles.error ?? "No reason."}`
+							);
+							return;
+						}
+
+						setParsedPrg({
+							...parsedPrg,
+							levels: zipObject({
+								level: parsedPrg.levels,
+								tiles: parsedTiles.result,
+							}).map(({ level, tiles }) => ({ ...level, tiles })),
+						});
+					}}
+				>
+					Import Image
+				</FileInput>
 				<BlobDownloadButton
 					getBlob={async () => ({
 						fileName: "platforms.png",
