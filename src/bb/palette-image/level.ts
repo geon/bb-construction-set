@@ -7,6 +7,7 @@ import {
 	Level,
 	makeCharset,
 	levelToCharNames,
+	Tiles,
 } from "../internal-data-formats/level";
 import { SpriteGroups } from "../internal-data-formats/sprite";
 import { ShadowChars } from "../prg/shadow-chars";
@@ -53,4 +54,13 @@ export function drawLevel(
 	}
 
 	return image;
+}
+
+export function drawLevelTiles(tiles: Tiles): PaletteImage {
+	const solidColor = 1;
+	const emptyColor = undefined;
+
+	return tiles.map((row) =>
+		row.map((solid) => (solid ? solidColor : emptyColor))
+	);
 }

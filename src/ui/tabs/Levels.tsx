@@ -7,8 +7,8 @@ import styled from "styled-components";
 import { Tiles } from "../../bb/internal-data-formats/level";
 import { Coord2, scale, subtract } from "../../math/coord2";
 import { levelWidth, levelHeight } from "../../bb/game-definitions/level-size";
-import { PaletteImage } from "../../bb/palette-image/palette-image";
 import { imageDataFromPaletteImage } from "../../bb/image-data/image-data";
+import { drawLevelTiles } from "../../bb/palette-image/level";
 
 const Styling = styled.div`
 	display: flex;
@@ -19,15 +19,6 @@ const Styling = styled.div`
 		text-align: left;
 	}
 `;
-
-export function drawLevelTiles(tiles: Tiles): PaletteImage {
-	const solidColor = 1;
-	const emptyColor = undefined;
-
-	return tiles.map((row) =>
-		row.map((solid) => (solid ? solidColor : emptyColor))
-	);
-}
 
 function PlatformEditor(props: {
 	readonly tiles: Tiles;
