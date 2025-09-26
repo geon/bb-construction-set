@@ -108,19 +108,21 @@ export function Levels({
 			})),
 		});
 
+	const levelsTilesImageData = imageDataFromPaletteImage(
+		drawLevelsTiles(parsedPrg.levels)
+	);
+
 	return (
 		<Styling>
 			<ImageDataCanvas
 				style={{ width: "100%" }}
-				imageData={imageDataFromPaletteImage(drawLevelsTiles(parsedPrg.levels))}
+				imageData={levelsTilesImageData}
 			/>
 			<ImageButtons>
 				<BlobDownloadButton
 					getBlob={async () => ({
 						fileName: "platforms.png",
-						blob: await imageDataToBlob(
-							imageDataFromPaletteImage(drawLevelsTiles(parsedPrg.levels))
-						),
+						blob: await imageDataToBlob(levelsTilesImageData),
 					})}
 					label={"Export Image"}
 				/>
