@@ -2,11 +2,13 @@ import { ReactNode, useState } from "react";
 import { updateArrayAtIndex } from "../../bb/functions";
 import { ParsedPrg } from "../../bb/internal-data-formats/parsed-prg";
 import { ImageDataCanvas } from "../ImageDataCanvas";
-import { assertTuple, Tuple } from "../../bb/tuple";
+import { assertTuple } from "../../bb/tuple";
 import styled from "styled-components";
 import { Tiles } from "../../bb/internal-data-formats/level";
 import { Coord2, scale, subtract } from "../../math/coord2";
 import { levelWidth, levelHeight } from "../../bb/game-definitions/level-size";
+import { PaletteImage } from "../../bb/palette-image/palette-image";
+import { imageDataFromPaletteImage } from "../../bb/image-data/image-data";
 
 const Styling = styled.div`
 	display: flex;
@@ -18,23 +20,12 @@ const Styling = styled.div`
 	}
 `;
 
-export function imageDataFromTiles(tiles: Tiles): ImageData {
-	const size: Coord2 = {
-		x: levelWidth,
-		y: levelHeight,
-	};
+export function drawLevelTiles(tiles: Tiles): PaletteImage {
+	const solidColor = 1;
+	const emptyColor = undefined;
 
-	const solidColor = [255, 255, 255, 255] as const;
-	const emptyColor = [0, 0, 0, 0] as const;
-
-	return new ImageData(
-		new Uint8ClampedArray(
-			tiles.flat().flatMap((solid): Tuple<number, 4> => {
-				return solid ? solidColor : emptyColor;
-			})
-		),
-		size.x,
-		size.y
+	return tiles.map((row) =>
+		row.map((solid) => (solid ? solidColor : emptyColor))
 	);
 }
 
@@ -48,7 +39,7 @@ function PlatformEditor(props: {
 	return (
 		<ImageDataCanvas
 			style={{ width: "100%" }}
-			imageData={imageDataFromTiles(props.tiles)}
+			imageData={imageDataFromPaletteImage(drawLevelTiles(props.tiles))}
 			onMouseDown={(event) => {
 				const tileCoord: Coord2 = getTileCoord(event);
 				drawValue = !props.tiles[tileCoord.y]![tileCoord.x]!;
