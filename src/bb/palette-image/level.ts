@@ -58,7 +58,7 @@ export function drawLevel(
 
 export function drawLevelTiles(tiles: Tiles): PaletteImage {
 	const solidColor = 1;
-	const emptyColor = undefined;
+	const emptyColor = 0;
 
 	return tiles.map((row) =>
 		row.map((solid) => (solid ? solidColor : emptyColor))
