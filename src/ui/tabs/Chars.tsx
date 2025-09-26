@@ -9,6 +9,7 @@ import {
 	imageDataFromImage,
 	imageDataFromPaletteImage,
 	imageDataToBlob,
+	imageFromFile,
 	paletteImageFromImageData,
 } from "../../bb/image-data/image-data";
 import { attempt } from "../../bb/functions";
@@ -61,15 +62,4 @@ export function Chars({
 			</FileInput>
 		</>
 	);
-}
-
-async function imageFromFile(file: File | Blob | MediaSource) {
-	return await new Promise<HTMLImageElement>((resolve) => {
-		const img = new Image();
-		img.onload = () => {
-			URL.revokeObjectURL(img.src);
-			resolve(img);
-		};
-		img.src = URL.createObjectURL(file);
-	});
 }

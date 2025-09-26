@@ -151,3 +151,14 @@ export function imageDataFromImage(img: HTMLImageElement) {
 	);
 	return imageData;
 }
+
+export async function imageFromFile(file: File | Blob | MediaSource) {
+	return await new Promise<HTMLImageElement>((resolve) => {
+		const img = new Image();
+		img.onload = () => {
+			URL.revokeObjectURL(img.src);
+			resolve(img);
+		};
+		img.src = URL.createObjectURL(file);
+	});
+}
