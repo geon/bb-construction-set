@@ -12,7 +12,7 @@ import { ImageDataCanvas } from "./ImageDataCanvas";
 import { assertTuple } from "../bb/tuple";
 import { Card } from "./Card";
 import styled from "styled-components";
-import { drawLevelThumbnail } from "../bb/image-data/draw-levels-to-canvas";
+import { drawLevelThumbnail } from "../bb/image-data/draw-level";
 import { mapAsync, mapRecord } from "../bb/functions";
 import { Patch } from "../bb/prg/io";
 
