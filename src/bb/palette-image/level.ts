@@ -19,6 +19,7 @@ import {
 	drawGrid,
 	blitPaletteImage,
 	drawLayout,
+	parseLayout,
 } from "./palette-image";
 import { drawSprite, getSpritePalette } from "./sprite";
 
@@ -108,4 +109,10 @@ export function drawLevelsTiles(levelsTiles: readonly Tiles[]): PaletteImage {
 	const layout = layOutLevelThumbnails();
 
 	return drawLayout(layout, levelsTiles.map(drawLevelTiles));
+}
+
+export function parseLevelsTiles(image: PaletteImage): Tiles[] {
+	const layout = layOutLevelThumbnails();
+
+	return parseLayout(layout, image).map(parseLevelTiles);
 }
