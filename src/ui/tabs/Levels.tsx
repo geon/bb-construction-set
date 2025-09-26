@@ -8,7 +8,7 @@ import { Tiles } from "../../bb/internal-data-formats/level";
 import { Coord2, scale, subtract } from "../../math/coord2";
 import { levelWidth, levelHeight } from "../../bb/game-definitions/level-size";
 import { imageDataFromPaletteImage } from "../../bb/image-data/image-data";
-import { drawLevelTiles } from "../../bb/palette-image/level";
+import { drawLevelsTiles, drawLevelTiles } from "../../bb/palette-image/level";
 
 const Styling = styled.div`
 	display: flex;
@@ -101,6 +101,10 @@ export function Levels({
 
 	return (
 		<Styling>
+			<ImageDataCanvas
+				style={{ width: "100%" }}
+				imageData={imageDataFromPaletteImage(drawLevelsTiles(parsedPrg.levels))}
+			/>
 			<PlatformEditor tiles={level.tiles} setTiles={setTiles} />
 		</Styling>
 	);

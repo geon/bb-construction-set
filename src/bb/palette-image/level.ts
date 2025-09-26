@@ -2,7 +2,7 @@ import { spritePosOffset } from "../../c64/consts";
 import { subtract } from "../../math/coord2";
 import { mapRecord } from "../functions";
 import { pl1, pl2, spriteLeftIndex } from "../game-definitions/character-name";
-import { levelWidth } from "../game-definitions/level-size";
+import { levelHeight, levelWidth } from "../game-definitions/level-size";
 import {
 	Level,
 	makeCharset,
@@ -62,5 +62,19 @@ export function drawLevelTiles(tiles: Tiles): PaletteImage {
 
 	return tiles.map((row) =>
 		row.map((solid) => (solid ? solidColor : emptyColor))
+	);
+}
+
+export function drawLevelsTiles(levels: readonly Level[]): PaletteImage {
+	const gap = { x: 10, y: 10 };
+
+	return drawGrid(
+		levels.map((level) => drawLevelTiles(level.tiles)),
+		10,
+		{
+			x: levelWidth,
+			y: levelHeight,
+		},
+		gap
 	);
 }
