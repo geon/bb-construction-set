@@ -7,8 +7,12 @@ import styled from "styled-components";
 import { Tiles } from "../../bb/internal-data-formats/level";
 import { Coord2, scale, subtract } from "../../math/coord2";
 import { levelWidth, levelHeight } from "../../bb/game-definitions/level-size";
-import { imageDataFromPaletteImage } from "../../bb/image-data/image-data";
+import {
+	imageDataFromPaletteImage,
+	imageDataToBlob,
+} from "../../bb/image-data/image-data";
 import { drawLevelsTiles, drawLevelTiles } from "../../bb/palette-image/level";
+import { BlobDownloadButton } from "../BlobDownloadButton";
 
 const Styling = styled.div`
 	display: flex;
@@ -79,6 +83,11 @@ function getTileCoord(event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
 	return tileCoord;
 }
 
+const ImageButtons = styled.div`
+	display: flex;
+	flex-direction: row;
+`;
+
 export function Levels({
 	parsedPrg,
 	setParsedPrg,
@@ -105,6 +114,17 @@ export function Levels({
 				style={{ width: "100%" }}
 				imageData={imageDataFromPaletteImage(drawLevelsTiles(parsedPrg.levels))}
 			/>
+			<ImageButtons>
+				<BlobDownloadButton
+					getBlob={async () => ({
+						fileName: "platforms.png",
+						blob: await imageDataToBlob(
+							imageDataFromPaletteImage(drawLevelsTiles(parsedPrg.levels))
+						),
+					})}
+					label={"Export Image"}
+				/>
+			</ImageButtons>
 			<PlatformEditor tiles={level.tiles} setTiles={setTiles} />
 		</Styling>
 	);
