@@ -12,6 +12,7 @@ import {
 } from "../internal-data-formats/level";
 import { SpriteGroups } from "../internal-data-formats/sprite";
 import { ShadowChars } from "../prg/shadow-chars";
+import { assertTuple } from "../tuple";
 import { getLevelCharPalette, drawChar } from "./char";
 import {
 	PaletteImage,
@@ -86,6 +87,20 @@ export function drawLevelTiles(tiles: Tiles): PaletteImage {
 
 	return tiles.map((row) =>
 		row.map((solid) => (solid ? solidColor : emptyColor))
+	);
+}
+
+export function parseLevelTiles(image: PaletteImage): Tiles {
+	const solidColor = 1;
+
+	return assertTuple(
+		image.map((row) =>
+			assertTuple(
+				row.map((color) => color === solidColor),
+				levelWidth
+			)
+		),
+		levelHeight
 	);
 }
 
