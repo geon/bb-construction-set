@@ -19,7 +19,7 @@ import { ShadowChars } from "../prg/shadow-chars";
 import { getLevelCharPalette } from "../palette-image/char";
 import * as ImageDataFunctions from "./image-data";
 
-export function drawLevelsToCanvas(
+export function drawLevels(
 	levels: readonly Level[],
 	spriteColors: Record<CharacterName, PaletteIndex>,
 	shadowChars: ShadowChars
