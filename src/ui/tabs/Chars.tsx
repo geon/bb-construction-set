@@ -6,6 +6,7 @@ import {
 	parseCharGroups,
 } from "../../bb/palette-image/char-groups";
 import {
+	imageDataFromImage,
 	imageDataFromPaletteImage,
 	imageDataToBlob,
 	paletteImageFromImageData,
@@ -71,21 +72,4 @@ async function imageFromFile(file: File | Blob | MediaSource) {
 		};
 		img.src = URL.createObjectURL(file);
 	});
-}
-
-function imageDataFromImage(img: HTMLImageElement) {
-	// Da'faque?
-	// https://stackoverflow.com/a/79528941/446536
-	const videoframe = new VideoFrame(img, {
-		timestamp: 0,
-	});
-	const buffer = new ArrayBuffer(videoframe.allocationSize());
-	videoframe.copyTo(buffer, { format: "RGBA" });
-	videoframe.close();
-	const imageData = new ImageData(
-		new Uint8ClampedArray(buffer),
-		img.width,
-		img.height
-	);
-	return imageData;
 }
