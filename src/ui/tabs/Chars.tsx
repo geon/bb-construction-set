@@ -38,7 +38,7 @@ export function Chars({
 				label="Download image"
 			/>
 			<FileInput
-				accept={["bin"]}
+				accept={["image/*"]}
 				onChange={async (file) => {
 					const imageData = imageDataFromImage(await imageFromFile(file));
 
