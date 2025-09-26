@@ -66,15 +66,16 @@ export function drawLevelTiles(tiles: Tiles): PaletteImage {
 }
 
 export function drawLevelsTiles(levels: readonly Level[]): PaletteImage {
+	const levelSize = {
+		x: levelWidth,
+		y: levelHeight,
+	};
 	const gap = { x: 10, y: 10 };
 
 	return drawGrid(
 		levels.map((level) => drawLevelTiles(level.tiles)),
 		10,
-		{
-			x: levelWidth,
-			y: levelHeight,
-		},
+		levelSize,
 		gap
 	);
 }
