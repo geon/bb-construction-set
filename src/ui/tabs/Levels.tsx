@@ -109,7 +109,7 @@ export function Levels({
 		});
 
 	const levelsTilesImageData = imageDataFromPaletteImage(
-		drawLevelsTiles(parsedPrg.levels)
+		drawLevelsTiles(parsedPrg.levels.map((level) => level.tiles))
 	);
 
 	return (

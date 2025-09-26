@@ -89,11 +89,8 @@ export function drawLevelTiles(tiles: Tiles): PaletteImage {
 	);
 }
 
-export function drawLevelsTiles(levels: readonly Level[]): PaletteImage {
+export function drawLevelsTiles(levelsTiles: readonly Tiles[]): PaletteImage {
 	const layout = layOutLevelThumbnails();
 
-	return drawLayout(
-		layout,
-		levels.map((level) => drawLevelTiles(level.tiles))
-	);
+	return drawLayout(layout, levelsTiles.map(drawLevelTiles));
 }
