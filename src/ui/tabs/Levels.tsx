@@ -21,6 +21,7 @@ import {
 } from "../../bb/palette-image/level";
 import { BlobDownloadButton } from "../BlobDownloadButton";
 import { FileInput } from "../FileInput";
+import { TabBar } from "../TabBar";
 
 const Styling = styled.div`
 	display: flex;
@@ -123,47 +124,68 @@ export function Levels({
 
 	return (
 		<Styling>
-			<ImageDataCanvas
-				style={{ width: "100%" }}
-				imageData={levelsTilesImageData}
+			<TabBar
+				initialTabId={"tiles"}
+				tabs={{
+					tiles: {
+						title: "Platforms",
+						render: () => (
+							<>
+								<ImageDataCanvas
+									style={{ width: "100%" }}
+									imageData={levelsTilesImageData}
+								/>
+								<ImageButtons>
+									<FileInput
+										accept={["image/*"]}
+										onChange={async (file) => {
+											const imageData = imageDataFromImage(
+												await imageFromFile(file)
+											);
+
+											const parsedTiles = attempt(() =>
+												parseLevelsTiles(paletteImageFromImageData(imageData))
+											);
+
+											if (parsedTiles.type !== "ok") {
+												alert(
+													`Could not read image: ${
+														parsedTiles.error ?? "No reason."
+													}`
+												);
+												return;
+											}
+
+											setParsedPrg({
+												...parsedPrg,
+												levels: zipObject({
+													level: parsedPrg.levels,
+													tiles: parsedTiles.result,
+												}).map(({ level, tiles }) => ({ ...level, tiles })),
+											});
+										}}
+									>
+										Import Image
+									</FileInput>
+									<BlobDownloadButton
+										getBlob={async () => ({
+											fileName: "platforms.png",
+											blob: await imageDataToBlob(levelsTilesImageData),
+										})}
+										label={"Export Image"}
+									/>
+								</ImageButtons>
+							</>
+						),
+					},
+					quickDoodle: {
+						title: "Quick Doodle",
+						render: () => (
+							<PlatformEditor tiles={level.tiles} setTiles={setTiles} />
+						),
+					},
+				}}
 			/>
-			<ImageButtons>
-				<FileInput
-					accept={["image/*"]}
-					onChange={async (file) => {
-						const imageData = imageDataFromImage(await imageFromFile(file));
-
-						const parsedTiles = attempt(() =>
-							parseLevelsTiles(paletteImageFromImageData(imageData))
-						);
-
-						if (parsedTiles.type !== "ok") {
-							alert(
-								`Could not read image: ${parsedTiles.error ?? "No reason."}`
-							);
-							return;
-						}
-
-						setParsedPrg({
-							...parsedPrg,
-							levels: zipObject({
-								level: parsedPrg.levels,
-								tiles: parsedTiles.result,
-							}).map(({ level, tiles }) => ({ ...level, tiles })),
-						});
-					}}
-				>
-					Import Image
-				</FileInput>
-				<BlobDownloadButton
-					getBlob={async () => ({
-						fileName: "platforms.png",
-						blob: await imageDataToBlob(levelsTilesImageData),
-					})}
-					label={"Export Image"}
-				/>
-			</ImageButtons>
-			<PlatformEditor tiles={level.tiles} setTiles={setTiles} />
 		</Styling>
 	);
 }
