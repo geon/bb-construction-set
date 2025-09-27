@@ -56,7 +56,6 @@ export type BubbleCurrentRectangles =
 	  };
 
 export interface Level {
-	// Should be exactly `levelHeight` rows of `levelWidth` tiles each .
 	tiles: Tiles;
 	bgColorLight: PaletteIndex;
 	bgColorDark: PaletteIndex;
