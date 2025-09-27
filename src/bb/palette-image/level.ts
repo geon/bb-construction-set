@@ -3,7 +3,11 @@ import { origo, subtract } from "../../math/coord2";
 import { grid } from "../../math/rect";
 import { mapRecord, range } from "../functions";
 import { pl1, pl2, spriteLeftIndex } from "../game-definitions/character-name";
-import { levelHeight, levelWidth } from "../game-definitions/level-size";
+import {
+	levelHeight,
+	levelSize,
+	levelWidth,
+} from "../game-definitions/level-size";
 import {
 	Level,
 	makeCharset,
@@ -65,10 +69,6 @@ export function drawLevel(
 }
 
 export function layOutLevelThumbnails() {
-	const levelSize = {
-		x: levelWidth,
-		y: levelHeight,
-	};
 	const gap = { x: 10, y: 10 };
 
 	return grid(

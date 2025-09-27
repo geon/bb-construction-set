@@ -3,7 +3,11 @@ import {
 	levelToCharNames,
 	makeCharset,
 } from "../internal-data-formats/level";
-import { levelHeight, levelWidth } from "../game-definitions/level-size";
+import {
+	levelHeight,
+	levelSize,
+	levelWidth,
+} from "../game-definitions/level-size";
 import {
 	palette,
 	PaletteIndex,
@@ -29,10 +33,7 @@ export function drawLevels(
 	return ImageDataFunctions.drawGrid(
 		levels.map((level) => drawLevelThumbnail(level, spriteColors, shadowChars)),
 		10,
-		{
-			x: levelWidth,
-			y: levelHeight,
-		},
+		levelSize,
 		gap
 	);
 }
