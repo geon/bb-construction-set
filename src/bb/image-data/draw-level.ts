@@ -9,7 +9,7 @@ import {
 	levelWidth,
 } from "../game-definitions/level-size";
 import {
-	palette,
+	rgbPalette,
 	PaletteIndex,
 	SubPalette,
 } from "../internal-data-formats/palette";
@@ -77,7 +77,7 @@ export function drawLevelThumbnail(
 		const pixelPos = scale(add(spritePos, fakeSpriteCharblockOffset), 1 / 8);
 		const pixelIndex = Math.floor(pixelPos.y) * 32 + Math.floor(pixelPos.x);
 		const spriteColor =
-			palette[
+			rgbPalette[
 				character.characterName === "player"
 					? character.facingLeft
 						? 3 // Cyan
@@ -99,6 +99,6 @@ function getAverageCharColor(char: Char, charPalette: SubPalette): Color {
 		char
 			.flatMap((pixels) => pixels)
 			.map((pixel) => charPalette[pixel])
-			.map((paletteIndex) => palette[paletteIndex])
+			.map((paletteIndex) => rgbPalette[paletteIndex])
 	);
 }

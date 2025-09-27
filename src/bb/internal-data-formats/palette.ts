@@ -21,7 +21,7 @@ export type PaletteIndex =
 	| 15;
 export type Palette = Tuple<Color, 16>;
 
-export const palette: Palette = mapTuple(
+export const rgbPalette: Palette = mapTuple(
 	// https://www.pepto.de/projects/colorvic/2001
 	// https://www.c64-wiki.com/wiki/Color
 	[

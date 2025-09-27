@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 import { distance, hexToRgb, quantize } from "../color";
-import { palette } from "../../bb/internal-data-formats/palette";
+import { rgbPalette } from "../../bb/internal-data-formats/palette";
 import { colorNames } from "../../c64/consts";
 
 test("distance", () => {
@@ -32,6 +32,6 @@ test("quantize", () => {
 	] as const;
 
 	for (const [hex, name] of colorsWithNames) {
-		expect(colorNames[quantize(hexToRgb(hex), palette)]).toStrictEqual(name);
+		expect(colorNames[quantize(hexToRgb(hex), rgbPalette)]).toStrictEqual(name);
 	}
 });

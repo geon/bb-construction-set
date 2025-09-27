@@ -5,7 +5,10 @@ import {
 	CharGroup,
 } from "../../bb/internal-data-formats/char-group";
 import styled from "styled-components";
-import { palette, PaletteIndex } from "../../bb/internal-data-formats/palette";
+import {
+	rgbPalette,
+	PaletteIndex,
+} from "../../bb/internal-data-formats/palette";
 import { checkedAccess, range, updateArrayAtIndex } from "../../bb/functions";
 import {
 	ItemCategoryName,
@@ -30,7 +33,7 @@ const PaletteIndexButton = styled.button.attrs<{ selected: boolean }>(
 	padding: 0;
 
 	background-color: ${({ $paletteIndex }) =>
-		`rgb(${Object.values(palette[$paletteIndex]).join(", ")})`};
+		`rgb(${Object.values(rgbPalette[$paletteIndex]).join(", ")})`};
 
 	&.selected {
 		box-shadow: 0 0 0 2px black, 0 0 0 3px white;

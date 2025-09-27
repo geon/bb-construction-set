@@ -1,7 +1,7 @@
 import { black, Color, quantize } from "../../math/color";
 import { add, Coord2, origo } from "../../math/coord2";
 import { strictChunk } from "../functions";
-import { palette } from "../internal-data-formats/palette";
+import { rgbPalette } from "../internal-data-formats/palette";
 import {
 	getPaletteImageSize,
 	PaletteImage,
@@ -100,7 +100,7 @@ export function imageDataFromPaletteImage(image: PaletteImage): ImageData {
 			image.flat().flatMap((paletteIndex): Tuple<number, 4> => {
 				const [color, alpha] =
 					paletteIndex !== undefined
-						? [palette[paletteIndex], 255]
+						? [rgbPalette[paletteIndex], 255]
 						: [black, 0];
 
 				return [color.r, color.g, color.b, alpha];
@@ -114,7 +114,7 @@ export function imageDataFromPaletteImage(image: PaletteImage): ImageData {
 export function paletteImageFromImageData(imageData: ImageData): PaletteImage {
 	return strictChunk(
 		strictChunk([...imageData.data], 4).map(([r, g, b, a]) =>
-			a < 128 ? undefined : quantize({ r, g, b }, palette)
+			a < 128 ? undefined : quantize({ r, g, b }, rgbPalette)
 		),
 		imageData.width
 	);
