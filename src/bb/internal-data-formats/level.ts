@@ -8,6 +8,7 @@ import { CharName } from "../game-definitions/char-name";
 import { ShadowChars } from "../prg/shadow-chars";
 import { CharacterName } from "../game-definitions/character-name";
 import { Coord2 } from "../../math/coord2";
+import { Rect } from "../../math/rect";
 
 export interface Character {
 	characterName: CharacterName;
@@ -30,16 +31,7 @@ export function createTiles(): MutableTuple<MutableTuple<boolean, 32>, 25> {
 export type BubbleCurrentPerLineDefaults = Array<BubbleCurrentDirection>;
 
 export interface BubbleCurrentRectangle {
-	rect: {
-		pos: {
-			x: number;
-			y: number;
-		};
-		size: {
-			x: number;
-			y: number;
-		};
-	};
+	rect: Rect;
 	direction: BubbleCurrentDirection;
 }
 
