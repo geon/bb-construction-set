@@ -21,7 +21,11 @@ import {
 } from "../game-definitions/character-name";
 import { Char } from "../internal-data-formats/char";
 import { ColorPixelByte } from "../internal-data-formats/color-pixel-byte";
-import { SubPaletteIndex } from "../internal-data-formats/palette";
+import {
+	palette,
+	paletteMulticolor,
+	SubPaletteIndex,
+} from "../internal-data-formats/palette";
 import { c64BuiltinCharsets } from "./c64-builtin-charsets";
 import { PaletteIndex } from "../internal-data-formats/palette";
 import { ShadowChars } from "../prg/shadow-chars";
@@ -185,16 +189,16 @@ function levelToScreen(
 		mode: "multicolor",
 		sizeX,
 		sizeY,
-		colorBorder: 0,
-		colorBg: 0,
-		colorChar: 13, // Multicolor green for bubbles.
+		colorBorder: palette.black,
+		colorBg: palette.black,
+		colorChar: paletteMulticolor.green, // for bubbles.
 		multiColor1: level.bgColorDark,
 		multiColor2: level.bgColorLight,
 		extBgColor1: 0,
 		extBgColor2: 0,
 		extBgColor3: 0,
-		spriteMultiColor1: 2, // Dark red
-		spriteMultiColor2: 1, // White
+		spriteMultiColor1: palette.red,
+		spriteMultiColor2: palette.white,
 		spritesInBorder: "hidden",
 		spritesVisible: true,
 		characterSet: levelIndex + 2, // Take the 2 builtin charsets into account.
@@ -209,7 +213,7 @@ function levelToScreen(
 				}),
 				x: 44, // The tail is 6 pixels from the edge.
 				y: 221,
-				color: 5, // Dark green
+				color: palette.green,
 				expandX: false,
 				expandY: false,
 				priority: "front",
@@ -222,7 +226,7 @@ function levelToScreen(
 				}),
 				x: 236, // Only 4 pixels from the edge. Not same as pl1.
 				y: 221,
-				color: 3, // Cyan
+				color: palette.cyan,
 				expandX: false,
 				expandY: false,
 				priority: "front",
@@ -268,13 +272,13 @@ export function spritesToPeSpriteSets(
 						): PeFileData["spriteSets"][number]["sprites"][number] => ({
 							uid: getSpriteUid({ monsterName, facingLeft }),
 							mode: "multicolor",
-							colorBg: 0,
+							colorBg: palette.black,
 							colorSprite:
 								monsterName === "player" && facingLeft
-									? 3 // Cyan for Bob.
+									? palette.cyan // Bob.
 									: characterSprites.color,
-							multiColor1: 2,
-							multiColor2: 1,
+							multiColor1: palette.red,
+							multiColor2: palette.white,
 							expandX: false,
 							expandY: false,
 							bitmapData: serializeSprite(

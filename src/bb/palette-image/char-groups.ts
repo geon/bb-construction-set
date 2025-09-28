@@ -25,7 +25,11 @@ import {
 	parseHiresChar,
 } from "./char";
 import { Char } from "../internal-data-formats/char";
-import { PaletteIndex, SubPalette } from "../internal-data-formats/palette";
+import {
+	palette,
+	PaletteIndex,
+	SubPalette,
+} from "../internal-data-formats/palette";
 
 function layoutLargeLightning(index: number) {
 	// 4x4 grid, but 2 corners are missing 3 chars each.
@@ -287,14 +291,14 @@ export function getAllCharMulticolor(): ReadonlyArray<boolean> {
 
 export function getAllCharPalettes(): ReadonlyArray<SubPalette> {
 	const bgColors = {
-		bgColorDark: 9, // Brown
-		bgColorLight: 1, // White
+		bgColorDark: palette.brown,
+		bgColorLight: palette.white,
 	} as const;
 
 	return Object.values(
 		mapRecord(charGroupMeta, (meta) => {
 			const numChars = meta.count * meta.width * meta.height;
-			return range(numChars).map(() => getCharPalette(5, bgColors));
+			return range(numChars).map(() => getCharPalette(palette.green, bgColors));
 		})
 	).flat();
 }

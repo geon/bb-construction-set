@@ -32,6 +32,36 @@ export const rgbPalette: Palette = mapTuple(
 	hexToRgb
 );
 
+export const palette = {
+	black: 0x0,
+	white: 0x1,
+	red: 0x2,
+	cyan: 0x3,
+	purple: 0x4,
+	green: 0x5,
+	blue: 0x6,
+	yellow: 0x7,
+	orange: 0x8,
+	brown: 0x9,
+	lightRed: 0xa,
+	darkGrey: 0xb,
+	grey: 0xc,
+	lightGreen: 0xd,
+	lightBlue: 0xe,
+	lightGrey: 0xf,
+} as const;
+
+export const paletteMulticolor = {
+	black: 0 + 8,
+	white: 1 + 8,
+	red: 2 + 8,
+	cyan: 3 + 8,
+	purple: 4 + 8,
+	green: 5 + 8,
+	blue: 6 + 8,
+	yellow: 7 + 8,
+} as const;
+
 export interface SubPalette extends Tuple<PaletteIndex, 4> {}
 export type SubPaletteIndex = 0 | 1 | 2 | 3;
 

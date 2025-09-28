@@ -3,7 +3,11 @@ import { origo } from "../../math/coord2";
 import { LayoutRect, flexbox } from "../../math/rect";
 import { mapRecord, range, chunk } from "../functions";
 import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
-import { SubPalette, PaletteIndex } from "../internal-data-formats/palette";
+import {
+	SubPalette,
+	PaletteIndex,
+	palette,
+} from "../internal-data-formats/palette";
 import { SpriteGroups, Sprite } from "../internal-data-formats/sprite";
 import { spriteCounts } from "../prg/data-locations";
 import { PaletteImage, drawLayout } from "./palette-image";
@@ -121,10 +125,11 @@ export function drawSprite(
 
 export function getSpritePalette(color: PaletteIndex): SubPalette {
 	return [
-		0, // Transparent (Black)
-		2, // Dark red
+		//
+		palette.black,
+		palette.red,
 		color,
-		1, // White
+		palette.white,
 	];
 }
 

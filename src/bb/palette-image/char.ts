@@ -9,6 +9,7 @@ import {
 import { Level } from "../internal-data-formats/level";
 import {
 	getSubPaletteIndex,
+	palette,
 	PaletteIndex,
 	SubPalette,
 } from "../internal-data-formats/palette";
@@ -87,7 +88,7 @@ export function parseHiresChar(image: PaletteImage<8, 8>): {
 export function getLevelCharPalette(level: Level): SubPalette {
 	return getCharPalette(
 		// The color ram gets cleared to green at the beginning of the game.
-		5,
+		palette.green,
 		level
 	);
 }
@@ -101,7 +102,7 @@ export function getCharPalette(
 ): SubPalette {
 	return [
 		// The background is black by default.
-		0,
+		palette.black,
 		bgColors.bgColorDark,
 		bgColors.bgColorLight,
 		charColor,

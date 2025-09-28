@@ -4,7 +4,7 @@ import {
 	objectFromEntries,
 	strictChunk,
 } from "../functions";
-import { PaletteIndex } from "../internal-data-formats/palette";
+import { palette, PaletteIndex } from "../internal-data-formats/palette";
 import {
 	Sprite,
 	SpriteGroup,
@@ -43,7 +43,7 @@ import {
 } from "../game-definitions/large-bonus-name";
 
 const spriteColors: Record<"player", PaletteIndex> = {
-	player: 5,
+	player: palette.green,
 	// bubbleBuster: 12,
 	// incendo: 15,
 	// colley: 5,
@@ -190,8 +190,8 @@ export function getSpriteColorsPatch(spriteGroups: SpriteGroups) {
 		(name) => spriteGroups[name].color
 	);
 	// Hardcoded because I don't have 3 diamonds in the sprite sheet.
-	largeBonusColors.yellowDiamond = 7;
-	largeBonusColors.purpleDiamond = 4;
+	largeBonusColors.yellowDiamond = palette.yellow;
+	largeBonusColors.purpleDiamond = palette.purple;
 	const largeBonusColorsSegment = new Uint8Array(
 		Object.values(largeBonusColors)
 	);
