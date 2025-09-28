@@ -9,12 +9,12 @@ export const knownGoodBubbleCurrentRectsForLevels: BubbleCurrentRectangles[] = [
 				type: "rectangle",
 				rect: {
 					pos: {
-						left: 0,
-						top: 1,
+						x: 0,
+						y: 1,
 					},
 					size: {
-						width: 14,
-						height: 4,
+						x: 14,
+						y: 4,
 					},
 				},
 				direction: 1,
@@ -36,12 +36,12 @@ export const knownGoodBubbleCurrentRectsForLevels: BubbleCurrentRectangles[] = [
 				direction: 0,
 				rect: {
 					pos: {
-						left: 0,
-						top: 3,
+						x: 0,
+						y: 3,
 					},
 					size: {
-						width: 11,
-						height: 1,
+						x: 11,
+						y: 1,
 					},
 				},
 			},
@@ -50,12 +50,12 @@ export const knownGoodBubbleCurrentRectsForLevels: BubbleCurrentRectangles[] = [
 				direction: 0,
 				rect: {
 					pos: {
-						left: 0,
-						top: 4,
+						x: 0,
+						y: 4,
 					},
 					size: {
-						width: 5,
-						height: 16,
+						x: 5,
+						y: 16,
 					},
 				},
 			},
@@ -64,12 +64,12 @@ export const knownGoodBubbleCurrentRectsForLevels: BubbleCurrentRectangles[] = [
 				direction: 0,
 				rect: {
 					pos: {
-						left: 14,
-						top: 17,
+						x: 14,
+						y: 17,
 					},
 					size: {
-						width: 2,
-						height: 7,
+						x: 2,
+						y: 7,
 					},
 				},
 			},
@@ -78,12 +78,12 @@ export const knownGoodBubbleCurrentRectsForLevels: BubbleCurrentRectangles[] = [
 				direction: 2,
 				rect: {
 					pos: {
-						left: 15,
-						top: 1,
+						x: 15,
+						y: 1,
 					},
 					size: {
-						width: 1,
-						height: 7,
+						x: 1,
+						y: 7,
 					},
 				},
 			},
@@ -92,12 +92,12 @@ export const knownGoodBubbleCurrentRectsForLevels: BubbleCurrentRectangles[] = [
 				direction: 0,
 				rect: {
 					pos: {
-						left: 15,
-						top: 8,
+						x: 15,
+						y: 8,
 					},
 					size: {
-						width: 1,
-						height: 6,
+						x: 1,
+						y: 6,
 					},
 				},
 			},
@@ -106,12 +106,12 @@ export const knownGoodBubbleCurrentRectsForLevels: BubbleCurrentRectangles[] = [
 				direction: 0,
 				rect: {
 					pos: {
-						left: 14,
-						top: 10,
+						x: 14,
+						y: 10,
 					},
 					size: {
-						width: 1,
-						height: 5,
+						x: 1,
+						y: 5,
 					},
 				},
 			},
