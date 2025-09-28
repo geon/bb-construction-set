@@ -30,10 +30,12 @@ export function createTiles(): MutableTuple<MutableTuple<boolean, 32>, 25> {
 export type BubbleCurrentPerLineDefaults = Array<BubbleCurrentDirection>;
 
 export interface BubbleCurrentRectangle {
-	left: number;
-	top: number;
-	width: number;
-	height: number;
+	rect: {
+		left: number;
+		top: number;
+		width: number;
+		height: number;
+	};
 	direction: BubbleCurrentDirection;
 }
 

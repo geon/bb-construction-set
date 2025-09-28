@@ -35,11 +35,13 @@ exports[`parsePrg 1`] = `
     "rectangles": [
       {
         "direction": 1,
-        "height": 4,
-        "left": 0,
-        "top": 1,
+        "rect": {
+          "height": 4,
+          "left": 0,
+          "top": 1,
+          "width": 14,
+        },
         "type": "rectangle",
-        "width": 14,
       },
       {
         "type": "symmetry",
