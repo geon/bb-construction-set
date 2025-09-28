@@ -36,12 +36,14 @@ exports[`parsePrg 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 4,
           "pos": {
             "left": 0,
             "top": 1,
           },
-          "width": 14,
+          "size": {
+            "height": 4,
+            "width": 14,
+          },
         },
         "type": "rectangle",
       },

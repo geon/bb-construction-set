@@ -168,8 +168,10 @@ export function bytesToBubbleCurrentRectangle(
 				left,
 				top,
 			},
-			width,
-			height,
+			size: {
+				width,
+				height,
+			},
 		},
 		direction,
 	};
@@ -186,10 +188,11 @@ export function bubbleCurrentRectangleToBytes(
 	// const width = ((bytes[1] & 0b00000111) << 2) | ((bytes[2] & 0b11000000) >> 6);
 	// const height = bytes[2] & 0b00011111;
 	bytes[0] = 0b10000000 | (rectangle.direction << 5) | rectangle.rect.pos.left;
-	bytes[1] = (rectangle.rect.pos.top << 3) | ((rectangle.rect.width - 1) >> 2);
+	bytes[1] =
+		(rectangle.rect.pos.top << 3) | ((rectangle.rect.size.width - 1) >> 2);
 	bytes[2] =
-		(((rectangle.rect.width - 1) << 6) & 0b11000000) |
-		(rectangle.rect.height - 1);
+		(((rectangle.rect.size.width - 1) << 6) & 0b11000000) |
+		(rectangle.rect.size.height - 1);
 	return new Uint8Array(bytes);
 }
 

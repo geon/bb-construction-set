@@ -377,20 +377,20 @@ function makeLevelCharAndColorData(
 		for (const rectangle of level.bubbleCurrentRectangles.rectangles) {
 			if (rectangle.type === "rectangle") {
 				if (
-					rectangle.rect.pos.top + rectangle.rect.height > 25 ||
-					rectangle.rect.pos.left + rectangle.rect.width > 32
+					rectangle.rect.pos.top + rectangle.rect.size.height > 25 ||
+					rectangle.rect.pos.left + rectangle.rect.size.width > 32
 				) {
 					console.log("Bad rectangle:", rectangle);
 					break;
 				}
 				for (
 					let y = rectangle.rect.pos.top;
-					y < rectangle.rect.pos.top + rectangle.rect.height;
+					y < rectangle.rect.pos.top + rectangle.rect.size.height;
 					++y
 				) {
 					for (
 						let x = rectangle.rect.pos.left;
-						x < rectangle.rect.pos.left + rectangle.rect.width;
+						x < rectangle.rect.pos.left + rectangle.rect.size.width;
 						++x
 					) {
 						charData[y]![x + bubblePlatformsOffset]! = rectangle.direction + 12;
@@ -467,8 +467,8 @@ function makeLevelCharAndColorData(
 						[
 							rectangle.rect.pos.left,
 							rectangle.rect.pos.top,
-							rectangle.rect.width,
-							rectangle.rect.height,
+							rectangle.rect.size.width,
+							rectangle.rect.size.height,
 						]
 							.map((num) => num.toString())
 							.join(" ")

@@ -12,8 +12,10 @@ export const knownGoodBubbleCurrentRectsForLevels: BubbleCurrentRectangles[] = [
 						left: 0,
 						top: 1,
 					},
-					width: 14,
-					height: 4,
+					size: {
+						width: 14,
+						height: 4,
+					},
 				},
 				direction: 1,
 			},
@@ -37,8 +39,10 @@ export const knownGoodBubbleCurrentRectsForLevels: BubbleCurrentRectangles[] = [
 						left: 0,
 						top: 3,
 					},
-					width: 11,
-					height: 1,
+					size: {
+						width: 11,
+						height: 1,
+					},
 				},
 			},
 			{
@@ -49,8 +53,10 @@ export const knownGoodBubbleCurrentRectsForLevels: BubbleCurrentRectangles[] = [
 						left: 0,
 						top: 4,
 					},
-					width: 5,
-					height: 16,
+					size: {
+						width: 5,
+						height: 16,
+					},
 				},
 			},
 			{
@@ -61,8 +67,10 @@ export const knownGoodBubbleCurrentRectsForLevels: BubbleCurrentRectangles[] = [
 						left: 14,
 						top: 17,
 					},
-					width: 2,
-					height: 7,
+					size: {
+						width: 2,
+						height: 7,
+					},
 				},
 			},
 			{
@@ -73,8 +81,10 @@ export const knownGoodBubbleCurrentRectsForLevels: BubbleCurrentRectangles[] = [
 						left: 15,
 						top: 1,
 					},
-					width: 1,
-					height: 7,
+					size: {
+						width: 1,
+						height: 7,
+					},
 				},
 			},
 			{
@@ -85,8 +95,10 @@ export const knownGoodBubbleCurrentRectsForLevels: BubbleCurrentRectangles[] = [
 						left: 15,
 						top: 8,
 					},
-					width: 1,
-					height: 6,
+					size: {
+						width: 1,
+						height: 6,
+					},
 				},
 			},
 			{
@@ -97,8 +109,10 @@ export const knownGoodBubbleCurrentRectsForLevels: BubbleCurrentRectangles[] = [
 						left: 14,
 						top: 10,
 					},
-					width: 1,
-					height: 5,
+					size: {
+						width: 1,
+						height: 5,
+					},
 				},
 			},
 			{

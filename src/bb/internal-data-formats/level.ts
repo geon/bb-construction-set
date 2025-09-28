@@ -35,8 +35,10 @@ export interface BubbleCurrentRectangle {
 			left: number;
 			top: number;
 		};
-		width: number;
-		height: number;
+		size: {
+			width: number;
+			height: number;
+		};
 	};
 	direction: BubbleCurrentDirection;
 }

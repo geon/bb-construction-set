@@ -7,12 +7,14 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 4,
           "pos": {
             "left": 0,
             "top": 1,
           },
-          "width": 14,
+          "size": {
+            "height": 4,
+            "width": 14,
+          },
         },
         "type": "rectangle",
       },
@@ -31,72 +33,84 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 0,
         "rect": {
-          "height": 1,
           "pos": {
             "left": 0,
             "top": 3,
           },
-          "width": 11,
+          "size": {
+            "height": 1,
+            "width": 11,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 0,
         "rect": {
-          "height": 16,
           "pos": {
             "left": 0,
             "top": 4,
           },
-          "width": 5,
+          "size": {
+            "height": 16,
+            "width": 5,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 0,
         "rect": {
-          "height": 7,
           "pos": {
             "left": 14,
             "top": 17,
           },
-          "width": 2,
+          "size": {
+            "height": 7,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 7,
           "pos": {
             "left": 15,
             "top": 1,
           },
-          "width": 1,
+          "size": {
+            "height": 7,
+            "width": 1,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 0,
         "rect": {
-          "height": 6,
           "pos": {
             "left": 15,
             "top": 8,
           },
-          "width": 1,
+          "size": {
+            "height": 6,
+            "width": 1,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 0,
         "rect": {
-          "height": 5,
           "pos": {
             "left": 14,
             "top": 10,
           },
-          "width": 1,
+          "size": {
+            "height": 5,
+            "width": 1,
+          },
         },
         "type": "rectangle",
       },
@@ -111,72 +125,84 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 2,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 0,
             "top": 1,
           },
-          "width": 8,
+          "size": {
+            "height": 2,
+            "width": 8,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 0,
         "rect": {
-          "height": 7,
           "pos": {
             "left": 0,
             "top": 4,
           },
-          "width": 5,
+          "size": {
+            "height": 7,
+            "width": 5,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 0,
         "rect": {
-          "height": 10,
           "pos": {
             "left": 0,
             "top": 15,
           },
-          "width": 5,
+          "size": {
+            "height": 10,
+            "width": 5,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 10,
           "pos": {
             "left": 10,
             "top": 7,
           },
-          "width": 2,
+          "size": {
+            "height": 10,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 14,
           "pos": {
             "left": 14,
             "top": 1,
           },
-          "width": 2,
+          "size": {
+            "height": 14,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 0,
         "rect": {
-          "height": 4,
           "pos": {
             "left": 14,
             "top": 15,
           },
-          "width": 2,
+          "size": {
+            "height": 4,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
@@ -191,48 +217,56 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 4,
             "top": 5,
           },
-          "width": 11,
+          "size": {
+            "height": 3,
+            "width": 11,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 6,
             "top": 10,
           },
-          "width": 10,
+          "size": {
+            "height": 3,
+            "width": 10,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 2,
             "top": 15,
           },
-          "width": 13,
+          "size": {
+            "height": 3,
+            "width": 13,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 4,
           "pos": {
             "left": 6,
             "top": 20,
           },
-          "width": 10,
+          "size": {
+            "height": 4,
+            "width": 10,
+          },
         },
         "type": "rectangle",
       },
@@ -242,36 +276,42 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 3,
         "rect": {
-          "height": 1,
           "pos": {
             "left": 9,
             "top": 1,
           },
-          "width": 23,
+          "size": {
+            "height": 1,
+            "width": 23,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 1,
           "pos": {
             "left": 7,
             "top": 3,
           },
-          "width": 17,
+          "size": {
+            "height": 1,
+            "width": 17,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 7,
             "top": 1,
           },
-          "width": 2,
+          "size": {
+            "height": 2,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
@@ -283,24 +323,28 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 1,
           "pos": {
             "left": 2,
             "top": 23,
           },
-          "width": 8,
+          "size": {
+            "height": 1,
+            "width": 8,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 1,
           "pos": {
             "left": 12,
             "top": 23,
           },
-          "width": 5,
+          "size": {
+            "height": 1,
+            "width": 5,
+          },
         },
         "type": "rectangle",
       },
@@ -310,48 +354,56 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 3,
         "rect": {
-          "height": 1,
           "pos": {
             "left": 6,
             "top": 3,
           },
-          "width": 25,
+          "size": {
+            "height": 1,
+            "width": 25,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 2,
             "top": 8,
           },
-          "width": 25,
+          "size": {
+            "height": 2,
+            "width": 25,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 1,
           "pos": {
             "left": 6,
             "top": 13,
           },
-          "width": 25,
+          "size": {
+            "height": 1,
+            "width": 25,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 1,
           "pos": {
             "left": 2,
             "top": 18,
           },
-          "width": 25,
+          "size": {
+            "height": 1,
+            "width": 25,
+          },
         },
         "type": "rectangle",
       },
@@ -363,60 +415,70 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 4,
           "pos": {
             "left": 2,
             "top": 1,
           },
-          "width": 6,
+          "size": {
+            "height": 4,
+            "width": 6,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 5,
           "pos": {
             "left": 2,
             "top": 5,
           },
-          "width": 8,
+          "size": {
+            "height": 5,
+            "width": 8,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 5,
           "pos": {
             "left": 2,
             "top": 10,
           },
-          "width": 10,
+          "size": {
+            "height": 5,
+            "width": 10,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 4,
           "pos": {
             "left": 2,
             "top": 15,
           },
-          "width": 12,
+          "size": {
+            "height": 4,
+            "width": 12,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 4,
           "pos": {
             "left": 2,
             "top": 20,
           },
-          "width": 12,
+          "size": {
+            "height": 4,
+            "width": 12,
+          },
         },
         "type": "rectangle",
       },
@@ -431,60 +493,70 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 2,
         "rect": {
-          "height": 13,
           "pos": {
             "left": 0,
             "top": 1,
           },
-          "width": 5,
+          "size": {
+            "height": 13,
+            "width": 5,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 0,
         "rect": {
-          "height": 9,
           "pos": {
             "left": 6,
             "top": 3,
           },
-          "width": 2,
+          "size": {
+            "height": 9,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 6,
             "top": 12,
           },
-          "width": 2,
+          "size": {
+            "height": 3,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 6,
           "pos": {
             "left": 0,
             "top": 14,
           },
-          "width": 4,
+          "size": {
+            "height": 6,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 8,
             "top": 21,
           },
-          "width": 9,
+          "size": {
+            "height": 3,
+            "width": 9,
+          },
         },
         "type": "rectangle",
       },
@@ -499,72 +571,84 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 3,
         "rect": {
-          "height": 12,
           "pos": {
             "left": 4,
             "top": 2,
           },
-          "width": 5,
+          "size": {
+            "height": 12,
+            "width": 5,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 5,
             "top": 14,
           },
-          "width": 5,
+          "size": {
+            "height": 3,
+            "width": 5,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 4,
           "pos": {
             "left": 8,
             "top": 17,
           },
-          "width": 6,
+          "size": {
+            "height": 4,
+            "width": 6,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 7,
           "pos": {
             "left": 12,
             "top": 11,
           },
-          "width": 3,
+          "size": {
+            "height": 7,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 9,
           "pos": {
             "left": 14,
             "top": 5,
           },
-          "width": 2,
+          "size": {
+            "height": 9,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 1,
           "pos": {
             "left": 2,
             "top": 23,
           },
-          "width": 13,
+          "size": {
+            "height": 1,
+            "width": 13,
+          },
         },
         "type": "rectangle",
       },
@@ -579,96 +663,112 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 11,
           "pos": {
             "left": 12,
             "top": 2,
           },
-          "width": 4,
+          "size": {
+            "height": 11,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 6,
           "pos": {
             "left": 6,
             "top": 5,
           },
-          "width": 6,
+          "size": {
+            "height": 6,
+            "width": 6,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 7,
           "pos": {
             "left": 10,
             "top": 2,
           },
-          "width": 3,
+          "size": {
+            "height": 7,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 2,
             "top": 2,
           },
-          "width": 4,
+          "size": {
+            "height": 3,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 6,
             "top": 2,
           },
-          "width": 3,
+          "size": {
+            "height": 3,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 8,
             "top": 5,
           },
-          "width": 2,
+          "size": {
+            "height": 2,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 10,
             "top": 7,
           },
-          "width": 2,
+          "size": {
+            "height": 2,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 12,
             "top": 9,
           },
-          "width": 2,
+          "size": {
+            "height": 2,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
@@ -683,48 +783,56 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 3,
         "rect": {
-          "height": 1,
           "pos": {
             "left": 4,
             "top": 2,
           },
-          "width": 12,
+          "size": {
+            "height": 1,
+            "width": 12,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 2,
             "top": 11,
           },
-          "width": 10,
+          "size": {
+            "height": 2,
+            "width": 10,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 6,
           "pos": {
             "left": 2,
             "top": 9,
           },
-          "width": 3,
+          "size": {
+            "height": 6,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 4,
             "top": 22,
           },
-          "width": 10,
+          "size": {
+            "height": 2,
+            "width": 10,
+          },
         },
         "type": "rectangle",
       },
@@ -739,120 +847,140 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 2,
         "rect": {
-          "height": 6,
           "pos": {
             "left": 0,
             "top": 1,
           },
-          "width": 5,
+          "size": {
+            "height": 6,
+            "width": 5,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 12,
           "pos": {
             "left": 0,
             "top": 7,
           },
-          "width": 3,
+          "size": {
+            "height": 12,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 12,
           "pos": {
             "left": 3,
             "top": 7,
           },
-          "width": 1,
+          "size": {
+            "height": 12,
+            "width": 1,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 0,
         "rect": {
-          "height": 5,
           "pos": {
             "left": 0,
             "top": 19,
           },
-          "width": 9,
+          "size": {
+            "height": 5,
+            "width": 9,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 0,
         "rect": {
-          "height": 11,
           "pos": {
             "left": 6,
             "top": 8,
           },
-          "width": 3,
+          "size": {
+            "height": 11,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 0,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 9,
             "top": 13,
           },
-          "width": 2,
+          "size": {
+            "height": 2,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 0,
         "rect": {
-          "height": 6,
           "pos": {
             "left": 9,
             "top": 15,
           },
-          "width": 4,
+          "size": {
+            "height": 6,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 0,
         "rect": {
-          "height": 7,
           "pos": {
             "left": 13,
             "top": 17,
           },
-          "width": 2,
+          "size": {
+            "height": 7,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 0,
         "rect": {
-          "height": 12,
           "pos": {
             "left": 15,
             "top": 3,
           },
-          "width": 1,
+          "size": {
+            "height": 12,
+            "width": 1,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 8,
           "pos": {
             "left": 14,
             "top": 3,
           },
-          "width": 1,
+          "size": {
+            "height": 8,
+            "width": 1,
+          },
         },
         "type": "rectangle",
       },
@@ -867,36 +995,42 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 4,
             "top": 1,
           },
-          "width": 6,
+          "size": {
+            "height": 2,
+            "width": 6,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 23,
           "pos": {
             "left": 0,
             "top": 1,
           },
-          "width": 4,
+          "size": {
+            "height": 23,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 12,
             "top": 1,
           },
-          "width": 4,
+          "size": {
+            "height": 2,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
@@ -911,192 +1045,224 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 0,
             "top": 1,
           },
-          "width": 10,
+          "size": {
+            "height": 2,
+            "width": 10,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 4,
             "top": 3,
           },
-          "width": 12,
+          "size": {
+            "height": 2,
+            "width": 12,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 0,
             "top": 5,
           },
-          "width": 10,
+          "size": {
+            "height": 2,
+            "width": 10,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 4,
             "top": 7,
           },
-          "width": 7,
+          "size": {
+            "height": 2,
+            "width": 7,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 0,
             "top": 9,
           },
-          "width": 6,
+          "size": {
+            "height": 2,
+            "width": 6,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 4,
             "top": 11,
           },
-          "width": 5,
+          "size": {
+            "height": 2,
+            "width": 5,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 0,
             "top": 13,
           },
-          "width": 6,
+          "size": {
+            "height": 2,
+            "width": 6,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 4,
             "top": 15,
           },
-          "width": 5,
+          "size": {
+            "height": 2,
+            "width": 5,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 0,
             "top": 17,
           },
-          "width": 5,
+          "size": {
+            "height": 2,
+            "width": 5,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 4,
             "top": 19,
           },
-          "width": 12,
+          "size": {
+            "height": 2,
+            "width": 12,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 1,
           "pos": {
             "left": 0,
             "top": 21,
           },
-          "width": 10,
+          "size": {
+            "height": 1,
+            "width": 10,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 4,
             "top": 22,
           },
-          "width": 12,
+          "size": {
+            "height": 2,
+            "width": 12,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 1,
           "pos": {
             "left": 12,
             "top": 21,
           },
-          "width": 4,
+          "size": {
+            "height": 1,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 13,
             "top": 1,
           },
-          "width": 3,
+          "size": {
+            "height": 2,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 12,
             "top": 5,
           },
-          "width": 4,
+          "size": {
+            "height": 3,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 11,
           "pos": {
             "left": 8,
             "top": 8,
           },
-          "width": 7,
+          "size": {
+            "height": 11,
+            "width": 7,
+          },
         },
         "type": "rectangle",
       },
@@ -1111,108 +1277,126 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 4,
           "pos": {
             "left": 0,
             "top": 1,
           },
-          "width": 4,
+          "size": {
+            "height": 4,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 5,
           "pos": {
             "left": 6,
             "top": 1,
           },
-          "width": 13,
+          "size": {
+            "height": 5,
+            "width": 13,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 0,
             "top": 22,
           },
-          "width": 29,
+          "size": {
+            "height": 2,
+            "width": 29,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 1,
           "pos": {
             "left": 4,
             "top": 21,
           },
-          "width": 24,
+          "size": {
+            "height": 1,
+            "width": 24,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 19,
             "top": 13,
           },
-          "width": 8,
+          "size": {
+            "height": 2,
+            "width": 8,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 19,
             "top": 3,
           },
-          "width": 4,
+          "size": {
+            "height": 3,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 4,
           "pos": {
             "left": 23,
             "top": 3,
           },
-          "width": 2,
+          "size": {
+            "height": 4,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 25,
             "top": 2,
           },
-          "width": 3,
+          "size": {
+            "height": 3,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 5,
           "pos": {
             "left": 28,
             "top": 1,
           },
-          "width": 2,
+          "size": {
+            "height": 5,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
@@ -1224,108 +1408,126 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 4,
             "top": 1,
           },
-          "width": 7,
+          "size": {
+            "height": 2,
+            "width": 7,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 6,
             "top": 7,
           },
-          "width": 8,
+          "size": {
+            "height": 2,
+            "width": 8,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 11,
             "top": 1,
           },
-          "width": 1,
+          "size": {
+            "height": 2,
+            "width": 1,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 0,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 14,
             "top": 3,
           },
-          "width": 2,
+          "size": {
+            "height": 3,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 0,
         "rect": {
-          "height": 13,
           "pos": {
             "left": 15,
             "top": 6,
           },
-          "width": 1,
+          "size": {
+            "height": 13,
+            "width": 1,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 4,
           "pos": {
             "left": 11,
             "top": 3,
           },
-          "width": 3,
+          "size": {
+            "height": 4,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 0,
         "rect": {
-          "height": 10,
           "pos": {
             "left": 7,
             "top": 15,
           },
-          "width": 2,
+          "size": {
+            "height": 10,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 0,
         "rect": {
-          "height": 5,
           "pos": {
             "left": 11,
             "top": 19,
           },
-          "width": 2,
+          "size": {
+            "height": 5,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 13,
             "top": 21,
           },
-          "width": 3,
+          "size": {
+            "height": 3,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
@@ -1340,48 +1542,56 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 3,
         "rect": {
-          "height": 4,
           "pos": {
             "left": 7,
             "top": 2,
           },
-          "width": 9,
+          "size": {
+            "height": 4,
+            "width": 9,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 5,
           "pos": {
             "left": 6,
             "top": 16,
           },
-          "width": 10,
+          "size": {
+            "height": 5,
+            "width": 10,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 0,
             "top": 14,
           },
-          "width": 5,
+          "size": {
+            "height": 2,
+            "width": 5,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 5,
             "top": 12,
           },
-          "width": 2,
+          "size": {
+            "height": 2,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
@@ -1396,108 +1606,126 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 0,
             "top": 0,
           },
-          "width": 5,
+          "size": {
+            "height": 3,
+            "width": 5,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 0,
             "top": 4,
           },
-          "width": 13,
+          "size": {
+            "height": 2,
+            "width": 13,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 5,
           "pos": {
             "left": 5,
             "top": 0,
           },
-          "width": 2,
+          "size": {
+            "height": 5,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 3,
             "top": 7,
           },
-          "width": 13,
+          "size": {
+            "height": 2,
+            "width": 13,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 0,
             "top": 10,
           },
-          "width": 14,
+          "size": {
+            "height": 2,
+            "width": 14,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 3,
             "top": 13,
           },
-          "width": 13,
+          "size": {
+            "height": 2,
+            "width": 13,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 0,
             "top": 16,
           },
-          "width": 14,
+          "size": {
+            "height": 2,
+            "width": 14,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 3,
             "top": 19,
           },
-          "width": 13,
+          "size": {
+            "height": 2,
+            "width": 13,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 0,
             "top": 22,
           },
-          "width": 14,
+          "size": {
+            "height": 2,
+            "width": 14,
+          },
         },
         "type": "rectangle",
       },
@@ -1512,60 +1740,70 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 0,
             "top": 2,
           },
-          "width": 14,
+          "size": {
+            "height": 2,
+            "width": 14,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 7,
           "pos": {
             "left": 13,
             "top": 4,
           },
-          "width": 2,
+          "size": {
+            "height": 7,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 5,
           "pos": {
             "left": 13,
             "top": 12,
           },
-          "width": 3,
+          "size": {
+            "height": 5,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 4,
             "top": 18,
           },
-          "width": 12,
+          "size": {
+            "height": 2,
+            "width": 12,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 9,
             "top": 20,
           },
-          "width": 5,
+          "size": {
+            "height": 2,
+            "width": 5,
+          },
         },
         "type": "rectangle",
       },
@@ -1580,12 +1818,14 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 3,
         "rect": {
-          "height": 1,
           "pos": {
             "left": 4,
             "top": 18,
           },
-          "width": 12,
+          "size": {
+            "height": 1,
+            "width": 12,
+          },
         },
         "type": "rectangle",
       },
@@ -1595,60 +1835,70 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 0,
             "top": 8,
           },
-          "width": 27,
+          "size": {
+            "height": 2,
+            "width": 27,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 0,
         "rect": {
-          "height": 9,
           "pos": {
             "left": 27,
             "top": 3,
           },
-          "width": 4,
+          "size": {
+            "height": 9,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 1,
           "pos": {
             "left": 5,
             "top": 2,
           },
-          "width": 27,
+          "size": {
+            "height": 1,
+            "width": 27,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 1,
           "pos": {
             "left": 6,
             "top": 5,
           },
-          "width": 17,
+          "size": {
+            "height": 1,
+            "width": 17,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 0,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 23,
             "top": 3,
           },
-          "width": 4,
+          "size": {
+            "height": 3,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
@@ -1660,36 +1910,42 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 0,
             "top": 22,
           },
-          "width": 15,
+          "size": {
+            "height": 2,
+            "width": 15,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 17,
           "pos": {
             "left": 12,
             "top": 7,
           },
-          "width": 3,
+          "size": {
+            "height": 17,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 14,
             "top": 8,
           },
-          "width": 2,
+          "size": {
+            "height": 2,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
@@ -1699,36 +1955,42 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 0,
             "top": 1,
           },
-          "width": 20,
+          "size": {
+            "height": 2,
+            "width": 20,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 23,
             "top": 1,
           },
-          "width": 7,
+          "size": {
+            "height": 2,
+            "width": 7,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 0,
         "rect": {
-          "height": 1,
           "pos": {
             "left": 19,
             "top": 0,
           },
-          "width": 4,
+          "size": {
+            "height": 1,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
@@ -1740,36 +2002,42 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 3,
         "rect": {
-          "height": 7,
           "pos": {
             "left": 4,
             "top": 17,
           },
-          "width": 12,
+          "size": {
+            "height": 7,
+            "width": 12,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 0,
             "top": 1,
           },
-          "width": 10,
+          "size": {
+            "height": 3,
+            "width": 10,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 13,
             "top": 1,
           },
-          "width": 3,
+          "size": {
+            "height": 3,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
@@ -1784,84 +2052,98 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 8,
           "pos": {
             "left": 2,
             "top": 1,
           },
-          "width": 6,
+          "size": {
+            "height": 8,
+            "width": 6,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 4,
             "top": 13,
           },
-          "width": 2,
+          "size": {
+            "height": 2,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 2,
             "top": 19,
           },
-          "width": 2,
+          "size": {
+            "height": 2,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 8,
             "top": 22,
           },
-          "width": 8,
+          "size": {
+            "height": 2,
+            "width": 8,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 15,
           "pos": {
             "left": 10,
             "top": 5,
           },
-          "width": 3,
+          "size": {
+            "height": 15,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 18,
           "pos": {
             "left": 15,
             "top": 1,
           },
-          "width": 1,
+          "size": {
+            "height": 18,
+            "width": 1,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 12,
             "top": 14,
           },
-          "width": 3,
+          "size": {
+            "height": 2,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
@@ -1876,48 +2158,56 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 2,
             "top": 16,
           },
-          "width": 10,
+          "size": {
+            "height": 2,
+            "width": 10,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 2,
             "top": 19,
           },
-          "width": 11,
+          "size": {
+            "height": 2,
+            "width": 11,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 2,
             "top": 22,
           },
-          "width": 4,
+          "size": {
+            "height": 2,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 14,
             "top": 16,
           },
-          "width": 2,
+          "size": {
+            "height": 2,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
@@ -1932,36 +2222,42 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 2,
             "top": 13,
           },
-          "width": 4,
+          "size": {
+            "height": 2,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 8,
             "top": 12,
           },
-          "width": 22,
+          "size": {
+            "height": 3,
+            "width": 22,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 5,
             "top": 15,
           },
-          "width": 14,
+          "size": {
+            "height": 2,
+            "width": 14,
+          },
         },
         "type": "rectangle",
       },
@@ -1977,24 +2273,28 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 4,
             "top": 22,
           },
-          "width": 11,
+          "size": {
+            "height": 2,
+            "width": 11,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 15,
             "top": 1,
           },
-          "width": 1,
+          "size": {
+            "height": 3,
+            "width": 1,
+          },
         },
         "type": "rectangle",
       },
@@ -2009,36 +2309,42 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 21,
           "pos": {
             "left": 7,
             "top": 1,
           },
-          "width": 3,
+          "size": {
+            "height": 21,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 22,
           "pos": {
             "left": 13,
             "top": 1,
           },
-          "width": 3,
+          "size": {
+            "height": 22,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 0,
         "rect": {
-          "height": 10,
           "pos": {
             "left": 15,
             "top": 14,
           },
-          "width": 1,
+          "size": {
+            "height": 10,
+            "width": 1,
+          },
         },
         "type": "rectangle",
       },
@@ -2057,60 +2363,70 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 2,
             "top": 1,
           },
-          "width": 8,
+          "size": {
+            "height": 3,
+            "width": 8,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 4,
           "pos": {
             "left": 2,
             "top": 10,
           },
-          "width": 9,
+          "size": {
+            "height": 4,
+            "width": 9,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 13,
             "top": 1,
           },
-          "width": 3,
+          "size": {
+            "height": 3,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 4,
           "pos": {
             "left": 13,
             "top": 10,
           },
-          "width": 3,
+          "size": {
+            "height": 4,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 2,
             "top": 21,
           },
-          "width": 13,
+          "size": {
+            "height": 3,
+            "width": 13,
+          },
         },
         "type": "rectangle",
       },
@@ -2125,60 +2441,70 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 2,
             "top": 5,
           },
-          "width": 26,
+          "size": {
+            "height": 2,
+            "width": 26,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 4,
             "top": 9,
           },
-          "width": 26,
+          "size": {
+            "height": 2,
+            "width": 26,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 2,
             "top": 13,
           },
-          "width": 26,
+          "size": {
+            "height": 2,
+            "width": 26,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 4,
             "top": 17,
           },
-          "width": 26,
+          "size": {
+            "height": 2,
+            "width": 26,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 2,
             "top": 22,
           },
-          "width": 26,
+          "size": {
+            "height": 2,
+            "width": 26,
+          },
         },
         "type": "rectangle",
       },
@@ -2190,48 +2516,56 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 5,
           "pos": {
             "left": 2,
             "top": 1,
           },
-          "width": 13,
+          "size": {
+            "height": 5,
+            "width": 13,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 5,
           "pos": {
             "left": 6,
             "top": 7,
           },
-          "width": 10,
+          "size": {
+            "height": 5,
+            "width": 10,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 4,
           "pos": {
             "left": 6,
             "top": 10,
           },
-          "width": 9,
+          "size": {
+            "height": 4,
+            "width": 9,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 7,
           "pos": {
             "left": 5,
             "top": 17,
           },
-          "width": 11,
+          "size": {
+            "height": 7,
+            "width": 11,
+          },
         },
         "type": "rectangle",
       },
@@ -2246,36 +2580,42 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 2,
             "top": 1,
           },
-          "width": 7,
+          "size": {
+            "height": 2,
+            "width": 7,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 13,
             "top": 1,
           },
-          "width": 3,
+          "size": {
+            "height": 2,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 4,
             "top": 21,
           },
-          "width": 12,
+          "size": {
+            "height": 3,
+            "width": 12,
+          },
         },
         "type": "rectangle",
       },
@@ -2285,12 +2625,14 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 2,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 5,
             "top": 4,
           },
-          "width": 19,
+          "size": {
+            "height": 2,
+            "width": 19,
+          },
         },
         "type": "rectangle",
       },
@@ -2306,24 +2648,28 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 4,
             "top": 1,
           },
-          "width": 12,
+          "size": {
+            "height": 2,
+            "width": 12,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 5,
           "pos": {
             "left": 4,
             "top": 3,
           },
-          "width": 8,
+          "size": {
+            "height": 5,
+            "width": 8,
+          },
         },
         "type": "rectangle",
       },
@@ -2342,60 +2688,70 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 2,
             "top": 1,
           },
-          "width": 8,
+          "size": {
+            "height": 3,
+            "width": 8,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 4,
           "pos": {
             "left": 6,
             "top": 5,
           },
-          "width": 14,
+          "size": {
+            "height": 4,
+            "width": 14,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 7,
             "top": 11,
           },
-          "width": 4,
+          "size": {
+            "height": 2,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 14,
             "top": 9,
           },
-          "width": 4,
+          "size": {
+            "height": 3,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 6,
             "top": 18,
           },
-          "width": 24,
+          "size": {
+            "height": 2,
+            "width": 24,
+          },
         },
         "type": "rectangle",
       },
@@ -2411,24 +2767,28 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 4,
             "top": 3,
           },
-          "width": 9,
+          "size": {
+            "height": 2,
+            "width": 9,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 12,
             "top": 21,
           },
-          "width": 4,
+          "size": {
+            "height": 2,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
@@ -2443,84 +2803,98 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 9,
             "top": 22,
           },
-          "width": 6,
+          "size": {
+            "height": 2,
+            "width": 6,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 4,
             "top": 18,
           },
-          "width": 12,
+          "size": {
+            "height": 3,
+            "width": 12,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 2,
             "top": 10,
           },
-          "width": 6,
+          "size": {
+            "height": 3,
+            "width": 6,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 10,
             "top": 10,
           },
-          "width": 6,
+          "size": {
+            "height": 3,
+            "width": 6,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 2,
             "top": 6,
           },
-          "width": 13,
+          "size": {
+            "height": 3,
+            "width": 13,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 2,
             "top": 14,
           },
-          "width": 13,
+          "size": {
+            "height": 3,
+            "width": 13,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 2,
             "top": 1,
           },
-          "width": 11,
+          "size": {
+            "height": 3,
+            "width": 11,
+          },
         },
         "type": "rectangle",
       },
@@ -2535,36 +2909,42 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 0,
         "rect": {
-          "height": 17,
           "pos": {
             "left": 2,
             "top": 3,
           },
-          "width": 2,
+          "size": {
+            "height": 17,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 4,
             "top": 17,
           },
-          "width": 10,
+          "size": {
+            "height": 2,
+            "width": 10,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 15,
           "pos": {
             "left": 13,
             "top": 1,
           },
-          "width": 3,
+          "size": {
+            "height": 15,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
@@ -2579,12 +2959,14 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 2,
             "top": 21,
           },
-          "width": 4,
+          "size": {
+            "height": 3,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
@@ -2599,24 +2981,28 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 3,
         "rect": {
-          "height": 6,
           "pos": {
             "left": 8,
             "top": 1,
           },
-          "width": 9,
+          "size": {
+            "height": 6,
+            "width": 9,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 5,
           "pos": {
             "left": 2,
             "top": 1,
           },
-          "width": 8,
+          "size": {
+            "height": 5,
+            "width": 8,
+          },
         },
         "type": "rectangle",
       },
@@ -2632,48 +3018,56 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 4,
           "pos": {
             "left": 2,
             "top": 9,
           },
-          "width": 9,
+          "size": {
+            "height": 4,
+            "width": 9,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 0,
         "rect": {
-          "height": 5,
           "pos": {
             "left": 2,
             "top": 12,
           },
-          "width": 5,
+          "size": {
+            "height": 5,
+            "width": 5,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 5,
           "pos": {
             "left": 7,
             "top": 15,
           },
-          "width": 5,
+          "size": {
+            "height": 5,
+            "width": 5,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 13,
             "top": 9,
           },
-          "width": 3,
+          "size": {
+            "height": 3,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
@@ -2692,48 +3086,56 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 2,
             "top": 1,
           },
-          "width": 8,
+          "size": {
+            "height": 2,
+            "width": 8,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 13,
             "top": 1,
           },
-          "width": 3,
+          "size": {
+            "height": 2,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 12,
           "pos": {
             "left": 11,
             "top": 7,
           },
-          "width": 4,
+          "size": {
+            "height": 12,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 9,
             "top": 22,
           },
-          "width": 3,
+          "size": {
+            "height": 2,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
@@ -2752,24 +3154,28 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 4,
           "pos": {
             "left": 12,
             "top": 4,
           },
-          "width": 4,
+          "size": {
+            "height": 4,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 4,
             "top": 21,
           },
-          "width": 12,
+          "size": {
+            "height": 3,
+            "width": 12,
+          },
         },
         "type": "rectangle",
       },
@@ -2784,12 +3190,14 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 2,
             "top": 1,
           },
-          "width": 9,
+          "size": {
+            "height": 2,
+            "width": 9,
+          },
         },
         "type": "rectangle",
       },
@@ -2804,24 +3212,28 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 2,
             "top": 9,
           },
-          "width": 13,
+          "size": {
+            "height": 3,
+            "width": 13,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 15,
             "top": 5,
           },
-          "width": 1,
+          "size": {
+            "height": 2,
+            "width": 1,
+          },
         },
         "type": "rectangle",
       },
@@ -2840,48 +3252,56 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 4,
             "top": 22,
           },
-          "width": 12,
+          "size": {
+            "height": 2,
+            "width": 12,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 1,
             "top": 1,
           },
-          "width": 8,
+          "size": {
+            "height": 2,
+            "width": 8,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 13,
             "top": 1,
           },
-          "width": 3,
+          "size": {
+            "height": 2,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 4,
             "top": 3,
           },
-          "width": 12,
+          "size": {
+            "height": 2,
+            "width": 12,
+          },
         },
         "type": "rectangle",
       },
@@ -2896,36 +3316,42 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 2,
             "top": 1,
           },
-          "width": 6,
+          "size": {
+            "height": 2,
+            "width": 6,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 12,
             "top": 21,
           },
-          "width": 4,
+          "size": {
+            "height": 3,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 6,
           "pos": {
             "left": 12,
             "top": 15,
           },
-          "width": 4,
+          "size": {
+            "height": 6,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
@@ -2940,36 +3366,42 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 18,
           "pos": {
             "left": 2,
             "top": 1,
           },
-          "width": 5,
+          "size": {
+            "height": 18,
+            "width": 5,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 6,
             "top": 22,
           },
-          "width": 10,
+          "size": {
+            "height": 2,
+            "width": 10,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 7,
             "top": 1,
           },
-          "width": 6,
+          "size": {
+            "height": 3,
+            "width": 6,
+          },
         },
         "type": "rectangle",
       },
@@ -2979,36 +3411,42 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 9,
             "top": 17,
           },
-          "width": 16,
+          "size": {
+            "height": 2,
+            "width": 16,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 7,
             "top": 12,
           },
-          "width": 14,
+          "size": {
+            "height": 2,
+            "width": 14,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 11,
             "top": 7,
           },
-          "width": 12,
+          "size": {
+            "height": 2,
+            "width": 12,
+          },
         },
         "type": "rectangle",
       },
@@ -3020,36 +3458,42 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 2,
             "top": 1,
           },
-          "width": 8,
+          "size": {
+            "height": 2,
+            "width": 8,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 21,
           "pos": {
             "left": 12,
             "top": 1,
           },
-          "width": 4,
+          "size": {
+            "height": 21,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 9,
           "pos": {
             "left": 7,
             "top": 6,
           },
-          "width": 11,
+          "size": {
+            "height": 9,
+            "width": 11,
+          },
         },
         "type": "rectangle",
       },
@@ -3064,36 +3508,42 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 2,
             "top": 22,
           },
-          "width": 8,
+          "size": {
+            "height": 2,
+            "width": 8,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 21,
           "pos": {
             "left": 2,
             "top": 1,
           },
-          "width": 2,
+          "size": {
+            "height": 21,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 18,
           "pos": {
             "left": 9,
             "top": 4,
           },
-          "width": 2,
+          "size": {
+            "height": 18,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
@@ -3108,108 +3558,126 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 4,
             "top": 22,
           },
-          "width": 15,
+          "size": {
+            "height": 2,
+            "width": 15,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 19,
             "top": 22,
           },
-          "width": 9,
+          "size": {
+            "height": 2,
+            "width": 9,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 9,
             "top": 17,
           },
-          "width": 21,
+          "size": {
+            "height": 2,
+            "width": 21,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 7,
             "top": 12,
           },
-          "width": 21,
+          "size": {
+            "height": 2,
+            "width": 21,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 15,
             "top": 7,
           },
-          "width": 17,
+          "size": {
+            "height": 2,
+            "width": 17,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 4,
           "pos": {
             "left": 2,
             "top": 1,
           },
-          "width": 6,
+          "size": {
+            "height": 4,
+            "width": 6,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 8,
             "top": 1,
           },
-          "width": 2,
+          "size": {
+            "height": 2,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 10,
             "top": 1,
           },
-          "width": 10,
+          "size": {
+            "height": 3,
+            "width": 10,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 22,
             "top": 1,
           },
-          "width": 8,
+          "size": {
+            "height": 3,
+            "width": 8,
+          },
         },
         "type": "rectangle",
       },
@@ -3221,36 +3689,42 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 2,
             "top": 1,
           },
-          "width": 8,
+          "size": {
+            "height": 2,
+            "width": 8,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 13,
             "top": 1,
           },
-          "width": 3,
+          "size": {
+            "height": 2,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 4,
             "top": 17,
           },
-          "width": 12,
+          "size": {
+            "height": 2,
+            "width": 12,
+          },
         },
         "type": "rectangle",
       },
@@ -3273,24 +3747,28 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 1,
           "pos": {
             "left": 0,
             "top": 2,
           },
-          "width": 9,
+          "size": {
+            "height": 1,
+            "width": 9,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 0,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 9,
             "top": 0,
           },
-          "width": 4,
+          "size": {
+            "height": 3,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
@@ -3306,84 +3784,98 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 2,
             "top": 23,
           },
-          "width": 18,
+          "size": {
+            "height": 2,
+            "width": 18,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 7,
             "top": 18,
           },
-          "width": 19,
+          "size": {
+            "height": 2,
+            "width": 19,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 4,
             "top": 14,
           },
-          "width": 15,
+          "size": {
+            "height": 2,
+            "width": 15,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 11,
           "pos": {
             "left": 15,
             "top": 2,
           },
-          "width": 4,
+          "size": {
+            "height": 11,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 11,
           "pos": {
             "left": 23,
             "top": 2,
           },
-          "width": 5,
+          "size": {
+            "height": 11,
+            "width": 5,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 19,
             "top": 2,
           },
-          "width": 2,
+          "size": {
+            "height": 2,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 22,
             "top": 23,
           },
-          "width": 8,
+          "size": {
+            "height": 2,
+            "width": 8,
+          },
         },
         "type": "rectangle",
       },
@@ -3395,48 +3887,56 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 1,
           "pos": {
             "left": 9,
             "top": 1,
           },
-          "width": 6,
+          "size": {
+            "height": 1,
+            "width": 6,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 9,
           "pos": {
             "left": 15,
             "top": 1,
           },
-          "width": 1,
+          "size": {
+            "height": 9,
+            "width": 1,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 1,
           "pos": {
             "left": 12,
             "top": 23,
           },
-          "width": 4,
+          "size": {
+            "height": 1,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 0,
         "rect": {
-          "height": 6,
           "pos": {
             "left": 9,
             "top": 16,
           },
-          "width": 2,
+          "size": {
+            "height": 6,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
@@ -3451,72 +3951,84 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 2,
             "top": 1,
           },
-          "width": 8,
+          "size": {
+            "height": 2,
+            "width": 8,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 13,
             "top": 1,
           },
-          "width": 3,
+          "size": {
+            "height": 2,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 4,
           "pos": {
             "left": 10,
             "top": 10,
           },
-          "width": 6,
+          "size": {
+            "height": 4,
+            "width": 6,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 13,
           "pos": {
             "left": 4,
             "top": 11,
           },
-          "width": 5,
+          "size": {
+            "height": 13,
+            "width": 5,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 5,
           "pos": {
             "left": 9,
             "top": 19,
           },
-          "width": 6,
+          "size": {
+            "height": 5,
+            "width": 6,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 9,
             "top": 13,
           },
-          "width": 6,
+          "size": {
+            "height": 2,
+            "width": 6,
+          },
         },
         "type": "rectangle",
       },
@@ -3531,24 +4043,28 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 2,
             "top": 22,
           },
-          "width": 8,
+          "size": {
+            "height": 2,
+            "width": 8,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 13,
             "top": 22,
           },
-          "width": 3,
+          "size": {
+            "height": 2,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
@@ -3563,12 +4079,14 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 2,
             "top": 2,
           },
-          "width": 12,
+          "size": {
+            "height": 2,
+            "width": 12,
+          },
         },
         "type": "rectangle",
       },
@@ -3587,48 +4105,56 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 7,
           "pos": {
             "left": 2,
             "top": 19,
           },
-          "width": 8,
+          "size": {
+            "height": 7,
+            "width": 8,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 18,
           "pos": {
             "left": 2,
             "top": 5,
           },
-          "width": 2,
+          "size": {
+            "height": 18,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 4,
             "top": 2,
           },
-          "width": 12,
+          "size": {
+            "height": 3,
+            "width": 12,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 7,
           "pos": {
             "left": 13,
             "top": 19,
           },
-          "width": 3,
+          "size": {
+            "height": 7,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
@@ -3643,24 +4169,28 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 9,
             "top": 22,
           },
-          "width": 4,
+          "size": {
+            "height": 2,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 2,
             "top": 1,
           },
-          "width": 8,
+          "size": {
+            "height": 2,
+            "width": 8,
+          },
         },
         "type": "rectangle",
       },
@@ -3675,12 +4205,14 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 0,
         "rect": {
-          "height": 8,
           "pos": {
             "left": 6,
             "top": 15,
           },
-          "width": 20,
+          "size": {
+            "height": 8,
+            "width": 20,
+          },
         },
         "type": "rectangle",
       },
@@ -3692,24 +4224,28 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 2,
             "top": 2,
           },
-          "width": 2,
+          "size": {
+            "height": 2,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 4,
             "top": 2,
           },
-          "width": 12,
+          "size": {
+            "height": 2,
+            "width": 12,
+          },
         },
         "type": "rectangle",
       },
@@ -3719,24 +4255,28 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 2,
         "rect": {
-          "height": 20,
           "pos": {
             "left": 4,
             "top": 2,
           },
-          "width": 2,
+          "size": {
+            "height": 20,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 4,
             "top": 22,
           },
-          "width": 2,
+          "size": {
+            "height": 2,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
@@ -3748,36 +4288,42 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 2,
         "rect": {
-          "height": 4,
           "pos": {
             "left": 2,
             "top": 5,
           },
-          "width": 2,
+          "size": {
+            "height": 4,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 2,
             "top": 13,
           },
-          "width": 14,
+          "size": {
+            "height": 2,
+            "width": 14,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 8,
           "pos": {
             "left": 4,
             "top": 14,
           },
-          "width": 2,
+          "size": {
+            "height": 8,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
@@ -3792,12 +4338,14 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 2,
             "top": 16,
           },
-          "width": 10,
+          "size": {
+            "height": 2,
+            "width": 10,
+          },
         },
         "type": "rectangle",
       },
@@ -3820,60 +4368,70 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 0,
         "rect": {
-          "height": 19,
           "pos": {
             "left": 2,
             "top": 3,
           },
-          "width": 3,
+          "size": {
+            "height": 19,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 1,
           "pos": {
             "left": 8,
             "top": 6,
           },
-          "width": 8,
+          "size": {
+            "height": 1,
+            "width": 8,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 0,
         "rect": {
-          "height": 10,
           "pos": {
             "left": 8,
             "top": 7,
           },
-          "width": 8,
+          "size": {
+            "height": 10,
+            "width": 8,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 6,
             "top": 20,
           },
-          "width": 9,
+          "size": {
+            "height": 2,
+            "width": 9,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 4,
           "pos": {
             "left": 12,
             "top": 17,
           },
-          "width": 4,
+          "size": {
+            "height": 4,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
@@ -3888,24 +4446,28 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 1,
           "pos": {
             "left": 2,
             "top": 1,
           },
-          "width": 11,
+          "size": {
+            "height": 1,
+            "width": 11,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 12,
             "top": 3,
           },
-          "width": 4,
+          "size": {
+            "height": 3,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
@@ -3920,36 +4482,42 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 8,
             "top": 2,
           },
-          "width": 8,
+          "size": {
+            "height": 3,
+            "width": 8,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 7,
           "pos": {
             "left": 2,
             "top": 3,
           },
-          "width": 4,
+          "size": {
+            "height": 7,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 7,
             "top": 22,
           },
-          "width": 9,
+          "size": {
+            "height": 2,
+            "width": 9,
+          },
         },
         "type": "rectangle",
       },
@@ -3968,24 +4536,28 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 0,
         "rect": {
-          "height": 22,
           "pos": {
             "left": 13,
             "top": 1,
           },
-          "width": 3,
+          "size": {
+            "height": 22,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 4,
             "top": 1,
           },
-          "width": 5,
+          "size": {
+            "height": 2,
+            "width": 5,
+          },
         },
         "type": "rectangle",
       },
@@ -4004,72 +4576,84 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 2,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 2,
             "top": 1,
           },
-          "width": 4,
+          "size": {
+            "height": 2,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 15,
           "pos": {
             "left": 1,
             "top": 2,
           },
-          "width": 2,
+          "size": {
+            "height": 15,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 15,
           "pos": {
             "left": 4,
             "top": 2,
           },
-          "width": 2,
+          "size": {
+            "height": 15,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 6,
             "top": 1,
           },
-          "width": 4,
+          "size": {
+            "height": 2,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 5,
           "pos": {
             "left": 6,
             "top": 15,
           },
-          "width": 6,
+          "size": {
+            "height": 5,
+            "width": 6,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 5,
           "pos": {
             "left": 11,
             "top": 19,
           },
-          "width": 4,
+          "size": {
+            "height": 5,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
@@ -4084,12 +4668,14 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 2,
             "top": 18,
           },
-          "width": 10,
+          "size": {
+            "height": 2,
+            "width": 10,
+          },
         },
         "type": "rectangle",
       },
@@ -4112,84 +4698,98 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 3,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 4,
             "top": 21,
           },
-          "width": 9,
+          "size": {
+            "height": 3,
+            "width": 9,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 2,
             "top": 1,
           },
-          "width": 9,
+          "size": {
+            "height": 2,
+            "width": 9,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 4,
             "top": 3,
           },
-          "width": 12,
+          "size": {
+            "height": 3,
+            "width": 12,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 2,
             "top": 14,
           },
-          "width": 3,
+          "size": {
+            "height": 3,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 15,
           "pos": {
             "left": 9,
             "top": 6,
           },
-          "width": 2,
+          "size": {
+            "height": 15,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 9,
             "top": 18,
           },
-          "width": 3,
+          "size": {
+            "height": 2,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 6,
           "pos": {
             "left": 4,
             "top": 7,
           },
-          "width": 2,
+          "size": {
+            "height": 6,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
@@ -4208,12 +4808,14 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 3,
         "rect": {
-          "height": 1,
           "pos": {
             "left": 7,
             "top": 2,
           },
-          "width": 9,
+          "size": {
+            "height": 1,
+            "width": 9,
+          },
         },
         "type": "rectangle",
       },
@@ -4240,12 +4842,14 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 2,
             "top": 1,
           },
-          "width": 7,
+          "size": {
+            "height": 3,
+            "width": 7,
+          },
         },
         "type": "rectangle",
       },
@@ -4255,36 +4859,42 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 12,
             "top": 1,
           },
-          "width": 9,
+          "size": {
+            "height": 2,
+            "width": 9,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 9,
           "pos": {
             "left": 12,
             "top": 2,
           },
-          "width": 7,
+          "size": {
+            "height": 9,
+            "width": 7,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 4,
           "pos": {
             "left": 10,
             "top": 12,
           },
-          "width": 10,
+          "size": {
+            "height": 4,
+            "width": 10,
+          },
         },
         "type": "rectangle",
       },
@@ -4296,36 +4906,42 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 2,
             "top": 2,
           },
-          "width": 11,
+          "size": {
+            "height": 2,
+            "width": 11,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 4,
             "top": 21,
           },
-          "width": 5,
+          "size": {
+            "height": 3,
+            "width": 5,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 9,
             "top": 21,
           },
-          "width": 1,
+          "size": {
+            "height": 3,
+            "width": 1,
+          },
         },
         "type": "rectangle",
       },
@@ -4340,12 +4956,14 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 1,
         "rect": {
-          "height": 12,
           "pos": {
             "left": 11,
             "top": 12,
           },
-          "width": 5,
+          "size": {
+            "height": 12,
+            "width": 5,
+          },
         },
         "type": "rectangle",
       },
@@ -4360,120 +4978,140 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 23,
             "top": 22,
           },
-          "width": 6,
+          "size": {
+            "height": 2,
+            "width": 6,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 2,
             "top": 1,
           },
-          "width": 8,
+          "size": {
+            "height": 3,
+            "width": 8,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 13,
             "top": 0,
           },
-          "width": 19,
+          "size": {
+            "height": 2,
+            "width": 19,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 13,
             "top": 2,
           },
-          "width": 19,
+          "size": {
+            "height": 2,
+            "width": 19,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 21,
           "pos": {
             "left": 23,
             "top": 2,
           },
-          "width": 4,
+          "size": {
+            "height": 21,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 22,
             "top": 2,
           },
-          "width": 4,
+          "size": {
+            "height": 2,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 1,
           "pos": {
             "left": 17,
             "top": 9,
           },
-          "width": 3,
+          "size": {
+            "height": 1,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 3,
         "rect": {
-          "height": 1,
           "pos": {
             "left": 17,
             "top": 16,
           },
-          "width": 6,
+          "size": {
+            "height": 1,
+            "width": 6,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 6,
           "pos": {
             "left": 15,
             "top": 17,
           },
-          "width": 4,
+          "size": {
+            "height": 6,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 19,
             "top": 21,
           },
-          "width": 3,
+          "size": {
+            "height": 3,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
@@ -4489,84 +5127,98 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 3,
         "rect": {
-          "height": 2,
           "pos": {
             "left": 4,
             "top": 22,
           },
-          "width": 5,
+          "size": {
+            "height": 2,
+            "width": 5,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 2,
             "top": 8,
           },
-          "width": 4,
+          "size": {
+            "height": 3,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 13,
           "pos": {
             "left": 5,
             "top": 8,
           },
-          "width": 2,
+          "size": {
+            "height": 13,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 5,
           "pos": {
             "left": 8,
             "top": 16,
           },
-          "width": 2,
+          "size": {
+            "height": 5,
+            "width": 2,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 3,
           "pos": {
             "left": 4,
             "top": 4,
           },
-          "width": 8,
+          "size": {
+            "height": 3,
+            "width": 8,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 1,
         "rect": {
-          "height": 1,
           "pos": {
             "left": 9,
             "top": 1,
           },
-          "width": 3,
+          "size": {
+            "height": 1,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
       {
         "direction": 2,
         "rect": {
-          "height": 8,
           "pos": {
             "left": 11,
             "top": 7,
           },
-          "width": 3,
+          "size": {
+            "height": 8,
+            "width": 3,
+          },
         },
         "type": "rectangle",
       },
@@ -4576,12 +5228,14 @@ exports[`readBubbleCurrentRectangles snapshot 1`] = `
       {
         "direction": 2,
         "rect": {
-          "height": 7,
           "pos": {
             "left": 18,
             "top": 15,
           },
-          "width": 4,
+          "size": {
+            "height": 7,
+            "width": 4,
+          },
         },
         "type": "rectangle",
       },
