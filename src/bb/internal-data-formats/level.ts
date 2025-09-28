@@ -11,9 +11,9 @@ import { Coord2 } from "../../math/coord2";
 import { Rect } from "../../math/rect";
 
 export interface Character {
-	characterName: CharacterName;
-	spawnPoint: Coord2;
-	facingLeft: boolean;
+	readonly characterName: CharacterName;
+	readonly spawnPoint: Coord2;
+	readonly facingLeft: boolean;
 }
 
 // up, right, down, left
