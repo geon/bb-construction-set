@@ -31,8 +31,10 @@ export type BubbleCurrentPerLineDefaults = Array<BubbleCurrentDirection>;
 
 export interface BubbleCurrentRectangle {
 	rect: {
-		left: number;
-		top: number;
+		pos: {
+			left: number;
+			top: number;
+		};
 		width: number;
 		height: number;
 	};
