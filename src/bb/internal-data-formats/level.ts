@@ -54,14 +54,14 @@ export type BubbleCurrentRectangles =
 	  };
 
 export interface Level {
-	tiles: Tiles;
-	bgColorLight: PaletteIndex;
-	bgColorDark: PaletteIndex;
-	platformChar: Char;
-	sidebarChars: CharBlock | undefined;
-	monsters: Array<Character>;
-	bubbleCurrentRectangles: BubbleCurrentRectangles;
-	bubbleCurrentPerLineDefaults: BubbleCurrentPerLineDefaults;
+	readonly tiles: Tiles;
+	readonly bgColorLight: PaletteIndex;
+	readonly bgColorDark: PaletteIndex;
+	readonly platformChar: Char;
+	readonly sidebarChars: CharBlock | undefined;
+	readonly monsters: Array<Character>;
+	readonly bubbleCurrentRectangles: BubbleCurrentRectangles;
+	readonly bubbleCurrentPerLineDefaults: BubbleCurrentPerLineDefaults;
 }
 
 function rowIsSymmetric(row: readonly boolean[]): boolean {
