@@ -24,6 +24,12 @@ const Styling = styled.div`
 	gap: 3em;
 `;
 
+export const ImageButtons = styled.div`
+	display: flex;
+	flex-direction: row;
+	gap: 1em;
+`;
+
 export function LevelGraphics({
 	parsedPrg,
 	setParsedPrg,
@@ -42,80 +48,84 @@ export function LevelGraphics({
 				levelIndex={levelIndex}
 				setLevelIndex={setLevelIndex}
 			/>
-			<BlobDownloadButton
-				getBlob={async () => {
-					const parts = parsedPrg.levels.map((level, index) => {
-						const blob = new Blob(
-							[
-								serializePeFileData(
-									levelsToPeFileData({
-										...parsedPrg,
-										levels: [level],
-										shadowChars: assertTuple(
-											parsedPrg.chars.shadows.flat().flat(),
-											6
-										),
-									})
-								),
-							],
-							{ type: "application/json" }
-						);
-
-						const fileName = (index + 1).toString().padStart(3, "0") + ".pe";
-
-						return { blob, fileName };
-					});
-
-					return {
-						parts,
-						fileName: "bubble bobble c64 - all levels.zip",
-					};
-				}}
-				label="Download PETSCII Editor file"
-			/>
-			<FileInput
-				accept={["pe"]}
-				multiple
-				onChange={async (files) => {
-					const pes = await Promise.all(
-						files.map((file) => file.arrayBuffer())
-					);
-
-					const parsedPeData =
-						pes &&
-						attempt(() => {
-							const deserializedPeFileDatas = pes.map((buffer) =>
-								deserializePeFileData(new TextDecoder("utf-8").decode(buffer))
+			<ImageButtons>
+				<BlobDownloadButton
+					getBlob={async () => {
+						const parts = parsedPrg.levels.map((level, index) => {
+							const blob = new Blob(
+								[
+									serializePeFileData(
+										levelsToPeFileData({
+											...parsedPrg,
+											levels: [level],
+											shadowChars: assertTuple(
+												parsedPrg.chars.shadows.flat().flat(),
+												6
+											),
+										})
+									),
+								],
+								{ type: "application/json" }
 							);
-							const levels =
-								deserializedPeFileDatas.flatMap(peFileDataToLevels);
 
-							return {
-								levels,
-								deserializedPeFileDatas,
-							};
+							const fileName = (index + 1).toString().padStart(3, "0") + ".pe";
+
+							return { blob, fileName };
 						});
 
-					if (parsedPeData?.type !== "ok") {
-						alert(`Could not parse pe: ${parsedPeData?.error ?? "No reason."}`);
-						return;
-					}
+						return {
+							parts,
+							fileName: "bubble bobble c64 - all levels.zip",
+						};
+					}}
+					label="Download PETSCII Editor file"
+				/>
+				<FileInput
+					accept={["pe"]}
+					multiple
+					onChange={async (files) => {
+						const pes = await Promise.all(
+							files.map((file) => file.arrayBuffer())
+						);
 
-					const old = unzipObject(parsedPrg.levels);
-					const new_ = unzipObject(parsedPeData.result.levels);
-					const levelsWithNewGraphics = zipObject({
-						...old,
-						bgColorLight: new_.bgColorLight,
-						bgColorDark: new_.bgColorDark,
-						platformChar: new_.platformChar,
-						sidebarChars: new_.sidebarChars,
-					});
+						const parsedPeData =
+							pes &&
+							attempt(() => {
+								const deserializedPeFileDatas = pes.map((buffer) =>
+									deserializePeFileData(new TextDecoder("utf-8").decode(buffer))
+								);
+								const levels =
+									deserializedPeFileDatas.flatMap(peFileDataToLevels);
 
-					setParsedPrg({ ...parsedPrg, levels: levelsWithNewGraphics });
-				}}
-			>
-				Choose files
-			</FileInput>
+								return {
+									levels,
+									deserializedPeFileDatas,
+								};
+							});
+
+						if (parsedPeData?.type !== "ok") {
+							alert(
+								`Could not parse pe: ${parsedPeData?.error ?? "No reason."}`
+							);
+							return;
+						}
+
+						const old = unzipObject(parsedPrg.levels);
+						const new_ = unzipObject(parsedPeData.result.levels);
+						const levelsWithNewGraphics = zipObject({
+							...old,
+							bgColorLight: new_.bgColorLight,
+							bgColorDark: new_.bgColorDark,
+							platformChar: new_.platformChar,
+							sidebarChars: new_.sidebarChars,
+						});
+
+						setParsedPrg({ ...parsedPrg, levels: levelsWithNewGraphics });
+					}}
+				>
+					Choose files
+				</FileInput>
+			</ImageButtons>
 		</Styling>
 	);
 }
