@@ -18,6 +18,12 @@ import { doubleImageWidth } from "../../bb/palette-image/palette-image";
 import { assertTuple } from "../../bb/tuple";
 import styled from "styled-components";
 
+const Styling = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: 3em;
+`;
+
 export function LevelGraphics({
 	parsedPrg,
 	setParsedPrg,
@@ -30,14 +36,12 @@ export function LevelGraphics({
 	readonly setLevelIndex: (index: number) => void;
 }): ReactNode {
 	return (
-		<>
+		<Styling>
 			<LevelSelector
 				parsedPrg={parsedPrg}
 				levelIndex={levelIndex}
 				setLevelIndex={setLevelIndex}
 			/>
-			<br />
-			<br />
 			<BlobDownloadButton
 				getBlob={async () => {
 					const parts = parsedPrg.levels.map((level, index) => {
@@ -117,7 +121,7 @@ export function LevelGraphics({
 			>
 				Choose files
 			</FileInput>
-		</>
+		</Styling>
 	);
 }
 
