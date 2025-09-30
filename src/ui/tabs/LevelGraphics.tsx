@@ -49,37 +49,6 @@ export function LevelGraphics({
 				setLevelIndex={setLevelIndex}
 			/>
 			<ImageButtons>
-				<BlobDownloadButton
-					getBlob={async () => {
-						const parts = parsedPrg.levels.map((level, index) => {
-							const blob = new Blob(
-								[
-									serializePeFileData(
-										levelsToPeFileData({
-											...parsedPrg,
-											levels: [level],
-											shadowChars: assertTuple(
-												parsedPrg.chars.shadows.flat().flat(),
-												6
-											),
-										})
-									),
-								],
-								{ type: "application/json" }
-							);
-
-							const fileName = (index + 1).toString().padStart(3, "0") + ".pe";
-
-							return { blob, fileName };
-						});
-
-						return {
-							parts,
-							fileName: "bubble bobble c64 - all levels.zip",
-						};
-					}}
-					label="Download PETSCII Editor file"
-				/>
 				<FileInput
 					accept={["pe"]}
 					multiple
@@ -125,6 +94,37 @@ export function LevelGraphics({
 				>
 					Choose files
 				</FileInput>
+				<BlobDownloadButton
+					getBlob={async () => {
+						const parts = parsedPrg.levels.map((level, index) => {
+							const blob = new Blob(
+								[
+									serializePeFileData(
+										levelsToPeFileData({
+											...parsedPrg,
+											levels: [level],
+											shadowChars: assertTuple(
+												parsedPrg.chars.shadows.flat().flat(),
+												6
+											),
+										})
+									),
+								],
+								{ type: "application/json" }
+							);
+
+							const fileName = (index + 1).toString().padStart(3, "0") + ".pe";
+
+							return { blob, fileName };
+						});
+
+						return {
+							parts,
+							fileName: "bubble bobble c64 - all levels.zip",
+						};
+					}}
+					label="Download PETSCII Editor file"
+				/>
 			</ImageButtons>
 		</Styling>
 	);
