@@ -73,11 +73,6 @@ export function LevelGraphics({
 				}}
 				label="Download PETSCII Editor file"
 			/>
-			<p>
-				Save the file generated above, then edit it in the{" "}
-				<a href="https://petscii.krissz.hu">PETSCII Editor web app</a>, save it
-				and select it here.
-			</p>
 			<FileInput
 				accept={["pe"]}
 				multiple
