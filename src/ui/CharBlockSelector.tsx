@@ -9,6 +9,7 @@ import { CharBlock } from "../bb/internal-data-formats/char-group";
 export const CharBlockSelector = styled(
 	(props: {
 		readonly charBlocks: ReadonlyArray<{
+			readonly title?: string;
 			readonly charBlock: CharBlock<2, 2>;
 			readonly palette: SubPalette;
 		}>;
@@ -21,6 +22,7 @@ export const CharBlockSelector = styled(
 				{props.charBlocks.map((item, itemIndex) => (
 					<ImageDataCanvas
 						key={itemIndex}
+						title={item.title}
 						className={
 							itemIndex === props.charBlockIndex ? "active" : undefined
 						}

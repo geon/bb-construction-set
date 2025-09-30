@@ -9,7 +9,12 @@ import {
 	rgbPalette,
 	PaletteIndex,
 } from "../../bb/internal-data-formats/palette";
-import { checkedAccess, range, updateArrayAtIndex } from "../../bb/functions";
+import {
+	checkedAccess,
+	range,
+	updateArrayAtIndex,
+	zipObject,
+} from "../../bb/functions";
 import {
 	ItemCategoryName,
 	validItemCategoryNames,
@@ -18,6 +23,7 @@ import { Item } from "../../bb/internal-data-formats/item-groups";
 import { TabBar } from "../TabBar";
 import { CharBlockSelector } from "../CharBlockSelector";
 import { getCharPalette } from "../../bb/palette-image/char";
+import { itemNames } from "../../bb/game-definitions/item-names";
 
 const pickerSize = "2em";
 const PaletteIndexButton = styled.button.attrs<{ selected: boolean }>(
@@ -122,7 +128,11 @@ export function Items({
 						}
 					</h3>
 					<CharBlockSelector
-						charBlocks={parsedPrg.items[itemCategoryName].map((item) => ({
+						charBlocks={zipObject({
+							itemName: itemNames[itemCategoryName],
+							item: parsedPrg.items[itemCategoryName],
+						}).map(({ itemName, item }) => ({
+							title: itemName,
 							charBlock: checkedAccess(
 								parsedPrg.chars.items as CharGroup<2, 2>,
 								item.charBlockIndex
