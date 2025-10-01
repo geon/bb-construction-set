@@ -1,3 +1,5 @@
+import { Coord2, origo } from "../../math/coord2";
+import { grid, LayoutRect } from "../../math/rect";
 import { bitsToByte, byteToBits } from "../bit-twiddling";
 import { zipObject } from "../functions";
 import { BgColors } from "../internal-data-formats/bg-colors";
@@ -19,6 +21,7 @@ import {
 	blitPaletteImage,
 	createPaletteImage,
 	drawGrid,
+	drawLayout,
 	PaletteImage,
 } from "./palette-image";
 
@@ -124,27 +127,56 @@ export function drawPlatformChars(
 	);
 }
 
+export function layOutChars(): LayoutRect {
+	const pos = origo;
+	const size: Coord2 = { x: 4, y: 8 };
+	return grid(
+		[
+			[
+				{ index: 0, pos, size },
+				{ index: 1, pos, size },
+				{ index: 4, pos, size },
+				{ index: 4, pos, size },
+			],
+			[
+				{ index: 2, pos, size },
+				{ index: 3, pos, size },
+				{ index: 4, pos, size },
+				{ index: 4, pos, size },
+			],
+			[
+				{ index: 0, pos, size },
+				{ index: 1, pos, size },
+				{ index: 4, pos, size },
+				{ index: 4, pos, size },
+			],
+			[
+				{ index: 2, pos, size },
+				{ index: 3, pos, size },
+				{ index: 4, pos, size },
+				{ index: 4, pos, size },
+			],
+		].flat(),
+		4,
+		origo
+	);
+}
+
 export function drawLevelPlatformChars(level: PlatformCharsData): PaletteImage {
 	const charPalette = getLevelCharPalette(level.bgColors);
 
-	const platformChars = [
-		[level.platformChar, level.platformChar],
-		[level.platformChar, level.platformChar],
+	const sidebarChars = level.sidebarChars ?? [
+		level.platformChar,
+		level.platformChar,
+		level.platformChar,
+		level.platformChar,
 	];
 
-	const [ul, ur, bl, br] = level.sidebarChars ?? platformChars.flat();
-	const sidebarChars = [
-		[ul, bl],
-		[ur, br],
-	];
-
-	const sidebarImage = drawCharBlock(sidebarChars, charPalette);
-	const platformImage = drawCharBlock(platformChars, charPalette);
-
-	return drawGrid(
-		[sidebarImage, platformImage, sidebarImage, platformImage],
-		2,
-		{ x: 8 * 1, y: 8 * 2 }
+	return drawLayout(
+		layOutChars(),
+		[...sidebarChars, level.platformChar].map((char) =>
+			drawChar(char, charPalette)
+		)
 	);
 }
 

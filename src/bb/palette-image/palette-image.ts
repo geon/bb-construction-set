@@ -6,7 +6,7 @@ import {
 	Rect,
 	rectIntersection,
 } from "../../math/rect";
-import { range, strictChunk, zipObject } from "../functions";
+import { checkedAccess, range, strictChunk, zipObject } from "../functions";
 import { PaletteIndex } from "../internal-data-formats/palette";
 import { MutableTuple } from "../tuple";
 
@@ -130,11 +130,8 @@ export function drawLayout(
 	layout: LayoutRect,
 	images: ReadonlyArray<PaletteImage>
 ): PaletteImage {
-	return zipObject({
-		image: images,
-		rect: leafs(layout),
-	}).reduce((soFar, current) => {
-		blitPaletteImage(soFar, current.image, current.rect.pos);
+	return leafs(layout).reduce((soFar, current) => {
+		blitPaletteImage(soFar, checkedAccess(images, current.index), current.pos);
 		return soFar;
 	}, createPaletteImage(layout.size));
 }

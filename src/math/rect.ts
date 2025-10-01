@@ -135,7 +135,9 @@ function _leafs(
 	return rect.children.flatMap((x) => _leafs(x, rectPosInParentSpace));
 }
 
-export function leafs(rect: LayoutRect): ReadonlyArray<Rect> {
+export function leafs(
+	rect: LayoutRect
+): ReadonlyArray<Rect & { index: number }> {
 	return _leafs(rect, origo).sort((a, b) => a.index - b.index);
 }
 
