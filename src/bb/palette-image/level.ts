@@ -33,7 +33,7 @@ export function drawLevel(
 	shadowChars: ShadowChars
 ): PaletteImage {
 	// Draw level.
-	const charPalette = getLevelCharPalette(level);
+	const charPalette = getLevelCharPalette(level.bgColors);
 	const charset = mapRecord(makeCharset(level, shadowChars), (char) =>
 		drawChar(char, charPalette)
 	);

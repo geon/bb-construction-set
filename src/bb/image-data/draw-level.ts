@@ -46,7 +46,7 @@ export function drawLevelThumbnail(
 	const image = new ImageData(levelWidth, levelHeight);
 
 	// Draw level.
-	const charPalette = getLevelCharPalette(level);
+	const charPalette = getLevelCharPalette(level.bgColors);
 	const charset = makeCharset(level, shadowChars);
 	const averageCharColors = mapRecord(charset, (char) =>
 		getAverageCharColor(char, charPalette)

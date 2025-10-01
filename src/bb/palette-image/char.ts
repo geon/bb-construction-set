@@ -86,11 +86,11 @@ export function parseHiresChar(image: PaletteImage<8, 8>): {
 	};
 }
 
-export function getLevelCharPalette(level: Level): SubPalette {
+export function getLevelCharPalette(bgColors: BgColors): SubPalette {
 	return getCharPalette(
 		// The color ram gets cleared to green at the beginning of the game.
 		palette.green,
-		level.bgColors
+		bgColors
 	);
 }
 
@@ -120,7 +120,7 @@ export function drawPlatformCharsToCanvas(
 }
 
 export function drawLevelPlatformChars(level: Level): PaletteImage {
-	const charPalette = getLevelCharPalette(level);
+	const charPalette = getLevelCharPalette(level.bgColors);
 
 	const platformChars = [
 		[level.platformChar, level.platformChar],
