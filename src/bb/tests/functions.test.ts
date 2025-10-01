@@ -6,6 +6,7 @@ import {
 	minBy,
 	padRight,
 	range,
+	uniqueBy,
 	unzipObject,
 	zipObject,
 } from "../functions";
@@ -56,4 +57,9 @@ test("minBy", () => {
 	expect(minBy(strings, (x) => -x.length)).toStrictEqual("hello");
 	expect(minBy(strings, (x) => x.charCodeAt(0))).toStrictEqual("geon");
 	expect(minBy(strings, (x) => -x.charCodeAt(0))).toStrictEqual("world");
+});
+
+test("uniqueBy", () => {
+	const strings = [1, 2, 3, 1, 2] as const;
+	expect(uniqueBy(strings, (x) => x)).toStrictEqual([1, 2, 3]);
 });
