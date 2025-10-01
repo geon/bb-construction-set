@@ -30,7 +30,7 @@ export function readLevels(
 
 	return zipObject({
 		platformChar: readPlatformChars(dataSegments.platformChars.buffer),
-		...readBgColors(dataSegments.bgColors.buffer),
+		...unzipObject(readBgColors(dataSegments.bgColors.buffer)),
 		sidebarChars: readSidebarChars(
 			dataSegments.sidebarChars.buffer,
 			dataSegments.sidebarCharsIndex.buffer

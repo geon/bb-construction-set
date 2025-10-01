@@ -2,18 +2,13 @@ import { BgColors } from "../internal-data-formats/bg-colors";
 import { PaletteIndex } from "../internal-data-formats/palette";
 import { ReadonlyUint8Array } from "../types";
 
-export function readBgColors(bytes: ReadonlyUint8Array): {
-	readonly bgColorLight: readonly PaletteIndex[];
-	readonly bgColorDark: readonly PaletteIndex[];
-} {
-	return {
-		bgColorLight: [...bytes].map(
-			(bgColorMetadata) => (bgColorMetadata & 0b1111) as PaletteIndex
-		),
-		bgColorDark: [...bytes].map(
-			(bgColorMetadata) => ((bgColorMetadata & 0b11110000) >> 4) as PaletteIndex
-		),
-	};
+export function readBgColors(
+	bytes: ReadonlyUint8Array
+): ReadonlyArray<BgColors> {
+	return [...bytes].map((bgColorMetadata) => ({
+		bgColorLight: (bgColorMetadata & 0b1111) as PaletteIndex,
+		bgColorDark: ((bgColorMetadata & 0b11110000) >> 4) as PaletteIndex,
+	}));
 }
 
 export function writeBgColors(bgColors: ReadonlyArray<BgColors>): Uint8Array {
