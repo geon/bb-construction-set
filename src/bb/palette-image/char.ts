@@ -107,8 +107,13 @@ export function getCharPalette(
 	];
 }
 
+type PlatformCharsData = Pick<
+	Level,
+	"platformChar" | "sidebarChars" | "bgColors"
+>;
+
 export function drawPlatformCharsToCanvas(
-	levels: readonly Level[]
+	levels: readonly PlatformCharsData[]
 ): PaletteImage {
 	const gap = { x: 5, y: 10 };
 	return drawGrid(
@@ -119,7 +124,7 @@ export function drawPlatformCharsToCanvas(
 	);
 }
 
-export function drawLevelPlatformChars(level: Level): PaletteImage {
+export function drawLevelPlatformChars(level: PlatformCharsData): PaletteImage {
 	const charPalette = getLevelCharPalette(level.bgColors);
 
 	const platformChars = [
