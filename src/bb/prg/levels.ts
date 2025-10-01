@@ -58,8 +58,10 @@ export function getLevelsPatch(levels: readonly Level[]) {
 		platformChars: writePlatformChars(unzippedLevels.platformChar),
 		sidebarChars: writeSidebarChars(unzippedLevels.sidebarChars),
 		bgColors: writeBgColors(
-			unzippedLevels.bgColorLight,
-			unzippedLevels.bgColorDark
+			zipObject({
+				bgColorLight: unzippedLevels.bgColorLight,
+				bgColorDark: unzippedLevels.bgColorDark,
+			})
 		),
 		holeMetadata: writeHoles(
 			unzippedLevels.tiles,
