@@ -292,8 +292,8 @@ export function getAllCharMulticolor(): ReadonlyArray<boolean> {
 
 export function getAllCharPalettes(): ReadonlyArray<SubPalette> {
 	const bgColors: BgColors = {
-		bgColorDark: palette.brown,
-		bgColorLight: palette.white,
+		dark: palette.brown,
+		light: palette.white,
 	};
 
 	return Object.values(

@@ -1,6 +1,6 @@
 import { PaletteIndex } from "./palette";
 
 export type BgColors = {
-	readonly bgColorDark: PaletteIndex;
-	readonly bgColorLight: PaletteIndex;
+	readonly dark: PaletteIndex;
+	readonly light: PaletteIndex;
 };

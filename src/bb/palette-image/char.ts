@@ -101,8 +101,8 @@ export function getCharPalette(
 	return [
 		// The background is black by default.
 		palette.black,
-		bgColors.bgColorDark,
-		bgColors.bgColorLight,
+		bgColors.dark,
+		bgColors.light,
 		charColor,
 	];
 }

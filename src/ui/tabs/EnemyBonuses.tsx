@@ -29,8 +29,8 @@ export function EnemyBonuses({
 
 	const bgColors: BgColors = {
 		// Global sprite colors
-		bgColorLight: 1,
-		bgColorDark: 2,
+		light: 1,
+		dark: 2,
 	};
 
 	return (
