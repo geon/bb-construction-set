@@ -30,6 +30,7 @@ import {
 	PaletteIndex,
 	SubPalette,
 } from "../internal-data-formats/palette";
+import { BgColors } from "../internal-data-formats/bg-colors";
 
 function layoutLargeLightning(index: number) {
 	// 4x4 grid, but 2 corners are missing 3 chars each.
@@ -290,10 +291,10 @@ export function getAllCharMulticolor(): ReadonlyArray<boolean> {
 }
 
 export function getAllCharPalettes(): ReadonlyArray<SubPalette> {
-	const bgColors = {
+	const bgColors: BgColors = {
 		bgColorDark: palette.brown,
 		bgColorLight: palette.white,
-	} as const;
+	};
 
 	return Object.values(
 		mapRecord(charGroupMeta, (meta) => {
