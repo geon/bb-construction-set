@@ -4,6 +4,7 @@ import {
 	charSegmentLocations,
 	enemyDeathBonusItemIndicesSegmentLocation,
 	itemSegmentLocations,
+	itemSpawnPositionsSegmentLocations,
 	largeBonusSpriteColorsSegmentLocation,
 	levelSegmentLocations,
 	monsterSpriteColorsSegmentLocation,
@@ -22,6 +23,7 @@ import {
 	getEnemyDeathBonusIndicesPatch,
 	parseEnemyDeathBonusIndices,
 } from "./enemy-death-bonuses";
+import { parseItemSpawnPositions } from "./item-spawn-positions";
 
 export function parsePrg(prg: ArrayBuffer): ParsedPrg {
 	const levels = readLevels(getDataSegments(prg, levelSegmentLocations));
@@ -39,8 +41,18 @@ export function parsePrg(prg: ArrayBuffer): ParsedPrg {
 	const enemyDeathBonusIndices = parseEnemyDeathBonusIndices(
 		getDataSegment(prg, enemyDeathBonusItemIndicesSegmentLocation)
 	);
+	const itemSpawnPositions = parseItemSpawnPositions(
+		getDataSegments(prg, itemSpawnPositionsSegmentLocations)
+	);
 
-	return { levels, sprites, chars, items, enemyDeathBonusIndices };
+	return {
+		levels,
+		sprites,
+		chars,
+		items,
+		enemyDeathBonusIndices,
+		itemSpawnPositions,
+	};
 }
 
 export function patchPrg(

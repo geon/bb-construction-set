@@ -3,6 +3,7 @@ import { SpriteGroups } from "./sprite";
 import { CharGroups } from "./char-group";
 import { ItemGroups } from "./item-groups";
 import { EnemyDeathBonusIndices } from "./enemy-death-bonuses";
+import { ItemSpawnPositions } from "./item-spawn-positions";
 
 export type ParsedPrg = {
 	readonly levels: readonly Level[];
@@ -10,4 +11,5 @@ export type ParsedPrg = {
 	readonly chars: CharGroups;
 	readonly items: ItemGroups;
 	readonly enemyDeathBonusIndices: EnemyDeathBonusIndices;
+	readonly itemSpawnPositions: ItemSpawnPositions;
 };
