@@ -6,6 +6,7 @@ import { Tiles } from "../../bb/internal-data-formats/level";
 import { TabBar } from "../TabBar";
 import { PlatformEditor } from "./PlatformEditor";
 import { Platforms } from "./Platforms";
+import { LevelGraphics } from "./LevelGraphics";
 
 const Styling = styled.div`
 	display: flex;
@@ -27,6 +28,7 @@ export function Levels({
 	parsedPrg,
 	setParsedPrg,
 	levelIndex,
+	setLevelIndex,
 }: {
 	readonly parsedPrg: ParsedPrg;
 	readonly setParsedPrg: (parsedPrg: ParsedPrg) => void;
@@ -52,6 +54,17 @@ export function Levels({
 						title: "Platforms",
 						render: () => (
 							<Platforms setParsedPrg={setParsedPrg} parsedPrg={parsedPrg} />
+						),
+					},
+					levelGraphics: {
+						title: "Level Graphics",
+						render: () => (
+							<LevelGraphics
+								parsedPrg={parsedPrg}
+								setParsedPrg={setParsedPrg}
+								levelIndex={levelIndex}
+								setLevelIndex={setLevelIndex}
+							/>
 						),
 					},
 					quickDoodle: {
