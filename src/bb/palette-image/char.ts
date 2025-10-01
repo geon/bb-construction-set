@@ -255,3 +255,8 @@ export function drawPlatformChars(
 	const layout = layOutAllLevelsPlatformChars();
 	return drawLayout(layout, levels.map(drawLevelPlatformChars));
 }
+
+export function parsePlatformChars(image: PaletteImage): PlatformCharsData[] {
+	const layout = layOutAllLevelsPlatformChars();
+	return parseLayout(layout, image).map(parseLevelPlatformChars);
+}
