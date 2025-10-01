@@ -112,7 +112,7 @@ type PlatformCharsData = Pick<
 	"platformChar" | "sidebarChars" | "bgColors"
 >;
 
-export function drawPlatformCharsToCanvas(
+export function drawPlatformChars(
 	levels: readonly PlatformCharsData[]
 ): PaletteImage {
 	const gap = { x: 5, y: 10 };
