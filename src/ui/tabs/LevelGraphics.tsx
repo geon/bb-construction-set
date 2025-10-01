@@ -83,8 +83,7 @@ export function LevelGraphics({
 						const new_ = unzipObject(parsedPeData.result.levels);
 						const levelsWithNewGraphics = zipObject({
 							...old,
-							bgColorLight: new_.bgColorLight,
-							bgColorDark: new_.bgColorDark,
+							bgColors: new_.bgColors,
 							platformChar: new_.platformChar,
 							sidebarChars: new_.sidebarChars,
 						});

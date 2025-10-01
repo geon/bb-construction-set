@@ -1,6 +1,5 @@
 import { CharBlock } from "./char";
 import { Char } from "./char";
-import { PaletteIndex } from "./palette";
 import { assertTuple, mapTuple, Tuple, MutableTuple } from "../tuple";
 import { levelHeight, levelWidth } from "../game-definitions/level-size";
 import { range } from "../functions";
@@ -9,6 +8,7 @@ import { ShadowChars } from "../prg/shadow-chars";
 import { CharacterName } from "../game-definitions/character-name";
 import { Coord2 } from "../../math/coord2";
 import { Rect } from "../../math/rect";
+import { BgColors } from "./bg-colors";
 
 export interface Character {
 	readonly characterName: CharacterName;
@@ -55,8 +55,7 @@ export type BubbleCurrentRectangles =
 
 export interface Level {
 	readonly tiles: Tiles;
-	readonly bgColorLight: PaletteIndex;
-	readonly bgColorDark: PaletteIndex;
+	readonly bgColors: BgColors;
 	readonly platformChar: Char;
 	readonly sidebarChars: CharBlock | undefined;
 	readonly monsters: Array<Character>;

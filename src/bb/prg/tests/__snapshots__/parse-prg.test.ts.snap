@@ -2,8 +2,10 @@
 
 exports[`parsePrg 1`] = `
 {
-  "bgColorDark": 2,
-  "bgColorLight": 1,
+  "bgColors": {
+    "bgColorDark": 2,
+    "bgColorLight": 1,
+  },
   "bubbleCurrentPerLineDefaults": [
     2,
     2,

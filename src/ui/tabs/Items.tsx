@@ -139,7 +139,7 @@ export function Items({
 							),
 							palette: getCharPalette(
 								item.paletteIndex,
-								checkedAccess(parsedPrg.levels, levelIndex)
+								checkedAccess(parsedPrg.levels, levelIndex).bgColors
 							),
 						}))}
 						charBlockIndex={
@@ -205,7 +205,7 @@ export function Items({
 										charBlock,
 										palette: getCharPalette(
 											paletteIndex,
-											checkedAccess(parsedPrg.levels, levelIndex)
+											checkedAccess(parsedPrg.levels, levelIndex).bgColors
 										),
 									}))}
 									charBlockIndex={

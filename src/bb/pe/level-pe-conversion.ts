@@ -158,8 +158,8 @@ export function levelsToPeScreensAndCharsets(
 				mode: "multicolor",
 				bgColor: 0,
 				charColor: 0, // Black to not tempt using it.
-				multiColor1: level.bgColorDark,
-				multiColor2: level.bgColorLight,
+				multiColor1: level.bgColors.bgColorDark,
+				multiColor2: level.bgColors.bgColorLight,
 				bitmaps: makeCharsetBitmaps(level, shadowChars),
 			})),
 		],
@@ -192,8 +192,8 @@ function levelToScreen(
 		colorBorder: palette.black,
 		colorBg: palette.black,
 		colorChar: paletteMulticolor.green, // for bubbles.
-		multiColor1: level.bgColorDark,
-		multiColor2: level.bgColorLight,
+		multiColor1: level.bgColors.bgColorDark,
+		multiColor2: level.bgColors.bgColorLight,
 		extBgColor1: 0,
 		extBgColor2: 0,
 		extBgColor3: 0,
@@ -580,8 +580,10 @@ export function peFileDataToLevels(peFileData: PeFileData): Level[] {
 		const arrowChars = new Set([12, 13, 14, 15]);
 		return {
 			tiles,
-			bgColorLight: screen.multiColor2 as PaletteIndex,
-			bgColorDark: screen.multiColor1 as PaletteIndex,
+			bgColors: {
+				bgColorLight: screen.multiColor2 as PaletteIndex,
+				bgColorDark: screen.multiColor1 as PaletteIndex,
+			},
 			platformChar,
 			sidebarChars: sidebarChars.some((char) =>
 				char.some((line, lineIndex) =>

@@ -30,7 +30,7 @@ export function readLevels(
 
 	return zipObject({
 		platformChar: readPlatformChars(dataSegments.platformChars.buffer),
-		...unzipObject(readBgColors(dataSegments.bgColors.buffer)),
+		bgColors: readBgColors(dataSegments.bgColors.buffer),
 		sidebarChars: readSidebarChars(
 			dataSegments.sidebarChars.buffer,
 			dataSegments.sidebarCharsIndex.buffer
@@ -57,12 +57,7 @@ export function getLevelsPatch(levels: readonly Level[]) {
 	const newSegments = {
 		platformChars: writePlatformChars(unzippedLevels.platformChar),
 		sidebarChars: writeSidebarChars(unzippedLevels.sidebarChars),
-		bgColors: writeBgColors(
-			zipObject({
-				bgColorLight: unzippedLevels.bgColorLight,
-				bgColorDark: unzippedLevels.bgColorDark,
-			})
-		),
+		bgColors: writeBgColors(unzippedLevels.bgColors),
 		holeMetadata: writeHoles(
 			unzippedLevels.tiles,
 			unzippedLevels.bubbleCurrentPerLineDefaults

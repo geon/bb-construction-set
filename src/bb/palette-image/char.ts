@@ -90,7 +90,7 @@ export function getLevelCharPalette(level: Level): SubPalette {
 	return getCharPalette(
 		// The color ram gets cleared to green at the beginning of the game.
 		palette.green,
-		level
+		level.bgColors
 	);
 }
 
