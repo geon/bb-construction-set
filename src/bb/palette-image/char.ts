@@ -1,5 +1,6 @@
 import { bitsToByte, byteToBits } from "../bit-twiddling";
 import { zipObject } from "../functions";
+import { BgColors } from "../internal-data-formats/bg-colors";
 import { Char } from "../internal-data-formats/char";
 import { CharBlock } from "../internal-data-formats/char-group";
 import {
@@ -95,10 +96,7 @@ export function getLevelCharPalette(level: Level): SubPalette {
 
 export function getCharPalette(
 	charColor: PaletteIndex,
-	bgColors: {
-		readonly bgColorDark: PaletteIndex;
-		readonly bgColorLight: PaletteIndex;
-	}
+	bgColors: BgColors
 ): SubPalette {
 	return [
 		// The background is black by default.
