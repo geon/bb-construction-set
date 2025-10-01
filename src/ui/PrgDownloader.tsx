@@ -15,6 +15,7 @@ import styled from "styled-components";
 import { drawLevelThumbnail } from "../bb/image-data/draw-level";
 import { mapAsync, mapRecord } from "../bb/functions";
 import { Patch } from "../bb/prg/io";
+import { CharGroup } from "../bb/internal-data-formats/char-group";
 
 const ImageCard = styled(Card)<{
 	readonly children: [JSX.Element, JSX.Element];
@@ -126,9 +127,13 @@ export function PrgDownloader({
 					imageData={imageDataFromPaletteImage(
 						doubleImageWidth(
 							drawLevel(
+								levelIndex,
 								parsedPrg.levels[levelIndex]!,
 								parsedPrg.sprites,
-								shadowChars
+								shadowChars,
+								parsedPrg.items,
+								parsedPrg.chars.items as CharGroup<2, 2>,
+								parsedPrg.itemSpawnPositions
 							)
 						)
 					)}
@@ -166,7 +171,15 @@ export function PrgDownloader({
 							blob: await imageDataToBlob(
 								imageDataFromPaletteImage(
 									doubleImageWidth(
-										drawLevel(level, parsedPrg.sprites, shadowChars)
+										drawLevel(
+											index,
+											level,
+											parsedPrg.sprites,
+											shadowChars,
+											parsedPrg.items,
+											parsedPrg.chars.items as CharGroup<2, 2>,
+											parsedPrg.itemSpawnPositions
+										)
 									)
 								)
 							),

@@ -1,13 +1,17 @@
 import { spritePosOffset } from "../../c64/consts";
 import { origo, subtract } from "../../math/coord2";
 import { grid } from "../../math/rect";
-import { mapRecord, range } from "../functions";
+import { checkedAccess, mapRecord, range } from "../functions";
 import { pl1, pl2, spriteLeftIndex } from "../game-definitions/character-name";
+import { getDesignatedPowerupItemIndex } from "../game-definitions/items";
 import {
 	levelHeight,
 	levelSize,
 	levelWidth,
 } from "../game-definitions/level-size";
+import { CharGroup } from "../internal-data-formats/char-group";
+import { ItemGroups } from "../internal-data-formats/item-groups";
+import { ItemSpawnPositions } from "../internal-data-formats/item-spawn-positions";
 import {
 	Level,
 	makeCharset,
@@ -15,9 +19,18 @@ import {
 	Tiles,
 } from "../internal-data-formats/level";
 import { SpriteGroups } from "../internal-data-formats/sprite";
+import {
+	ItemCategoryName,
+	validItemCategoryNames,
+} from "../prg/data-locations";
 import { ShadowChars } from "../prg/shadow-chars";
 import { assertTuple } from "../tuple";
-import { getLevelCharPalette, drawChar } from "./char";
+import {
+	getLevelCharPalette,
+	drawChar,
+	drawCharBlock,
+	getCharPalette,
+} from "./char";
 import {
 	PaletteImage,
 	drawGrid,
@@ -28,9 +41,13 @@ import {
 import { drawSprite, getSpritePalette } from "./sprite";
 
 export function drawLevel(
+	levelIndex: number,
 	level: Level,
 	spriteGroups: SpriteGroups,
-	shadowChars: ShadowChars
+	shadowChars: ShadowChars,
+	itemGroups: ItemGroups,
+	charBlocks: CharGroup<2, 2>,
+	itemSpawnPositions: ItemSpawnPositions
 ): PaletteImage {
 	// Draw level.
 	const charPalette = getLevelCharPalette(level.bgColors);
@@ -45,6 +62,34 @@ export function drawLevel(
 		levelWidth,
 		{ x: 4, y: 8 }
 	);
+
+	function drawItem(itemCategoryName: ItemCategoryName): void {
+		const spawnPosition = checkedAccess(itemSpawnPositions, levelIndex)[
+			itemCategoryName
+		];
+		const item = checkedAccess(
+			itemGroups[itemCategoryName],
+			itemCategoryName === "powerups"
+				? getDesignatedPowerupItemIndex(levelIndex)
+				: levelIndex % 47
+		);
+		blitPaletteImage(
+			image,
+			drawCharBlock(
+				checkedAccess(charBlocks, item.charBlockIndex),
+				getCharPalette(item.paletteIndex, level.bgColors)
+			),
+			{
+				x: spawnPosition.x * 4,
+				y: spawnPosition.y * 8,
+			}
+		);
+	}
+
+	// No normal items on the boss level.
+	if (levelIndex !== 99) {
+		validItemCategoryNames.forEach(drawItem);
+	}
 
 	for (const character of [pl1, pl2, ...level.monsters]) {
 		const sprite =
