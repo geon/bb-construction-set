@@ -6,6 +6,7 @@ import { checkedAccess, updateArrayAtIndex } from "../../bb/functions";
 import { CharBlockSelector } from "../CharBlockSelector";
 import { assertTuple } from "../../bb/tuple";
 import { getCharPalette } from "../../bb/palette-image/char";
+import { BgColors } from "../../bb/internal-data-formats/bg-colors";
 
 const Styling = styled.div`
 	display: flex;
@@ -26,11 +27,11 @@ export function EnemyBonuses({
 }): ReactNode {
 	const [bonusIndex, setBonusIndex] = useState(0);
 
-	const bgColors = {
+	const bgColors: BgColors = {
 		// Global sprite colors
 		bgColorLight: 1,
 		bgColorDark: 2,
-	} as const;
+	};
 
 	return (
 		<Styling>
