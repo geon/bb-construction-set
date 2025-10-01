@@ -7,7 +7,7 @@ import {
 	parseSpriteGroups,
 } from "../../bb/sprite-bin/sprite-bin";
 import { ImageDataCanvas } from "../ImageDataCanvas";
-import { drawSpritesToCanvas } from "../../bb/palette-image/sprite";
+import { drawSprites } from "../../bb/palette-image/sprite";
 import { FileInput } from "../FileInput";
 import { imageDataFromPaletteImage } from "../../bb/image-data/image-data";
 import { doubleImageWidth } from "../../bb/palette-image/palette-image";
@@ -23,7 +23,7 @@ export function Sprites({
 		<>
 			<ImageDataCanvas
 				imageData={imageDataFromPaletteImage(
-					doubleImageWidth(drawSpritesToCanvas(parsedPrg.sprites))
+					doubleImageWidth(drawSprites(parsedPrg.sprites))
 				)}
 			/>
 			<br />

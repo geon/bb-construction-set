@@ -98,7 +98,7 @@ export function layOutSpriteGroups(): LayoutRect {
 	);
 }
 
-export function drawSpritesToCanvas(spriteGroups: SpriteGroups): PaletteImage {
+export function drawSprites(spriteGroups: SpriteGroups): PaletteImage {
 	const sprites = Object.values(
 		mapRecord(spriteGroups, (spriteGroup) => {
 			return spriteGroup.sprites.map((sprite) =>
