@@ -385,3 +385,18 @@ export const enemyDeathBonusItemIndicesSegmentLocation: SegmentLocation = {
 	startAddress: 0xa791, // 0xa790 in the code
 	length: 6,
 };
+
+export type ItemSpawnPositionArrayName = "a" | "b" | "c";
+export const itemSpawnPositionsSegmentLocations: Record<
+	ItemSpawnPositionArrayName,
+	SegmentLocation
+> =
+	// The 2 coords are stored as 4 5-bit ints, packed into 3 bytes:
+	{
+		// 5 x points_x, 3 x points_y
+		a: { startAddress: 0xb569, length: 100 },
+		// 2 x points_y, 5 x powerups_x, 1 x powerups_y
+		b: { startAddress: 0xb5cd, length: 100 },
+		// 4 x powerups_y, 4 x other purpose
+		c: { startAddress: 0xb631, length: 100, mask: 0xf0 },
+	};
