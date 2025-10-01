@@ -1,7 +1,7 @@
 import { Coord2, origo } from "../../math/coord2";
 import { grid, LayoutRect } from "../../math/rect";
 import { bitsToByte, byteToBits } from "../bit-twiddling";
-import { zipObject } from "../functions";
+import { range, zipObject } from "../functions";
 import { BgColors } from "../internal-data-formats/bg-colors";
 import { Char } from "../internal-data-formats/char";
 import { CharBlock } from "../internal-data-formats/char-group";
@@ -20,7 +20,6 @@ import { assertTuple, mapTuple } from "../tuple";
 import {
 	blitPaletteImage,
 	createPaletteImage,
-	drawGrid,
 	drawLayout,
 	PaletteImage,
 	paletteImagesEqual,
@@ -116,18 +115,6 @@ export type PlatformCharsData = Pick<
 	Level,
 	"platformChar" | "sidebarChars" | "bgColors"
 >;
-
-export function drawPlatformChars(
-	levels: readonly PlatformCharsData[]
-): PaletteImage {
-	const gap = { x: 5, y: 10 };
-	return drawGrid(
-		levels.map(drawLevelPlatformChars),
-		10,
-		{ x: 8 * 2, y: 8 * 4 },
-		gap
-	);
-}
 
 export function layOutChars(): LayoutRect {
 	const pos = origo;
@@ -246,4 +233,25 @@ export function drawCharBlock(
 	}
 
 	return image;
+}
+
+function layOutAllLevelsPlatformChars() {
+	const gap = { x: 4, y: 8 };
+	const size = { x: 4 * 4, y: 8 * 2 };
+	return grid(
+		range(100).map((index) => ({
+			index,
+			size,
+			pos: origo,
+		})),
+		10,
+		gap
+	);
+}
+
+export function drawPlatformChars(
+	levels: readonly PlatformCharsData[]
+): PaletteImage {
+	const layout = layOutAllLevelsPlatformChars();
+	return drawLayout(layout, levels.map(drawLevelPlatformChars));
 }
