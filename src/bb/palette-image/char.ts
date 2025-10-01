@@ -127,6 +127,28 @@ export function drawPlatformChars(
 	);
 }
 
+const bgColorsChar: Char = [
+	[0, 0, 0, 0],
+	[0, 0, 0, 0],
+	[0, 0, 0, 0],
+	[0, 0, 0, 0],
+	[1, 1, 2, 2],
+	[1, 1, 2, 2],
+	[1, 1, 2, 2],
+	[1, 1, 2, 2],
+];
+
+const emptyChar: Char = [
+	[0, 0, 0, 0],
+	[0, 0, 0, 0],
+	[0, 0, 0, 0],
+	[0, 0, 0, 0],
+	[0, 0, 0, 0],
+	[0, 0, 0, 0],
+	[0, 0, 0, 0],
+	[0, 0, 0, 0],
+];
+
 export function layOutChars(): LayoutRect {
 	const pos = origo;
 	const size: Coord2 = { x: 4, y: 8 };
@@ -135,26 +157,14 @@ export function layOutChars(): LayoutRect {
 			[
 				{ index: 0, pos, size },
 				{ index: 1, pos, size },
-				{ index: 4, pos, size },
-				{ index: 4, pos, size },
-			],
-			[
-				{ index: 2, pos, size },
-				{ index: 3, pos, size },
-				{ index: 4, pos, size },
-				{ index: 4, pos, size },
-			],
-			[
-				{ index: 0, pos, size },
-				{ index: 1, pos, size },
-				{ index: 4, pos, size },
+				{ index: 6, pos, size },
 				{ index: 4, pos, size },
 			],
 			[
 				{ index: 2, pos, size },
 				{ index: 3, pos, size },
-				{ index: 4, pos, size },
-				{ index: 4, pos, size },
+				{ index: 6, pos, size },
+				{ index: 5, pos, size },
 			],
 		].flat(),
 		4,
@@ -164,6 +174,13 @@ export function layOutChars(): LayoutRect {
 
 export function drawLevelPlatformChars(level: PlatformCharsData): PaletteImage {
 	const charPalette = getLevelCharPalette(level.bgColors);
+	const drawCharWithPalette = (char: Char) => drawChar(char, charPalette);
+
+	const replaceBlackWithTransparent = (image: PaletteImage): PaletteImage => {
+		return image.map((row) =>
+			row.map((pixel) => (pixel === 0 ? undefined : pixel))
+		);
+	};
 
 	const sidebarChars = level.sidebarChars ?? [
 		level.platformChar,
@@ -174,9 +191,12 @@ export function drawLevelPlatformChars(level: PlatformCharsData): PaletteImage {
 
 	return drawLayout(
 		layOutChars(),
-		[...sidebarChars, level.platformChar].map((char) =>
-			drawChar(char, charPalette)
-		)
+		[
+			[...sidebarChars, level.platformChar].map(drawCharWithPalette),
+			[bgColorsChar, emptyChar]
+				.map(drawCharWithPalette)
+				.map(replaceBlackWithTransparent),
+		].flat()
 	);
 }
 
