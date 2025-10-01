@@ -168,3 +168,10 @@ export function doubleImageWidth(image: PaletteImage): PaletteImage {
 export function halfImageWidth(image: PaletteImage): PaletteImage {
 	return image.map((row) => strictChunk(row, 2).map(([x, _x]) => x));
 }
+
+export function paletteImagesEqual(a: PaletteImage, b: PaletteImage): boolean {
+	return zipObject({
+		a: a.flat(),
+		b: b.flat(),
+	}).every(({ a, b }) => a === b);
+}

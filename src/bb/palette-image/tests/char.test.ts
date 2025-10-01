@@ -1,5 +1,14 @@
 import { expect, test } from "vitest";
-import { drawChar, parseChar, parseHiresChar } from "../char";
+import {
+	drawChar,
+	drawLevelPlatformChars,
+	parseChar,
+	parseHiresChar,
+	parseLevelPlatformChars,
+	PlatformCharsData,
+} from "../char";
+import { readFileSync } from "fs";
+import { parsePrg } from "../../prg/parse-prg";
 
 test("drawChar", () => {
 	expect(
@@ -146,4 +155,19 @@ test("parseHiresChar", () => {
 		],
 		color: undefined,
 	});
+});
+
+test("drawLevelPlatformChars / parseLevelPlatformChars", () => {
+	const level = parsePrg(
+		readFileSync(__dirname + "/../../prg/tests/decompressed-bb.prg").buffer
+	).levels[0]!;
+	const platformCharsData: PlatformCharsData = {
+		bgColors: level.bgColors,
+		platformChar: level.platformChar,
+		sidebarChars: level.sidebarChars,
+	};
+
+	expect(
+		parseLevelPlatformChars(drawLevelPlatformChars(platformCharsData))
+	).toStrictEqual(platformCharsData);
 });

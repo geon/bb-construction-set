@@ -1,7 +1,7 @@
 import { Coord2, origo } from "../../math/coord2";
 import { grid, LayoutRect } from "../../math/rect";
 import { bitsToByte, byteToBits } from "../bit-twiddling";
-import { zipObject } from "../functions";
+import { checkedAccess, zipObject } from "../functions";
 import { BgColors } from "../internal-data-formats/bg-colors";
 import { Char } from "../internal-data-formats/char";
 import { CharBlock } from "../internal-data-formats/char-group";
@@ -16,13 +16,15 @@ import {
 	PaletteIndex,
 	SubPalette,
 } from "../internal-data-formats/palette";
-import { mapTuple } from "../tuple";
+import { assertTuple, mapTuple } from "../tuple";
 import {
 	blitPaletteImage,
 	createPaletteImage,
 	drawGrid,
 	drawLayout,
 	PaletteImage,
+	paletteImagesEqual,
+	parseLayout,
 } from "./palette-image";
 
 export function drawChar(
@@ -110,7 +112,7 @@ export function getCharPalette(
 	];
 }
 
-type PlatformCharsData = Pick<
+export type PlatformCharsData = Pick<
 	Level,
 	"platformChar" | "sidebarChars" | "bgColors"
 >;
@@ -198,6 +200,35 @@ export function drawLevelPlatformChars(level: PlatformCharsData): PaletteImage {
 				.map(replaceBlackWithTransparent),
 		].flat()
 	);
+}
+
+export function parseLevelPlatformChars(
+	image: PaletteImage
+): PlatformCharsData {
+	const charImages = parseLayout(layOutChars(), image) as PaletteImage<4, 8>[];
+	const sidebarCharImages = assertTuple(charImages.slice(0, 4), 4);
+	const platformCharImage = charImages[4]!;
+	const bgColorsImage = charImages[5]!;
+
+	const bgColors: BgColors = {
+		dark: checkedAccess(bgColorsImage[7], 0),
+		light: checkedAccess(bgColorsImage[7], 3),
+	};
+	const charPalette = getLevelCharPalette(bgColors);
+
+	const sidebarChars = sidebarCharImages.some(
+		(sidebarCharImage) =>
+			!paletteImagesEqual(sidebarCharImage, platformCharImage)
+	)
+		? mapTuple(
+				sidebarCharImages,
+				(charImage) => parseChar(charImage, charPalette).char
+		  )
+		: undefined;
+
+	const platformChar = parseChar(platformCharImage, charPalette).char;
+
+	return { bgColors, sidebarChars, platformChar };
 }
 
 export function drawCharBlock(
