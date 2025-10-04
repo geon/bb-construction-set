@@ -10,20 +10,16 @@ import {
 	levelWidth,
 } from "../game-definitions/level-size";
 import { CharGroup } from "../internal-data-formats/char-group";
-import { ItemGroups } from "../internal-data-formats/item-groups";
-import { ItemSpawnPositions } from "../internal-data-formats/item-spawn-positions";
 import {
-	Level,
 	makeCharset,
 	levelToCharNames,
 	Tiles,
 } from "../internal-data-formats/level";
-import { SpriteGroups } from "../internal-data-formats/sprite";
+import { ParsedPrg } from "../internal-data-formats/parsed-prg";
 import {
 	ItemCategoryName,
 	validItemCategoryNames,
 } from "../prg/data-locations";
-import { ShadowChars } from "../prg/shadow-chars";
 import { assertTuple } from "../tuple";
 import {
 	getLevelCharPalette,
@@ -42,13 +38,15 @@ import { drawSprite, getSpritePalette } from "./sprite";
 
 export function drawLevel(
 	levelIndex: number,
-	level: Level,
-	spriteGroups: SpriteGroups,
-	shadowChars: ShadowChars,
-	itemGroups: ItemGroups,
-	charBlocks: CharGroup<2, 2>,
-	itemSpawnPositions: ItemSpawnPositions
+	parsedPrg: ParsedPrg
 ): PaletteImage {
+	const level = parsedPrg.levels[levelIndex]!;
+	const shadowChars = assertTuple(parsedPrg.chars.shadows.flat().flat(), 6);
+	const itemSpawnPositions = parsedPrg.itemSpawnPositions;
+	const itemGroups = parsedPrg.items;
+	const charBlocks = parsedPrg.chars.items as CharGroup<2, 2>;
+	const spriteGroups = parsedPrg.sprites;
+
 	// Draw level.
 	const charPalette = getLevelCharPalette(level.bgColors);
 	const charset = mapRecord(makeCharset(level, shadowChars), (char) =>

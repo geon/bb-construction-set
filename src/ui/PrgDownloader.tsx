@@ -13,9 +13,8 @@ import { assertTuple } from "../bb/tuple";
 import { Card } from "./Card";
 import styled from "styled-components";
 import { drawLevelThumbnail } from "../bb/image-data/draw-level";
-import { mapAsync, mapRecord } from "../bb/functions";
+import { mapAsync, mapRecord, range } from "../bb/functions";
 import { Patch } from "../bb/prg/io";
-import { CharGroup } from "../bb/internal-data-formats/char-group";
 
 const ImageCard = styled(Card)<{
 	readonly children: [JSX.Element, JSX.Element];
@@ -117,25 +116,13 @@ export function PrgDownloader({
 	readonly levelIndex: number;
 	readonly setLevelIndex: React.Dispatch<React.SetStateAction<number>>;
 }): ReactNode {
-	const shadowChars = assertTuple(parsedPrg.chars.shadows.flat().flat(), 6);
-
 	return (
 		<ImageCard>
 			<LevelPreview>
 				<ImageDataCanvas
 					style={{ width: "100%" }}
 					imageData={imageDataFromPaletteImage(
-						doubleImageWidth(
-							drawLevel(
-								levelIndex,
-								parsedPrg.levels[levelIndex]!,
-								parsedPrg.sprites,
-								shadowChars,
-								parsedPrg.items,
-								parsedPrg.chars.items as CharGroup<2, 2>,
-								parsedPrg.itemSpawnPositions
-							)
-						)
+						doubleImageWidth(drawLevel(levelIndex, parsedPrg))
 					)}
 				/>
 				<LevelSelector
@@ -166,21 +153,11 @@ export function PrgDownloader({
 			<ButtonRow>
 				<SaveLevelImagesButton
 					getBlob={async () => ({
-						parts: await mapAsync(parsedPrg.levels, async (level, index) => ({
+						parts: await mapAsync(range(100), async (index) => ({
 							fileName: (index + 1).toString().padStart(3, "0") + ".png",
 							blob: await imageDataToBlob(
 								imageDataFromPaletteImage(
-									doubleImageWidth(
-										drawLevel(
-											index,
-											level,
-											parsedPrg.sprites,
-											shadowChars,
-											parsedPrg.items,
-											parsedPrg.chars.items as CharGroup<2, 2>,
-											parsedPrg.itemSpawnPositions
-										)
-									)
+									doubleImageWidth(drawLevel(index, parsedPrg))
 								)
 							),
 						})),
