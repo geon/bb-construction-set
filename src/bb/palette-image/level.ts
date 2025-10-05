@@ -42,7 +42,6 @@ export function drawLevel(
 ): PaletteImage {
 	const level = parsedPrg.levels[levelIndex]!;
 	const charBlocks = parsedPrg.chars.items as CharGroup<2, 2>;
-	const spriteGroups = parsedPrg.sprites;
 
 	// Draw level.
 	const charPalette = getLevelCharPalette(level.bgColors);
@@ -90,7 +89,7 @@ export function drawLevel(
 
 	for (const character of [pl1, pl2, ...level.monsters]) {
 		const sprite =
-			spriteGroups[character.characterName].sprites[
+			parsedPrg.sprites[character.characterName].sprites[
 				character.facingLeft ? spriteLeftIndex[character.characterName] : 0
 			]!;
 		const spritePos = subtract(character.spawnPoint, spritePosOffset);
@@ -99,7 +98,7 @@ export function drawLevel(
 				? character.facingLeft
 					? 3 // Cyan
 					: 5 // Dark green
-				: spriteGroups[character.characterName].color;
+				: parsedPrg.sprites[character.characterName].color;
 
 		blitPaletteImage(image, drawSprite(sprite, getSpritePalette(spriteColor)), {
 			x: spritePos.x / 2,
