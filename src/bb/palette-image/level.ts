@@ -41,7 +41,6 @@ export function drawLevel(
 	parsedPrg: ParsedPrg
 ): PaletteImage {
 	const level = parsedPrg.levels[levelIndex]!;
-	const itemGroups = parsedPrg.items;
 	const charBlocks = parsedPrg.chars.items as CharGroup<2, 2>;
 	const spriteGroups = parsedPrg.sprites;
 
@@ -66,7 +65,7 @@ export function drawLevel(
 			levelIndex
 		)[itemCategoryName];
 		const item = checkedAccess(
-			itemGroups[itemCategoryName],
+			parsedPrg.items[itemCategoryName],
 			itemCategoryName === "powerups"
 				? getDesignatedPowerupItemIndex(levelIndex)
 				: levelIndex % 47
