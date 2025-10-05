@@ -15,6 +15,7 @@ import styled from "styled-components";
 import { drawLevelThumbnail } from "../bb/image-data/draw-level";
 import { mapAsync, mapRecord, range } from "../bb/functions";
 import { Patch } from "../bb/prg/io";
+import { ButtonRow } from "./ButtonRow";
 
 const ImageCard = styled(Card)<{
 	readonly children: [JSX.Element, JSX.Element];
@@ -83,12 +84,6 @@ const LevelSelector = styled(
 			opacity: 100%;
 		}
 	}
-`;
-
-const ButtonRow = styled.div`
-	display: flex;
-	justify-content: space-between;
-	gap: 1em;
 `;
 
 const LevelPreview = styled.div`
