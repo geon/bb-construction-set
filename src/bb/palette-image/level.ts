@@ -41,7 +41,6 @@ export function drawLevel(
 	parsedPrg: ParsedPrg
 ): PaletteImage {
 	const level = parsedPrg.levels[levelIndex]!;
-	const shadowChars = assertTuple(parsedPrg.chars.shadows.flat().flat(), 6);
 	const itemSpawnPositions = parsedPrg.itemSpawnPositions;
 	const itemGroups = parsedPrg.items;
 	const charBlocks = parsedPrg.chars.items as CharGroup<2, 2>;
@@ -49,8 +48,9 @@ export function drawLevel(
 
 	// Draw level.
 	const charPalette = getLevelCharPalette(level.bgColors);
-	const charset = mapRecord(makeCharset(level, shadowChars), (char) =>
-		drawChar(char, charPalette)
+	const charset = mapRecord(
+		makeCharset(level, assertTuple(parsedPrg.chars.shadows.flat().flat(), 6)),
+		(char) => drawChar(char, charPalette)
 	);
 
 	const image = drawGrid(
