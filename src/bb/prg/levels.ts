@@ -7,6 +7,7 @@ import {
 	readBubbleCurrentRectangles,
 	writeBubbleCurrentRectangles,
 } from "./bubble-current-rectangles";
+import { getBubbleSpawnsPatch, readBubbleSpawns } from "./bubble-spawns";
 import { readPlatformChars, writePlatformChars } from "./charset-char";
 import { levelSegmentLocations } from "./data-locations";
 import { DataSegment, patchFromSegment } from "./io";
@@ -44,6 +45,7 @@ export function readLevels(
 			dataSegments.holeMetadata.buffer,
 			tileBitmaps
 		),
+		bubbleSpawns: readBubbleSpawns(dataSegments.bubbleSpawns.buffer),
 	});
 }
 
@@ -78,5 +80,6 @@ export function getLevelsPatch(levels: readonly Level[]) {
 			patchFromSegment(levelSegmentLocations[segmentName], newSegment)
 		),
 		getMonstersPatch(unzippedLevels.monsters),
+		getBubbleSpawnsPatch(unzippedLevels.bubbleSpawns),
 	].flat();
 }

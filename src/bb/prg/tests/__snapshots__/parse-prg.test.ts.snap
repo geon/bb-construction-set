@@ -55,6 +55,12 @@ exports[`parsePrg 1`] = `
     ],
     "type": "rectangles",
   },
+  "bubbleSpawns": {
+    "extend": false,
+    "fire": false,
+    "lightning": false,
+    "water": false,
+  },
   "monsters": [
     {
       "characterName": "bubbleBuster",
