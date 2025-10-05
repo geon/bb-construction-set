@@ -15,6 +15,7 @@ import {
 	levelToCharNames,
 	Tiles,
 } from "../internal-data-formats/level";
+import { palette } from "../internal-data-formats/palette";
 import { ParsedPrg } from "../internal-data-formats/parsed-prg";
 import {
 	ItemCategoryName,
@@ -98,8 +99,8 @@ export function drawLevel(
 		const spriteColor =
 			character.characterName === "player"
 				? character.facingLeft
-					? 3 // Cyan
-					: 5 // Dark green
+					? palette.cyan
+					: palette.green
 				: parsedPrg.sprites[character.characterName].color;
 
 		blitPaletteImage(image, drawSprite(sprite, getSpritePalette(spriteColor)), {
