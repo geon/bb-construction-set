@@ -41,7 +41,6 @@ export function drawLevel(
 	parsedPrg: ParsedPrg
 ): PaletteImage {
 	const level = parsedPrg.levels[levelIndex]!;
-	const charBlocks = parsedPrg.chars.items as CharGroup<2, 2>;
 
 	// Draw level.
 	const charPalette = getLevelCharPalette(level.bgColors);
@@ -72,7 +71,10 @@ export function drawLevel(
 		blitPaletteImage(
 			image,
 			drawCharBlock(
-				checkedAccess(charBlocks, item.charBlockIndex),
+				checkedAccess(
+					parsedPrg.chars.items as CharGroup<2, 2>,
+					item.charBlockIndex
+				),
 				getCharPalette(item.paletteIndex, level.bgColors)
 			),
 			{
