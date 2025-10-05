@@ -85,17 +85,10 @@ const LevelSelector = styled(
 	}
 `;
 
-const SaveLevelImagesButton = styled(BlobDownloadButton)``;
-
 const ButtonRow = styled.div`
 	display: flex;
-	justify-content: end;
+	justify-content: space-between;
 	gap: 1em;
-
-	${SaveLevelImagesButton} {
-		/* Place the images-button to the left. */
-		margin-right: auto;
-	}
 `;
 
 const LevelPreview = styled.div`
@@ -151,7 +144,7 @@ export function PrgDownloader({
 				</p> */}
 
 			<ButtonRow>
-				<SaveLevelImagesButton
+				<BlobDownloadButton
 					getBlob={async () => ({
 						parts: await mapAsync(range(100), async (index) => ({
 							fileName: (index + 1).toString().padStart(3, "0") + ".png",
