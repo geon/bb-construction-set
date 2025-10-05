@@ -92,6 +92,13 @@ export const levelSegmentLocations: Readonly<
 		// Determined through experimentation with ts code. Might be wrong.
 		length: 1145,
 	},
+
+	// 4 bits:
+	// lightning
+	// fire
+	// water
+	// extend
+	bubbleSpawns: { startAddress: 0xb631, length: 100, mask: 0x0f },
 };
 
 export const spriteCounts: Record<SpriteGroupName, number> = {
