@@ -62,7 +62,7 @@ export const paletteMulticolor = {
 	yellow: 7 + 8,
 } as const;
 
-export interface SubPalette extends Tuple<PaletteIndex, 4> {}
+export interface SubPalette extends Tuple<PaletteIndex | undefined, 4> {}
 export type SubPaletteIndex = 0 | 1 | 2 | 3;
 
 export function getSubPaletteIndex(

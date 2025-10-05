@@ -315,7 +315,7 @@ export function drawCharGroups(charGroups: CharGroups): PaletteImage {
 			? doubleImageWidth(
 					drawChar(maskedChar.char, maskedChar.palette, maskedChar.mask)
 			  )
-			: drawHiresChar(maskedChar.char, maskedChar.palette[3])
+			: drawHiresChar(maskedChar.char, maskedChar.palette[3] ?? 0)
 	);
 	const layout = layOutChars();
 	return drawLayout(

@@ -17,7 +17,7 @@ import { Color, mixColors } from "../../math/color";
 import { Char } from "../internal-data-formats/char";
 import { spritePosOffset, spriteSizePixels } from "../../c64/consts";
 import { CharacterName, pl1, pl2 } from "../game-definitions/character-name";
-import { chunk, mapRecord } from "../functions";
+import { chunk, isDefined, mapRecord } from "../functions";
 import { add, scale, subtract } from "../../math/coord2";
 import { ShadowChars } from "../prg/shadow-chars";
 import { getLevelCharPalette } from "../palette-image/char";
@@ -99,6 +99,7 @@ function getAverageCharColor(char: Char, charPalette: SubPalette): Color {
 		char
 			.flatMap((pixels) => pixels)
 			.map((pixel) => charPalette[pixel])
+			.filter(isDefined)
 			.map((paletteIndex) => rgbPalette[paletteIndex])
 	);
 }
