@@ -355,6 +355,11 @@ export const charSegmentLocations: Readonly<
 	},
 };
 
+export const fontLevelNumbersMask = mapTuple(
+	range(charSegmentLocations.fontLevelNumbers5px.length * 8),
+	(index) => index < 10 * 5
+);
+
 export const validItemCategoryNames = ["points", "powerups"] as const;
 export type ItemCategoryName = (typeof validItemCategoryNames)[number];
 export const itemSegmentLocations: Record<

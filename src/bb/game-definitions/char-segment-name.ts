@@ -219,7 +219,7 @@ export const charGroupMeta = {
 	},
 	fontLevelNumbers5px: {
 		width: 1,
-		height: 6,
+		height: 7,
 		count: 1,
 		hasMask: false,
 		transposed: false,

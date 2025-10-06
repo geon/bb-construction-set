@@ -9,7 +9,7 @@ import {
 import { DataSegment, Patch, patchFromSegment } from "./io";
 import { mapTuple } from "../tuple";
 import { CharGroups, CharGroup } from "../internal-data-formats/char-group";
-import { charSegmentLocations } from "./data-locations";
+import { charSegmentLocations, fontLevelNumbersMask } from "./data-locations";
 
 export function parseCharGroups(
 	dataSegments: Record<CharSegmentName, DataSegment>
@@ -61,6 +61,10 @@ export function getCharGroupsPatch(charGroups: CharGroups): Patch {
 	const newCharSegments = serializeCharGroups(charGroups);
 	return objectEntries(newCharSegments).flatMap(
 		([segmentName, newCharSegment]) =>
-			patchFromSegment(charSegmentLocations[segmentName], newCharSegment.buffer)
+			patchFromSegment(
+				charSegmentLocations[segmentName],
+				newCharSegment.buffer,
+				segmentName === "fontLevelNumbers5px" ? fontLevelNumbersMask : undefined
+			)
 	);
 }
