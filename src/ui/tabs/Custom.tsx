@@ -80,6 +80,8 @@ function parseViceMonitorPokes(value: string): Patch | undefined {
 
 function formatViceMonitorPokes(manual: Patch): string {
 	return manual
-		.map((byte) => `> ${byte[0].toString(16)} ${byte[1].toString(16)}`)
+		.map(
+			([address, value]) => `> ${address.toString(16)} ${value.toString(16)}`
+		)
 		.join("\n");
 }
