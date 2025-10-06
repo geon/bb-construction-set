@@ -19,7 +19,7 @@ import {
 	SpriteGroupName,
 	spriteGroupNames,
 } from "../game-definitions/sprite-segment-name";
-import { DataSegment, patchFromSegment, SingleBytePatch } from "./io";
+import { DataSegment, patchFromSegment } from "./io";
 import { ReadonlyUint8Array } from "../types";
 import {
 	spriteSizeBytes,
@@ -161,18 +161,14 @@ export function getSpritesPatch(spriteGroups: SpriteGroups) {
 	return spriteGroupNames.flatMap((segmentName) => {
 		const sprites = spriteGroups[segmentName].sprites;
 
-		return sprites.flatMap((sprite, spriteIndex) => {
+		return sprites.flatMap((sprite) => {
 			const mask = spriteMasks[segmentName];
 			const spriteBytes = serializeSprite(sprite);
-			return spriteBytes.map((spriteByte, byteIndex): SingleBytePatch => {
-				return [
-					spriteDataSegmentLocations[segmentName].startAddress +
-						spriteIndex * 64 +
-						byteIndex,
-					spriteByte,
-					mask?.[byteIndex] !== false ? undefined : 0x00,
-				];
-			});
+			return patchFromSegment(
+				spriteDataSegmentLocations[segmentName],
+				new Uint8Array(spriteBytes),
+				mask
+			);
 		});
 	});
 }
