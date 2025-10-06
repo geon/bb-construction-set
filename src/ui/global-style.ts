@@ -59,6 +59,10 @@ const GlobalStyle = createGlobalStyle`
 		font-weight: 500;
 		font-family: inherit;
 
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+
 		background-color: #1a1a1a;
 		@media (prefers-color-scheme: light) {
 			background-color: #f9f9f9;
