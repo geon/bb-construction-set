@@ -1,4 +1,9 @@
-import React, { ComponentPropsWithoutRef, ReactNode } from "react";
+import React, {
+	ComponentPropsWithoutRef,
+	ComponentType,
+	DOMAttributes,
+	ReactNode,
+} from "react";
 import styled from "styled-components";
 
 interface TabBarItemStyleProps {
@@ -67,17 +72,12 @@ export function TabBar<TId extends string>(props: {
 	return (
 		<>
 			<TabBarStyle>
-				{entries(props.tabs).map(([id, tab]) => {
-					return (
-						<TabBarItemStyle
-							key={id}
-							active={id === activeTabId}
-							onClick={() => setActiveTabId(id)}
-						>
-							{tab.title}
-						</TabBarItemStyle>
-					);
-				})}
+				<StatelessTabBarButtons
+					activeTabId={activeTabId}
+					setActiveTabId={setActiveTabId}
+					tabs={props.tabs}
+					TabComponent={TabBarItemStyle}
+				/>
 			</TabBarStyle>
 			{activeTab.render(activeTab, activeTabId)}
 		</>
@@ -88,4 +88,29 @@ function entries<TKey extends string, TValue>(
 	record: Record<TKey, TValue>
 ): (readonly [TKey, TValue])[] {
 	return Object.entries(record) as unknown as (readonly [TKey, TValue])[];
+}
+
+export function StatelessTabBarButtons<TId extends string>(props: {
+	readonly activeTabId: TId;
+	readonly setActiveTabId: React.Dispatch<React.SetStateAction<TId>>;
+	readonly tabs: Record<TId, Tab<TId>>;
+	readonly TabComponent: ComponentType<
+		TabBarItemStyleProps & Pick<DOMAttributes<Element>, "onClick" | "children">
+	>;
+}): ReactNode {
+	return (
+		<>
+			{entries(props.tabs).map(([id, tab]) => {
+				return (
+					<props.TabComponent
+						key={id}
+						active={id === props.activeTabId}
+						onClick={() => props.setActiveTabId(id)}
+					>
+						{tab.title}
+					</props.TabComponent>
+				);
+			})}
+		</>
+	);
 }
