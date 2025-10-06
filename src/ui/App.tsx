@@ -15,6 +15,7 @@ import { Custom } from "./tabs/Custom";
 import { Patch } from "../bb/prg/io";
 import { EnemyBonuses } from "./tabs/EnemyBonuses";
 import { Levels } from "./tabs/Levels";
+import { LevelPreviewCard } from "./LevelPreviewCard";
 
 const Page = styled.div`
 	width: 600px;
@@ -62,13 +63,18 @@ export function App() {
 	return (
 		<Page>
 			<h1>BB Construction Set</h1>
+			{parsedPrg && (
+				<LevelPreviewCard
+					parsedPrg={parsedPrg}
+					levelIndex={levelIndex}
+					setLevelIndex={setLevelIndex}
+				/>
+			)}
 			{prg ? (
 				<PrgDownloader
 					prg={prg}
 					parsedPrg={parsedPrg}
 					manualPatch={manualPatch}
-					levelIndex={levelIndex}
-					setLevelIndex={setLevelIndex}
 				/>
 			) : (
 				<Card>
