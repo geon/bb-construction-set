@@ -56,7 +56,7 @@ export function PrgDownloader({
 						})),
 						fileName: "bubble bobble c64 - all level images.zip",
 					})}
-					label="Save level images"
+					label="Save Level Images"
 				/>
 				<BlobDownloadButton
 					getBlob={async () => {
@@ -69,7 +69,7 @@ export function PrgDownloader({
 							fileName: "custom bubble bobble.prg",
 						};
 					}}
-					label="Save"
+					label="Save Custom Prg"
 				/>
 			</ButtonRow>
 		</Card>
