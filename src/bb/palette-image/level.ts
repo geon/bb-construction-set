@@ -1,7 +1,14 @@
 import { spritePosOffset } from "../../c64/consts";
 import { origo, subtract } from "../../math/coord2";
 import { grid } from "../../math/rect";
-import { checkedAccess, mapRecord, range } from "../functions";
+import {
+	checkedAccess,
+	chunk,
+	mapRecord,
+	range,
+	repeat,
+	stringPadLeft,
+} from "../functions";
 import { pl1, pl2, spriteLeftIndex } from "../game-definitions/character-name";
 import { getDesignatedPowerupItemIndex } from "../game-definitions/items";
 import {
@@ -9,7 +16,9 @@ import {
 	levelSize,
 	levelWidth,
 } from "../game-definitions/level-size";
+import { Char } from "../internal-data-formats/char";
 import { CharGroup } from "../internal-data-formats/char-group";
+import { parseColorPixelByte } from "../internal-data-formats/color-pixel-byte";
 import {
 	makeCharset,
 	levelToCharNames,
@@ -34,6 +43,7 @@ import {
 	blitPaletteImage,
 	drawLayout,
 	parseLayout,
+	cropPaletteImage,
 } from "./palette-image";
 import { drawSprite, getSpritePalette } from "./sprite";
 
@@ -57,6 +67,39 @@ export function drawLevel(
 		levelWidth,
 		{ x: 4, y: 8 }
 	);
+
+	function drawLevelNumber(levelIndex: number): void {
+		const digitHeight = 5;
+		const digitCharImages = chunk(
+			parsedPrg.chars.fontLevelNumbers5px.flat(3),
+			digitHeight
+		)
+			.slice(0, 10)
+			.map((char6px) => {
+				const char: Char = assertTuple(
+					[...char6px, ...repeat(parseColorPixelByte(0), 8 - digitHeight)],
+					8
+				);
+				return cropPaletteImage(
+					drawChar(char, getCharPalette(palette.white, level.bgColors)),
+					{
+						pos: origo,
+						size: { x: 4, y: digitHeight + 1 },
+					}
+				);
+			});
+
+		const levelDigits = stringPadLeft((levelIndex + 1).toString(), 2, "0")
+			.split("")
+			.map((x) => parseInt(x));
+		[...levelDigits.entries()].reverse().forEach(([index, digit]) =>
+			blitPaletteImage(image, digitCharImages[digit]!, {
+				x: levelIndex === 99 ? index * 3 - 1 : 4 * index,
+				y: 0,
+			})
+		);
+	}
+	drawLevelNumber(levelIndex);
 
 	function drawItem(itemCategoryName: ItemCategoryName): void {
 		const spawnPosition = checkedAccess(

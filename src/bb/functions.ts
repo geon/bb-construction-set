@@ -291,3 +291,18 @@ export function uniqueBy<T>(
 		return unseen;
 	});
 }
+
+export function stringPadLeft(
+	string: string,
+	length: number,
+	padding: string
+): string {
+	while (string.length < length) {
+		string = padding + string;
+	}
+	return string;
+}
+
+export function repeat<T>(element: T, count: number): T[] {
+	return range(count).map(() => element);
+}
