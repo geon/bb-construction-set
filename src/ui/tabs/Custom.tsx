@@ -64,7 +64,8 @@ function parseViceMonitorPokes(value: string): Patch | undefined {
 			});
 
 			try {
-				return assertTuple(numbers, 2);
+				const [address, value] = assertTuple(numbers, 2);
+				return [address, value];
 			} catch (_) {
 				// Nicer error message than assertTuple.
 				throw new Error(
