@@ -5,6 +5,7 @@ import React, {
 	ReactNode,
 } from "react";
 import styled from "styled-components";
+import { objectEntries } from "../bb/functions";
 
 interface TabBarItemStyleProps {
 	readonly active: boolean;
@@ -84,12 +85,6 @@ export function TabBar<TId extends string>(props: {
 	);
 }
 
-function entries<TKey extends string, TValue>(
-	record: Record<TKey, TValue>
-): (readonly [TKey, TValue])[] {
-	return Object.entries(record) as unknown as (readonly [TKey, TValue])[];
-}
-
 export function StatelessTabBarButtons<TId extends string>(props: {
 	readonly activeTabId: TId;
 	readonly setActiveTabId: React.Dispatch<React.SetStateAction<TId>>;
@@ -100,7 +95,7 @@ export function StatelessTabBarButtons<TId extends string>(props: {
 }): ReactNode {
 	return (
 		<>
-			{entries(props.tabs).map(([id, tab]) => {
+			{objectEntries(props.tabs).map(([id, tab]) => {
 				return (
 					<props.TabComponent
 						key={id}
