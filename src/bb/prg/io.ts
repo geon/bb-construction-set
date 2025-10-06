@@ -70,7 +70,11 @@ export function mixByte(
 	return (newByte & mask) | (originalByte & ~mask);
 }
 
-export type SingleBytePatch = [address: number, value: number, mask?: number];
+export type SingleBytePatch = readonly [
+	address: number,
+	value: number,
+	mask?: number
+];
 export type Patch = ReadonlyArray<SingleBytePatch>;
 
 export function applyPatch(prg: ArrayBuffer, patch: Patch): ArrayBuffer {
