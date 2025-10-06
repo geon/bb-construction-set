@@ -325,9 +325,9 @@ export const charSegmentLocations: Readonly<
 		startAddress: 0xadb1,
 		length: charSegmentLengths.fontHurryUp,
 	},
-	fontLevelNumbers6px: {
+	fontLevelNumbers5px: {
 		startAddress: 0xad75,
-		length: charSegmentLengths.fontLevelNumbers6px,
+		length: charSegmentLengths.fontLevelNumbers5px,
 	},
 	fontNumeric: {
 		startAddress: 0x4000,

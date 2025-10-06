@@ -22,7 +22,7 @@ export const charSegmentNames = [
 	"secretLevelBasementDoor",
 	"shadows",
 	"fontHurryUp",
-	"fontLevelNumbers6px",
+	"fontLevelNumbers5px",
 	"fontNumeric",
 	"fontFatneck",
 	"fontLifeDotLines",
@@ -217,7 +217,7 @@ export const charGroupMeta = {
 		transposed: false,
 		multicolor: true,
 	},
-	fontLevelNumbers6px: {
+	fontLevelNumbers5px: {
 		width: 1,
 		height: 6,
 		count: 1,

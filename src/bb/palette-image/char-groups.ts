@@ -216,7 +216,7 @@ export function layOutChars(): LayoutRect {
 									"column",
 									12
 								),
-								laidOutCharGroups.fontLevelNumbers6px,
+								laidOutCharGroups.fontLevelNumbers5px,
 							],
 							"row",
 							4 * 3
