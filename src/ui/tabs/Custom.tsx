@@ -1,6 +1,6 @@
 import { ReactNode, useState } from "react";
 import styled from "styled-components";
-import { Patch, SingleBytePatch } from "../../bb/prg/io";
+import { Patch, SingleBytePatchEntry } from "../../bb/prg/io";
 import { assertTuple } from "../../bb/tuple";
 
 const TextArea = styled.textarea<{ $error?: boolean }>`
@@ -47,7 +47,7 @@ export function Custom(props: {
 
 function parseViceMonitorPokes(value: string): Patch | undefined {
 	try {
-		return value.split("\n").map((line): SingleBytePatch => {
+		return value.split("\n").map((line): SingleBytePatchEntry => {
 			const strings = line.split(" ").filter((x) => x !== "");
 
 			const caret = strings.shift();

@@ -70,11 +70,11 @@ export function mixByte(
 	return (newByte & mask) | (originalByte & ~mask);
 }
 
-export type SingleBytePatch = readonly [
+export type SingleBytePatchEntry = readonly [
 	address: number,
 	readonly [value: number, mask?: number]
 ];
-export type Patch = ReadonlyArray<SingleBytePatch>;
+export type Patch = ReadonlyArray<SingleBytePatchEntry>;
 
 export function applyPatch(prg: ArrayBuffer, patch: Patch): ArrayBuffer {
 	const prgStartAddress = getPrgStartAddress(prg);
@@ -97,7 +97,7 @@ export function patchFromSegment(
 	mask?: readonly boolean[]
 ): Patch {
 	return [...buffer].map(
-		(value, index): SingleBytePatch => [
+		(value, index): SingleBytePatchEntry => [
 			segmentLocation.startAddress + index,
 			[value, mask?.[index] !== false ? segmentLocation.mask : 0x00],
 		]
