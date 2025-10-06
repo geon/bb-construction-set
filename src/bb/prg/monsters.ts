@@ -76,8 +76,7 @@ export function getMonstersPatch(monsterses: readonly Character[][]): Patch {
 		.map(
 			([value, mask], index): SingleBytePatch => [
 				levelSegmentLocations.monsters.startAddress + index,
-				value,
-				mask,
+				[value, mask],
 			]
 		);
 }
