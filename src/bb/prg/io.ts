@@ -72,8 +72,7 @@ export function mixByte(
 
 export type SingleBytePatch = readonly [
 	address: number,
-	value: number,
-	mask?: number
+	readonly [value: number, mask?: number]
 ];
 export type Patch = ReadonlyArray<SingleBytePatch>;
 
@@ -81,7 +80,7 @@ export function applyPatch(prg: ArrayBuffer, patch: Patch): ArrayBuffer {
 	const prgStartAddress = getPrgStartAddress(prg);
 
 	const patchedPrg = new Uint8Array(prg.slice());
-	for (const [address, value, mask] of patch) {
+	for (const [address, [value, mask]] of patch) {
 		const index = address - prgStartAddress + 2;
 		patchedPrg[index] = mixByte(
 			value,
@@ -100,8 +99,7 @@ export function patchFromSegment(
 	return [...buffer].map(
 		(value, index): SingleBytePatch => [
 			segmentLocation.startAddress + index,
-			value,
-			mask?.[index] !== false ? segmentLocation.mask : 0x00,
+			[value, mask?.[index] !== false ? segmentLocation.mask : 0x00],
 		]
 	);
 }

@@ -65,7 +65,7 @@ function parseViceMonitorPokes(value: string): Patch | undefined {
 
 			try {
 				const [address, value] = assertTuple(numbers, 2);
-				return [address, value];
+				return [address, [value]];
 			} catch (_) {
 				// Nicer error message than assertTuple.
 				throw new Error(
@@ -81,7 +81,7 @@ function parseViceMonitorPokes(value: string): Patch | undefined {
 function formatViceMonitorPokes(manual: Patch): string {
 	return manual
 		.map(
-			([address, value]) => `> ${address.toString(16)} ${value.toString(16)}`
+			([address, [value]]) => `> ${address.toString(16)} ${value.toString(16)}`
 		)
 		.join("\n");
 }
