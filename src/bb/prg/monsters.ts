@@ -7,7 +7,7 @@ import {
 } from "./data-locations";
 import { ReadonlyUint8Array } from "../types";
 import { characterNames } from "../game-definitions/character-name";
-import { Patch, SingleBytePatch } from "./io";
+import { Patch, SingleBytePatchEntry } from "./io";
 
 export function readMonsters(monsterBytes: ReadonlyUint8Array) {
 	const monstersForAllLevels: Character[][] = [];
@@ -74,7 +74,7 @@ export function getMonstersPatch(monsterses: readonly Character[][]): Patch {
 			return [...subBytes, [0] as const];
 		})
 		.map(
-			([value, mask], index): SingleBytePatch => [
+			([value, mask], index): SingleBytePatchEntry => [
 				levelSegmentLocations.monsters.startAddress + index,
 				[value, mask],
 			]
