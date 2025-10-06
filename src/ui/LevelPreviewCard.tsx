@@ -99,31 +99,48 @@ export function LevelPreviewCard({
 				)}
 			</LevelPreview>
 			<div>
-				<ButtonRow>
-					<button
-						onClick={() =>
-							levelIndex !== undefined && setLevelIndex(levelIndex - 1)
-						}
-						disabled={!(levelIndex !== undefined && levelIndex > 0)}
-					>
-						{icons.chevrons.left}
-					</button>
-					<button
-						onClick={() => setLevelIndex(undefined)}
-						disabled={levelIndex === undefined}
-					>
-						{icons.grid}
-					</button>
-					<button
-						onClick={() =>
-							levelIndex !== undefined && setLevelIndex(levelIndex + 1)
-						}
-						disabled={!(levelIndex !== undefined && levelIndex < 99)}
-					>
-						{icons.chevrons.right}
-					</button>
-				</ButtonRow>
+				<LevelSelectionButtons
+					levelIndex={levelIndex}
+					setLevelIndex={setLevelIndex}
+				/>
 			</div>
 		</ImageCard>
+	);
+}
+
+function LevelSelectionButtons({
+	levelIndex,
+	setLevelIndex,
+}: {
+	readonly levelIndex: number | undefined;
+	readonly setLevelIndex: React.Dispatch<
+		React.SetStateAction<number | undefined>
+	>;
+}) {
+	return (
+		<ButtonRow>
+			<button
+				onClick={() =>
+					levelIndex !== undefined && setLevelIndex(levelIndex - 1)
+				}
+				disabled={!(levelIndex !== undefined && levelIndex > 0)}
+			>
+				{icons.chevrons.left}
+			</button>
+			<button
+				onClick={() => setLevelIndex(undefined)}
+				disabled={levelIndex === undefined}
+			>
+				{icons.grid}
+			</button>
+			<button
+				onClick={() =>
+					levelIndex !== undefined && setLevelIndex(levelIndex + 1)
+				}
+				disabled={!(levelIndex !== undefined && levelIndex < 99)}
+			>
+				{icons.chevrons.right}
+			</button>
+		</ButtonRow>
 	);
 }
