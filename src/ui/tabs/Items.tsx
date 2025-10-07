@@ -86,11 +86,7 @@ const Styling = styled.div`
 	}
 `;
 
-export function Items({
-	parsedPrg,
-	setParsedPrg,
-	levelIndex,
-}: {
+export function Items(props: {
 	readonly parsedPrg: ParsedPrg;
 	readonly setParsedPrg: (parsedPrg: ParsedPrg) => void;
 	readonly levelIndex: number;
@@ -130,16 +126,16 @@ export function Items({
 					<CharBlockSelector
 						charBlocks={zipObject({
 							itemName: itemNames[itemCategoryName],
-							item: parsedPrg.items[itemCategoryName],
+							item: props.parsedPrg.items[itemCategoryName],
 						}).map(({ itemName, item }) => ({
 							title: itemName,
 							charBlock: checkedAccess(
-								parsedPrg.chars.items as CharGroup<2, 2>,
+								props.parsedPrg.chars.items as CharGroup<2, 2>,
 								item.charBlockIndex
 							),
 							palette: getCharPalette(
 								item.paletteIndex,
-								checkedAccess(parsedPrg.levels, levelIndex).bgColors
+								checkedAccess(props.parsedPrg.levels, props.levelIndex).bgColors
 							),
 						}))}
 						charBlockIndex={
@@ -165,17 +161,17 @@ export function Items({
 								<Palette
 									selectePaletteIndex={
 										checkedAccess(
-											parsedPrg.items[selectedItemCategoryName],
+											props.parsedPrg.items[selectedItemCategoryName],
 											selectedItemIndex
 										).paletteIndex
 									}
 									onPick={(paletteIndex) => {
-										setParsedPrg({
-											...parsedPrg,
+										props.setParsedPrg({
+											...props.parsedPrg,
 											items: {
-												...parsedPrg.items,
+												...props.parsedPrg.items,
 												[selectedItemCategoryName]: updateArrayAtIndex(
-													parsedPrg.items[selectedItemCategoryName],
+													props.parsedPrg.items[selectedItemCategoryName],
 													selectedItemIndex,
 													(item): Item => ({
 														...item,
@@ -193,34 +189,37 @@ export function Items({
 						title: "Chars",
 						render: () => {
 							const paletteIndex = checkedAccess(
-								parsedPrg.items[selectedItemCategoryName],
+								props.parsedPrg.items[selectedItemCategoryName],
 								selectedItemIndex
 							).paletteIndex;
 
 							return (
 								<CharBlockSelector
 									charBlocks={(
-										parsedPrg.chars.items as ReadonlyArray<CharBlock<2, 2>>
+										props.parsedPrg.chars.items as ReadonlyArray<
+											CharBlock<2, 2>
+										>
 									).map((charBlock) => ({
 										charBlock,
 										palette: getCharPalette(
 											paletteIndex,
-											checkedAccess(parsedPrg.levels, levelIndex).bgColors
+											checkedAccess(props.parsedPrg.levels, props.levelIndex)
+												.bgColors
 										),
 									}))}
 									charBlockIndex={
 										checkedAccess(
-											parsedPrg.items[selectedItemCategoryName],
+											props.parsedPrg.items[selectedItemCategoryName],
 											selectedItemIndex
 										).charBlockIndex
 									}
 									setCharBlockIndex={(charBlockIndex) => {
-										setParsedPrg({
-											...parsedPrg,
+										props.setParsedPrg({
+											...props.parsedPrg,
 											items: {
-												...parsedPrg.items,
+												...props.parsedPrg.items,
 												[selectedItemCategoryName]: updateArrayAtIndex(
-													parsedPrg.items[selectedItemCategoryName],
+													props.parsedPrg.items[selectedItemCategoryName],
 													selectedItemIndex,
 													(item): Item => ({
 														...item,
