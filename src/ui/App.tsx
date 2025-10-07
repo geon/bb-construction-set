@@ -56,7 +56,13 @@ export function App() {
 
 	const { parsedPrg, prg } = state ?? { parsedPrg: undefined, prg: undefined };
 
-	const [levelIndex, setLevelIndex] = useState<number | undefined>(0);
+	const [levelIndex, _setLevelIndex] = useState<number>(0);
+	const [showLevelSelectionGrid, setShowLevelSelectionGrid] =
+		useState<boolean>(false);
+	const setLevelIndex = (index: number) => {
+		_setLevelIndex(index);
+		setShowLevelSelectionGrid(false);
+	};
 
 	const [manualPatch, setManualPatch] = useState<Patch>([]);
 
@@ -67,6 +73,8 @@ export function App() {
 				parsedPrg={parsedPrg}
 				levelIndex={levelIndex}
 				setLevelIndex={setLevelIndex}
+				showLevelSelectionGrid={showLevelSelectionGrid}
+				setShowLevelSelectionGrid={setShowLevelSelectionGrid}
 			/>
 			<PrgDownloader
 				prg={prg}
