@@ -12,10 +12,7 @@ import { FileInput } from "../FileInput";
 import { imageDataFromPaletteImage } from "../../bb/image-data/image-data";
 import { doubleImageWidth } from "../../bb/palette-image/palette-image";
 
-export function Sprites({
-	parsedPrg,
-	setParsedPrg,
-}: {
+export function Sprites(props: {
 	readonly parsedPrg: ParsedPrg;
 	readonly setParsedPrg: (parsedPrg: ParsedPrg) => void;
 }): ReactNode {
@@ -23,14 +20,14 @@ export function Sprites({
 		<>
 			<ImageDataCanvas
 				imageData={imageDataFromPaletteImage(
-					doubleImageWidth(drawSprites(parsedPrg.sprites))
+					doubleImageWidth(drawSprites(props.parsedPrg.sprites))
 				)}
 			/>
 			<br />
 			<br />
 			<BlobDownloadButton
 				getBlob={async () => ({
-					blob: new Blob([serializeSpriteGroups(parsedPrg.sprites)], {
+					blob: new Blob([serializeSpriteGroups(props.parsedPrg.sprites)], {
 						type: "application/json",
 					}),
 					fileName: "bubble bobble c64 - all sprites.bin",
@@ -60,7 +57,10 @@ export function Sprites({
 						return;
 					}
 
-					setParsedPrg({ ...parsedPrg, sprites: parsedSpriteBinData.result });
+					props.setParsedPrg({
+						...props.parsedPrg,
+						sprites: parsedSpriteBinData.result,
+					});
 				}}
 			>
 				Choose file
