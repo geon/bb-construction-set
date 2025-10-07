@@ -16,17 +16,16 @@ import { attempt } from "../../bb/functions";
 import { BlobDownloadButton } from "../BlobDownloadButton";
 import { FileInput } from "../FileInput";
 
-export function Chars({
-	parsedPrg,
-	setParsedPrg,
-}: {
+export function Chars(props: {
 	readonly parsedPrg: ParsedPrg;
 	readonly setParsedPrg: (parsedPrg: ParsedPrg) => void;
 }): ReactNode {
 	return (
 		<>
 			<ImageDataCanvas
-				imageData={imageDataFromPaletteImage(drawCharGroups(parsedPrg.chars))}
+				imageData={imageDataFromPaletteImage(
+					drawCharGroups(props.parsedPrg.chars)
+				)}
 			/>
 			<br />
 			<br />
@@ -34,7 +33,7 @@ export function Chars({
 				getBlob={async () => ({
 					fileName: "chars.png",
 					blob: await imageDataToBlob(
-						imageDataFromPaletteImage(drawCharGroups(parsedPrg.chars))
+						imageDataFromPaletteImage(drawCharGroups(props.parsedPrg.chars))
 					),
 				})}
 				label="Download image"
@@ -55,7 +54,10 @@ export function Chars({
 						return;
 					}
 
-					setParsedPrg({ ...parsedPrg, chars: parsedCharGroups.result });
+					props.setParsedPrg({
+						...props.parsedPrg,
+						chars: parsedCharGroups.result,
+					});
 				}}
 			>
 				Choose file
