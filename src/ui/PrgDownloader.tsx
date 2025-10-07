@@ -24,13 +24,7 @@ export function PrgDownloader({
 }): ReactNode {
 	return (
 		<Card>
-			{/* <h2>Save your prg-file</h2> */}
 			{/* <p>
-				Use the tools below to view and patch your prg-file. When you are done,
-				you can download the prg-file. You can also resume editing your saved
-				prg-file later.
-				</p>
-				<p>
 				Before running your custom prg-file, it needs to be compressed with a
 				tool like{" "}
 				<a href="https://bitbucket.org/magli143/exomizer/wiki/downloads/exomizer-3.1.2.zip">
