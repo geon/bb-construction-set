@@ -73,11 +73,7 @@ const LevelPreview = styled.div`
 	flex-direction: column;
 `;
 
-export function LevelPreviewCard({
-	parsedPrg,
-	levelIndex,
-	setLevelIndex,
-}: {
+export function LevelPreviewCard(props: {
 	readonly parsedPrg: ParsedPrg;
 	readonly levelIndex: number | undefined;
 	readonly setLevelIndex: React.Dispatch<
@@ -87,21 +83,24 @@ export function LevelPreviewCard({
 	return (
 		<ImageCard>
 			<LevelPreview>
-				{levelIndex !== undefined ? (
+				{props.levelIndex !== undefined ? (
 					<ImageDataCanvas
 						style={{ width: "100%" }}
 						imageData={imageDataFromPaletteImage(
-							doubleImageWidth(drawLevel(levelIndex, parsedPrg))
+							doubleImageWidth(drawLevel(props.levelIndex, props.parsedPrg))
 						)}
 					/>
 				) : (
-					<LevelSelector parsedPrg={parsedPrg} setLevelIndex={setLevelIndex} />
+					<LevelSelector
+						parsedPrg={props.parsedPrg}
+						setLevelIndex={props.setLevelIndex}
+					/>
 				)}
 			</LevelPreview>
 			<div>
 				<LevelSelectionButtons
-					levelIndex={levelIndex}
-					setLevelIndex={setLevelIndex}
+					levelIndex={props.levelIndex}
+					setLevelIndex={props.setLevelIndex}
 				/>
 			</div>
 		</ImageCard>
