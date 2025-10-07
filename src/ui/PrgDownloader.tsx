@@ -14,12 +14,7 @@ import { Patch } from "../bb/prg/io";
 import { ButtonRow } from "./ButtonRow";
 import { FileInput } from "./FileInput";
 
-export function PrgDownloader({
-	parsedPrg,
-	prg,
-	setPrg,
-	manualPatch,
-}: {
+export function PrgDownloader(props: {
 	readonly parsedPrg: ParsedPrg;
 	readonly prg: ArrayBuffer;
 	readonly setPrg: (arrayBuffer: ArrayBuffer) => void;
@@ -47,7 +42,7 @@ export function PrgDownloader({
 							fileName: (index + 1).toString().padStart(3, "0") + ".png",
 							blob: await imageDataToBlob(
 								imageDataFromPaletteImage(
-									doubleImageWidth(drawLevel(index, parsedPrg))
+									doubleImageWidth(drawLevel(index, props.parsedPrg))
 								)
 							),
 						})),
@@ -57,13 +52,17 @@ export function PrgDownloader({
 				/>
 				<FileInput
 					accept={["prg"]}
-					onChange={async (file) => setPrg(await file.arrayBuffer())}
+					onChange={async (file) => props.setPrg(await file.arrayBuffer())}
 				>
 					Open Prg...
 				</FileInput>
 				<BlobDownloadButton
 					getBlob={async () => {
-						const patched = patchPrg(prg, parsedPrg, manualPatch);
+						const patched = patchPrg(
+							props.prg,
+							props.parsedPrg,
+							props.manualPatch
+						);
 
 						return {
 							blob: new Blob([patched], {
