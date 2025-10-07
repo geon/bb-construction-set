@@ -17,15 +17,12 @@ import { FileInput } from "../FileInput";
 import { ImageDataCanvas } from "../ImageDataCanvas";
 import { ImageButtons } from "./Levels";
 
-export function Platforms({
-	setParsedPrg,
-	parsedPrg,
-}: {
+export function Platforms(props: {
 	readonly setParsedPrg: (parsedPrg: ParsedPrg) => void;
 	readonly parsedPrg: ParsedPrg;
 }): ReactNode | readonly ReactNode[] {
 	const levelsTilesImageData = imageDataFromPaletteImage(
-		drawLevelsTiles(parsedPrg.levels.map((level) => level.tiles))
+		drawLevelsTiles(props.parsedPrg.levels.map((level) => level.tiles))
 	);
 
 	return (
@@ -51,10 +48,10 @@ export function Platforms({
 							return;
 						}
 
-						setParsedPrg({
-							...parsedPrg,
+						props.setParsedPrg({
+							...props.parsedPrg,
 							levels: zipObject({
-								level: parsedPrg.levels,
+								level: props.parsedPrg.levels,
 								tiles: parsedTiles.result,
 							}).map(({ level, tiles }) => ({ ...level, tiles })),
 						});
