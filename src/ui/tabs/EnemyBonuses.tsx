@@ -18,10 +18,7 @@ const Styling = styled.div`
 	}
 `;
 
-export function EnemyBonuses({
-	parsedPrg,
-	setParsedPrg,
-}: {
+export function EnemyBonuses(props: {
 	readonly parsedPrg: ParsedPrg;
 	readonly setParsedPrg: (parsedPrg: ParsedPrg) => void;
 }): ReactNode {
@@ -36,11 +33,11 @@ export function EnemyBonuses({
 	return (
 		<Styling>
 			<CharBlockSelector
-				charBlocks={parsedPrg.enemyDeathBonusIndices.map((bonusIndex) => {
-					const item = checkedAccess(parsedPrg.items.points, bonusIndex);
+				charBlocks={props.parsedPrg.enemyDeathBonusIndices.map((bonusIndex) => {
+					const item = checkedAccess(props.parsedPrg.items.points, bonusIndex);
 					return {
 						charBlock: checkedAccess(
-							parsedPrg.chars.items as CharGroup<2, 2>,
+							props.parsedPrg.chars.items as CharGroup<2, 2>,
 							item.charBlockIndex
 						),
 						palette: getCharPalette(item.paletteIndex, bgColors),
@@ -50,23 +47,23 @@ export function EnemyBonuses({
 				setCharBlockIndex={setBonusIndex}
 			/>
 			<CharBlockSelector
-				charBlocks={parsedPrg.items.points.map((item) => ({
+				charBlocks={props.parsedPrg.items.points.map((item) => ({
 					charBlock: checkedAccess(
-						parsedPrg.chars.items as CharGroup<2, 2>,
+						props.parsedPrg.chars.items as CharGroup<2, 2>,
 						item.charBlockIndex
 					),
 					palette: getCharPalette(item.paletteIndex, bgColors),
 				}))}
 				charBlockIndex={checkedAccess(
-					parsedPrg.enemyDeathBonusIndices,
+					props.parsedPrg.enemyDeathBonusIndices,
 					bonusIndex
 				)}
 				setCharBlockIndex={(itemIndex) => {
-					setParsedPrg({
-						...parsedPrg,
+					props.setParsedPrg({
+						...props.parsedPrg,
 						enemyDeathBonusIndices: assertTuple(
 							updateArrayAtIndex(
-								parsedPrg.enemyDeathBonusIndices,
+								props.parsedPrg.enemyDeathBonusIndices,
 								bonusIndex,
 								() => itemIndex
 							),
