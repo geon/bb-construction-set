@@ -6,6 +6,7 @@ import React, {
 } from "react";
 import styled from "styled-components";
 import { objectEntries } from "../bb/functions";
+import { Setter } from "./types";
 
 interface TabBarItemStyleProps {
 	readonly active: boolean;
@@ -87,7 +88,7 @@ export function TabBar<TId extends string>(props: {
 
 export function StatelessTabBarButtons<TId extends string>(props: {
 	readonly activeTabId: TId;
-	readonly setActiveTabId: React.Dispatch<React.SetStateAction<TId>>;
+	readonly setActiveTabId: Setter<TId>;
 	readonly tabs: Record<TId, Tab<TId>>;
 	readonly TabComponent: ComponentType<
 		TabBarItemStyleProps & Pick<DOMAttributes<Element>, "onClick" | "children">
