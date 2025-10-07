@@ -108,10 +108,7 @@ export function LevelPreviewCard({
 	);
 }
 
-function LevelSelectionButtons({
-	levelIndex,
-	setLevelIndex,
-}: {
+function LevelSelectionButtons(props: {
 	readonly levelIndex: number | undefined;
 	readonly setLevelIndex: React.Dispatch<
 		React.SetStateAction<number | undefined>
@@ -121,23 +118,25 @@ function LevelSelectionButtons({
 		<ButtonRow>
 			<button
 				onClick={() =>
-					levelIndex !== undefined && setLevelIndex(levelIndex - 1)
+					props.levelIndex !== undefined &&
+					props.setLevelIndex(props.levelIndex - 1)
 				}
-				disabled={!(levelIndex !== undefined && levelIndex > 0)}
+				disabled={!(props.levelIndex !== undefined && props.levelIndex > 0)}
 			>
 				{icons.chevrons.left}
 			</button>
 			<button
-				onClick={() => setLevelIndex(undefined)}
-				disabled={levelIndex === undefined}
+				onClick={() => props.setLevelIndex(undefined)}
+				disabled={props.levelIndex === undefined}
 			>
 				{icons.grid}
 			</button>
 			<button
 				onClick={() =>
-					levelIndex !== undefined && setLevelIndex(levelIndex + 1)
+					props.levelIndex !== undefined &&
+					props.setLevelIndex(props.levelIndex + 1)
 				}
-				disabled={!(levelIndex !== undefined && levelIndex < 99)}
+				disabled={!(props.levelIndex !== undefined && props.levelIndex < 99)}
 			>
 				{icons.chevrons.right}
 			</button>
