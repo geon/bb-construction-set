@@ -24,25 +24,24 @@ export const ImageButtons = styled.div`
 	gap: 1em;
 `;
 
-export function Levels({
-	parsedPrg,
-	setParsedPrg,
-	levelIndex,
-	setLevelIndex,
-}: {
+export function Levels(props: {
 	readonly parsedPrg: ParsedPrg;
 	readonly setParsedPrg: (parsedPrg: ParsedPrg) => void;
 	readonly levelIndex: number;
 	readonly setLevelIndex: (index: number) => void;
 }): ReactNode {
-	const level = parsedPrg.levels[levelIndex]!;
+	const level = props.parsedPrg.levels[props.levelIndex]!;
 	const setTiles = (tiles: Tiles) =>
-		setParsedPrg({
-			...parsedPrg,
-			levels: updateArrayAtIndex(parsedPrg.levels, levelIndex, (level) => ({
-				...level,
-				tiles,
-			})),
+		props.setParsedPrg({
+			...props.parsedPrg,
+			levels: updateArrayAtIndex(
+				props.parsedPrg.levels,
+				props.levelIndex,
+				(level) => ({
+					...level,
+					tiles,
+				})
+			),
 		});
 
 	return (
@@ -53,17 +52,20 @@ export function Levels({
 					tiles: {
 						title: "Platforms",
 						render: () => (
-							<Platforms setParsedPrg={setParsedPrg} parsedPrg={parsedPrg} />
+							<Platforms
+								setParsedPrg={props.setParsedPrg}
+								parsedPrg={props.parsedPrg}
+							/>
 						),
 					},
 					levelGraphics: {
 						title: "Level Graphics",
 						render: () => (
 							<LevelGraphics
-								parsedPrg={parsedPrg}
-								setParsedPrg={setParsedPrg}
-								levelIndex={levelIndex}
-								setLevelIndex={setLevelIndex}
+								parsedPrg={props.parsedPrg}
+								setParsedPrg={props.setParsedPrg}
+								levelIndex={props.levelIndex}
+								setLevelIndex={props.setLevelIndex}
 							/>
 						),
 					},
