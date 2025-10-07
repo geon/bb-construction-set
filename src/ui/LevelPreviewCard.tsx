@@ -76,13 +76,15 @@ const LevelPreview = styled.div`
 
 export function LevelPreviewCard(props: {
 	readonly parsedPrg: ParsedPrg;
-	readonly levelIndex: number | undefined;
-	readonly setLevelIndex: Setter<number | undefined>;
+	readonly levelIndex: number;
+	readonly setLevelIndex: Setter<number>;
+	readonly showLevelSelectionGrid: boolean;
+	readonly setShowLevelSelectionGrid: Setter<boolean>;
 }): ReactNode {
 	return (
 		<ImageCard>
 			<LevelPreview>
-				{props.levelIndex !== undefined ? (
+				{!props.showLevelSelectionGrid ? (
 					<ImageDataCanvas
 						style={{ width: "100%" }}
 						imageData={imageDataFromPaletteImage(
@@ -100,6 +102,8 @@ export function LevelPreviewCard(props: {
 				<LevelSelectionButtons
 					levelIndex={props.levelIndex}
 					setLevelIndex={props.setLevelIndex}
+					showLevelSelectionGrid={props.showLevelSelectionGrid}
+					setShowLevelSelectionGrid={props.setShowLevelSelectionGrid}
 				/>
 			</div>
 		</ImageCard>
@@ -107,32 +111,29 @@ export function LevelPreviewCard(props: {
 }
 
 function LevelSelectionButtons(props: {
-	readonly levelIndex: number | undefined;
-	readonly setLevelIndex: Setter<number | undefined>;
+	readonly levelIndex: number;
+	readonly setLevelIndex: Setter<number>;
+	readonly showLevelSelectionGrid: boolean;
+	readonly setShowLevelSelectionGrid: Setter<boolean>;
 }) {
 	return (
 		<ButtonRow>
 			<button
-				onClick={() =>
-					props.levelIndex !== undefined &&
-					props.setLevelIndex(props.levelIndex - 1)
-				}
-				disabled={!(props.levelIndex !== undefined && props.levelIndex > 0)}
+				onClick={() => props.setLevelIndex(props.levelIndex - 1)}
+				disabled={!(!props.showLevelSelectionGrid && props.levelIndex > 0)}
 			>
 				{icons.chevrons.left}
 			</button>
 			<button
-				onClick={() => props.setLevelIndex(undefined)}
-				disabled={props.levelIndex === undefined}
+				onClick={() =>
+					props.setShowLevelSelectionGrid(!props.showLevelSelectionGrid)
+				}
 			>
-				{icons.grid}
+				{props.showLevelSelectionGrid ? icons.square : icons.grid}
 			</button>
 			<button
-				onClick={() =>
-					props.levelIndex !== undefined &&
-					props.setLevelIndex(props.levelIndex + 1)
-				}
-				disabled={!(props.levelIndex !== undefined && props.levelIndex < 99)}
+				onClick={() => props.setLevelIndex(props.levelIndex + 1)}
+				disabled={!(!props.showLevelSelectionGrid && props.levelIndex < 99)}
 			>
 				{icons.chevrons.right}
 			</button>
