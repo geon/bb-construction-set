@@ -34,12 +34,7 @@ export const ImageButtons = styled.div`
 	gap: 1em;
 `;
 
-export function LevelGraphics({
-	parsedPrg,
-	setParsedPrg,
-	levelIndex,
-	setLevelIndex,
-}: {
+export function LevelGraphics(props: {
 	readonly parsedPrg: ParsedPrg;
 	readonly setParsedPrg: (parsedPrg: ParsedPrg) => void;
 	readonly levelIndex: number;
@@ -48,9 +43,9 @@ export function LevelGraphics({
 	return (
 		<Styling>
 			<LevelSelector
-				parsedPrg={parsedPrg}
-				levelIndex={levelIndex}
-				setLevelIndex={setLevelIndex}
+				parsedPrg={props.parsedPrg}
+				levelIndex={props.levelIndex}
+				setLevelIndex={props.setLevelIndex}
 			/>
 			<ImageButtons>
 				<FileInput
@@ -71,10 +66,10 @@ export function LevelGraphics({
 							return;
 						}
 
-						setParsedPrg({
-							...parsedPrg,
+						props.setParsedPrg({
+							...props.parsedPrg,
 							levels: zipObject({
-								level: parsedPrg.levels,
+								level: props.parsedPrg.levels,
 								platformCharsData: parsedTiles.result,
 							}).map(({ level, platformCharsData }) => ({
 								...level,
@@ -90,7 +85,7 @@ export function LevelGraphics({
 						fileName: "level graphics.png",
 						blob: await imageDataToBlob(
 							imageDataFromPaletteImage(
-								doubleImageWidth(drawPlatformChars(parsedPrg.levels))
+								doubleImageWidth(drawPlatformChars(props.parsedPrg.levels))
 							)
 						),
 					})}
