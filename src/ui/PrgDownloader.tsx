@@ -12,14 +12,17 @@ import { Card } from "./Card";
 import { mapAsync, range } from "../bb/functions";
 import { Patch } from "../bb/prg/io";
 import { ButtonRow } from "./ButtonRow";
+import { FileInput } from "./FileInput";
 
 export function PrgDownloader({
 	parsedPrg,
 	prg,
+	setPrg,
 	manualPatch,
 }: {
 	readonly parsedPrg: ParsedPrg;
 	readonly prg: ArrayBuffer;
+	readonly setPrg: (arrayBuffer: ArrayBuffer) => void;
 	readonly manualPatch: Patch;
 }): ReactNode {
 	return (
@@ -52,6 +55,12 @@ export function PrgDownloader({
 					})}
 					label="Save Level Images"
 				/>
+				<FileInput
+					accept={["prg"]}
+					onChange={async (file) => setPrg(await file.arrayBuffer())}
+				>
+					Open Prg...
+				</FileInput>
 				<BlobDownloadButton
 					getBlob={async () => {
 						const patched = patchPrg(prg, parsedPrg, manualPatch);

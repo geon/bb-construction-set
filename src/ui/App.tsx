@@ -1,7 +1,6 @@
 import { TabBar } from "./TabBar";
 import styled from "styled-components";
 import { Card } from "./Card";
-import { PrgSelector } from "./PrgSelector";
 import { useState } from "react";
 // import { Levels } from "./tabs/Levels";
 import { Sprites } from "./tabs/Sprites";
@@ -16,6 +15,7 @@ import { Patch } from "../bb/prg/io";
 import { EnemyBonuses } from "./tabs/EnemyBonuses";
 import { Levels } from "./tabs/Levels";
 import { LevelPreviewCard } from "./LevelPreviewCard";
+import { originalPrg as originalPrg } from "../bb/prg/parsed-prg";
 
 const Page = styled.div`
 	width: 600px;
@@ -29,13 +29,13 @@ const Page = styled.div`
 `;
 
 export function App() {
-	const [state, setState] = useState<
-		| {
-				readonly prg: ArrayBuffer;
-				readonly parsedPrg: ParsedPrg;
-		  }
-		| undefined
-	>();
+	const [state, setState] = useState<{
+		readonly prg: ArrayBuffer;
+		readonly parsedPrg: ParsedPrg;
+	}>(() => {
+		const prg = new Uint8Array(originalPrg).buffer;
+		return { prg, parsedPrg: parsePrg(prg) };
+	});
 
 	const setPrg = (prg: ArrayBuffer): void => {
 		const parsedPrg = attempt(() => parsePrg(prg));
@@ -63,25 +63,18 @@ export function App() {
 	return (
 		<Page>
 			<h1>BB Construction Set</h1>
-			{parsedPrg && (
-				<LevelPreviewCard
-					parsedPrg={parsedPrg}
-					levelIndex={levelIndex}
-					setLevelIndex={setLevelIndex}
-				/>
-			)}
-			{prg ? (
-				<PrgDownloader
-					prg={prg}
-					parsedPrg={parsedPrg}
-					manualPatch={manualPatch}
-				/>
-			) : (
-				<Card>
-					<PrgSelector setPrg={setPrg} />
-				</Card>
-			)}
-			{parsedPrg && levelIndex !== undefined && (
+			<LevelPreviewCard
+				parsedPrg={parsedPrg}
+				levelIndex={levelIndex}
+				setLevelIndex={setLevelIndex}
+			/>
+			<PrgDownloader
+				prg={prg}
+				setPrg={setPrg}
+				parsedPrg={parsedPrg}
+				manualPatch={manualPatch}
+			/>
+			{levelIndex !== undefined && (
 				<TabBar
 					initialTabId={"levels"}
 					tabs={{
