@@ -11,6 +11,7 @@ import { drawLevelThumbnail } from "../bb/image-data/draw-level";
 import { mapRecord } from "../bb/functions";
 import { ButtonRow } from "./ButtonRow";
 import { icons } from "./icons";
+import { Setter } from "./types";
 
 const ImageCard = styled(Card)<{
 	readonly children: [JSX.Element, JSX.Element];
@@ -76,9 +77,7 @@ const LevelPreview = styled.div`
 export function LevelPreviewCard(props: {
 	readonly parsedPrg: ParsedPrg;
 	readonly levelIndex: number | undefined;
-	readonly setLevelIndex: React.Dispatch<
-		React.SetStateAction<number | undefined>
-	>;
+	readonly setLevelIndex: Setter<number | undefined>;
 }): ReactNode {
 	return (
 		<ImageCard>
@@ -109,9 +108,7 @@ export function LevelPreviewCard(props: {
 
 function LevelSelectionButtons(props: {
 	readonly levelIndex: number | undefined;
-	readonly setLevelIndex: React.Dispatch<
-		React.SetStateAction<number | undefined>
-	>;
+	readonly setLevelIndex: Setter<number | undefined>;
 }) {
 	return (
 		<ButtonRow>
