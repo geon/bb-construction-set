@@ -1,11 +1,13 @@
 import { useRef, useEffect } from "react";
 
+export type ImageDataCanvasProps = {
+	readonly imageData: ImageData;
+} & React.CanvasHTMLAttributes<HTMLCanvasElement>;
+
 export function ImageDataCanvas({
 	imageData,
 	...canvasProps
-}: {
-	readonly imageData: ImageData;
-} & React.CanvasHTMLAttributes<HTMLCanvasElement>): React.ReactNode {
+}: ImageDataCanvasProps): React.ReactNode {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 
 	useEffect(() => {
