@@ -16,6 +16,7 @@ import { drawLevelThumbnail } from "../bb/image-data/draw-level";
 import { mapAsync, mapRecord, range } from "../bb/functions";
 import { Patch } from "../bb/prg/io";
 import { ButtonRow } from "./ButtonRow";
+import { icons } from "./icons";
 
 const ImageCard = styled(Card)<{
 	readonly children: [JSX.Element, JSX.Element];
@@ -38,7 +39,6 @@ const ImageCard = styled(Card)<{
 const LevelSelector = styled(
 	(props: {
 		readonly parsedPrg: ParsedPrg;
-		readonly levelIndex: number;
 		readonly setLevelIndex: (index: number) => void;
 		readonly className?: string;
 	}): JSX.Element => {
@@ -56,7 +56,6 @@ const LevelSelector = styled(
 				{props.parsedPrg.levels.map((level, levelIndex) => (
 					<ImageDataCanvas
 						key={levelIndex}
-						className={levelIndex === props.levelIndex ? "active" : undefined}
 						imageData={drawLevelThumbnail(level, spriteColors, shadowChars)}
 						onClick={() => props.setLevelIndex(levelIndex)}
 						style={{ cursor: "pointer" }}
@@ -67,22 +66,11 @@ const LevelSelector = styled(
 	}
 )`
 	display: grid;
-	grid-template-columns: repeat(20, auto);
-	grid-column-gap: 0px;
-	grid-row-gap: 0px;
-	justify-items: center;
-	justify-content: center;
+	grid-template-rows: 1fr min-content;
+	grid-template-columns: repeat(10, auto);
 
-	> * {
-		// Cut one pixel from each side.
-		width: 30px;
-		height: 25px;
-		object-fit: cover;
-
-		opacity: 30%;
-		&.active {
-			opacity: 100%;
-		}
+	canvas {
+		width: 100%;
 	}
 `;
 
@@ -101,26 +89,28 @@ export function PrgDownloader({
 	readonly parsedPrg: ParsedPrg;
 	readonly prg: ArrayBuffer;
 	readonly manualPatch: Patch;
-	readonly levelIndex: number;
-	readonly setLevelIndex: React.Dispatch<React.SetStateAction<number>>;
+	readonly levelIndex: number | undefined;
+	readonly setLevelIndex: React.Dispatch<
+		React.SetStateAction<number | undefined>
+	>;
 }): ReactNode {
 	return (
 		<ImageCard>
 			<LevelPreview>
-				<ImageDataCanvas
-					style={{ width: "100%" }}
-					imageData={imageDataFromPaletteImage(
-						doubleImageWidth(drawLevel(levelIndex, parsedPrg))
-					)}
-				/>
-				<LevelSelector
-					parsedPrg={parsedPrg}
-					levelIndex={levelIndex}
-					setLevelIndex={setLevelIndex}
-				/>
+				{levelIndex !== undefined ? (
+					<ImageDataCanvas
+						style={{ width: "100%" }}
+						imageData={imageDataFromPaletteImage(
+							doubleImageWidth(drawLevel(levelIndex, parsedPrg))
+						)}
+					/>
+				) : (
+					<LevelSelector parsedPrg={parsedPrg} setLevelIndex={setLevelIndex} />
+				)}
 			</LevelPreview>
-			{/* <h2>Save your prg-file</h2> */}
-			{/* <p>
+			<div>
+				{/* <h2>Save your prg-file</h2> */}
+				{/* <p>
 				Use the tools below to view and patch your prg-file. When you are done,
 				you can download the prg-file. You can also resume editing your saved
 				prg-file later.
@@ -138,35 +128,60 @@ export function PrgDownloader({
 				, placed in the same folder as Exomizer to pack it for execution.
 				</p> */}
 
-			<ButtonRow>
-				<BlobDownloadButton
-					getBlob={async () => ({
-						parts: await mapAsync(range(100), async (index) => ({
-							fileName: (index + 1).toString().padStart(3, "0") + ".png",
-							blob: await imageDataToBlob(
-								imageDataFromPaletteImage(
-									doubleImageWidth(drawLevel(index, parsedPrg))
-								)
-							),
-						})),
-						fileName: "bubble bobble c64 - all level images.zip",
-					})}
-					label="Save level images"
-				/>
-				<BlobDownloadButton
-					getBlob={async () => {
-						const patched = patchPrg(prg, parsedPrg, manualPatch);
+				<ButtonRow>
+					<button
+						onClick={() =>
+							levelIndex !== undefined && setLevelIndex(levelIndex - 1)
+						}
+						disabled={!(levelIndex !== undefined && levelIndex > 0)}
+					>
+						{icons.chevrons.left}
+					</button>
+					<button
+						onClick={() => setLevelIndex(undefined)}
+						disabled={levelIndex === undefined}
+					>
+						{icons.grid}
+					</button>
+					<button
+						onClick={() =>
+							levelIndex !== undefined && setLevelIndex(levelIndex + 1)
+						}
+						disabled={!(levelIndex !== undefined && levelIndex < 99)}
+					>
+						{icons.chevrons.right}
+					</button>
+				</ButtonRow>
+				<ButtonRow>
+					<BlobDownloadButton
+						getBlob={async () => ({
+							parts: await mapAsync(range(100), async (index) => ({
+								fileName: (index + 1).toString().padStart(3, "0") + ".png",
+								blob: await imageDataToBlob(
+									imageDataFromPaletteImage(
+										doubleImageWidth(drawLevel(index, parsedPrg))
+									)
+								),
+							})),
+							fileName: "bubble bobble c64 - all level images.zip",
+						})}
+						label="Save level images"
+					/>
+					<BlobDownloadButton
+						getBlob={async () => {
+							const patched = patchPrg(prg, parsedPrg, manualPatch);
 
-						return {
-							blob: new Blob([patched], {
-								type: "application/octet-stream",
-							}),
-							fileName: "custom bubble bobble.prg",
-						};
-					}}
-					label="Save"
-				/>
-			</ButtonRow>
+							return {
+								blob: new Blob([patched], {
+									type: "application/octet-stream",
+								}),
+								fileName: "custom bubble bobble.prg",
+							};
+						}}
+						label="Save"
+					/>
+				</ButtonRow>
+			</div>
 		</ImageCard>
 	);
 }
