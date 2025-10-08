@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { ImageDataCanvas } from "../ImageDataCanvas";
 import { assertTuple } from "../../bb/tuple";
 import { Tiles } from "../../bb/internal-data-formats/level";
-import { Coord2, scale, subtract } from "../../math/coord2";
-import { levelWidth, levelSize } from "../../bb/game-definitions/level-size";
+import { Coord2 } from "../../math/coord2";
+import { levelSize } from "../../bb/game-definitions/level-size";
 import { imageDataFromPaletteImage } from "../../bb/image-data/image-data";
 import { drawLevelTiles } from "../../bb/palette-image/level";
+import { ClickDragCanvas } from "../ClickDragCanvas";
 
 export function PlatformEditor(props: {
 	readonly tiles: Tiles;
@@ -13,26 +13,37 @@ export function PlatformEditor(props: {
 }): JSX.Element {
 	const setSomeTiles = createSetSomeTiles(props.setTiles, props.tiles);
 	let [drawValue, setDrawValue] = useState<boolean | undefined>(undefined);
+	let [dragStart, setDragStart] = useState<Coord2 | undefined>(undefined);
 
 	return (
-		<ImageDataCanvas
+		<ClickDragCanvas
 			style={{ width: "100%" }}
 			imageData={imageDataFromPaletteImage(drawLevelTiles(props.tiles))}
-			onMouseDown={(event) => {
-				const tileCoord: Coord2 = getTileCoord(event);
-				drawValue = !props.tiles[tileCoord.y]![tileCoord.x]!;
-				setSomeTiles([tileCoord], drawValue);
-				setDrawValue(drawValue);
-			}}
-			onMouseUp={() => {
-				setDrawValue(undefined);
-			}}
-			onMouseMove={(event) => {
+			onClick={(tileCoord) => {
 				if (drawValue === undefined) {
 					return;
 				}
-				const tileCoord: Coord2 = getTileCoord(event);
 				setSomeTiles([tileCoord], drawValue);
+			}}
+			onDragStart={(tileCoord) => {
+				const newDrawValue = !props.tiles[tileCoord.y]![tileCoord.x]!;
+				setDrawValue(newDrawValue);
+				setDragStart(tileCoord);
+			}}
+			onDragEnd={() => {
+				setDrawValue(undefined);
+				setDragStart(undefined);
+			}}
+			onDragUpdate={(tileCoord) => {
+				if (drawValue === undefined) {
+					return;
+				}
+				const coords = [tileCoord];
+				if (dragStart) {
+					coords.push(dragStart);
+					setDragStart(undefined);
+				}
+				setSomeTiles(coords, drawValue);
 			}}
 		/>
 	);
@@ -51,17 +62,4 @@ function createSetSomeTiles(setTiles: (tiles: Tiles) => void, tiles: Tiles) {
 
 		setTiles(newTiles);
 	};
-}
-
-function getTileCoord(event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
-	const page: Coord2 = { x: event.clientX, y: event.clientY };
-	const rect = event.currentTarget.getBoundingClientRect();
-	const elementLocation: Coord2 = rect;
-	const scaleFactor = rect.width / levelWidth;
-	const clickCoord = scale(subtract(page, elementLocation), 1 / scaleFactor);
-	const tileCoord: Coord2 = {
-		x: Math.floor(clickCoord.x),
-		y: Math.floor(clickCoord.y),
-	};
-	return tileCoord;
 }
