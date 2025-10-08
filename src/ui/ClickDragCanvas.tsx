@@ -3,6 +3,13 @@ import { ImageDataCanvas, ImageDataCanvasProps } from "./ImageDataCanvas";
 import { Coord2, scale, subtract } from "../math/coord2";
 import { levelWidth } from "../bb/game-definitions/level-size";
 
+export type ClickDragCanvasDragEventHandlers = {
+	onClick?: (coord: Coord2) => void;
+	onDragStart?: (coord: Coord2) => void;
+	onDragUpdate?: (coord: Coord2) => void;
+	onDragEnd?: () => void;
+};
+
 export function ClickDragCanvas(
 	props: Omit<
 		ImageDataCanvasProps,
@@ -13,12 +20,8 @@ export function ClickDragCanvas(
 		| "onDragStart"
 		| "onDragUpdate"
 		| "onDragEnd"
-	> & {
-		onClick?: (coord: Coord2) => void;
-		onDragStart?: (coord: Coord2) => void;
-		onDragUpdate?: (coord: Coord2) => void;
-		onDragEnd?: () => void;
-	}
+	> &
+		ClickDragCanvasDragEventHandlers
 ): React.ReactNode {
 	const { onDragStart, onDragUpdate, onDragEnd, onClick, ...rest } = props;
 
