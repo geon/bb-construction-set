@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { updateArrayAtIndex } from "../../bb/functions";
 import { ImageDataCanvas } from "../ImageDataCanvas";
 import { assertTuple } from "../../bb/tuple";
 import { Tiles } from "../../bb/internal-data-formats/level";
 import { Coord2, scale, subtract } from "../../math/coord2";
-import { levelWidth, levelHeight } from "../../bb/game-definitions/level-size";
+import { levelWidth, levelSize } from "../../bb/game-definitions/level-size";
 import { imageDataFromPaletteImage } from "../../bb/image-data/image-data";
 import { drawLevelTiles } from "../../bb/palette-image/level";
 
@@ -12,7 +11,7 @@ export function PlatformEditor(props: {
 	readonly tiles: Tiles;
 	readonly setTiles: (tiles: Tiles) => void;
 }): JSX.Element {
-	const setTile = createSetTile(props.setTiles, props.tiles);
+	const setSomeTiles = createSetSomeTiles(props.setTiles, props.tiles);
 	let [drawValue, setDrawValue] = useState<boolean | undefined>(undefined);
 
 	return (
@@ -22,7 +21,7 @@ export function PlatformEditor(props: {
 			onMouseDown={(event) => {
 				const tileCoord: Coord2 = getTileCoord(event);
 				drawValue = !props.tiles[tileCoord.y]![tileCoord.x]!;
-				setTile(tileCoord, drawValue);
+				setSomeTiles([tileCoord], drawValue);
 				setDrawValue(drawValue);
 			}}
 			onMouseUp={() => {
@@ -33,25 +32,25 @@ export function PlatformEditor(props: {
 					return;
 				}
 				const tileCoord: Coord2 = getTileCoord(event);
-				setTile(tileCoord, drawValue);
+				setSomeTiles([tileCoord], drawValue);
 			}}
 		/>
 	);
 }
 
-function createSetTile(setTiles: (tiles: Tiles) => void, tiles: Tiles) {
-	return (coord: Coord2, value: boolean) =>
-		setTiles(
-			assertTuple(
-				updateArrayAtIndex(tiles, coord.y, (currentRow) =>
-					assertTuple(
-						updateArrayAtIndex(currentRow, coord.x, () => value),
-						levelWidth
-					)
-				),
-				levelHeight
-			)
+function createSetSomeTiles(setTiles: (tiles: Tiles) => void, tiles: Tiles) {
+	return (coords: readonly Coord2[], value: boolean) => {
+		const newTiles = assertTuple(
+			tiles.map((row) => assertTuple([...row], levelSize.x)),
+			levelSize.y
 		);
+
+		for (const coord of coords) {
+			newTiles[coord.y]![coord.x] = value;
+		}
+
+		setTiles(newTiles);
+	};
 }
 
 function getTileCoord(event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
