@@ -6,6 +6,7 @@ import { levelSize } from "../../bb/game-definitions/level-size";
 import { imageDataFromPaletteImage } from "../../bb/image-data/image-data";
 import { drawLevelTiles } from "../../bb/palette-image/level";
 import { ClickDragCanvas } from "../ClickDragCanvas";
+import { bresenham } from "../../bb/functions";
 
 export function PlatformEditor(props: {
 	readonly tiles: Tiles;
@@ -13,7 +14,7 @@ export function PlatformEditor(props: {
 }): JSX.Element {
 	const setSomeTiles = createSetSomeTiles(props.setTiles, props.tiles);
 	let [drawValue, setDrawValue] = useState<boolean | undefined>(undefined);
-	let [dragStart, setDragStart] = useState<Coord2 | undefined>(undefined);
+	let [lineStart, setLineStart] = useState<Coord2 | undefined>(undefined);
 
 	return (
 		<ClickDragCanvas
@@ -28,22 +29,21 @@ export function PlatformEditor(props: {
 			onDragStart={(tileCoord) => {
 				const newDrawValue = !props.tiles[tileCoord.y]![tileCoord.x]!;
 				setDrawValue(newDrawValue);
-				setDragStart(tileCoord);
+				setLineStart(tileCoord);
 			}}
 			onDragEnd={() => {
 				setDrawValue(undefined);
-				setDragStart(undefined);
+				setLineStart(undefined);
 			}}
 			onDragUpdate={(tileCoord) => {
 				if (drawValue === undefined) {
 					return;
 				}
-				const coords = [tileCoord];
-				if (dragStart) {
-					coords.push(dragStart);
-					setDragStart(undefined);
+				if (lineStart === undefined) {
+					return;
 				}
-				setSomeTiles(coords, drawValue);
+				setSomeTiles(bresenham(lineStart, tileCoord), drawValue);
+				setLineStart(tileCoord);
 			}}
 		/>
 	);

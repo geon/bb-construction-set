@@ -1,3 +1,4 @@
+import { Coord2 } from "../math/coord2";
 import { NOfTuple, Tuple, MutableTuple } from "./tuple";
 
 export function padRight<T>(
@@ -305,4 +306,32 @@ export function stringPadLeft(
 
 export function repeat<T>(element: T, count: number): T[] {
 	return range(count).map(() => element);
+}
+
+// https://stackoverflow.com/questions/4672279/bresenham-algorithm-in-javascript
+export function bresenham(begin: Coord2, end: Coord2) {
+	const line: Coord2[] = [];
+
+	const dx = Math.abs(end.x - begin.x);
+	const dy = Math.abs(end.y - begin.y);
+	const sx = begin.x < end.x ? 1 : -1;
+	const sy = begin.y < end.y ? 1 : -1;
+	let error = dx - dy;
+
+	const current = { ...begin };
+	line.push({ ...current });
+	while (!(current.x == end.x && current.y == end.y)) {
+		const error2 = error * 2;
+		if (error2 > -dy) {
+			error -= dy;
+			current.x += sx;
+		}
+		if (error2 < dx) {
+			error += dx;
+			current.y += sy;
+		}
+		line.push({ ...current });
+	}
+
+	return line;
 }
