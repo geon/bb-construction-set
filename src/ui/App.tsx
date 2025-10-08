@@ -55,7 +55,7 @@ export function App() {
 
 	const { parsedPrg, prg } = state ?? { parsedPrg: undefined, prg: undefined };
 
-	const [levelIndex, setLevelIndex] = useState<number>(0);
+	const [levelIndex, setLevelIndex] = useState<number | undefined>(0);
 
 	const [manualPatch, setManualPatch] = useState<Patch>([]);
 
@@ -75,7 +75,7 @@ export function App() {
 					<PrgSelector setPrg={setPrg} />
 				</Card>
 			)}
-			{parsedPrg && (
+			{parsedPrg && levelIndex !== undefined && (
 				<TabBar
 					initialTabId={"levels"}
 					tabs={{
