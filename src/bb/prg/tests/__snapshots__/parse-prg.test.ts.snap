@@ -61,6 +61,16 @@ exports[`parsePrg 1`] = `
     "lightning": false,
     "water": false,
   },
+  "itemSpawnPositions": {
+    "points": {
+      "x": 9,
+      "y": 7,
+    },
+    "powerups": {
+      "x": 21,
+      "y": 7,
+    },
+  },
   "monsters": [
     {
       "characterName": "bubbleBuster",

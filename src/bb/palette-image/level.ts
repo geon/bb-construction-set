@@ -102,10 +102,7 @@ export function drawLevel(
 	drawLevelNumber(levelIndex);
 
 	function drawItem(itemCategoryName: ItemCategoryName): void {
-		const spawnPosition = checkedAccess(
-			parsedPrg.itemSpawnPositions,
-			levelIndex
-		)[itemCategoryName];
+		const spawnPosition = level.itemSpawnPositions[itemCategoryName];
 		const item = checkedAccess(
 			parsedPrg.items[itemCategoryName],
 			itemCategoryName === "powerups"

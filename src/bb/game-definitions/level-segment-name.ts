@@ -9,5 +9,8 @@ export const levelDataSegmentNames = [
 	"monsters",
 	"windCurrents",
 	"bubbleSpawns",
+	"itemSpawnPositionsA",
+	"itemSpawnPositionsB",
+	"itemSpawnPositionsC",
 ] as const;
 export type LevelDataSegmentName = (typeof levelDataSegmentNames)[number];

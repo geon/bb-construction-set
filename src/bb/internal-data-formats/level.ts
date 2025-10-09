@@ -10,6 +10,7 @@ import { Coord2 } from "../../math/coord2";
 import { Rect } from "../../math/rect";
 import { BgColors } from "./bg-colors";
 import { PerLevelBubbleSpawns } from "./bubble-spawns";
+import { PerLevelItemSpawnPositions } from "./item-spawn-positions";
 
 export interface Character {
 	readonly characterName: CharacterName;
@@ -63,6 +64,7 @@ export interface Level {
 	readonly bubbleCurrentRectangles: BubbleCurrentRectangles;
 	readonly bubbleCurrentPerLineDefaults: BubbleCurrentPerLineDefaults;
 	readonly bubbleSpawns: PerLevelBubbleSpawns;
+	readonly itemSpawnPositions: PerLevelItemSpawnPositions;
 }
 
 function rowIsSymmetric(row: readonly boolean[]): boolean {

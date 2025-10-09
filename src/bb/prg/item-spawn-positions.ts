@@ -11,19 +11,20 @@ import {
 	PerLevelItemSpawnPositions,
 } from "../internal-data-formats/item-spawn-positions";
 import { assertTuple } from "../tuple";
+import { ReadonlyUint8Array } from "../types";
 import {
 	ItemSpawnPositionArrayName,
-	itemSpawnPositionsSegmentLocations,
+	levelSegmentLocations,
 } from "./data-locations";
-import { DataSegment, Patch, patchFromSegment } from "./io";
+import { Patch, patchFromSegment } from "./io";
 
 export function parseItemSpawnPositions(
-	dataSegment: Record<ItemSpawnPositionArrayName, DataSegment>
+	buffers: Record<ItemSpawnPositionArrayName, ReadonlyUint8Array>
 ): ItemSpawnPositions {
 	return zipObject({
-		aByte: [...dataSegment.a.buffer],
-		bByte: [...dataSegment.b.buffer],
-		cByte: [...dataSegment.c.buffer],
+		aByte: [...buffers.a],
+		bByte: [...buffers.b],
+		cByte: [...buffers.c],
 	}).map(({ aByte, bByte, cByte }): PerLevelItemSpawnPositions => {
 		const aBits = byteToBits(aByte);
 		const bBits = byteToBits(bByte);
@@ -72,7 +73,7 @@ export function parseItemSpawnPositions(
 
 export function serializeItemSpawnPositions(
 	itemSpawnPositions: ItemSpawnPositions
-): Record<ItemSpawnPositionArrayName, DataSegment> {
+): Record<ItemSpawnPositionArrayName, ReadonlyUint8Array> {
 	const arrays = unzipObject(
 		itemSpawnPositions.map((spawn) => {
 			const [a, b, c] = assertTuple(
@@ -100,10 +101,7 @@ export function serializeItemSpawnPositions(
 
 	return mapRecord(
 		arrays,
-		(array, segmentName): DataSegment => ({
-			buffer: new Uint8Array(array),
-			mask: itemSpawnPositionsSegmentLocations[segmentName].mask,
-		})
+		(array): ReadonlyUint8Array => new Uint8Array(array)
 	);
 }
 
@@ -114,8 +112,16 @@ export function getItemSpawnPositionsPatch(
 
 	return objectEntries(newSegments).flatMap(([segmentName, newSegment]) =>
 		patchFromSegment(
-			itemSpawnPositionsSegmentLocations[segmentName],
-			newSegment.buffer
+			levelSegmentLocations[
+				(
+					{
+						a: "itemSpawnPositionsA",
+						b: "itemSpawnPositionsB",
+						c: "itemSpawnPositionsC",
+					} as const
+				)[segmentName]
+			],
+			newSegment
 		)
 	);
 }
