@@ -3,11 +3,9 @@ import { BlobDownloadButton } from "../BlobDownloadButton";
 import { attempt, zipObject } from "../../bb/functions";
 import { ParsedPrg } from "../../bb/internal-data-formats/parsed-prg";
 import {
-	drawLevelPlatformChars,
 	drawPlatformChars,
 	parsePlatformChars,
 } from "../../bb/palette-image/char";
-import { ImageDataCanvas } from "../ImageDataCanvas";
 import { FileInput } from "../FileInput";
 import {
 	imageDataFromImage,
@@ -42,11 +40,6 @@ export function LevelGraphics(props: {
 }): ReactNode {
 	return (
 		<Styling>
-			<LevelSelector
-				parsedPrg={props.parsedPrg}
-				levelIndex={props.levelIndex}
-				setLevelIndex={props.setLevelIndex}
-			/>
 			<ImageButtons>
 				<FileInput
 					accept={["image/*"]}
@@ -95,42 +88,3 @@ export function LevelGraphics(props: {
 		</Styling>
 	);
 }
-
-const LevelSelector = styled(
-	(props: {
-		readonly parsedPrg: ParsedPrg;
-		readonly levelIndex: number;
-		readonly setLevelIndex: (index: number) => void;
-		readonly className?: string;
-	}): JSX.Element => {
-		return (
-			<nav className={props.className}>
-				{props.parsedPrg.levels.map((level, levelIndex) => (
-					<ImageDataCanvas
-						key={levelIndex}
-						className={levelIndex === props.levelIndex ? "active" : undefined}
-						imageData={imageDataFromPaletteImage(
-							doubleImageWidth(drawLevelPlatformChars(level))
-						)}
-						onClick={() => props.setLevelIndex(levelIndex)}
-						style={{ cursor: "pointer" }}
-					/>
-				))}
-			</nav>
-		);
-	}
-)`
-	display: grid;
-	grid-template-columns: repeat(10, auto);
-	grid-column-gap: 8px;
-	grid-row-gap: 8px;
-	justify-items: center;
-	justify-content: center;
-
-	> .active {
-		box-shadow: 0 0 0 2px black, 0 0 0 3px white;
-		@media (prefers-color-scheme: light) {
-			box-shadow: 0 0 0 2px white, 0 0 0 3px black;
-		}
-	}
-`;
