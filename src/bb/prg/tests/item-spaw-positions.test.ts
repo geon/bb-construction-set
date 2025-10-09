@@ -13,8 +13,12 @@ test("parseItemSpawnPositions / serializeItemSpawnPositions", () => {
 	const parsedPrg = parsePrg(prgFileContent);
 
 	const backAndForth = parseItemSpawnPositions(
-		serializeItemSpawnPositions(parsedPrg.itemSpawnPositions)
+		serializeItemSpawnPositions(
+			parsedPrg.levels.map((level) => level.itemSpawnPositions)
+		)
 	);
 
-	expect(backAndForth).toStrictEqual(parsedPrg.itemSpawnPositions);
+	expect(backAndForth).toStrictEqual(
+		parsedPrg.levels.map((level) => level.itemSpawnPositions)
+	);
 });
