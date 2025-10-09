@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { updateArrayAtIndex } from "../../bb/functions";
 import { ParsedPrg } from "../../bb/internal-data-formats/parsed-prg";
 import styled from "styled-components";
-import { Tiles } from "../../bb/internal-data-formats/level";
+import { Level } from "../../bb/internal-data-formats/level";
 import { TabBar } from "../TabBar";
 import { PlatformEditor } from "./PlatformEditor";
 import { Platforms } from "./Platforms";
@@ -31,16 +31,13 @@ export function Levels(props: {
 	readonly setLevelIndex: (index: number) => void;
 }): ReactNode {
 	const level = props.parsedPrg.levels[props.levelIndex]!;
-	const setTiles = (tiles: Tiles) =>
+	const setLevel = (level: Level) =>
 		props.setParsedPrg({
 			...props.parsedPrg,
 			levels: updateArrayAtIndex(
 				props.parsedPrg.levels,
 				props.levelIndex,
-				(level) => ({
-					...level,
-					tiles,
-				})
+				() => level
 			),
 		});
 
@@ -71,9 +68,7 @@ export function Levels(props: {
 					},
 					quickDoodle: {
 						title: "Quick Doodle",
-						render: () => (
-							<PlatformEditor tiles={level.tiles} setTiles={setTiles} />
-						),
+						render: () => <PlatformEditor level={level} setLevel={setLevel} />,
 					},
 				}}
 			/>
