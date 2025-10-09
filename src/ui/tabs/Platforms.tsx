@@ -14,7 +14,6 @@ import {
 } from "../../bb/palette-image/level";
 import { BlobDownloadButton } from "../BlobDownloadButton";
 import { FileInput } from "../FileInput";
-import { ImageDataCanvas } from "../ImageDataCanvas";
 import { ImageButtons } from "./Levels";
 
 export function Platforms(props: {
@@ -27,10 +26,6 @@ export function Platforms(props: {
 
 	return (
 		<>
-			<ImageDataCanvas
-				style={{ width: "100%" }}
-				imageData={levelsTilesImageData}
-			/>
 			<ImageButtons>
 				<FileInput
 					accept={["image/*"]}
