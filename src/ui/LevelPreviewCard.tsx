@@ -72,11 +72,6 @@ const LevelSelector = styled(
 	}
 `;
 
-const LevelPreview = styled.div`
-	display: flex;
-	flex-direction: column;
-`;
-
 export function LevelPreviewCard(props: {
 	readonly parsedPrg: ParsedPrg;
 	readonly setParsedPrg: Setter<ParsedPrg>;
@@ -98,29 +93,27 @@ export function LevelPreviewCard(props: {
 
 	return (
 		<ImageCard>
-			<LevelPreview>
-				{!props.showLevelSelectionGrid ? (
-					<clickDragCanvasEventHandlerProviders.PlatformEditor
-						level={level}
-						setLevel={setLevel}
-					>
-						{(eventHandlers) => (
-							<ClickDragCanvas
-								style={{ width: "100%" }}
-								imageData={imageDataFromPaletteImage(
-									doubleImageWidth(drawLevel(props.levelIndex, props.parsedPrg))
-								)}
-								{...eventHandlers}
-							/>
-						)}
-					</clickDragCanvasEventHandlerProviders.PlatformEditor>
-				) : (
-					<LevelSelector
-						parsedPrg={props.parsedPrg}
-						setLevelIndex={props.setLevelIndex}
-					/>
-				)}
-			</LevelPreview>
+			{!props.showLevelSelectionGrid ? (
+				<clickDragCanvasEventHandlerProviders.PlatformEditor
+					level={level}
+					setLevel={setLevel}
+				>
+					{(eventHandlers) => (
+						<ClickDragCanvas
+							style={{ width: "100%" }}
+							imageData={imageDataFromPaletteImage(
+								doubleImageWidth(drawLevel(props.levelIndex, props.parsedPrg))
+							)}
+							{...eventHandlers}
+						/>
+					)}
+				</clickDragCanvasEventHandlerProviders.PlatformEditor>
+			) : (
+				<LevelSelector
+					parsedPrg={props.parsedPrg}
+					setLevelIndex={props.setLevelIndex}
+				/>
+			)}
 			<div>
 				<LevelSelectionButtons
 					levelIndex={props.levelIndex}
