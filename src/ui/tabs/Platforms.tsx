@@ -20,10 +20,6 @@ export function Platforms(props: {
 	readonly setParsedPrg: (parsedPrg: ParsedPrg) => void;
 	readonly parsedPrg: ParsedPrg;
 }): ReactNode | readonly ReactNode[] {
-	const levelsTilesImageData = imageDataFromPaletteImage(
-		drawLevelsTiles(props.parsedPrg.levels.map((level) => level.tiles))
-	);
-
 	return (
 		<>
 			<ImageButtons>
@@ -57,7 +53,13 @@ export function Platforms(props: {
 				<BlobDownloadButton
 					getBlob={async () => ({
 						fileName: "platforms.png",
-						blob: await imageDataToBlob(levelsTilesImageData),
+						blob: await imageDataToBlob(
+							imageDataFromPaletteImage(
+								drawLevelsTiles(
+									props.parsedPrg.levels.map((level) => level.tiles)
+								)
+							)
+						),
 					})}
 					label={"Export Image"}
 				/>
