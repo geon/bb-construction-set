@@ -8,10 +8,13 @@ import { assertTuple } from "../bb/tuple";
 import { Card } from "./Card";
 import styled from "styled-components";
 import { drawLevelThumbnail } from "../bb/image-data/draw-level";
-import { mapRecord } from "../bb/functions";
+import { mapRecord, updateArrayAtIndex } from "../bb/functions";
 import { ButtonRow } from "./ButtonRow";
 import { icons } from "./icons";
 import { Setter } from "./types";
+import { ClickDragCanvas } from "./ClickDragCanvas";
+import { clickDragCanvasEventHandlerProviders } from "./ClickDragCanvasEventHandlerProvider";
+import { Level } from "../bb/internal-data-formats/level";
 
 const ImageCard = styled(Card)<{
 	readonly children: [JSX.Element, JSX.Element];
@@ -76,21 +79,41 @@ const LevelPreview = styled.div`
 
 export function LevelPreviewCard(props: {
 	readonly parsedPrg: ParsedPrg;
+	readonly setParsedPrg: Setter<ParsedPrg>;
 	readonly levelIndex: number;
 	readonly setLevelIndex: Setter<number>;
 	readonly showLevelSelectionGrid: boolean;
 	readonly setShowLevelSelectionGrid: Setter<boolean>;
 }): ReactNode {
+	const level = props.parsedPrg.levels[props.levelIndex]!;
+	const setLevel = (level: Level) =>
+		props.setParsedPrg({
+			...props.parsedPrg,
+			levels: updateArrayAtIndex(
+				props.parsedPrg.levels,
+				props.levelIndex,
+				() => level
+			),
+		});
+
 	return (
 		<ImageCard>
 			<LevelPreview>
 				{!props.showLevelSelectionGrid ? (
-					<ImageDataCanvas
-						style={{ width: "100%" }}
-						imageData={imageDataFromPaletteImage(
-							doubleImageWidth(drawLevel(props.levelIndex, props.parsedPrg))
+					<clickDragCanvasEventHandlerProviders.PlatformEditor
+						level={level}
+						setLevel={setLevel}
+					>
+						{(eventHandlers) => (
+							<ClickDragCanvas
+								style={{ width: "100%" }}
+								imageData={imageDataFromPaletteImage(
+									doubleImageWidth(drawLevel(props.levelIndex, props.parsedPrg))
+								)}
+								{...eventHandlers}
+							/>
 						)}
-					/>
+					</clickDragCanvasEventHandlerProviders.PlatformEditor>
 				) : (
 					<LevelSelector
 						parsedPrg={props.parsedPrg}

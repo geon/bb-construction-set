@@ -74,6 +74,7 @@ export function App() {
 			<h1>BB Construction Set</h1>
 			<LevelPreviewCard
 				parsedPrg={parsedPrg}
+				setParsedPrg={setParsedPrg}
 				levelIndex={levelIndex}
 				setLevelIndex={setLevelIndex}
 				showLevelSelectionGrid={showLevelSelectionGrid}
