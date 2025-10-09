@@ -21,49 +21,45 @@ export function Platforms(props: {
 	readonly parsedPrg: ParsedPrg;
 }): ReactNode | readonly ReactNode[] {
 	return (
-		<>
-			<ImageButtons>
-				<FileInput
-					accept={["image/*"]}
-					onChange={async (file) => {
-						const imageData = imageDataFromImage(await imageFromFile(file));
+		<ImageButtons>
+			<FileInput
+				accept={["image/*"]}
+				onChange={async (file) => {
+					const imageData = imageDataFromImage(await imageFromFile(file));
 
-						const parsedTiles = attempt(() =>
-							parseLevelsTiles(paletteImageFromImageData(imageData))
-						);
+					const parsedTiles = attempt(() =>
+						parseLevelsTiles(paletteImageFromImageData(imageData))
+					);
 
-						if (parsedTiles.type !== "ok") {
-							alert(
-								`Could not read image: ${parsedTiles.error ?? "No reason."}`
-							);
-							return;
-						}
+					if (parsedTiles.type !== "ok") {
+						alert(`Could not read image: ${parsedTiles.error ?? "No reason."}`);
+						return;
+					}
 
-						props.setParsedPrg({
-							...props.parsedPrg,
-							levels: zipObject({
-								level: props.parsedPrg.levels,
-								tiles: parsedTiles.result,
-							}).map(({ level, tiles }) => ({ ...level, tiles })),
-						});
-					}}
-				>
-					Import Image
-				</FileInput>
-				<BlobDownloadButton
-					getBlob={async () => ({
-						fileName: "platforms.png",
-						blob: await imageDataToBlob(
-							imageDataFromPaletteImage(
-								drawLevelsTiles(
-									props.parsedPrg.levels.map((level) => level.tiles)
-								)
+					props.setParsedPrg({
+						...props.parsedPrg,
+						levels: zipObject({
+							level: props.parsedPrg.levels,
+							tiles: parsedTiles.result,
+						}).map(({ level, tiles }) => ({ ...level, tiles })),
+					});
+				}}
+			>
+				Import Image
+			</FileInput>
+			<BlobDownloadButton
+				getBlob={async () => ({
+					fileName: "platforms.png",
+					blob: await imageDataToBlob(
+						imageDataFromPaletteImage(
+							drawLevelsTiles(
+								props.parsedPrg.levels.map((level) => level.tiles)
 							)
-						),
-					})}
-					label={"Export Image"}
-				/>
-			</ImageButtons>
-		</>
+						)
+					),
+				})}
+				label={"Export Image"}
+			/>
+		</ImageButtons>
 	);
 }
