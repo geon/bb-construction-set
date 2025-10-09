@@ -72,6 +72,12 @@ export function App() {
 	return (
 		<Page>
 			<h1>BB Construction Set</h1>
+			<PrgDownloader
+				prg={prg}
+				setPrg={setPrg}
+				parsedPrg={parsedPrg}
+				manualPatch={manualPatch}
+			/>
 			<LevelPreviewCard
 				parsedPrg={parsedPrg}
 				setParsedPrg={setParsedPrg}
@@ -79,12 +85,6 @@ export function App() {
 				setLevelIndex={setLevelIndex}
 				showLevelSelectionGrid={showLevelSelectionGrid}
 				setShowLevelSelectionGrid={setShowLevelSelectionGrid}
-			/>
-			<PrgDownloader
-				prg={prg}
-				setPrg={setPrg}
-				parsedPrg={parsedPrg}
-				manualPatch={manualPatch}
 			/>
 			{levelIndex !== undefined && (
 				<TabBar
