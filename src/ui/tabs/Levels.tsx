@@ -15,12 +15,6 @@ const Styling = styled.div`
 	}
 `;
 
-export const ImageButtons = styled.div`
-	display: flex;
-	flex-direction: row;
-	gap: 1em;
-`;
-
 export function Levels(props: {
 	readonly parsedPrg: ParsedPrg;
 	readonly setParsedPrg: (parsedPrg: ParsedPrg) => void;

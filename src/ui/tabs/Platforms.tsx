@@ -14,7 +14,13 @@ import {
 } from "../../bb/palette-image/level";
 import { BlobDownloadButton } from "../BlobDownloadButton";
 import { FileInput } from "../FileInput";
-import { ImageButtons } from "./Levels";
+import styled from "styled-components";
+
+const ImageButtons = styled.div`
+	display: flex;
+	flex-direction: row;
+	gap: 1em;
+`;
 
 export function Platforms(props: {
 	readonly setParsedPrg: (parsedPrg: ParsedPrg) => void;
