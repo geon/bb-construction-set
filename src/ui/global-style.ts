@@ -1,5 +1,9 @@
 import { createGlobalStyle } from "styled-components";
 
+export const colors = {
+	active: "#646cff",
+} as const;
+
 const GlobalStyle = createGlobalStyle`
 	#root {
 		width: 100%;
@@ -72,7 +76,7 @@ const GlobalStyle = createGlobalStyle`
 		transition: border-color 0.25s;
 	}
 	button:hover {
-		border-color: #646cff;
+		border-color: ${colors.active};
 	}
 	button:focus,
 	button:focus-visible {
