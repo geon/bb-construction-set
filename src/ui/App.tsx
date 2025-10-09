@@ -18,7 +18,10 @@ import { LevelPreviewCard } from "./LevelPreviewCard";
 import { originalPrg as originalPrg } from "../bb/prg/parsed-prg";
 
 const Page = styled.div`
-	width: 600px;
+	width: 100%;
+	box-sizing: border-box;
+	max-width: 960px;
+
 	margin: 0 auto;
 	padding: 1rem;
 	text-align: center;
