@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { assertTuple } from "../../bb/tuple";
-import { Tiles } from "../../bb/internal-data-formats/level";
+import { Level, Tiles } from "../../bb/internal-data-formats/level";
 import { Coord2 } from "../../math/coord2";
 import { levelSize } from "../../bb/game-definitions/level-size";
 import { imageDataFromPaletteImage } from "../../bb/image-data/image-data";
@@ -12,11 +12,17 @@ import {
 import { bresenham } from "../../bb/functions";
 
 export function PlatformEditor(props: {
-	readonly tiles: Tiles;
-	readonly setTiles: (tiles: Tiles) => void;
+	readonly level: Level;
+	readonly setLevel: (level: Level) => void;
 }): JSX.Element {
-	const { tiles } = props;
-	const setSomeTiles = createSetSomeTiles(props.setTiles, props.tiles);
+	const tiles = props.level.tiles;
+	const setTiles = (tiles: Tiles) =>
+		props.setLevel({
+			...props.level,
+			tiles,
+		});
+
+	const setSomeTiles = createSetSomeTiles(setTiles, tiles);
 	let [drawValue, setDrawValue] = useState<boolean | undefined>(undefined);
 	let [lineStart, setLineStart] = useState<Coord2 | undefined>(undefined);
 
@@ -51,7 +57,7 @@ export function PlatformEditor(props: {
 	return (
 		<ClickDragCanvas
 			style={{ width: "100%" }}
-			imageData={imageDataFromPaletteImage(drawLevelTiles(props.tiles))}
+			imageData={imageDataFromPaletteImage(drawLevelTiles(props.level.tiles))}
 			{...eventHandlers}
 		/>
 	);
