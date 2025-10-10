@@ -29,30 +29,30 @@ export const clickDragCanvasEventHandlerProviders = {
 		let [lineStart, setLineStart] = useState<Coord2 | undefined>(undefined);
 
 		return props.children({
-			onClick: (tileCoord) => {
+			onClick: (eventCoord) => {
 				if (drawValue === undefined) {
 					return;
 				}
-				setSomeTiles([tileCoord], drawValue);
+				setSomeTiles([eventCoord], drawValue);
 			},
-			onDragStart: (tileCoord) => {
-				const newDrawValue = !tiles[tileCoord.y]![tileCoord.x]!;
+			onDragStart: (eventCoord) => {
+				const newDrawValue = !tiles[eventCoord.y]![eventCoord.x]!;
 				setDrawValue(newDrawValue);
-				setLineStart(tileCoord);
+				setLineStart(eventCoord);
 			},
 			onDragEnd: () => {
 				setDrawValue(undefined);
 				setLineStart(undefined);
 			},
-			onDragUpdate: (tileCoord) => {
+			onDragUpdate: (eventCoord) => {
 				if (drawValue === undefined) {
 					return;
 				}
 				if (lineStart === undefined) {
 					return;
 				}
-				setSomeTiles(bresenham(lineStart, tileCoord), drawValue);
-				setLineStart(tileCoord);
+				setSomeTiles(bresenham(lineStart, eventCoord), drawValue);
+				setLineStart(eventCoord);
 			},
 		});
 	},
