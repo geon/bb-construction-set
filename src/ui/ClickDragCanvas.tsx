@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ImageDataCanvas, ImageDataCanvasProps } from "./ImageDataCanvas";
-import { Coord2, equal, floor, scale, subtract } from "../math/coord2";
+import { Coord2, equal, floor, multiply, subtract } from "../math/coord2";
 import { levelWidth } from "../bb/game-definitions/level-size";
 
 export type ClickDragCanvasDragEventHandlers = {
@@ -67,5 +67,10 @@ function getEventCoord(event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
 	const elementLocation: Coord2 = event.currentTarget.getBoundingClientRect();
 	const scaleFactor =
 		levelWidth / event.currentTarget.getBoundingClientRect().width;
-	return floor(scale(subtract(page, elementLocation), scaleFactor));
+	return floor(
+		multiply(subtract(page, elementLocation), {
+			x: scaleFactor * 4,
+			y: scaleFactor * 8,
+		})
+	);
 }

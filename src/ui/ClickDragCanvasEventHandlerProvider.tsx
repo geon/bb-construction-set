@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { bresenham } from "../bb/functions";
 import { Level, Tiles } from "../bb/internal-data-formats/level";
-import { Coord2 } from "../math/coord2";
+import { Coord2, floor, multiply, scale } from "../math/coord2";
 import { ClickDragCanvasDragEventHandlers } from "./ClickDragCanvas";
 import { Setter } from "./types";
 import { levelSize } from "../bb/game-definitions/level-size";
@@ -33,12 +33,13 @@ export const clickDragCanvasEventHandlerProviders = {
 				if (drawValue === undefined) {
 					return;
 				}
-				setSomeTiles([eventCoord], drawValue);
+				setSomeTiles([getTileCoord(eventCoord)], drawValue);
 			},
 			onDragStart: (eventCoord) => {
-				const newDrawValue = !tiles[eventCoord.y]![eventCoord.x]!;
+				const tileCoord = getTileCoord(eventCoord);
+				const newDrawValue = !tiles[tileCoord.y]![tileCoord.x]!;
 				setDrawValue(newDrawValue);
-				setLineStart(eventCoord);
+				setLineStart(tileCoord);
 			},
 			onDragEnd: () => {
 				setDrawValue(undefined);
@@ -51,12 +52,17 @@ export const clickDragCanvasEventHandlerProviders = {
 				if (lineStart === undefined) {
 					return;
 				}
-				setSomeTiles(bresenham(lineStart, eventCoord), drawValue);
-				setLineStart(eventCoord);
+				const tileCoord = getTileCoord(eventCoord);
+				setSomeTiles(bresenham(lineStart, tileCoord), drawValue);
+				setLineStart(tileCoord);
 			},
 		});
 	},
 } as const satisfies Record<string, ClickDragCanvasEventHandlerProvider>;
+
+function getTileCoord(eventCoord: Coord2): Coord2 {
+	return floor(multiply(eventCoord, { x: 1 / 4, y: 1 / 8 }));
+}
 
 function createSetSomeTiles(setTiles: (tiles: Tiles) => void, tiles: Tiles) {
 	return (coords: readonly Coord2[], value: boolean) => {

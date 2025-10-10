@@ -52,3 +52,10 @@ export function floor(coord: Coord2): Coord2 {
 		y: Math.floor(coord.y),
 	};
 }
+
+export function multiply(a: Coord2, b: Coord2): Coord2 {
+	return {
+		x: a.x * b.x,
+		y: a.y * b.y,
+	};
+}
