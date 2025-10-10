@@ -189,6 +189,7 @@ function ToolButtons({
 			{objectEntries({
 				"draw-platforms": icons.pen,
 				"move-items": icons.umbrella,
+				"move-enemies": icons.bug,
 			} satisfies Record<ToolName, ReactNode>).map(([toolName, icon]) => (
 				<RadioButton
 					key={toolName}

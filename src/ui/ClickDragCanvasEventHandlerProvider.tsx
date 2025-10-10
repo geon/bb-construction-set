@@ -1,15 +1,7 @@
 import { useState } from "react";
-import { bresenham, objectEntries } from "../bb/functions";
+import { bresenham, objectEntries, updateArrayAtIndex } from "../bb/functions";
 import { Level, Tiles } from "../bb/internal-data-formats/level";
-import {
-	add,
-	Coord2,
-	equal,
-	floor,
-	multiply,
-	scale,
-	subtract,
-} from "../math/coord2";
+import { add, Coord2, equal, floor, multiply, subtract } from "../math/coord2";
 import { ClickDragCanvasDragEventHandlers } from "./ClickDragCanvas";
 import { Setter } from "./types";
 import { levelSize } from "../bb/game-definitions/level-size";
@@ -17,6 +9,7 @@ import { assertTuple } from "../bb/tuple";
 import { PerLevelItemSpawnPositions } from "../bb/internal-data-formats/item-spawn-positions";
 import { ItemCategoryName } from "../bb/prg/data-locations";
 import { rectContainsPoint } from "../math/rect";
+import { spritePosOffset, spriteSizePixels } from "../c64/consts";
 
 export type ClickDragCanvasEventHandlerProvider = (props: {
 	level: Level;
@@ -128,6 +121,69 @@ export const clickDragCanvasEventHandlerProviders = {
 					...itemSpawnPositions,
 					[draggedItem.category]: newItemPosition,
 				});
+			},
+		});
+	},
+
+	"move-enemies": (props) => {
+		const monsters = props.level.monsters;
+		const setMonsterPosition = (index: number, spawnPoint: Coord2) =>
+			props.setLevel({
+				...props.level,
+				monsters: updateArrayAtIndex(monsters, index, (monster) => ({
+					...monster,
+					spawnPoint,
+				})),
+			});
+
+		let [draggedMonster, setDraggedMonster] = useState<
+			| {
+					readonly index: number;
+					readonly offset: Coord2;
+			  }
+			| undefined
+		>(undefined);
+
+		return props.children({
+			onDragStart: (eventCoord) => {
+				const monster = monsters
+					.map(({ spawnPoint }, index) => ({
+						pos: floor(
+							multiply(subtract(spawnPoint, spritePosOffset), {
+								x: 1 / 2,
+								y: 1,
+							})
+						),
+						index,
+					}))
+					.find(({ pos }) =>
+						rectContainsPoint({ pos, size: spriteSizePixels }, eventCoord)
+					);
+				if (!monster) {
+					return;
+				}
+				setDraggedMonster({
+					index: monster.index,
+					offset: subtract(eventCoord, monster.pos),
+				});
+			},
+			onDragEnd: () => {
+				setDraggedMonster(undefined);
+			},
+			onDragUpdate: (eventCoord) => {
+				if (!draggedMonster) {
+					return;
+				}
+				setMonsterPosition(
+					draggedMonster.index,
+					add(
+						multiply(subtract(eventCoord, draggedMonster.offset), {
+							x: 2,
+							y: 1,
+						}),
+						spritePosOffset
+					)
+				);
 			},
 		});
 	},
