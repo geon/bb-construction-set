@@ -66,8 +66,8 @@ function getEventCoord(event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
 	const page: Coord2 = { x: event.clientX, y: event.clientY };
 	const elementLocation: Coord2 = event.currentTarget.getBoundingClientRect();
 	const scaleFactor =
-		event.currentTarget.getBoundingClientRect().width / levelWidth;
-	const clickCoord = scale(subtract(page, elementLocation), 1 / scaleFactor);
+		levelWidth / event.currentTarget.getBoundingClientRect().width;
+	const clickCoord = scale(subtract(page, elementLocation), scaleFactor);
 	const eventCoord = floor(clickCoord);
 	return eventCoord;
 }
