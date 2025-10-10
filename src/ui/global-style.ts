@@ -69,8 +69,10 @@ const GlobalStyle = createGlobalStyle`
 
 		background-color: #1a1a1a;
 		@media (prefers-color-scheme: light) {
-			background-color: #f9f9f9;
+			background-color: #f4f4f4;
 		}
+
+		box-shadow: 0px 1px 4px 0px #00000014;
 
 		cursor: pointer;
 		transition: border-color 0.25s;
