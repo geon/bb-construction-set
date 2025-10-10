@@ -268,7 +268,7 @@ export function updateArrayAtIndex<T>(
 	array: ReadonlyArray<T>,
 	index: number,
 	updater: (oldElement: T) => T
-): ReadonlyArray<T> {
+): Array<T> {
 	if (index >= array.length) {
 		throw new Error(
 			`Index out of bounds. index: ${index}, array.length: ${array.length}`
