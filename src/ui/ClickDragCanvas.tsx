@@ -32,7 +32,7 @@ export function ClickDragCanvas(
 		<ImageDataCanvas
 			{...rest}
 			onMouseDown={(event) => {
-				const tileCoord: Coord2 = getTileCoord(event);
+				const tileCoord = getTileCoord(event);
 				if (!dragCoord) {
 					onDragStart?.(tileCoord);
 				}
@@ -50,7 +50,7 @@ export function ClickDragCanvas(
 				if (!dragCoord) {
 					return;
 				}
-				const tileCoord: Coord2 = getTileCoord(event);
+				const tileCoord = getTileCoord(event);
 				if (equal(tileCoord, dragCoord)) {
 					return;
 				}
