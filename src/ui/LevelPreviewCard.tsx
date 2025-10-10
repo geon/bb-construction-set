@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { ParsedPrg } from "../bb/internal-data-formats/parsed-prg";
 import { imageDataFromPaletteImage } from "../bb/image-data/image-data";
 import { drawLevel } from "../bb/palette-image/level";
@@ -6,15 +6,16 @@ import { doubleImageWidth } from "../bb/palette-image/palette-image";
 import { ImageDataCanvas } from "./ImageDataCanvas";
 import { assertTuple } from "../bb/tuple";
 import { Card } from "./Card";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { drawLevelThumbnail } from "../bb/image-data/draw-level";
-import { mapRecord, updateArrayAtIndex } from "../bb/functions";
+import { mapRecord, objectEntries, updateArrayAtIndex } from "../bb/functions";
 import { ButtonRow } from "./ButtonRow";
 import { icons } from "./icons";
 import { Setter } from "./types";
 import { ClickDragCanvas } from "./ClickDragCanvas";
 import { clickDragCanvasEventHandlerProviders } from "./ClickDragCanvasEventHandlerProvider";
 import { Level } from "../bb/internal-data-formats/level";
+import { colors } from "./global-style";
 
 const ImageCard = styled(Card)<{
 	readonly children: [JSX.Element, JSX.Element];
@@ -90,14 +91,14 @@ export function LevelPreviewCard(props: {
 				() => level
 			),
 		});
+	const [activeTool, setActiveTool] = useState<ToolName>("draw-platforms");
 
+	const ClickDragCanvasEventHandlerProvider =
+		clickDragCanvasEventHandlerProviders[activeTool];
 	return (
 		<ImageCard>
 			{!props.showLevelSelectionGrid ? (
-				<clickDragCanvasEventHandlerProviders.PlatformEditor
-					level={level}
-					setLevel={setLevel}
-				>
+				<ClickDragCanvasEventHandlerProvider level={level} setLevel={setLevel}>
 					{(eventHandlers) => (
 						<ClickDragCanvas
 							style={{ width: "100%" }}
@@ -107,21 +108,27 @@ export function LevelPreviewCard(props: {
 							{...eventHandlers}
 						/>
 					)}
-				</clickDragCanvasEventHandlerProviders.PlatformEditor>
+				</ClickDragCanvasEventHandlerProvider>
 			) : (
 				<LevelSelector
 					parsedPrg={props.parsedPrg}
 					setLevelIndex={props.setLevelIndex}
 				/>
 			)}
-			<div>
-				<LevelSelectionButtons
-					levelIndex={props.levelIndex}
-					setLevelIndex={props.setLevelIndex}
-					showLevelSelectionGrid={props.showLevelSelectionGrid}
-					setShowLevelSelectionGrid={props.setShowLevelSelectionGrid}
-				/>
-			</div>
+
+			<ButtonRow>
+				<ButtonRow>
+					<LevelSelectionButtons
+						levelIndex={props.levelIndex}
+						setLevelIndex={props.setLevelIndex}
+						showLevelSelectionGrid={props.showLevelSelectionGrid}
+						setShowLevelSelectionGrid={props.setShowLevelSelectionGrid}
+					/>
+				</ButtonRow>
+				<ButtonRow>
+					<ToolButtons activeTool={activeTool} setActiveTool={setActiveTool} />
+				</ButtonRow>
+			</ButtonRow>
 		</ImageCard>
 	);
 }
@@ -154,5 +161,42 @@ function LevelSelectionButtons(props: {
 				{icons.chevrons.right}
 			</button>
 		</ButtonRow>
+	);
+}
+
+const RadioButton = styled.button<{ readonly $active?: boolean }>`
+	${({ $active }) =>
+		!$active
+			? ""
+			: css`
+					border-color: ${colors.active};
+					&:focus {
+						outline-color: ${colors.active};
+					}
+			  `}
+`;
+
+type ToolName = keyof typeof clickDragCanvasEventHandlerProviders;
+function ToolButtons({
+	activeTool,
+	setActiveTool,
+}: {
+	readonly activeTool: ToolName;
+	readonly setActiveTool: React.Dispatch<React.SetStateAction<ToolName>>;
+}) {
+	return (
+		<>
+			{objectEntries({
+				"draw-platforms": icons.pen,
+			} satisfies Record<ToolName, ReactNode>).map(([toolName, icon]) => (
+				<RadioButton
+					key={toolName}
+					$active={activeTool === toolName}
+					onClick={() => setActiveTool(toolName)}
+				>
+					{icon}
+				</RadioButton>
+			))}
+		</>
 	);
 }
