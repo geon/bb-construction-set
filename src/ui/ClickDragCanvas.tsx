@@ -64,9 +64,9 @@ export function ClickDragCanvas(
 
 function getTileCoord(event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
 	const page: Coord2 = { x: event.clientX, y: event.clientY };
-	const rect = event.currentTarget.getBoundingClientRect();
-	const elementLocation: Coord2 = rect;
-	const scaleFactor = rect.width / levelWidth;
+	const elementLocation: Coord2 = event.currentTarget.getBoundingClientRect();
+	const scaleFactor =
+		event.currentTarget.getBoundingClientRect().width / levelWidth;
 	const clickCoord = scale(subtract(page, elementLocation), 1 / scaleFactor);
 	const tileCoord: Coord2 = {
 		x: Math.floor(clickCoord.x),
