@@ -60,7 +60,7 @@ export interface Level {
 	readonly bgColors: BgColors;
 	readonly platformChar: Char;
 	readonly sidebarChars: CharBlock | undefined;
-	readonly monsters: Array<Character>;
+	readonly monsters: ReadonlyArray<Character>;
 	readonly bubbleCurrentRectangles: BubbleCurrentRectangles;
 	readonly bubbleCurrentPerLineDefaults: BubbleCurrentPerLineDefaults;
 	readonly bubbleSpawns: PerLevelBubbleSpawns;

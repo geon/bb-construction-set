@@ -51,7 +51,9 @@ function readMonster(monsterBytes: ReadonlyUint8Array): Character {
 	};
 }
 
-export function getMonstersPatch(monsterses: readonly Character[][]): Patch {
+export function getMonstersPatch(
+	monsterses: readonly (readonly Character[])[]
+): Patch {
 	const numMonsters = monsterses.flatMap((monsters) => monsters).length;
 	if (numMonsters > maxMonsters) {
 		throw new Error(
