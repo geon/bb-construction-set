@@ -45,3 +45,10 @@ export function interpolate(from: Coord2, to: Coord2, factor: number): Coord2 {
 export function equal(a: Coord2, b: Coord2): boolean {
 	return a.x === b.x && a.y === b.y;
 }
+
+export function floor(coord: Coord2): Coord2 {
+	return {
+		x: Math.floor(coord.x),
+		y: Math.floor(coord.y),
+	};
+}
