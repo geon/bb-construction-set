@@ -32,11 +32,11 @@ export function ClickDragCanvas(
 		<ImageDataCanvas
 			{...rest}
 			onMouseDown={(event) => {
-				const tileCoord = getEventCoord(event);
+				const eventCoord = getEventCoord(event);
 				if (!dragCoord) {
-					onDragStart?.(tileCoord);
+					onDragStart?.(eventCoord);
 				}
-				setDragCoord(tileCoord);
+				setDragCoord(eventCoord);
 				setHasDragged(false);
 			}}
 			onMouseUp={(event) => {
@@ -50,12 +50,12 @@ export function ClickDragCanvas(
 				if (!dragCoord) {
 					return;
 				}
-				const tileCoord = getEventCoord(event);
-				if (equal(tileCoord, dragCoord)) {
+				const eventCoord = getEventCoord(event);
+				if (equal(eventCoord, dragCoord)) {
 					return;
 				}
-				onDragUpdate?.(tileCoord);
-				setDragCoord(tileCoord);
+				onDragUpdate?.(eventCoord);
+				setDragCoord(eventCoord);
 				setHasDragged(true);
 			}}
 		/>
@@ -68,9 +68,9 @@ function getEventCoord(event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
 	const scaleFactor =
 		event.currentTarget.getBoundingClientRect().width / levelWidth;
 	const clickCoord = scale(subtract(page, elementLocation), 1 / scaleFactor);
-	const tileCoord: Coord2 = {
+	const eventCoord: Coord2 = {
 		x: Math.floor(clickCoord.x),
 		y: Math.floor(clickCoord.y),
 	};
-	return tileCoord;
+	return eventCoord;
 }
