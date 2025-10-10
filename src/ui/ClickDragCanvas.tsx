@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ImageDataCanvas, ImageDataCanvasProps } from "./ImageDataCanvas";
-import { Coord2, scale, subtract } from "../math/coord2";
+import { Coord2, equal, scale, subtract } from "../math/coord2";
 import { levelWidth } from "../bb/game-definitions/level-size";
 
 export type ClickDragCanvasDragEventHandlers = {
@@ -51,7 +51,7 @@ export function ClickDragCanvas(
 					return;
 				}
 				const tileCoord: Coord2 = getTileCoord(event);
-				if (tileCoord.x === dragCoord.x && tileCoord.y === dragCoord.y) {
+				if (equal(tileCoord, dragCoord)) {
 					return;
 				}
 				onDragUpdate?.(tileCoord);

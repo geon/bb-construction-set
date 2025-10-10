@@ -1,4 +1,4 @@
-import { Coord2 } from "../math/coord2";
+import { Coord2, equal } from "../math/coord2";
 import { NOfTuple, Tuple, MutableTuple } from "./tuple";
 
 export function padRight<T>(
@@ -320,7 +320,7 @@ export function bresenham(begin: Coord2, end: Coord2) {
 
 	const current = { ...begin };
 	line.push({ ...current });
-	while (!(current.x == end.x && current.y == end.y)) {
+	while (!equal(current, end)) {
 		const error2 = error * 2;
 		if (error2 > -dy) {
 			error -= dy;

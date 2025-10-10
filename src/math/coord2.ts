@@ -41,3 +41,7 @@ export function normalize(v: Coord2): Coord2 {
 export function interpolate(from: Coord2, to: Coord2, factor: number): Coord2 {
 	return add(scale(from, 1 - factor), scale(to, factor));
 }
+
+export function equal(a: Coord2, b: Coord2): boolean {
+	return a.x === b.x && a.y === b.y;
+}
