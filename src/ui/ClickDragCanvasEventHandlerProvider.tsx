@@ -16,7 +16,7 @@ export type ClickDragCanvasEventHandlerProvider = (props: {
 }) => React.ReactNode;
 
 export const clickDragCanvasEventHandlerProviders = {
-	PlatformEditor: (props) => {
+	"draw-platforms": (props) => {
 		const tiles = props.level.tiles;
 		const setTiles = (tiles: Tiles) =>
 			props.setLevel({
