@@ -173,3 +173,11 @@ export function rectIntersection(a: Rect, b: Rect): Rect | undefined {
 		size: { x: width, y: height },
 	};
 }
+
+export function rectContainsPoint(rect: Rect, coord: Coord2): boolean {
+	return (["x", "y"] as const).every(
+		(axis) =>
+			coord[axis] >= rect.pos[axis] &&
+			coord[axis] < rect.pos[axis] + rect.size[axis]
+	);
+}
