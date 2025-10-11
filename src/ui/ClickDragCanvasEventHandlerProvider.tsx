@@ -10,12 +10,15 @@ import { PerLevelItemSpawnPositions } from "../bb/internal-data-formats/item-spa
 import { ItemCategoryName } from "../bb/prg/data-locations";
 import { rectContainsPoint } from "../math/rect";
 import { spritePosOffset, spriteSizePixels } from "../c64/consts";
+import { CheckboxList } from "./CheckboxList";
+import { SpecialBubbleName } from "../bb/internal-data-formats/bubble-spawns";
 
 export type ClickDragCanvasEventHandlerProvider = (props: {
 	level: Level;
 	setLevel: Setter<Level>;
 	children: (
-		eventHandlers: ClickDragCanvasDragEventHandlers
+		eventHandlers: ClickDragCanvasDragEventHandlers,
+		extraTools?: React.ReactNode
 	) => React.ReactNode;
 }) => React.ReactNode;
 
@@ -187,6 +190,25 @@ export const clickDragCanvasEventHandlerProviders = {
 			},
 		});
 	},
+
+	"spawn-bubbles": (props) =>
+		props.children(
+			{},
+			<CheckboxList
+				options={
+					{
+						lightning: "Lightning",
+						fire: "Fire",
+						water: "Water",
+						extend: "Extend",
+					} satisfies Record<SpecialBubbleName, string>
+				}
+				selected={props.level.bubbleSpawns}
+				setSelected={(bubbleSpawns) =>
+					props.setLevel({ ...props.level, bubbleSpawns })
+				}
+			/>
+		),
 } as const satisfies Record<string, ClickDragCanvasEventHandlerProvider>;
 
 function getTileCoord(eventCoord: Coord2): Coord2 {
