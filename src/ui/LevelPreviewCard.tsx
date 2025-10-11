@@ -96,10 +96,10 @@ export function LevelPreviewCard(props: {
 	const ClickDragCanvasEventHandlerProvider =
 		clickDragCanvasEventHandlerProviders[activeTool];
 	return (
-		<ImageCard>
-			{!props.showLevelSelectionGrid ? (
-				<ClickDragCanvasEventHandlerProvider level={level} setLevel={setLevel}>
-					{(eventHandlers) => (
+		<ClickDragCanvasEventHandlerProvider level={level} setLevel={setLevel}>
+			{(eventHandlers) => (
+				<ImageCard>
+					{!props.showLevelSelectionGrid ? (
 						<ClickDragCanvas
 							style={{ width: "100%" }}
 							imageData={imageDataFromPaletteImage(
@@ -107,33 +107,33 @@ export function LevelPreviewCard(props: {
 							)}
 							{...eventHandlers}
 						/>
+					) : (
+						<LevelSelector
+							parsedPrg={props.parsedPrg}
+							setLevelIndex={props.setLevelIndex}
+						/>
 					)}
-				</ClickDragCanvasEventHandlerProvider>
-			) : (
-				<LevelSelector
-					parsedPrg={props.parsedPrg}
-					setLevelIndex={props.setLevelIndex}
-				/>
-			)}
 
-			<ButtonRow>
-				<ButtonRow>
-					<LevelSelectionButtons
-						levelIndex={props.levelIndex}
-						setLevelIndex={props.setLevelIndex}
-						showLevelSelectionGrid={props.showLevelSelectionGrid}
-						setShowLevelSelectionGrid={props.setShowLevelSelectionGrid}
-					/>
-				</ButtonRow>
-				<ButtonRow>
-					<ToolButtons
-						activeTool={activeTool}
-						setActiveTool={setActiveTool}
-						showLevelSelectionGrid={props.showLevelSelectionGrid}
-					/>
-				</ButtonRow>
-			</ButtonRow>
-		</ImageCard>
+					<ButtonRow>
+						<ButtonRow>
+							<LevelSelectionButtons
+								levelIndex={props.levelIndex}
+								setLevelIndex={props.setLevelIndex}
+								showLevelSelectionGrid={props.showLevelSelectionGrid}
+								setShowLevelSelectionGrid={props.setShowLevelSelectionGrid}
+							/>
+						</ButtonRow>
+						<ButtonRow>
+							<ToolButtons
+								activeTool={activeTool}
+								setActiveTool={setActiveTool}
+								showLevelSelectionGrid={props.showLevelSelectionGrid}
+							/>
+						</ButtonRow>
+					</ButtonRow>
+				</ImageCard>
+			)}
+		</ClickDragCanvasEventHandlerProvider>
 	);
 }
 
