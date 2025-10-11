@@ -16,6 +16,7 @@ import { ClickDragCanvas } from "./ClickDragCanvas";
 import { clickDragCanvasEventHandlerProviders } from "./ClickDragCanvasEventHandlerProvider";
 import { Level } from "../bb/internal-data-formats/level";
 import { colors } from "./global-style";
+import { Flex } from "./Flex";
 
 const ImageCard = styled(Card)<{
 	readonly children: [JSX.Element, JSX.Element];
@@ -97,7 +98,7 @@ export function LevelPreviewCard(props: {
 		clickDragCanvasEventHandlerProviders[activeTool];
 	return (
 		<ClickDragCanvasEventHandlerProvider level={level} setLevel={setLevel}>
-			{(eventHandlers) => (
+			{(eventHandlers, extraTools) => (
 				<ImageCard>
 					{!props.showLevelSelectionGrid ? (
 						<ClickDragCanvas
@@ -114,23 +115,27 @@ export function LevelPreviewCard(props: {
 						/>
 					)}
 
-					<ButtonRow>
+					<Flex $col>
 						<ButtonRow>
-							<LevelSelectionButtons
-								levelIndex={props.levelIndex}
-								setLevelIndex={props.setLevelIndex}
-								showLevelSelectionGrid={props.showLevelSelectionGrid}
-								setShowLevelSelectionGrid={props.setShowLevelSelectionGrid}
-							/>
+							<ButtonRow>
+								<LevelSelectionButtons
+									levelIndex={props.levelIndex}
+									setLevelIndex={props.setLevelIndex}
+									showLevelSelectionGrid={props.showLevelSelectionGrid}
+									setShowLevelSelectionGrid={props.setShowLevelSelectionGrid}
+								/>
+							</ButtonRow>
+							<ButtonRow>
+								<ToolButtons
+									activeTool={activeTool}
+									setActiveTool={setActiveTool}
+									showLevelSelectionGrid={props.showLevelSelectionGrid}
+								/>
+							</ButtonRow>
 						</ButtonRow>
-						<ButtonRow>
-							<ToolButtons
-								activeTool={activeTool}
-								setActiveTool={setActiveTool}
-								showLevelSelectionGrid={props.showLevelSelectionGrid}
-							/>
-						</ButtonRow>
-					</ButtonRow>
+
+						{extraTools && <ButtonRow $align="right">{extraTools}</ButtonRow>}
+					</Flex>
 				</ImageCard>
 			)}
 		</ClickDragCanvasEventHandlerProvider>
@@ -196,6 +201,7 @@ function ToolButtons({
 				"draw-platforms": icons.pen,
 				"move-items": icons.umbrella,
 				"move-enemies": icons.bug,
+				"spawn-bubbles": icons.fireBubble,
 			} satisfies Record<ToolName, ReactNode>).map(([toolName, icon]) => (
 				<RadioButton
 					key={toolName}
