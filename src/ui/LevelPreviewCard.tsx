@@ -126,7 +126,11 @@ export function LevelPreviewCard(props: {
 					/>
 				</ButtonRow>
 				<ButtonRow>
-					<ToolButtons activeTool={activeTool} setActiveTool={setActiveTool} />
+					<ToolButtons
+						activeTool={activeTool}
+						setActiveTool={setActiveTool}
+						showLevelSelectionGrid={props.showLevelSelectionGrid}
+					/>
 				</ButtonRow>
 			</ButtonRow>
 		</ImageCard>
@@ -180,9 +184,11 @@ type ToolName = keyof typeof clickDragCanvasEventHandlerProviders;
 function ToolButtons({
 	activeTool,
 	setActiveTool,
+	showLevelSelectionGrid,
 }: {
 	readonly activeTool: ToolName;
 	readonly setActiveTool: React.Dispatch<React.SetStateAction<ToolName>>;
+	readonly showLevelSelectionGrid: boolean;
 }) {
 	return (
 		<>
@@ -193,8 +199,9 @@ function ToolButtons({
 			} satisfies Record<ToolName, ReactNode>).map(([toolName, icon]) => (
 				<RadioButton
 					key={toolName}
-					$active={activeTool === toolName}
+					$active={!showLevelSelectionGrid && activeTool === toolName}
 					onClick={() => setActiveTool(toolName)}
+					disabled={showLevelSelectionGrid}
 				>
 					{icon}
 				</RadioButton>
