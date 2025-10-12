@@ -1,4 +1,4 @@
-import { Character } from "../internal-data-formats/level";
+import { Monster } from "../internal-data-formats/level";
 import { isBitSet } from "../bit-twiddling";
 import {
 	bytesPerMonster,
@@ -6,14 +6,11 @@ import {
 	maxMonsters,
 } from "./data-locations";
 import { ReadonlyUint8Array } from "../types";
-import {
-	CharacterName,
-	monsterNames,
-} from "../game-definitions/character-name";
+import { monsterNames } from "../game-definitions/character-name";
 import { Patch, SingleBytePatchEntry } from "./io";
 
 export function readMonsters(monsterBytes: ReadonlyUint8Array) {
-	const monstersForAllLevels: Character<CharacterName>[][] = [];
+	const monstersForAllLevels: Monster[][] = [];
 
 	let currentMonsterByteIndex = 0;
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
@@ -23,7 +20,7 @@ export function readMonsters(monsterBytes: ReadonlyUint8Array) {
 			continue;
 		}
 
-		const monsters: Character<CharacterName>[] = [];
+		const monsters: Monster[] = [];
 		do {
 			monsters.push(
 				readMonster(
@@ -43,9 +40,7 @@ export function readMonsters(monsterBytes: ReadonlyUint8Array) {
 	return monstersForAllLevels;
 }
 
-function readMonster(
-	monsterBytes: ReadonlyUint8Array
-): Character<CharacterName> {
+function readMonster(monsterBytes: ReadonlyUint8Array): Monster {
 	return {
 		characterName: monsterNames[monsterBytes[0]! & 0b111]!,
 		spawnPoint: {
@@ -57,7 +52,7 @@ function readMonster(
 }
 
 export function getMonstersPatch(
-	monsterses: readonly (readonly Character<CharacterName>[])[]
+	monsterses: readonly (readonly Monster[])[]
 ): Patch {
 	const numMonsters = monsterses.flatMap((monsters) => monsters).length;
 	if (numMonsters > maxMonsters) {
@@ -72,9 +67,7 @@ export function getMonstersPatch(
 			const subBytes = monsters.flatMap((monster) => [
 				[
 					((monster.spawnPoint.x - 20) & 0b11111000) +
-						monsterNames.indexOf(
-							monster.characterName as Exclude<CharacterName, "player">
-						),
+						monsterNames.indexOf(monster.characterName),
 				],
 				[monster.spawnPoint.y - 21, 0b11111110],
 				[(monster.facingLeft ? 1 : 0) << 7, 0b10000000],
