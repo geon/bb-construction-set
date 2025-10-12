@@ -20,6 +20,8 @@ export function FileMenu(props: {
 	readonly setPrg: (arrayBuffer: ArrayBuffer) => void;
 	readonly manualPatch: Patch;
 }): ReactNode {
+	const parsedPrg = props.parsedPrg;
+
 	return (
 		<Card>
 			{/* <p>
@@ -43,9 +45,7 @@ export function FileMenu(props: {
 								fileName: (index + 1).toString().padStart(3, "0") + ".png",
 								blob: await imageDataToBlob(
 									imageDataFromPaletteImage(
-										doubleImageWidth(
-											drawLevel(index, props.parsedPrg, undefined)
-										)
+										doubleImageWidth(drawLevel(index, parsedPrg, undefined))
 									)
 								),
 							})),
@@ -63,8 +63,9 @@ export function FileMenu(props: {
 				<BlobDownloadButton
 					getBlob={async () => {
 						const patched = patchPrg(
+							//
 							props.prg,
-							props.parsedPrg,
+							parsedPrg,
 							props.manualPatch
 						);
 
