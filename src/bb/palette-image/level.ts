@@ -50,6 +50,7 @@ import { drawSprite, getSpritePalette } from "./sprite";
 export type LevelEditorOptions = {
 	readonly type: "move-enemies";
 	readonly selectedMonsterIndex: number | undefined;
+	readonly dragging: boolean;
 };
 
 export function drawLevel(
@@ -141,11 +142,19 @@ export function drawLevel(
 	]) {
 		const sprite =
 			parsedPrg.sprites[character.characterName].sprites[
-				character.facingLeft ? spriteLeftIndex[character.characterName] : 0
+				options?.type === "move-enemies" &&
+				index === options.selectedMonsterIndex &&
+				options.dragging
+					? parsedPrg.sprites[character.characterName].sprites.length - 1
+					: character.facingLeft
+					? spriteLeftIndex[character.characterName]
+					: 0
 			]!;
 		const spritePos = subtract(character.spawnPoint, spritePosOffset);
 		const spriteColor =
-			options?.type === "move-enemies" && index === options.selectedMonsterIndex
+			options?.type === "move-enemies" &&
+			index === options.selectedMonsterIndex &&
+			!options.dragging
 				? palette.lightRed
 				: character.characterName === "player"
 				? character.facingLeft

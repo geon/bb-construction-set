@@ -244,6 +244,7 @@ export const clickDragCanvasEventHandlerProviders = {
 			{
 				type: "move-enemies",
 				selectedMonsterIndex: selectedMonster?.index,
+				dragging: !!draggedMonster,
 			}
 		);
 	},
