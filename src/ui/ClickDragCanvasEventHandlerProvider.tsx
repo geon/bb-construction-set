@@ -161,9 +161,9 @@ export const clickDragCanvasEventHandlerProviders = {
 			| undefined
 		>(undefined);
 		let [selectedMonster, setSelectedMonster] = useState<
-			| {
+			| (Monster & {
 					readonly index: number;
-			  }
+			  })
 			| undefined
 		>(undefined);
 
@@ -182,8 +182,8 @@ export const clickDragCanvasEventHandlerProviders = {
 
 		function findMonsterAtCoord(eventCoord: Coord2) {
 			return monsters
-				.map(({ spawnPoint }, index) => ({
-					spawnPoint,
+				.map((monster, index) => ({
+					...monster,
 					index,
 				}))
 				.find(({ spawnPoint }) =>
