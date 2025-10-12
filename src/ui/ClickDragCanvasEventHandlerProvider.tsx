@@ -15,6 +15,7 @@ import { SpecialBubbleName } from "../bb/internal-data-formats/bubble-spawns";
 import { CharacterName } from "../bb/game-definitions/character-name";
 import { RadioButtonList } from "./RadioButtonList";
 import { LevelEditorOptions } from "../bb/palette-image/level";
+import { ButtonRow } from "./ButtonRow";
 
 export type ClickDragCanvasEventHandlerProvider = (props: {
 	levelIndex: number;
@@ -237,31 +238,35 @@ export const clickDragCanvasEventHandlerProviders = {
 				},
 			},
 			selectedMonster && (
-				<RadioButtonList
-					options={
-						{
-							bubbleBuster: "Bubble Buster",
-							incendo: "Incendo",
-							colley: "Colley",
-							hullaballoon: "Hullaballoon",
-							beluga: "Beluga",
-							willyWhistle: "Willy Whistle",
-							stoner: "Stoner",
-							superSocket: "Super Socket",
-						} satisfies Record<Exclude<CharacterName, "player">, string>
-					}
-					selected={props.level.monsters[selectedMonster.index]?.characterName}
-					setSelected={(characterName) =>
-						props.setLevel({
-							...props.level,
-							monsters: updateArrayAtIndex(
-								monsters,
-								selectedMonster.index,
-								(monster) => ({ ...monster, characterName })
-							),
-						})
-					}
-				/>
+				<ButtonRow $align="right">
+					<RadioButtonList
+						options={
+							{
+								bubbleBuster: "Bubble Buster",
+								incendo: "Incendo",
+								colley: "Colley",
+								hullaballoon: "Hullaballoon",
+								beluga: "Beluga",
+								willyWhistle: "Willy Whistle",
+								stoner: "Stoner",
+								superSocket: "Super Socket",
+							} satisfies Record<Exclude<CharacterName, "player">, string>
+						}
+						selected={
+							props.level.monsters[selectedMonster.index]?.characterName
+						}
+						setSelected={(characterName) =>
+							props.setLevel({
+								...props.level,
+								monsters: updateArrayAtIndex(
+									monsters,
+									selectedMonster.index,
+									(monster) => ({ ...monster, characterName })
+								),
+							})
+						}
+					/>
+				</ButtonRow>
 			),
 			{
 				type: "move-enemies",
@@ -274,20 +279,22 @@ export const clickDragCanvasEventHandlerProviders = {
 	"spawn-bubbles": (props) =>
 		props.children(
 			{},
-			<CheckboxList
-				options={
-					{
-						lightning: "Lightning",
-						fire: "Fire",
-						water: "Water",
-						extend: "Extend",
-					} satisfies Record<SpecialBubbleName, string>
-				}
-				selected={props.level.bubbleSpawns}
-				setSelected={(bubbleSpawns) =>
-					props.setLevel({ ...props.level, bubbleSpawns })
-				}
-			/>
+			<ButtonRow $align="right">
+				<CheckboxList
+					options={
+						{
+							lightning: "Lightning",
+							fire: "Fire",
+							water: "Water",
+							extend: "Extend",
+						} satisfies Record<SpecialBubbleName, string>
+					}
+					selected={props.level.bubbleSpawns}
+					setSelected={(bubbleSpawns) =>
+						props.setLevel({ ...props.level, bubbleSpawns })
+					}
+				/>
+			</ButtonRow>
 		),
 } as const satisfies Record<string, ClickDragCanvasEventHandlerProvider>;
 
