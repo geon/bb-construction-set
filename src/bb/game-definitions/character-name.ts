@@ -1,7 +1,6 @@
 import { Character } from "../internal-data-formats/level";
 
-export const characterNames = [
-	"player",
+export const monsterNames = [
 	"bubbleBuster",
 	"incendo",
 	"colley",
@@ -11,6 +10,8 @@ export const characterNames = [
 	"stoner",
 	"superSocket",
 ] as const;
+
+export const characterNames = ["player", ...monsterNames] as const;
 
 export type CharacterName = (typeof characterNames)[number];
 
