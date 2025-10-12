@@ -21,6 +21,7 @@ export function FileMenu(props: {
 	readonly manualPatch: Patch;
 }): ReactNode {
 	const parsedPrg = props.parsedPrg;
+	const prg = props.prg;
 
 	return (
 		<Card>
@@ -64,7 +65,7 @@ export function FileMenu(props: {
 					getBlob={async () => {
 						const patched = patchPrg(
 							//
-							props.prg,
+							prg,
 							parsedPrg,
 							props.manualPatch
 						);
