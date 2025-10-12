@@ -6,11 +6,14 @@ import {
 	maxMonsters,
 } from "./data-locations";
 import { ReadonlyUint8Array } from "../types";
-import { characterNames } from "../game-definitions/character-name";
+import {
+	CharacterName,
+	characterNames,
+} from "../game-definitions/character-name";
 import { Patch, SingleBytePatchEntry } from "./io";
 
 export function readMonsters(monsterBytes: ReadonlyUint8Array) {
-	const monstersForAllLevels: Character[][] = [];
+	const monstersForAllLevels: Character<CharacterName>[][] = [];
 
 	let currentMonsterByteIndex = 0;
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
@@ -20,7 +23,7 @@ export function readMonsters(monsterBytes: ReadonlyUint8Array) {
 			continue;
 		}
 
-		const monsters: Character[] = [];
+		const monsters: Character<CharacterName>[] = [];
 		do {
 			monsters.push(
 				readMonster(
@@ -40,7 +43,9 @@ export function readMonsters(monsterBytes: ReadonlyUint8Array) {
 	return monstersForAllLevels;
 }
 
-function readMonster(monsterBytes: ReadonlyUint8Array): Character {
+function readMonster(
+	monsterBytes: ReadonlyUint8Array
+): Character<CharacterName> {
 	return {
 		characterName: characterNames[(monsterBytes[0]! & 0b111) + 1]!,
 		spawnPoint: {
@@ -52,7 +57,7 @@ function readMonster(monsterBytes: ReadonlyUint8Array): Character {
 }
 
 export function getMonstersPatch(
-	monsterses: readonly (readonly Character[])[]
+	monsterses: readonly (readonly Character<CharacterName>[])[]
 ): Patch {
 	const numMonsters = monsterses.flatMap((monsters) => monsters).length;
 	if (numMonsters > maxMonsters) {

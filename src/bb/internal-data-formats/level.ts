@@ -12,8 +12,8 @@ import { BgColors } from "./bg-colors";
 import { PerLevelBubbleSpawns } from "./bubble-spawns";
 import { PerLevelItemSpawnPositions } from "./item-spawn-positions";
 
-export interface Character {
-	readonly characterName: CharacterName;
+export interface Character<TCharacterName> {
+	readonly characterName: TCharacterName;
 	readonly spawnPoint: Coord2;
 	readonly facingLeft: boolean;
 }
@@ -60,7 +60,7 @@ export interface Level {
 	readonly bgColors: BgColors;
 	readonly platformChar: Char;
 	readonly sidebarChars: CharBlock | undefined;
-	readonly monsters: ReadonlyArray<Character>;
+	readonly monsters: ReadonlyArray<Character<CharacterName>>;
 	readonly bubbleCurrentRectangles: BubbleCurrentRectangles;
 	readonly bubbleCurrentPerLineDefaults: BubbleCurrentPerLineDefaults;
 	readonly bubbleSpawns: PerLevelBubbleSpawns;

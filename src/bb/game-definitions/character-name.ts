@@ -30,7 +30,7 @@ export const spriteLeftIndex: Record<CharacterName, number> = {
 	superSocket: 1,
 };
 
-export const pl1: Character = {
+export const pl1: Character<CharacterName> = {
 	spawnPoint: {
 		x: 44, // The tail is 6 pixels from the edge.
 		y: 221,
@@ -39,7 +39,7 @@ export const pl1: Character = {
 	facingLeft: false,
 };
 
-export const pl2: Character = {
+export const pl2: Character<CharacterName> = {
 	spawnPoint: {
 		x: 236, // Only 4 pixels from the edge. Not same as pl1.
 		y: 221,
