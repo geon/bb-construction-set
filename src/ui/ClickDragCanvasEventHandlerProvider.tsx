@@ -174,16 +174,22 @@ export const clickDragCanvasEventHandlerProviders = {
 		function findMonsterAtCoord(eventCoord: Coord2) {
 			return monsters
 				.map(({ spawnPoint }, index) => ({
-					pos: floor(
-						multiply(subtract(spawnPoint, spritePosOffset), {
-							x: 1 / 2,
-							y: 1,
-						})
-					),
+					spawnPoint,
 					index,
 				}))
-				.find(({ pos }) =>
-					rectContainsPoint({ pos, size: spriteSizePixels }, eventCoord)
+				.find(({ spawnPoint }) =>
+					rectContainsPoint(
+						{
+							pos: floor(
+								multiply(subtract(spawnPoint, spritePosOffset), {
+									x: 1 / 2,
+									y: 1,
+								})
+							),
+							size: spriteSizePixels,
+						},
+						eventCoord
+					)
 				);
 		}
 
@@ -200,7 +206,15 @@ export const clickDragCanvasEventHandlerProviders = {
 					}
 					setDraggedMonster({
 						index: monster.index,
-						offset: subtract(eventCoord, monster.pos),
+						offset: subtract(
+							eventCoord,
+							floor(
+								multiply(subtract(monster.spawnPoint, spritePosOffset), {
+									x: 1 / 2,
+									y: 1,
+								})
+							)
+						),
 					});
 					setSelectedMonster(monster);
 				},
