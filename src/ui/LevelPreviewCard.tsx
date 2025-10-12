@@ -140,7 +140,7 @@ export function LevelPreviewCard(props: {
 							</ButtonRow>
 						</ButtonRow>
 
-						{extraTools && <ButtonRow $align="right">{extraTools}</ButtonRow>}
+						{extraTools}
 					</Flex>
 				</ImageCard>
 			)}
