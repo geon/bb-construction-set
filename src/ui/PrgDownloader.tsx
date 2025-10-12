@@ -42,7 +42,7 @@ export function PrgDownloader(props: {
 							fileName: (index + 1).toString().padStart(3, "0") + ".png",
 							blob: await imageDataToBlob(
 								imageDataFromPaletteImage(
-									doubleImageWidth(drawLevel(index, props.parsedPrg))
+									doubleImageWidth(drawLevel(index, props.parsedPrg, undefined))
 								)
 							),
 						})),
