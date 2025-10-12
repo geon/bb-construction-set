@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { bresenham, objectEntries, updateArrayAtIndex } from "../bb/functions";
+import {
+	bresenham,
+	deleteArrayElementAtIndex,
+	objectEntries,
+	updateArrayAtIndex,
+} from "../bb/functions";
 import { Level, Monster, Tiles } from "../bb/internal-data-formats/level";
 import { add, Coord2, equal, floor, multiply, subtract } from "../math/coord2";
 import { ClickDragCanvasDragEventHandlers } from "./ClickDragCanvas";
@@ -15,6 +20,7 @@ import { SpecialBubbleName } from "../bb/internal-data-formats/bubble-spawns";
 import { CharacterName } from "../bb/game-definitions/character-name";
 import { RadioButtonList } from "./RadioButtonList";
 import { LevelEditorOptions } from "../bb/palette-image/level";
+import { Flex } from "./Flex";
 import { ButtonRow } from "./ButtonRow";
 
 export type ClickDragCanvasEventHandlerProvider = (props: {
@@ -237,37 +243,79 @@ export const clickDragCanvasEventHandlerProviders = {
 					);
 				},
 			},
-			selectedMonster && (
+			<Flex $col>
 				<ButtonRow $align="right">
-					<RadioButtonList
-						options={
-							{
-								bubbleBuster: "Bubble Buster",
-								incendo: "Incendo",
-								colley: "Colley",
-								hullaballoon: "Hullaballoon",
-								beluga: "Beluga",
-								willyWhistle: "Willy Whistle",
-								stoner: "Stoner",
-								superSocket: "Super Socket",
-							} satisfies Record<Exclude<CharacterName, "player">, string>
-						}
-						selected={
-							props.level.monsters[selectedMonster.index]?.characterName
-						}
-						setSelected={(characterName) =>
-							props.setLevel({
-								...props.level,
-								monsters: updateArrayAtIndex(
-									monsters,
-									selectedMonster.index,
-									(monster) => ({ ...monster, characterName })
-								),
-							})
-						}
-					/>
+					<button
+						disabled={monsters.length >= 6}
+						onClick={() => {
+							const cloneSource = selectedMonster ?? monsters[0];
+							const newMonster: Monster = cloneSource
+								? {
+										...cloneSource,
+										spawnPoint: add(cloneSource.spawnPoint, {
+											x: 20,
+											y: 30,
+										}),
+								  }
+								: {
+										characterName: "bubbleBuster",
+										spawnPoint: { x: 100, y: 100 },
+										facingLeft: false,
+								  };
+
+							setMonsters([...monsters, newMonster]);
+							setSelectedMonster({ ...newMonster, index: monsters.length });
+						}}
+					>
+						+
+					</button>
+					<button
+						disabled={selectedMonster === undefined}
+						onClick={() => {
+							if (!selectedMonster) {
+								return;
+							}
+							setMonsters(
+								deleteArrayElementAtIndex(monsters, selectedMonster.index)
+							);
+							setSelectedMonster(undefined);
+						}}
+					>
+						-
+					</button>
 				</ButtonRow>
-			),
+				{selectedMonster && (
+					<ButtonRow $align="right">
+						<RadioButtonList
+							options={
+								{
+									bubbleBuster: "Bubble Buster",
+									incendo: "Incendo",
+									colley: "Colley",
+									hullaballoon: "Hullaballoon",
+									beluga: "Beluga",
+									willyWhistle: "Willy Whistle",
+									stoner: "Stoner",
+									superSocket: "Super Socket",
+								} satisfies Record<Exclude<CharacterName, "player">, string>
+							}
+							selected={
+								props.level.monsters[selectedMonster.index]?.characterName
+							}
+							setSelected={(characterName) =>
+								props.setLevel({
+									...props.level,
+									monsters: updateArrayAtIndex(
+										monsters,
+										selectedMonster.index,
+										(monster) => ({ ...monster, characterName })
+									),
+								})
+							}
+						/>
+					</ButtonRow>
+				)}
+			</Flex>,
 			{
 				type: "move-enemies",
 				selectedMonsterIndex: selectedMonster?.index,

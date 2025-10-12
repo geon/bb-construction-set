@@ -280,6 +280,21 @@ export function updateArrayAtIndex<T>(
 	return newArray;
 }
 
+export function deleteArrayElementAtIndex<T>(
+	array: ReadonlyArray<T>,
+	index: number
+): Array<T> {
+	if (index >= array.length) {
+		throw new Error(
+			`Index out of bounds. index: ${index}, array.length: ${array.length}`
+		);
+	}
+
+	const newArray = array.slice();
+	newArray.splice(index, 1);
+	return newArray;
+}
+
 export function uniqueBy<T>(
 	array: readonly T[],
 	keySelector: (element: T) => string | number
