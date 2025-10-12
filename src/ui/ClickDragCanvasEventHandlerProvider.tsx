@@ -135,14 +135,17 @@ export const clickDragCanvasEventHandlerProviders = {
 
 	"move-enemies": (props) => {
 		const monsters = props.level.monsters;
+		function setMonsters(monsters: readonly Monster[]) {
+			props.setLevel({
+				...props.level,
+				monsters,
+			});
+		}
 		function updateMonster(
 			index: number,
 			updater: (monster: Monster) => Monster
 		) {
-			props.setLevel({
-				...props.level,
-				monsters: updateArrayAtIndex(monsters, index, updater),
-			});
+			setMonsters(updateArrayAtIndex(monsters, index, updater));
 		}
 		const setMonsterPosition = (index: number, spawnPoint: Coord2) =>
 			updateMonster(index, (monster) => ({
