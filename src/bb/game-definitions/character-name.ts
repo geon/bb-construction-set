@@ -14,10 +14,6 @@ export const characterNames = [
 
 export type CharacterName = (typeof characterNames)[number];
 
-export function isCharacterName(text: string): text is CharacterName {
-	return characterNames.includes(text as CharacterName);
-}
-
 export const spriteLeftIndex: Record<CharacterName, number> = {
 	player: 4,
 	bubbleBuster: 4,
