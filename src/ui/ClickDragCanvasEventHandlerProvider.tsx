@@ -22,6 +22,7 @@ import { RadioButtonList } from "./RadioButtonList";
 import { LevelEditorOptions } from "../bb/palette-image/level";
 import { Flex } from "./Flex";
 import { ButtonRow } from "./ButtonRow";
+import { icons } from "./icons";
 
 export type ClickDragCanvasEventHandlerProvider = (props: {
 	levelIndex: number;
@@ -245,6 +246,18 @@ export const clickDragCanvasEventHandlerProviders = {
 			},
 			<Flex $col>
 				<ButtonRow $align="right">
+					<button
+						disabled={selectedMonster === undefined}
+						onClick={() =>
+							selectedMonster &&
+							updateMonster(selectedMonster.index, (monster) => ({
+								...monster,
+								facingLeft: !monster.facingLeft,
+							}))
+						}
+					>
+						{icons.symmetry}
+					</button>
 					<button
 						disabled={monsters.length >= 6}
 						onClick={() => {
