@@ -5,12 +5,12 @@ import { levelHeight, levelWidth } from "../game-definitions/level-size";
 import { range } from "../functions";
 import { CharName } from "../game-definitions/char-name";
 import { ShadowChars } from "../prg/shadow-chars";
-import { CharacterName } from "../game-definitions/character-name";
 import { Coord2 } from "../../math/coord2";
 import { Rect } from "../../math/rect";
 import { BgColors } from "./bg-colors";
 import { PerLevelBubbleSpawns } from "./bubble-spawns";
 import { PerLevelItemSpawnPositions } from "./item-spawn-positions";
+import { CharacterName } from "../game-definitions/character-name";
 
 interface Character<TCharacterName> {
 	readonly characterName: TCharacterName;

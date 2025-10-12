@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { bresenham, objectEntries, updateArrayAtIndex } from "../bb/functions";
 import { Level, Tiles } from "../bb/internal-data-formats/level";
 import { add, Coord2, equal, floor, multiply, subtract } from "../math/coord2";
@@ -12,13 +12,18 @@ import { rectContainsPoint } from "../math/rect";
 import { spritePosOffset, spriteSizePixels } from "../c64/consts";
 import { CheckboxList } from "./CheckboxList";
 import { SpecialBubbleName } from "../bb/internal-data-formats/bubble-spawns";
+import { CharacterName } from "../bb/game-definitions/character-name";
+import { RadioButtonList } from "./RadioButtonList";
+import { LevelEditorOptions } from "../bb/palette-image/level";
 
 export type ClickDragCanvasEventHandlerProvider = (props: {
+	levelIndex: number;
 	level: Level;
 	setLevel: Setter<Level>;
 	children: (
 		eventHandlers: ClickDragCanvasDragEventHandlers,
-		extraTools?: React.ReactNode
+		extraTools?: React.ReactNode,
+		levelEditorOptions?: LevelEditorOptions
 	) => React.ReactNode;
 }) => React.ReactNode;
 
@@ -146,49 +151,101 @@ export const clickDragCanvasEventHandlerProviders = {
 			  }
 			| undefined
 		>(undefined);
+		let [selectedMonster, setSelectedMonster] = useState<
+			| {
+					readonly index: number;
+			  }
+			| undefined
+		>(undefined);
 
-		return props.children({
-			onDragStart: (eventCoord) => {
-				const monster = monsters
-					.map(({ spawnPoint }, index) => ({
-						pos: floor(
-							multiply(subtract(spawnPoint, spritePosOffset), {
-								x: 1 / 2,
-								y: 1,
-							})
-						),
-						index,
-					}))
-					.find(({ pos }) =>
-						rectContainsPoint({ pos, size: spriteSizePixels }, eventCoord)
-					);
-				if (!monster) {
-					return;
-				}
-				setDraggedMonster({
-					index: monster.index,
-					offset: subtract(eventCoord, monster.pos),
-				});
-			},
-			onDragEnd: () => {
-				setDraggedMonster(undefined);
-			},
-			onDragUpdate: (eventCoord) => {
-				if (!draggedMonster) {
-					return;
-				}
-				setMonsterPosition(
-					draggedMonster.index,
-					add(
-						multiply(subtract(eventCoord, draggedMonster.offset), {
-							x: 2,
+		useEffect(() => {
+			setSelectedMonster(undefined);
+		}, [props.levelIndex]);
+
+		function findMonsterAtCoord(eventCoord: Coord2) {
+			return monsters
+				.map(({ spawnPoint }, index) => ({
+					pos: floor(
+						multiply(subtract(spawnPoint, spritePosOffset), {
+							x: 1 / 2,
 							y: 1,
-						}),
-						spritePosOffset
-					)
+						})
+					),
+					index,
+				}))
+				.find(({ pos }) =>
+					rectContainsPoint({ pos, size: spriteSizePixels }, eventCoord)
 				);
+		}
+
+		return props.children(
+			{
+				onClick: (eventCoord) => {
+					const monster = findMonsterAtCoord(eventCoord);
+					setSelectedMonster(monster);
+				},
+				onDragStart: (eventCoord) => {
+					const monster = findMonsterAtCoord(eventCoord);
+					if (!monster) {
+						return;
+					}
+					setDraggedMonster({
+						index: monster.index,
+						offset: subtract(eventCoord, monster.pos),
+					});
+					setSelectedMonster(monster);
+				},
+				onDragEnd: () => {
+					setDraggedMonster(undefined);
+				},
+				onDragUpdate: (eventCoord) => {
+					if (!draggedMonster) {
+						return;
+					}
+					setMonsterPosition(
+						draggedMonster.index,
+						add(
+							multiply(subtract(eventCoord, draggedMonster.offset), {
+								x: 2,
+								y: 1,
+							}),
+							spritePosOffset
+						)
+					);
+				},
 			},
-		});
+			selectedMonster && (
+				<RadioButtonList
+					options={
+						{
+							bubbleBuster: "Bubble Buster",
+							incendo: "Incendo",
+							colley: "Colley",
+							hullaballoon: "Hullaballoon",
+							beluga: "Beluga",
+							willyWhistle: "Willy Whistle",
+							stoner: "Stoner",
+							superSocket: "Super Socket",
+						} satisfies Record<Exclude<CharacterName, "player">, string>
+					}
+					selected={props.level.monsters[selectedMonster.index]?.characterName}
+					setSelected={(characterName) =>
+						props.setLevel({
+							...props.level,
+							monsters: updateArrayAtIndex(
+								monsters,
+								selectedMonster.index,
+								(monster) => ({ ...monster, characterName })
+							),
+						})
+					}
+				/>
+			),
+			{
+				type: "move-enemies",
+				selectedMonsterIndex: selectedMonster?.index,
+			}
+		);
 	},
 
 	"spawn-bubbles": (props) =>

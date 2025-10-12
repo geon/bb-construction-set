@@ -97,14 +97,20 @@ export function LevelPreviewCard(props: {
 	const ClickDragCanvasEventHandlerProvider =
 		clickDragCanvasEventHandlerProviders[activeTool];
 	return (
-		<ClickDragCanvasEventHandlerProvider level={level} setLevel={setLevel}>
-			{(eventHandlers, extraTools) => (
+		<ClickDragCanvasEventHandlerProvider
+			levelIndex={props.levelIndex}
+			level={level}
+			setLevel={setLevel}
+		>
+			{(eventHandlers, extraTools, renderOptions) => (
 				<ImageCard>
 					{!props.showLevelSelectionGrid ? (
 						<ClickDragCanvas
 							style={{ width: "100%" }}
 							imageData={imageDataFromPaletteImage(
-								doubleImageWidth(drawLevel(props.levelIndex, props.parsedPrg))
+								doubleImageWidth(
+									drawLevel(props.levelIndex, props.parsedPrg, renderOptions)
+								)
 							)}
 							{...eventHandlers}
 						/>

@@ -47,9 +47,15 @@ import {
 } from "./palette-image";
 import { drawSprite, getSpritePalette } from "./sprite";
 
+export type LevelEditorOptions = {
+	readonly type: "move-enemies";
+	readonly selectedMonsterIndex: number | undefined;
+};
+
 export function drawLevel(
 	levelIndex: number,
-	parsedPrg: ParsedPrg
+	parsedPrg: ParsedPrg,
+	options: LevelEditorOptions | undefined
 ): PaletteImage {
 	const level = parsedPrg.levels[levelIndex]!;
 
@@ -130,14 +136,18 @@ export function drawLevel(
 		validItemCategoryNames.forEach(drawItem);
 	}
 
-	for (const character of [pl1, pl2, ...level.monsters]) {
+	for (const [index, character] of [
+		...[...level.monsters, pl1, pl2].entries(),
+	]) {
 		const sprite =
 			parsedPrg.sprites[character.characterName].sprites[
 				character.facingLeft ? spriteLeftIndex[character.characterName] : 0
 			]!;
 		const spritePos = subtract(character.spawnPoint, spritePosOffset);
 		const spriteColor =
-			character.characterName === "player"
+			options?.type === "move-enemies" && index === options.selectedMonsterIndex
+				? palette.lightRed
+				: character.characterName === "player"
 				? character.facingLeft
 					? palette.cyan
 					: palette.green
