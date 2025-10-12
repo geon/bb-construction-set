@@ -19,11 +19,13 @@ export function BlobDownloadButton(props: {
 	label: string;
 	className?: string;
 }) {
+	const getBlob = props.getBlob;
+
 	return (
 		<button
 			className={props.className}
 			onClick={async () => {
-				const result = await props.getBlob();
+				const result = await getBlob();
 				const { blob, fileName } = !("parts" in result)
 					? result
 					: {
