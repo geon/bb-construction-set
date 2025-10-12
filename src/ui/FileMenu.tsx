@@ -37,17 +37,21 @@ export function FileMenu(props: {
 
 			<ButtonRow>
 				<BlobDownloadButton
-					getBlob={async () => ({
-						parts: await mapAsync(range(100), async (index) => ({
-							fileName: (index + 1).toString().padStart(3, "0") + ".png",
-							blob: await imageDataToBlob(
-								imageDataFromPaletteImage(
-									doubleImageWidth(drawLevel(index, props.parsedPrg, undefined))
-								)
-							),
-						})),
-						fileName: "bubble bobble c64 - all level images.zip",
-					})}
+					getBlob={async () => {
+						return {
+							parts: await mapAsync(range(100), async (index) => ({
+								fileName: (index + 1).toString().padStart(3, "0") + ".png",
+								blob: await imageDataToBlob(
+									imageDataFromPaletteImage(
+										doubleImageWidth(
+											drawLevel(index, props.parsedPrg, undefined)
+										)
+									)
+								),
+							})),
+							fileName: "bubble bobble c64 - all level images.zip",
+						};
+					}}
 					label="Save Level Images"
 				/>
 				<FileInput
