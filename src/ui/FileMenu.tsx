@@ -15,8 +15,8 @@ import { ButtonRow } from "./ButtonRow";
 import { FileInput } from "./FileInput";
 
 export function FileMenu(props: {
-	readonly parsedPrg: ParsedPrg;
-	readonly prg: ArrayBuffer;
+	readonly parsedPrg?: ParsedPrg;
+	readonly prg?: ArrayBuffer;
 	readonly setPrg: (arrayBuffer: ArrayBuffer) => void;
 	readonly manualPatch: Patch;
 }): ReactNode {
@@ -40,19 +40,22 @@ export function FileMenu(props: {
 
 			<ButtonRow>
 				<BlobDownloadButton
-					getBlob={async () => {
-						return {
-							parts: await mapAsync(range(100), async (index) => ({
-								fileName: (index + 1).toString().padStart(3, "0") + ".png",
-								blob: await imageDataToBlob(
-									imageDataFromPaletteImage(
-										doubleImageWidth(drawLevel(index, parsedPrg, undefined))
-									)
-								),
-							})),
-							fileName: "bubble bobble c64 - all level images.zip",
-						};
-					}}
+					getBlob={
+						parsedPrg &&
+						(async () => {
+							return {
+								parts: await mapAsync(range(100), async (index) => ({
+									fileName: (index + 1).toString().padStart(3, "0") + ".png",
+									blob: await imageDataToBlob(
+										imageDataFromPaletteImage(
+											doubleImageWidth(drawLevel(index, parsedPrg, undefined))
+										)
+									),
+								})),
+								fileName: "bubble bobble c64 - all level images.zip",
+							};
+						})
+					}
 					label="Save Level Images"
 				/>
 				<FileInput
@@ -62,21 +65,25 @@ export function FileMenu(props: {
 					Open Prg...
 				</FileInput>
 				<BlobDownloadButton
-					getBlob={async () => {
-						const patched = patchPrg(
-							//
-							prg,
-							parsedPrg,
-							props.manualPatch
-						);
+					getBlob={
+						prg &&
+						parsedPrg &&
+						(async () => {
+							const patched = patchPrg(
+								//
+								prg,
+								parsedPrg,
+								props.manualPatch
+							);
 
-						return {
-							blob: new Blob([patched], {
-								type: "application/octet-stream",
-							}),
-							fileName: "custom bubble bobble.prg",
-						};
-					}}
+							return {
+								blob: new Blob([patched], {
+									type: "application/octet-stream",
+								}),
+								fileName: "custom bubble bobble.prg",
+							};
+						})
+					}
 					label="Save Custom Prg"
 				/>
 			</ButtonRow>
