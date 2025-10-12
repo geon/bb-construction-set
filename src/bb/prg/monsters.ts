@@ -8,7 +8,7 @@ import {
 import { ReadonlyUint8Array } from "../types";
 import {
 	CharacterName,
-	characterNames,
+	monsterNames,
 } from "../game-definitions/character-name";
 import { Patch, SingleBytePatchEntry } from "./io";
 
@@ -47,7 +47,7 @@ function readMonster(
 	monsterBytes: ReadonlyUint8Array
 ): Character<CharacterName> {
 	return {
-		characterName: characterNames[(monsterBytes[0]! & 0b111) + 1]!,
+		characterName: monsterNames[monsterBytes[0]! & 0b111]!,
 		spawnPoint: {
 			x: (monsterBytes[0]! & 0b11111000) + 20,
 			y: (monsterBytes[1]! & 0b11111110) + 21,
@@ -72,7 +72,9 @@ export function getMonstersPatch(
 			const subBytes = monsters.flatMap((monster) => [
 				[
 					((monster.spawnPoint.x - 20) & 0b11111000) +
-						(characterNames.indexOf(monster.characterName) - 1),
+						monsterNames.indexOf(
+							monster.characterName as Exclude<CharacterName, "player">
+						),
 				],
 				[monster.spawnPoint.y - 21, 0b11111110],
 				[(monster.facingLeft ? 1 : 0) << 7, 0b10000000],

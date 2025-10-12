@@ -1,6 +1,7 @@
 import {
 	CharacterName,
 	characterNames,
+	monsterNames,
 } from "../game-definitions/character-name";
 import {
 	charGroupMeta,
@@ -208,7 +209,7 @@ export const spriteDataSegmentLocations: Readonly<
 
 export const monsterSpriteColorsSegmentLocation: SegmentLocation = {
 	startAddress: 0xab63,
-	length: characterNames.slice(1).length, // 8. The player color is not included.
+	length: monsterNames.length,
 };
 
 export const largeBonusSpriteColorsSegmentLocation: SegmentLocation = {
