@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { bresenham, objectEntries, updateArrayAtIndex } from "../bb/functions";
-import { Level, Tiles } from "../bb/internal-data-formats/level";
+import { Level, Monster, Tiles } from "../bb/internal-data-formats/level";
 import { add, Coord2, equal, floor, multiply, subtract } from "../math/coord2";
 import { ClickDragCanvasDragEventHandlers } from "./ClickDragCanvas";
 import { Setter } from "./types";
@@ -135,14 +135,20 @@ export const clickDragCanvasEventHandlerProviders = {
 
 	"move-enemies": (props) => {
 		const monsters = props.level.monsters;
-		const setMonsterPosition = (index: number, spawnPoint: Coord2) =>
+		function updateMonster(
+			index: number,
+			updater: (monster: Monster) => Monster
+		) {
 			props.setLevel({
 				...props.level,
-				monsters: updateArrayAtIndex(monsters, index, (monster) => ({
-					...monster,
-					spawnPoint,
-				})),
+				monsters: updateArrayAtIndex(monsters, index, updater),
 			});
+		}
+		const setMonsterPosition = (index: number, spawnPoint: Coord2) =>
+			updateMonster(index, (monster) => ({
+				...monster,
+				spawnPoint,
+			}));
 
 		let [draggedMonster, setDraggedMonster] = useState<
 			| {
