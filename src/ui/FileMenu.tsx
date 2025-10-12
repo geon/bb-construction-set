@@ -14,7 +14,7 @@ import { Patch } from "../bb/prg/io";
 import { ButtonRow } from "./ButtonRow";
 import { FileInput } from "./FileInput";
 
-export function PrgDownloader(props: {
+export function FileMenu(props: {
 	readonly parsedPrg: ParsedPrg;
 	readonly prg: ArrayBuffer;
 	readonly setPrg: (arrayBuffer: ArrayBuffer) => void;

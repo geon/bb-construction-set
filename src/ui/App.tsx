@@ -4,7 +4,7 @@ import { Card } from "./Card";
 import { useState } from "react";
 // import { Levels } from "./tabs/Levels";
 import { Sprites } from "./tabs/Sprites";
-import { PrgDownloader } from "./PrgDownloader";
+import { FileMenu } from "./FileMenu";
 import { Chars } from "./tabs/Chars";
 import { parsePrg } from "../bb/prg/parse-prg";
 import { ParsedPrg } from "../bb/internal-data-formats/parsed-prg";
@@ -72,7 +72,7 @@ export function App() {
 	return (
 		<Page>
 			<h1>BB Construction Set</h1>
-			<PrgDownloader
+			<FileMenu
 				prg={prg}
 				setPrg={setPrg}
 				parsedPrg={parsedPrg}
