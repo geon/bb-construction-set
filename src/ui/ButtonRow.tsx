@@ -7,6 +7,7 @@ export const ButtonRow = styled.div<{
 	justify-content: space-between;
 	gap: 1em;
 	flex-wrap: wrap;
+	align-items: center;
 
 	${({ $align }) =>
 		!$align
