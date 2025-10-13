@@ -13,10 +13,14 @@ import { ButtonRow } from "./ButtonRow";
 import { icons } from "./icons";
 import { Setter } from "./types";
 import { ClickDragCanvas } from "./ClickDragCanvas";
-import { clickDragCanvasEventHandlerProviders } from "./ClickDragCanvasEventHandlerProvider";
 import { Level } from "../bb/internal-data-formats/level";
 import { colors } from "./global-style";
 import { Flex } from "./Flex";
+import { DrawPlatforms } from "./ClickDragCanvasEventHandlerProviders/DrawPlatforms";
+import { MoveEnemies } from "./ClickDragCanvasEventHandlerProviders/MoveEnemies";
+import { MoveItems } from "./ClickDragCanvasEventHandlerProviders/MoveItems";
+import { SpawnBubbles } from "./ClickDragCanvasEventHandlerProviders/SpawnBubbles";
+import { ClickDragCanvasEventHandlerProvider } from "./ClickDragCanvasEventHandlerProvider";
 
 const ImageCard = styled(Card)<{
 	readonly children: [JSX.Element, JSX.Element];
@@ -74,6 +78,13 @@ const LevelSelector = styled(
 	}
 `;
 
+const clickDragCanvasEventHandlerProviders = {
+	"draw-platforms": DrawPlatforms,
+	"move-items": MoveItems,
+	"move-enemies": MoveEnemies,
+	"spawn-bubbles": SpawnBubbles,
+} as const satisfies Record<string, ClickDragCanvasEventHandlerProvider>;
+
 export function LevelPreviewCard(props: {
 	readonly parsedPrg: ParsedPrg;
 	readonly setParsedPrg: Setter<ParsedPrg>;
@@ -94,14 +105,9 @@ export function LevelPreviewCard(props: {
 		});
 	const [activeTool, setActiveTool] = useState<ToolName>("draw-platforms");
 
-	const ClickDragCanvasEventHandlerProvider =
-		clickDragCanvasEventHandlerProviders[activeTool];
+	const Tool = clickDragCanvasEventHandlerProviders[activeTool];
 	return (
-		<ClickDragCanvasEventHandlerProvider
-			levelIndex={props.levelIndex}
-			level={level}
-			setLevel={setLevel}
-		>
+		<Tool levelIndex={props.levelIndex} level={level} setLevel={setLevel}>
 			{(eventHandlers, extraTools, renderOptions) => (
 				<ImageCard>
 					{!props.showLevelSelectionGrid ? (
@@ -144,7 +150,7 @@ export function LevelPreviewCard(props: {
 					</Flex>
 				</ImageCard>
 			)}
-		</ClickDragCanvasEventHandlerProvider>
+		</Tool>
 	);
 }
 
