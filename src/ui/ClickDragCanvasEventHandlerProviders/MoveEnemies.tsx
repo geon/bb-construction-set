@@ -182,7 +182,7 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props: {
 						setSelectedMonster({ ...newMonster, index: monsters.length });
 					}}
 				>
-					+
+					{icons.plus}
 				</button>
 				<button
 					disabled={selectedMonster === undefined}
@@ -196,7 +196,7 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props: {
 						setSelectedMonster(undefined);
 					}}
 				>
-					-
+					{icons.minus}
 				</button>
 			</ButtonRow>
 			{selectedMonster && (
