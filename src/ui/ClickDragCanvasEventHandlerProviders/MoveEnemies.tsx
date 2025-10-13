@@ -149,6 +149,34 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props: {
 					/>
 				)}
 				<button
+					disabled={selectedMonster && selectedMonster.index <= 0}
+					onClick={() => {
+						const index = selectedMonster
+							? selectedMonster.index - 1
+							: monsters.length - 1;
+						setSelectedMonster({
+							...monsters[index]!,
+							index,
+						});
+					}}
+				>
+					{icons.chevrons.left}
+				</button>
+				<button
+					disabled={
+						selectedMonster && selectedMonster.index >= monsters.length - 1
+					}
+					onClick={() => {
+						const index = selectedMonster ? selectedMonster.index + 1 : 0;
+						setSelectedMonster({
+							...monsters[index]!,
+							index,
+						});
+					}}
+				>
+					{icons.chevrons.right}
+				</button>
+				<button
 					disabled={selectedMonster === undefined}
 					onClick={() =>
 						selectedMonster &&
