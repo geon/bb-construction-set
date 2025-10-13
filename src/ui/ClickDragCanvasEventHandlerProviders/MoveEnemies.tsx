@@ -141,12 +141,17 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props: {
 		<Flex $col>
 			<ButtonRow $align="right">
 				{selectedMonster && (
-					<CoordFields
-						// key-prop makes state work when switching selected monster.
-						key={selectedMonster.index}
-						coord={selectedMonster.spawnPoint}
-						onChange={(coord) => setSelectedMonsterPosition(coord)}
-					/>
+					<>
+						<p>
+							{selectedMonster.index + 1}/{monsters.length}
+						</p>
+						<CoordFields
+							// key-prop makes state work when switching selected monster.
+							key={selectedMonster.index}
+							coord={selectedMonster.spawnPoint}
+							onChange={(coord) => setSelectedMonsterPosition(coord)}
+						/>
+					</>
 				)}
 				<button
 					disabled={selectedMonster && selectedMonster.index <= 0}
