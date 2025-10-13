@@ -60,10 +60,12 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props: {
 			return;
 		}
 
-		updateMonster(selectedMonster.index, (monster) => ({
-			...monster,
+		const newMonster = {
+			...monsters[selectedMonster.index]!,
 			spawnPoint,
-		}));
+		};
+
+		updateMonster(selectedMonster.index, () => newMonster);
 	};
 
 	useEffect(() => {
