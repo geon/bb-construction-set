@@ -1,5 +1,5 @@
 import { Coord2 } from "../math/coord2";
-import { ParsedInput } from "./ParsedInput";
+import { IntegerInput } from "./IntegerInput";
 import { Setter } from "./types";
 
 export function CoordFields(props: {
@@ -22,20 +22,11 @@ function AxisField(props: {
 	return (
 		<label>
 			{props.axis}:{" "}
-			<ParsedInput
+			<IntegerInput
 				value={props.coord[props.axis]}
 				onChange={(newValue) =>
 					props.onChange({ ...props.coord, [props.axis]: newValue })
 				}
-				parse={(text) => {
-					const num = parseInt(text, 10);
-					if (Number.isNaN(num)) {
-						return undefined;
-					}
-					// Only half precision on x-axis.
-					return props.axis === "x" ? Math.floor(num / 2) * 2 : num;
-				}}
-				serialize={(value) => value.toString()}
 			/>
 		</label>
 	);
