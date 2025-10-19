@@ -9,7 +9,7 @@ import { Card } from "./Card";
 import styled, { css } from "styled-components";
 import { drawLevelThumbnail } from "../bb/image-data/draw-level";
 import { mapRecord, objectEntries, updateArrayAtIndex } from "../bb/functions";
-import { ButtonRow } from "./ButtonRow";
+import { ButtonGroup } from "./ButtonGroup";
 import { icons } from "./icons";
 import { Setter } from "./types";
 import { ClickDragCanvas } from "./ClickDragCanvas";
@@ -129,21 +129,21 @@ export function LevelPreviewCard(props: {
 
 					<Flex $col>
 						<Flex $row $spaceBetween>
-							<ButtonRow>
+							<ButtonGroup>
 								<LevelSelectionButtons
 									levelIndex={props.levelIndex}
 									setLevelIndex={props.setLevelIndex}
 									showLevelSelectionGrid={props.showLevelSelectionGrid}
 									setShowLevelSelectionGrid={props.setShowLevelSelectionGrid}
 								/>
-							</ButtonRow>
-							<ButtonRow>
+							</ButtonGroup>
+							<ButtonGroup>
 								<ToolButtons
 									activeTool={activeTool}
 									setActiveTool={setActiveTool}
 									showLevelSelectionGrid={props.showLevelSelectionGrid}
 								/>
-							</ButtonRow>
+							</ButtonGroup>
 						</Flex>
 
 						{extraTools}

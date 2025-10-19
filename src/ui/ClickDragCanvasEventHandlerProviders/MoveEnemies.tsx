@@ -17,6 +17,7 @@ import { icons } from ".././icons";
 import { RadioButtonList } from ".././RadioButtonList";
 import { Setter } from ".././types";
 import { CoordFields } from "../CoordFields";
+import { ButtonGroup } from "../ButtonGroup";
 
 export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props: {
 	levelIndex: number;
@@ -154,7 +155,7 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props: {
 						/>
 					</>
 				)}
-				<ButtonRow $align="right">
+				<ButtonGroup $align="right">
 					<button
 						disabled={selectedMonster && selectedMonster.index <= 0}
 						onClick={() => {
@@ -233,7 +234,7 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props: {
 					>
 						{icons.minus}
 					</button>
-				</ButtonRow>
+				</ButtonGroup>
 			</ButtonRow>
 			{selectedMonster && (
 				<ButtonRow $align="right">
