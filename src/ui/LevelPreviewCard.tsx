@@ -161,7 +161,7 @@ function LevelSelectionButtons(props: {
 	readonly setShowLevelSelectionGrid: Setter<boolean>;
 }) {
 	return (
-		<ButtonRow>
+		<>
 			<button
 				onClick={() => props.setLevelIndex(props.levelIndex - 1)}
 				disabled={!(!props.showLevelSelectionGrid && props.levelIndex > 0)}
@@ -181,7 +181,7 @@ function LevelSelectionButtons(props: {
 			>
 				{icons.chevrons.right}
 			</button>
-		</ButtonRow>
+		</>
 	);
 }
 
