@@ -6,7 +6,7 @@ import { doubleImageWidth } from "../bb/palette-image/palette-image";
 import { ImageDataCanvas } from "./ImageDataCanvas";
 import { assertTuple } from "../bb/tuple";
 import { Card } from "./Card";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { drawLevelThumbnail } from "../bb/image-data/draw-level";
 import { mapRecord, objectEntries, updateArrayAtIndex } from "../bb/functions";
 import { ButtonGroup } from "./ButtonGroup";
@@ -14,13 +14,13 @@ import { icons } from "./icons";
 import { Setter } from "./types";
 import { ClickDragCanvas } from "./ClickDragCanvas";
 import { Level } from "../bb/internal-data-formats/level";
-import { colors } from "./global-style";
 import { Flex } from "./Flex";
 import { DrawPlatforms } from "./ClickDragCanvasEventHandlerProviders/DrawPlatforms";
 import { MoveEnemies } from "./ClickDragCanvasEventHandlerProviders/MoveEnemies";
 import { MoveItems } from "./ClickDragCanvasEventHandlerProviders/MoveItems";
 import { SpawnBubbles } from "./ClickDragCanvasEventHandlerProviders/SpawnBubbles";
 import { ClickDragCanvasEventHandlerProvider } from "./ClickDragCanvasEventHandlerProvider";
+import { RadioButton } from "./RadioButton";
 
 const ImageCard = styled(Card)<{
 	readonly children: [JSX.Element, JSX.Element];
@@ -184,18 +184,6 @@ function LevelSelectionButtons(props: {
 		</>
 	);
 }
-
-const RadioButton = styled.button<{ readonly $active?: boolean }>`
-	${({ $active }) =>
-		!$active
-			? ""
-			: css`
-					border-color: ${colors.active};
-					&:focus {
-						outline-color: ${colors.active};
-					}
-			  `}
-`;
 
 type ToolName = keyof typeof clickDragCanvasEventHandlerProviders;
 function ToolButtons({
