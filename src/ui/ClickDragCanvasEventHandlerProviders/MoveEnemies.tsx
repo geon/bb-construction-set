@@ -154,84 +154,86 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props: {
 						/>
 					</>
 				)}
-				<button
-					disabled={selectedMonster && selectedMonster.index <= 0}
-					onClick={() => {
-						const index = selectedMonster
-							? selectedMonster.index - 1
-							: monsters.length - 1;
-						setSelectedMonster({
-							...monsters[index]!,
-							index,
-						});
-					}}
-				>
-					{icons.chevrons.left}
-				</button>
-				<button
-					disabled={
-						selectedMonster && selectedMonster.index >= monsters.length - 1
-					}
-					onClick={() => {
-						const index = selectedMonster ? selectedMonster.index + 1 : 0;
-						setSelectedMonster({
-							...monsters[index]!,
-							index,
-						});
-					}}
-				>
-					{icons.chevrons.right}
-				</button>
-				<button
-					disabled={selectedMonster === undefined}
-					onClick={() =>
-						selectedMonster &&
-						updateMonster(selectedMonster.index, (monster) => ({
-							...monster,
-							facingLeft: !monster.facingLeft,
-						}))
-					}
-				>
-					{icons.symmetry}
-				</button>
-				<button
-					disabled={monsters.length >= 6}
-					onClick={() => {
-						const cloneSource = selectedMonster ?? monsters[0];
-						const newMonster: Monster = cloneSource
-							? {
-									...cloneSource,
-									spawnPoint: add(cloneSource.spawnPoint, {
-										x: 20,
-										y: 30,
-									}),
-							  }
-							: {
-									characterName: "bubbleBuster",
-									spawnPoint: { x: 100, y: 100 },
-									facingLeft: false,
-							  };
-
-						setMonsters([...monsters, newMonster]);
-						setSelectedMonster({ ...newMonster, index: monsters.length });
-					}}
-				>
-					{icons.plus}
-				</button>
-				<button
-					disabled={selectedMonster === undefined}
-					onClick={() => {
-						if (!selectedMonster) {
-							return;
+				<ButtonRow $align="right">
+					<button
+						disabled={selectedMonster && selectedMonster.index <= 0}
+						onClick={() => {
+							const index = selectedMonster
+								? selectedMonster.index - 1
+								: monsters.length - 1;
+							setSelectedMonster({
+								...monsters[index]!,
+								index,
+							});
+						}}
+					>
+						{icons.chevrons.left}
+					</button>
+					<button
+						disabled={
+							selectedMonster && selectedMonster.index >= monsters.length - 1
 						}
-						setMonsters(
-							deleteArrayElementAtIndex(monsters, selectedMonster.index)
-						);
-						setSelectedMonster(undefined);
-					}}
-				>
-					{icons.minus}
-				</button>
+						onClick={() => {
+							const index = selectedMonster ? selectedMonster.index + 1 : 0;
+							setSelectedMonster({
+								...monsters[index]!,
+								index,
+							});
+						}}
+					>
+						{icons.chevrons.right}
+					</button>
+					<button
+						disabled={selectedMonster === undefined}
+						onClick={() =>
+							selectedMonster &&
+							updateMonster(selectedMonster.index, (monster) => ({
+								...monster,
+								facingLeft: !monster.facingLeft,
+							}))
+						}
+					>
+						{icons.symmetry}
+					</button>
+					<button
+						disabled={monsters.length >= 6}
+						onClick={() => {
+							const cloneSource = selectedMonster ?? monsters[0];
+							const newMonster: Monster = cloneSource
+								? {
+										...cloneSource,
+										spawnPoint: add(cloneSource.spawnPoint, {
+											x: 20,
+											y: 30,
+										}),
+								  }
+								: {
+										characterName: "bubbleBuster",
+										spawnPoint: { x: 100, y: 100 },
+										facingLeft: false,
+								  };
+
+							setMonsters([...monsters, newMonster]);
+							setSelectedMonster({ ...newMonster, index: monsters.length });
+						}}
+					>
+						{icons.plus}
+					</button>
+					<button
+						disabled={selectedMonster === undefined}
+						onClick={() => {
+							if (!selectedMonster) {
+								return;
+							}
+							setMonsters(
+								deleteArrayElementAtIndex(monsters, selectedMonster.index)
+							);
+							setSelectedMonster(undefined);
+						}}
+					>
+						{icons.minus}
+					</button>
+				</ButtonRow>
 			</ButtonRow>
 			{selectedMonster && (
 				<ButtonRow $align="right">
