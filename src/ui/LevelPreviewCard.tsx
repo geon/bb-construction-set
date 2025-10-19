@@ -128,7 +128,7 @@ export function LevelPreviewCard(props: {
 					)}
 
 					<Flex $col>
-						<ButtonRow>
+						<Flex $row $spaceBetween>
 							<ButtonRow>
 								<LevelSelectionButtons
 									levelIndex={props.levelIndex}
@@ -144,7 +144,7 @@ export function LevelPreviewCard(props: {
 									showLevelSelectionGrid={props.showLevelSelectionGrid}
 								/>
 							</ButtonRow>
-						</ButtonRow>
+						</Flex>
 
 						{extraTools}
 					</Flex>
