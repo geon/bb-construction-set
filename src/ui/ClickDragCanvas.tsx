@@ -72,7 +72,7 @@ function getEventCoord(event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
 	};
 	const imageSize = scale(levelSize, 8);
 	return floor({
-		x: eventCoordOnElement.x * imageSize.x * (1 / elementSize.x),
-		y: eventCoordOnElement.y * imageSize.y * (1 / elementSize.y),
+		x: imageSize.x * (eventCoordOnElement.x / elementSize.x),
+		y: imageSize.y * (eventCoordOnElement.y / elementSize.y),
 	});
 }
