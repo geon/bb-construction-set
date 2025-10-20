@@ -3,11 +3,10 @@ import { ParsedPrg } from "../bb/internal-data-formats/parsed-prg";
 import { imageDataFromPaletteImage } from "../bb/image-data/image-data";
 import { drawLevel } from "../bb/palette-image/level";
 import { doubleImageWidth } from "../bb/palette-image/palette-image";
-import { ImageDataCanvas } from "./ImageDataCanvas";
 import { Card } from "./Card";
 import styled from "styled-components";
-import { drawLevelThumbnail } from "../bb/image-data/draw-level";
-import { objectEntries, range, updateArrayAtIndex } from "../bb/functions";
+import { drawLevels } from "../bb/image-data/draw-level";
+import { objectEntries, updateArrayAtIndex } from "../bb/functions";
 import { ButtonGroup } from "./ButtonGroup";
 import { icons } from "./icons";
 import { Setter } from "./types";
@@ -20,6 +19,8 @@ import { MoveItems } from "./ClickDragCanvasEventHandlerProviders/MoveItems";
 import { SpawnBubbles } from "./ClickDragCanvasEventHandlerProviders/SpawnBubbles";
 import { ClickDragCanvasEventHandlerProvider } from "./ClickDragCanvasEventHandlerProvider";
 import { RadioButton } from "./RadioButton";
+import { levelSize } from "../bb/game-definitions/level-size";
+import { Coord2, divide, floor } from "../math/coord2";
 
 const ImageCard = styled(Card)<{
 	readonly children: [JSX.Element, JSX.Element];
@@ -39,34 +40,24 @@ const ImageCard = styled(Card)<{
 	}
 `;
 
-const LevelSelector = styled(
-	(props: {
-		readonly parsedPrg: ParsedPrg;
-		readonly setLevelIndex: (index: number) => void;
-		readonly className?: string;
-	}): JSX.Element => {
-		return (
-			<nav className={props.className}>
-				{range(100).map((levelIndex) => (
-					<ImageDataCanvas
-						key={levelIndex}
-						imageData={drawLevelThumbnail(props.parsedPrg, levelIndex)}
-						onClick={() => props.setLevelIndex(levelIndex)}
-						style={{ cursor: "pointer" }}
-					/>
-				))}
-			</nav>
-		);
+function LevelSelector(props: {
+	readonly parsedPrg: ParsedPrg;
+	readonly setLevelIndex: (index: number) => void;
+	readonly className?: string;
+}): JSX.Element {
+	function getLevelIndex(eventCoord: Coord2): number {
+		const levelCoord = floor(divide(eventCoord, levelSize));
+		return levelCoord.x + levelCoord.y * 10;
 	}
-)`
-	display: grid;
-	grid-template-rows: 1fr min-content;
-	grid-template-columns: repeat(10, auto);
 
-	canvas {
-		width: 100%;
-	}
-`;
+	return (
+		<ClickDragCanvas
+			style={{ width: "100%" }}
+			imageData={drawLevels(props.parsedPrg)}
+			onClick={(eventCoord) => props.setLevelIndex(getLevelIndex(eventCoord))}
+		/>
+	);
+}
 
 const clickDragCanvasEventHandlerProviders = {
 	"draw-platforms": DrawPlatforms,

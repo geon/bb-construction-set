@@ -17,7 +17,7 @@ import { ParsedPrg } from "../internal-data-formats/parsed-prg";
 import { assertTuple } from "../tuple";
 
 export function drawLevels(parsedPrg: ParsedPrg): ImageData {
-	const gap = { x: 10, y: 10 };
+	const gap = { x: 0, y: 0 };
 
 	return ImageDataFunctions.drawGrid(
 		range(100).map((levelIndex) => drawLevelThumbnail(parsedPrg, levelIndex)),
