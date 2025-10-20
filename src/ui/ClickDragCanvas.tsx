@@ -65,16 +65,14 @@ export function ClickDragCanvas(
 function getEventCoord(event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
 	const page: Coord2 = { x: event.clientX, y: event.clientY };
 	const elementLocation: Coord2 = event.currentTarget.getBoundingClientRect();
+	const elementSize: Coord2 = {
+		x: event.currentTarget.getBoundingClientRect().width,
+		y: event.currentTarget.getBoundingClientRect().height,
+	};
 	return floor(
 		multiply(subtract(page, elementLocation), {
-			x:
-				levelWidth *
-				8 *
-				(1 / event.currentTarget.getBoundingClientRect().width),
-			y:
-				levelHeight *
-				8 *
-				(1 / event.currentTarget.getBoundingClientRect().height),
+			x: levelWidth * 8 * (1 / elementSize.x),
+			y: levelHeight * 8 * (1 / elementSize.y),
 		})
 	);
 }
