@@ -36,11 +36,13 @@ export function ClickDragCanvas(
 	let [dragCoord, setDragCoord] = useState<Coord2 | undefined>(undefined);
 	let [hasDragged, setHasDragged] = useState<boolean>(false);
 
+	const imageSize = scale(levelSize, 8);
+
 	return (
 		<ImageDataCanvas
 			{...rest}
 			onMouseDown={(event) => {
-				const eventCoord = getEventCoord(event);
+				const eventCoord = getEventCoord(event, imageSize);
 				if (!dragCoord) {
 					onDragStart?.(eventCoord);
 				}
@@ -49,7 +51,7 @@ export function ClickDragCanvas(
 			}}
 			onMouseUp={(event) => {
 				if (!hasDragged) {
-					onClick?.(getEventCoord(event));
+					onClick?.(getEventCoord(event, imageSize));
 				}
 				onDragEnd?.();
 				setDragCoord(undefined);
@@ -58,7 +60,7 @@ export function ClickDragCanvas(
 				if (!dragCoord) {
 					return;
 				}
-				const eventCoord = getEventCoord(event);
+				const eventCoord = getEventCoord(event, imageSize);
 				if (equal(eventCoord, dragCoord)) {
 					return;
 				}
@@ -70,7 +72,10 @@ export function ClickDragCanvas(
 	);
 }
 
-function getEventCoord(event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
+function getEventCoord(
+	event: React.MouseEvent<HTMLCanvasElement, MouseEvent>,
+	imageSize: Coord2
+) {
 	const eventCoordOnPage: Coord2 = { x: event.clientX, y: event.clientY };
 	const elementLocation: Coord2 = event.currentTarget.getBoundingClientRect();
 	const eventCoordOnElement = subtract(eventCoordOnPage, elementLocation);
@@ -78,6 +83,5 @@ function getEventCoord(event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
 		x: event.currentTarget.getBoundingClientRect().width,
 		y: event.currentTarget.getBoundingClientRect().height,
 	};
-	const imageSize = scale(levelSize, 8);
 	return floor(multiply(imageSize, divide(eventCoordOnElement, elementSize)));
 }
