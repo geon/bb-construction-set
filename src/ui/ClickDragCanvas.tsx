@@ -6,10 +6,8 @@ import {
 	equal,
 	floor,
 	multiply,
-	scale,
 	subtract,
 } from "../math/coord2";
-import { levelSize } from "../bb/game-definitions/level-size";
 
 export type ClickDragCanvasDragEventHandlers = {
 	onClick?: (coord: Coord2) => void;
@@ -36,7 +34,10 @@ export function ClickDragCanvas(
 	let [dragCoord, setDragCoord] = useState<Coord2 | undefined>(undefined);
 	let [hasDragged, setHasDragged] = useState<boolean>(false);
 
-	const imageSize = scale(levelSize, 8);
+	const imageSize: Coord2 = {
+		x: props.imageData.width,
+		y: props.imageData.height,
+	};
 
 	return (
 		<ImageDataCanvas
