@@ -6,7 +6,7 @@ import { doubleImageWidth } from "../bb/palette-image/palette-image";
 import { Card } from "./Card";
 import styled from "styled-components";
 import { drawLevels } from "../bb/image-data/draw-level";
-import { objectEntries, updateArrayAtIndex } from "../bb/functions";
+import { objectEntries, reorder, updateArrayAtIndex } from "../bb/functions";
 import { ButtonGroup } from "./ButtonGroup";
 import { icons } from "./icons";
 import { Setter } from "./types";
@@ -42,6 +42,7 @@ const ImageCard = styled(Card)<{
 
 function LevelSelector(props: {
 	readonly parsedPrg: ParsedPrg;
+	readonly setParsedPrg: Setter<ParsedPrg>;
 	readonly setLevelIndex: (index: number) => void;
 	readonly className?: string;
 }): JSX.Element {
@@ -50,11 +51,31 @@ function LevelSelector(props: {
 		return levelCoord.x + levelCoord.y * 10;
 	}
 
+	function setLevels(levels: ParsedPrg["levels"]) {
+		props.setParsedPrg({ ...props.parsedPrg, levels });
+	}
+
+	const [fromIndex, setFromIndex] = useState<number | undefined>(undefined);
+
 	return (
 		<ClickDragCanvas
 			style={{ width: "100%" }}
 			imageData={drawLevels(props.parsedPrg)}
 			onClick={(eventCoord) => props.setLevelIndex(getLevelIndex(eventCoord))}
+			onDragStart={(eventCoord) => setFromIndex(getLevelIndex(eventCoord))}
+			onDragUpdate={(eventCoord) => {
+				if (fromIndex === undefined) {
+					throw new Error("No dragging in progress.");
+				}
+
+				const toIndex = getLevelIndex(eventCoord);
+				if (toIndex === fromIndex) {
+					return;
+				}
+
+				setLevels(reorder(props.parsedPrg.levels, fromIndex, toIndex));
+				setFromIndex(toIndex);
+			}}
 		/>
 	);
 }
@@ -104,6 +125,7 @@ export function LevelPreviewCard(props: {
 					) : (
 						<LevelSelector
 							parsedPrg={props.parsedPrg}
+							setParsedPrg={props.setParsedPrg}
 							setLevelIndex={props.setLevelIndex}
 						/>
 					)}

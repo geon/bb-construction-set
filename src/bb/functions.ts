@@ -350,3 +350,20 @@ export function bresenham(begin: Coord2, end: Coord2) {
 
 	return line;
 }
+
+export function reorder<T>(
+	list: readonly T[],
+	startIndex: number,
+	endIndex: number
+): T[] {
+	if (list.length < startIndex || list.length < endIndex) {
+		throw new Error(
+			`Index out of bounds. length: ${list.length}, startIndex: ${startIndex}, endIndex: ${endIndex}`
+		);
+	}
+	const result = [...list];
+	const [removed] = result.splice(startIndex, 1);
+	result.splice(endIndex, 0, removed!);
+
+	return result;
+}
