@@ -4,14 +4,7 @@ import { PerLevelItemSpawnPositions } from "../../bb/internal-data-formats/item-
 import { Level } from "../../bb/internal-data-formats/level";
 import { LevelEditorOptions } from "../../bb/palette-image/level";
 import { ItemCategoryName } from "../../bb/prg/data-locations";
-import {
-	Coord2,
-	multiply,
-	subtract,
-	floor,
-	add,
-	equal,
-} from "../../math/coord2";
+import { Coord2, subtract, floor, add, equal, scale } from "../../math/coord2";
 import { rectContainsPoint } from "../../math/rect";
 import { ClickDragCanvasDragEventHandlers } from ".././ClickDragCanvas";
 import { ClickDragCanvasEventHandlerProvider } from ".././ClickDragCanvasEventHandlerProvider";
@@ -46,7 +39,7 @@ export const MoveItems: ClickDragCanvasEventHandlerProvider = (props: {
 
 	return props.children({
 		onDragStart: (eventCoord) => {
-			const scaledEventCoord = multiply(eventCoord, { x: 1 / 4, y: 1 / 8 });
+			const scaledEventCoord = scale(eventCoord, 1 / 8);
 			const foundItem = objectEntries(itemSpawnPositions)
 				.map(([category, pos]) => ({ category, pos }))
 				.find(({ pos }) =>
@@ -67,7 +60,7 @@ export const MoveItems: ClickDragCanvasEventHandlerProvider = (props: {
 			if (!draggedItem) {
 				return;
 			}
-			const scaledEventCoord = multiply(eventCoord, { x: 1 / 4, y: 1 / 8 });
+			const scaledEventCoord = scale(eventCoord, 1 / 8);
 			const newItemPosition = floor(
 				add(subtract(scaledEventCoord, draggedItem.offset), {
 					x: 0.5,

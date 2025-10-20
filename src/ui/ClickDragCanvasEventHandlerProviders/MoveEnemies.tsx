@@ -7,7 +7,7 @@ import { CharacterName } from "../../bb/game-definitions/character-name";
 import { Level, Monster } from "../../bb/internal-data-formats/level";
 import { LevelEditorOptions } from "../../bb/palette-image/level";
 import { spritePosOffset, spriteSizePixels } from "../../c64/consts";
-import { Coord2, floor, multiply, subtract, add } from "../../math/coord2";
+import { Coord2, floor, subtract, add } from "../../math/coord2";
 import { rectContainsPoint } from "../../math/rect";
 import { ButtonRow } from ".././ButtonRow";
 import { ClickDragCanvasDragEventHandlers } from ".././ClickDragCanvas";
@@ -64,7 +64,10 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props: {
 
 		const newMonster = {
 			...monsters[selectedMonster.index]!,
-			spawnPoint,
+			spawnPoint: {
+				x: Math.floor(spawnPoint.x / 2) * 2,
+				y: spawnPoint.y,
+			},
 			index: selectedMonster.index,
 		};
 
@@ -77,12 +80,7 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props: {
 	}, [props.levelIndex]);
 
 	function pixelCoordToHalfPixelCoord(coord: Coord2): Coord2 {
-		return floor(
-			multiply(subtract(coord, spritePosOffset), {
-				x: 1 / 2,
-				y: 1,
-			})
-		);
+		return floor(subtract(coord, spritePosOffset));
 	}
 
 	function findMonsterAtCoord(eventCoord: Coord2) {
@@ -95,7 +93,10 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props: {
 				rectContainsPoint(
 					{
 						pos: pixelCoordToHalfPixelCoord(spawnPoint),
-						size: spriteSizePixels,
+						size: {
+							x: spriteSizePixels.x * 2,
+							y: spriteSizePixels.y,
+						},
 					},
 					eventCoord
 				)
@@ -130,13 +131,7 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props: {
 					return;
 				}
 				setSelectedMonsterPosition(
-					add(
-						multiply(subtract(eventCoord, draggedMonster.offset), {
-							x: 2,
-							y: 1,
-						}),
-						spritePosOffset
-					)
+					add(subtract(eventCoord, draggedMonster.offset), spritePosOffset)
 				);
 			},
 		},

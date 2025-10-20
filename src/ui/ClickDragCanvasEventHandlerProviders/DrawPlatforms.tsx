@@ -2,7 +2,7 @@ import { useState } from "react";
 import { bresenham } from "../../bb/functions";
 import { Level, Tiles } from "../../bb/internal-data-formats/level";
 import { LevelEditorOptions } from "../../bb/palette-image/level";
-import { Coord2, equal, floor, multiply } from "../../math/coord2";
+import { Coord2, equal, floor, scale } from "../../math/coord2";
 import { ClickDragCanvasDragEventHandlers } from "../ClickDragCanvas";
 import { ClickDragCanvasEventHandlerProvider } from "../ClickDragCanvasEventHandlerProvider";
 import { Setter } from "../types";
@@ -65,7 +65,7 @@ export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props: {
 };
 
 export function getTileCoord(eventCoord: Coord2): Coord2 {
-	return floor(multiply(eventCoord, { x: 1 / 4, y: 1 / 8 }));
+	return floor(scale(eventCoord, 1 / 8));
 }
 
 export function createSetSomeTiles(

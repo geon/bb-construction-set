@@ -69,7 +69,7 @@ function getEventCoord(event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
 		multiply(subtract(page, elementLocation), {
 			x:
 				levelWidth *
-				4 *
+				8 *
 				(1 / event.currentTarget.getBoundingClientRect().width),
 			y:
 				levelHeight *
