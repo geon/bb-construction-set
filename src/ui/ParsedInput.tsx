@@ -7,9 +7,9 @@ export function ParsedInput<T>(props: {
 	parse: (text: string) => T | undefined;
 	serialize: (value: T) => string;
 }): React.ReactNode {
-	const [text, setText] = useState<string>(props.serialize(props.value));
+	const [text, setText] = useState<string | undefined>(undefined);
 	useEffect(() => {
-		setText(props.serialize(props.value));
+		setText(undefined);
 	}, [props.value]);
 
 	function handleChange(newText: string) {
@@ -18,15 +18,19 @@ export function ParsedInput<T>(props: {
 			return;
 		}
 		props.onChange(num);
-		setText(props.serialize(num));
+		setText(undefined);
 	}
 
 	return (
 		<input
-			value={text}
+			value={text ?? props.serialize(props.value)}
 			onChange={(event) => setText(event.currentTarget.value)}
-			onKeyDown={(event) => event.key === "Enter" && handleChange(text)}
-			onBlur={() => handleChange(text)}
+			onKeyDown={
+				text === undefined
+					? undefined
+					: (event) => event.key === "Enter" && handleChange(text)
+			}
+			onBlur={text === undefined ? undefined : () => handleChange(text)}
 			size={4}
 		/>
 	);
