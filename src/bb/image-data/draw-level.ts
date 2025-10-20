@@ -1,37 +1,26 @@
-import {
-	Level,
-	levelToCharNames,
-	makeCharset,
-} from "../internal-data-formats/level";
+import { levelToCharNames, makeCharset } from "../internal-data-formats/level";
 import {
 	levelHeight,
 	levelSize,
 	levelWidth,
 } from "../game-definitions/level-size";
-import {
-	rgbPalette,
-	PaletteIndex,
-	SubPalette,
-} from "../internal-data-formats/palette";
+import { rgbPalette, SubPalette } from "../internal-data-formats/palette";
 import { Color, mixColors } from "../../math/color";
 import { Char } from "../internal-data-formats/char";
 import { spritePosOffset, spriteSizePixels } from "../../c64/consts";
-import { CharacterName, pl1, pl2 } from "../game-definitions/character-name";
-import { chunk, isDefined, mapRecord } from "../functions";
+import { pl1, pl2 } from "../game-definitions/character-name";
+import { chunk, isDefined, mapRecord, range } from "../functions";
 import { add, scale, subtract } from "../../math/coord2";
-import { ShadowChars } from "../prg/shadow-chars";
 import { getLevelCharPalette } from "../palette-image/char";
 import * as ImageDataFunctions from "./image-data";
+import { ParsedPrg } from "../internal-data-formats/parsed-prg";
+import { assertTuple } from "../tuple";
 
-export function drawLevels(
-	levels: readonly Level[],
-	spriteColors: Record<CharacterName, PaletteIndex>,
-	shadowChars: ShadowChars
-): ImageData {
+export function drawLevels(parsedPrg: ParsedPrg): ImageData {
 	const gap = { x: 10, y: 10 };
 
 	return ImageDataFunctions.drawGrid(
-		levels.map((level) => drawLevelThumbnail(level, spriteColors, shadowChars)),
+		range(100).map((levelIndex) => drawLevelThumbnail(parsedPrg, levelIndex)),
 		10,
 		levelSize,
 		gap
@@ -39,10 +28,13 @@ export function drawLevels(
 }
 
 export function drawLevelThumbnail(
-	level: Level,
-	spriteColors: Record<CharacterName, PaletteIndex>,
-	shadowChars: ShadowChars
+	parsedPrg: ParsedPrg,
+	levelIndex: number
 ): ImageData {
+	const shadowChars = assertTuple(parsedPrg.chars.shadows.flat().flat(), 6);
+	const spriteColors = mapRecord(parsedPrg.sprites, ({ color }) => color);
+	const level = parsedPrg.levels[levelIndex]!;
+
 	const image = new ImageData(levelWidth, levelHeight);
 
 	// Draw level.

@@ -4,11 +4,10 @@ import { imageDataFromPaletteImage } from "../bb/image-data/image-data";
 import { drawLevel } from "../bb/palette-image/level";
 import { doubleImageWidth } from "../bb/palette-image/palette-image";
 import { ImageDataCanvas } from "./ImageDataCanvas";
-import { assertTuple } from "../bb/tuple";
 import { Card } from "./Card";
 import styled from "styled-components";
 import { drawLevelThumbnail } from "../bb/image-data/draw-level";
-import { mapRecord, objectEntries, updateArrayAtIndex } from "../bb/functions";
+import { objectEntries, range, updateArrayAtIndex } from "../bb/functions";
 import { ButtonGroup } from "./ButtonGroup";
 import { icons } from "./icons";
 import { Setter } from "./types";
@@ -46,21 +45,12 @@ const LevelSelector = styled(
 		readonly setLevelIndex: (index: number) => void;
 		readonly className?: string;
 	}): JSX.Element => {
-		const shadowChars = assertTuple(
-			props.parsedPrg.chars.shadows.flat().flat(),
-			6
-		);
-		const spriteColors = mapRecord(
-			props.parsedPrg.sprites,
-			({ color }) => color
-		);
-
 		return (
 			<nav className={props.className}>
-				{props.parsedPrg.levels.map((level, levelIndex) => (
+				{range(100).map((levelIndex) => (
 					<ImageDataCanvas
 						key={levelIndex}
-						imageData={drawLevelThumbnail(level, spriteColors, shadowChars)}
+						imageData={drawLevelThumbnail(props.parsedPrg, levelIndex)}
 						onClick={() => props.setLevelIndex(levelIndex)}
 						style={{ cursor: "pointer" }}
 					/>
