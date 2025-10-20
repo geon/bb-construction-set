@@ -59,3 +59,10 @@ export function multiply(a: Coord2, b: Coord2): Coord2 {
 		y: a.y * b.y,
 	};
 }
+
+export function divide(a: Coord2, b: Coord2): Coord2 {
+	return {
+		x: a.x / b.x,
+		y: a.y / b.y,
+	};
+}
