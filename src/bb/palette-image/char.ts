@@ -16,7 +16,7 @@ import {
 	PaletteIndex,
 	SubPalette,
 } from "../internal-data-formats/palette";
-import { assertTuple, mapTuple } from "../tuple";
+import { assertTuple, mapTuple, Tuple } from "../tuple";
 import {
 	blitPaletteImage,
 	createPaletteImage,
@@ -256,7 +256,12 @@ export function drawPlatformChars(
 	return drawLayout(layout, levels.map(drawLevelPlatformChars));
 }
 
-export function parsePlatformChars(image: PaletteImage): PlatformCharsData[] {
+export function parsePlatformChars(
+	image: PaletteImage
+): Tuple<PlatformCharsData, 100> {
 	const layout = layOutAllLevelsPlatformChars();
-	return parseLayout(layout, image).map(parseLevelPlatformChars);
+	return assertTuple(
+		parseLayout(layout, image).map(parseLevelPlatformChars),
+		100
+	);
 }
