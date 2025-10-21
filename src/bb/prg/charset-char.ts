@@ -2,16 +2,19 @@ import { Char } from "../internal-data-formats/char";
 import { parseColorPixelByte } from "../internal-data-formats/color-pixel-byte";
 import { strictChunk } from "../functions";
 import { Level } from "../internal-data-formats/level";
-import { mapTuple } from "../tuple";
+import { assertTuple, mapTuple, Tuple } from "../tuple";
 import { ReadonlyUint8Array } from "../types";
 
 export const linesPerChar = 8;
 
 export function readPlatformChars(
 	platformCharsBytes: ReadonlyUint8Array
-): ReadonlyArray<Char> {
-	return strictChunk([...platformCharsBytes], linesPerChar).map((char) =>
-		mapTuple(char, parseColorPixelByte)
+): Tuple<Char, 100> {
+	return assertTuple(
+		strictChunk([...platformCharsBytes], linesPerChar).map((char) =>
+			mapTuple(char, parseColorPixelByte)
+		),
+		100
 	);
 }
 
