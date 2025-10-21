@@ -19,7 +19,7 @@ export function readPlatformChars(
 }
 
 export function writePlatformChars(
-	platformChars: readonly Level["platformChar"][]
+	platformChars: Tuple<Level["platformChar"], 100>
 ): Uint8Array {
 	return new Uint8Array(
 		platformChars.flatMap((platformChar) =>

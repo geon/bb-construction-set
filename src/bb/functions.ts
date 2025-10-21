@@ -1,5 +1,5 @@
 import { Coord2, equal } from "../math/coord2";
-import { NOfTuple, Tuple, MutableTuple } from "./tuple";
+import { NOfTuple, Tuple, MutableTuple, TOfTuple } from "./tuple";
 
 export function padRight<T>(
 	array: readonly T[],
@@ -89,9 +89,14 @@ export function zipObject<
 	>;
 }
 
-export function unzipObject<TInput extends object>(
-	array: ReadonlyArray<TInput>
-): { readonly [TKey in keyof TInput]: ReadonlyArray<TInput[TKey]> } {
+export function unzipObject<TTuple extends Tuple<object, number>>(
+	array: TTuple
+): {
+	readonly [TKey in keyof TOfTuple<TTuple>]: Tuple<
+		TOfTuple<TTuple>[TKey],
+		NOfTuple<TTuple>
+	>;
+} {
 	const result = {} as any;
 
 	for (const [index, element] of array.entries()) {
