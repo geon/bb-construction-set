@@ -2,10 +2,11 @@ import { Level } from "../bb/internal-data-formats/level";
 import { ClickDragCanvasDragEventHandlers } from "./ClickDragCanvas";
 import { Setter } from "./types";
 import { LevelEditorOptions } from "../bb/palette-image/level";
+import { LevelIndex, Levels } from "../bb/internal-data-formats/levels";
 
 export type ClickDragCanvasEventHandlerProvider = (props: {
-	levelIndex: number;
-	level: Level;
+	levelIndex: LevelIndex;
+	levels: Levels;
 	setLevel: Setter<Level>;
 	children: (
 		eventHandlers: ClickDragCanvasDragEventHandlers,

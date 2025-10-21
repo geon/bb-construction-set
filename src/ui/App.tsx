@@ -16,6 +16,7 @@ import { EnemyBonuses } from "./tabs/EnemyBonuses";
 import { Levels } from "./tabs/Levels";
 import { LevelPreviewCard } from "./LevelPreviewCard";
 import { originalPrg as originalPrg } from "../bb/prg/parsed-prg";
+import { LevelIndex } from "../bb/internal-data-formats/levels";
 
 const Page = styled.div`
 	width: 100%;
@@ -59,10 +60,10 @@ export function App() {
 
 	const { parsedPrg, prg } = state ?? { parsedPrg: undefined, prg: undefined };
 
-	const [levelIndex, _setLevelIndex] = useState<number>(0);
+	const [levelIndex, _setLevelIndex] = useState<LevelIndex>(0);
 	const [showLevelSelectionGrid, setShowLevelSelectionGrid] =
 		useState<boolean>(false);
-	const setLevelIndex = (index: number) => {
+	const setLevelIndex = (index: LevelIndex) => {
 		_setLevelIndex(index);
 		setShowLevelSelectionGrid(false);
 	};

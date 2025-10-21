@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { TabBar } from "../TabBar";
 import { Platforms } from "./Platforms";
 import { LevelGraphics } from "./LevelGraphics";
+import { LevelIndex } from "../../bb/internal-data-formats/levels";
 
 const Styling = styled.div`
 	display: flex;
@@ -18,8 +19,8 @@ const Styling = styled.div`
 export function Levels(props: {
 	readonly parsedPrg: ParsedPrg;
 	readonly setParsedPrg: (parsedPrg: ParsedPrg) => void;
-	readonly levelIndex: number;
-	readonly setLevelIndex: (index: number) => void;
+	readonly levelIndex: LevelIndex;
+	readonly setLevelIndex: (index: LevelIndex) => void;
 }): ReactNode {
 	return (
 		<Styling>

@@ -1,28 +1,17 @@
 import { useState } from "react";
 import { bresenham } from "../../bb/functions";
-import { Level, Tiles } from "../../bb/internal-data-formats/level";
-import { LevelEditorOptions } from "../../bb/palette-image/level";
+import { Tiles } from "../../bb/internal-data-formats/level";
 import { Coord2, equal, floor, scale } from "../../math/coord2";
-import { ClickDragCanvasDragEventHandlers } from "../ClickDragCanvas";
 import { ClickDragCanvasEventHandlerProvider } from "../ClickDragCanvasEventHandlerProvider";
-import { Setter } from "../types";
 import { levelSize } from "../../bb/game-definitions/level-size";
 import { assertTuple } from "../../bb/tuple";
 
-export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props: {
-	levelIndex: number;
-	level: Level;
-	setLevel: Setter<Level>;
-	children: (
-		eventHandlers: ClickDragCanvasDragEventHandlers,
-		extraTools?: React.ReactNode,
-		levelEditorOptions?: LevelEditorOptions
-	) => React.ReactNode;
-}) => {
-	const tiles = props.level.tiles;
+export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
+	const level = props.levels[props.levelIndex];
+	const tiles = level.tiles;
 	const setTiles = (tiles: Tiles) =>
 		props.setLevel({
-			...props.level,
+			...level,
 			tiles,
 		});
 

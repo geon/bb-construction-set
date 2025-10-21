@@ -22,6 +22,7 @@ import { RadioButton } from "./RadioButton";
 import { levelSize } from "../bb/game-definitions/level-size";
 import { Coord2, divide, floor } from "../math/coord2";
 import { assertTuple } from "../bb/tuple";
+import { LevelIndex } from "../bb/internal-data-formats/levels";
 
 const ImageCard = styled(Card)<{
 	readonly children: [JSX.Element, JSX.Element];
@@ -44,12 +45,12 @@ const ImageCard = styled(Card)<{
 function LevelSelector(props: {
 	readonly parsedPrg: ParsedPrg;
 	readonly setParsedPrg: Setter<ParsedPrg>;
-	readonly setLevelIndex: (index: number) => void;
+	readonly setLevelIndex: (index: LevelIndex) => void;
 	readonly className?: string;
 }): JSX.Element {
-	function getLevelIndex(eventCoord: Coord2): number {
+	function getLevelIndex(eventCoord: Coord2): LevelIndex {
 		const levelCoord = floor(divide(eventCoord, levelSize));
-		return levelCoord.x + levelCoord.y * 10;
+		return (levelCoord.x + levelCoord.y * 10) as LevelIndex;
 	}
 
 	function setLevels(levels: readonly Level[]) {
@@ -94,12 +95,11 @@ const clickDragCanvasEventHandlerProviders = {
 export function LevelPreviewCard(props: {
 	readonly parsedPrg: ParsedPrg;
 	readonly setParsedPrg: Setter<ParsedPrg>;
-	readonly levelIndex: number;
-	readonly setLevelIndex: Setter<number>;
+	readonly levelIndex: LevelIndex;
+	readonly setLevelIndex: Setter<LevelIndex>;
 	readonly showLevelSelectionGrid: boolean;
 	readonly setShowLevelSelectionGrid: Setter<boolean>;
 }): ReactNode {
-	const level = props.parsedPrg.levels[props.levelIndex]!;
 	const setLevel = (level: Level) =>
 		props.setParsedPrg({
 			...props.parsedPrg,
@@ -116,7 +116,11 @@ export function LevelPreviewCard(props: {
 
 	const Tool = clickDragCanvasEventHandlerProviders[activeTool];
 	return (
-		<Tool levelIndex={props.levelIndex} level={level} setLevel={setLevel}>
+		<Tool
+			levelIndex={props.levelIndex}
+			levels={props.parsedPrg.levels}
+			setLevel={setLevel}
+		>
 			{(eventHandlers, extraTools, renderOptions) => (
 				<ImageCard>
 					{!props.showLevelSelectionGrid ? (
@@ -165,15 +169,17 @@ export function LevelPreviewCard(props: {
 }
 
 function LevelSelectionButtons(props: {
-	readonly levelIndex: number;
-	readonly setLevelIndex: Setter<number>;
+	readonly levelIndex: LevelIndex;
+	readonly setLevelIndex: Setter<LevelIndex>;
 	readonly showLevelSelectionGrid: boolean;
 	readonly setShowLevelSelectionGrid: Setter<boolean>;
 }) {
 	return (
 		<>
 			<button
-				onClick={() => props.setLevelIndex(props.levelIndex - 1)}
+				onClick={() =>
+					props.setLevelIndex((props.levelIndex - 1) as LevelIndex)
+				}
 				disabled={!(!props.showLevelSelectionGrid && props.levelIndex > 0)}
 			>
 				{icons.chevrons.left}
@@ -186,7 +192,9 @@ function LevelSelectionButtons(props: {
 				{props.showLevelSelectionGrid ? icons.square : icons.grid}
 			</button>
 			<button
-				onClick={() => props.setLevelIndex(props.levelIndex + 1)}
+				onClick={() =>
+					props.setLevelIndex((props.levelIndex + 1) as LevelIndex)
+				}
 				disabled={!(!props.showLevelSelectionGrid && props.levelIndex < 99)}
 			>
 				{icons.chevrons.right}

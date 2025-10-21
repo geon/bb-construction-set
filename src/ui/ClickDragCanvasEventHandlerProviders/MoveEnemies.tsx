@@ -4,35 +4,24 @@ import {
 	deleteArrayElementAtIndex,
 } from "../../bb/functions";
 import { CharacterName } from "../../bb/game-definitions/character-name";
-import { Level, Monster } from "../../bb/internal-data-formats/level";
-import { LevelEditorOptions } from "../../bb/palette-image/level";
+import { Monster } from "../../bb/internal-data-formats/level";
 import { spritePosOffset, spriteSizePixels } from "../../c64/consts";
 import { Coord2, floor, subtract, add } from "../../math/coord2";
 import { rectContainsPoint } from "../../math/rect";
 import { ButtonRow } from ".././ButtonRow";
-import { ClickDragCanvasDragEventHandlers } from ".././ClickDragCanvas";
 import { ClickDragCanvasEventHandlerProvider } from ".././ClickDragCanvasEventHandlerProvider";
 import { Flex } from ".././Flex";
 import { icons } from ".././icons";
 import { RadioButtonList } from ".././RadioButtonList";
-import { Setter } from ".././types";
 import { CoordFields } from "../CoordFields";
 import { ButtonGroup } from "../ButtonGroup";
 
-export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props: {
-	levelIndex: number;
-	level: Level;
-	setLevel: Setter<Level>;
-	children: (
-		eventHandlers: ClickDragCanvasDragEventHandlers,
-		extraTools?: React.ReactNode,
-		levelEditorOptions?: LevelEditorOptions
-	) => React.ReactNode;
-}) => {
-	const monsters = props.level.monsters;
+export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
+	const level = props.levels[props.levelIndex];
+	const monsters = level.monsters;
 	function setMonsters(monsters: readonly Monster[]) {
 		props.setLevel({
-			...props.level,
+			...level,
 			monsters,
 		});
 	}
@@ -246,12 +235,10 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props: {
 								superSocket: "Super Socket",
 							} satisfies Record<Exclude<CharacterName, "player">, string>
 						}
-						selected={
-							props.level.monsters[selectedMonster.index]?.characterName
-						}
+						selected={level.monsters[selectedMonster.index]?.characterName}
 						setSelected={(characterName) =>
 							props.setLevel({
-								...props.level,
+								...level,
 								monsters: updateArrayAtIndex(
 									monsters,
 									selectedMonster.index,

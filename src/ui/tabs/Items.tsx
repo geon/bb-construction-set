@@ -22,6 +22,7 @@ import { CharBlockSelector } from "../CharBlockSelector";
 import { getCharPalette } from "../../bb/palette-image/char";
 import { itemNames } from "../../bb/game-definitions/item-names";
 import { Palette } from "../Palette";
+import { LevelIndex } from "../../bb/internal-data-formats/levels";
 
 const Styling = styled.div`
 	display: flex;
@@ -36,7 +37,7 @@ const Styling = styled.div`
 export function Items(props: {
 	readonly parsedPrg: ParsedPrg;
 	readonly setParsedPrg: (parsedPrg: ParsedPrg) => void;
-	readonly levelIndex: number;
+	readonly levelIndex: LevelIndex;
 }): ReactNode {
 	const [selectedItemCategoryName, setSelectedItemCategoryName] =
 		useState<ItemCategoryName>("points");

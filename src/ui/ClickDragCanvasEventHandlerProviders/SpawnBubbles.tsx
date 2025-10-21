@@ -1,5 +1,6 @@
 import { SpecialBubbleName } from "../../bb/internal-data-formats/bubble-spawns";
 import { Level } from "../../bb/internal-data-formats/level";
+import { LevelIndex, Levels } from "../../bb/internal-data-formats/levels";
 import { LevelEditorOptions } from "../../bb/palette-image/level";
 import { ButtonRow } from ".././ButtonRow";
 import { CheckboxList } from ".././CheckboxList";
@@ -8,8 +9,8 @@ import { ClickDragCanvasEventHandlerProvider } from ".././ClickDragCanvasEventHa
 import { Setter } from ".././types";
 
 export const SpawnBubbles: ClickDragCanvasEventHandlerProvider = (props: {
-	levelIndex: number;
-	level: Level;
+	levelIndex: LevelIndex;
+	levels: Levels;
 	setLevel: Setter<Level>;
 	children: (
 		eventHandlers: ClickDragCanvasDragEventHandlers,
@@ -29,9 +30,9 @@ export const SpawnBubbles: ClickDragCanvasEventHandlerProvider = (props: {
 						extend: "Extend",
 					} satisfies Record<SpecialBubbleName, string>
 				}
-				selected={props.level.bubbleSpawns}
+				selected={props.levels[props.levelIndex].bubbleSpawns}
 				setSelected={(bubbleSpawns) =>
-					props.setLevel({ ...props.level, bubbleSpawns })
+					props.setLevel({ ...props.levels[props.levelIndex], bubbleSpawns })
 				}
 			/>
 		</ButtonRow>

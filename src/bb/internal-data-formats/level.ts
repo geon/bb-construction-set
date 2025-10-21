@@ -11,6 +11,7 @@ import { BgColors } from "./bg-colors";
 import { PerLevelBubbleSpawns } from "./bubble-spawns";
 import { PerLevelItemSpawnPositions } from "./item-spawn-positions";
 import { CharacterName } from "../game-definitions/character-name";
+import { LevelIndex } from "./levels";
 
 interface Character<TCharacterName> {
 	readonly characterName: TCharacterName;
@@ -51,7 +52,7 @@ export type BubbleCurrentRectangleOrSymmetry =
 export type BubbleCurrentRectangles =
 	| {
 			readonly type: "copy";
-			readonly levelIndex: number;
+			readonly levelIndex: LevelIndex;
 	  }
 	| {
 			readonly type: "rectangles";

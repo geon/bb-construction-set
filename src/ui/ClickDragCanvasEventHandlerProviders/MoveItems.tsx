@@ -1,31 +1,19 @@
 import { useState } from "react";
 import { objectEntries } from "../../bb/functions";
 import { PerLevelItemSpawnPositions } from "../../bb/internal-data-formats/item-spawn-positions";
-import { Level } from "../../bb/internal-data-formats/level";
-import { LevelEditorOptions } from "../../bb/palette-image/level";
 import { ItemCategoryName } from "../../bb/prg/data-locations";
 import { Coord2, subtract, floor, add, equal, scale } from "../../math/coord2";
 import { rectContainsPoint } from "../../math/rect";
-import { ClickDragCanvasDragEventHandlers } from ".././ClickDragCanvas";
 import { ClickDragCanvasEventHandlerProvider } from ".././ClickDragCanvasEventHandlerProvider";
-import { Setter } from ".././types";
 
-export const MoveItems: ClickDragCanvasEventHandlerProvider = (props: {
-	levelIndex: number;
-	level: Level;
-	setLevel: Setter<Level>;
-	children: (
-		eventHandlers: ClickDragCanvasDragEventHandlers,
-		extraTools?: React.ReactNode,
-		levelEditorOptions?: LevelEditorOptions
-	) => React.ReactNode;
-}) => {
-	const itemSpawnPositions = props.level.itemSpawnPositions;
+export const MoveItems: ClickDragCanvasEventHandlerProvider = (props) => {
+	const level = props.levels[props.levelIndex];
+	const itemSpawnPositions = level.itemSpawnPositions;
 	const setItemSpawnPositions = (
 		itemSpawnPositions: PerLevelItemSpawnPositions
 	) =>
 		props.setLevel({
-			...props.level,
+			...level,
 			itemSpawnPositions,
 		});
 

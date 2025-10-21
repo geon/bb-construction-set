@@ -20,6 +20,7 @@ import {
 } from "../../bb/palette-image/palette-image";
 import styled from "styled-components";
 import { mapTuple } from "../../bb/tuple";
+import { LevelIndex } from "../../bb/internal-data-formats/levels";
 
 const Styling = styled.div`
 	display: flex;
@@ -36,8 +37,8 @@ export const ImageButtons = styled.div`
 export function LevelGraphics(props: {
 	readonly parsedPrg: ParsedPrg;
 	readonly setParsedPrg: (parsedPrg: ParsedPrg) => void;
-	readonly levelIndex: number;
-	readonly setLevelIndex: (index: number) => void;
+	readonly levelIndex: LevelIndex;
+	readonly setLevelIndex: (index: LevelIndex) => void;
 }): ReactNode {
 	return (
 		<Styling>

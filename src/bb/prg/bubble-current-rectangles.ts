@@ -9,6 +9,7 @@ import { isBitSet } from "../bit-twiddling";
 import { uint8ArrayConcatenate } from "./io";
 import { ReadonlyUint8Array } from "../types";
 import { assertTuple, Tuple } from "../tuple";
+import { LevelIndex } from "../internal-data-formats/levels";
 
 export function readBubbleCurrentRectangles(
 	bubbleCurrentRectangleBytes: ReadonlyUint8Array
@@ -41,7 +42,7 @@ type FirstByte = {
 } & (
 	| {
 			type: "copy";
-			levelIndex: number;
+			levelIndex: LevelIndex;
 	  }
 	| {
 			type: "rectangles";
@@ -50,7 +51,7 @@ type FirstByte = {
 
 export function parseFirstByte(firstByte: number): FirstByte {
 	const copy = isBitSet(firstByte, 0);
-	const firstByteWithoutCopyFlag = firstByte & 0b01111111;
+	const firstByteWithoutCopyFlag = (firstByte & 0b01111111) as LevelIndex;
 
 	return copy
 		? {
