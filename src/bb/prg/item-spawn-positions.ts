@@ -21,54 +21,57 @@ import { Patch, patchFromSegment } from "./io";
 export function parseItemSpawnPositions(
 	buffers: Record<ItemSpawnPositionArrayName, ReadonlyUint8Array>
 ): ItemSpawnPositions {
-	return zipObject({
-		aByte: [...buffers.a],
-		bByte: [...buffers.b],
-		cByte: [...buffers.c],
-	}).map(({ aByte, bByte, cByte }): PerLevelItemSpawnPositions => {
-		const aBits = byteToBits(aByte);
-		const bBits = byteToBits(bByte);
-		const cBits = byteToBits(cByte);
+	return assertTuple(
+		zipObject({
+			aByte: [...buffers.a],
+			bByte: [...buffers.b],
+			cByte: [...buffers.c],
+		}).map(({ aByte, bByte, cByte }): PerLevelItemSpawnPositions => {
+			const aBits = byteToBits(aByte);
+			const bBits = byteToBits(bByte);
+			const cBits = byteToBits(cByte);
 
-		return {
-			points: {
-				x: bitsToByte([
-					//
-					aBits[0],
-					aBits[1],
-					aBits[2],
-					aBits[3],
-					aBits[4],
-				]),
-				y: bitsToByte([
-					//
-					aBits[5],
-					aBits[6],
-					aBits[7],
-					bBits[0],
-					bBits[1],
-				]),
-			},
-			powerups: {
-				x: bitsToByte([
-					//
-					bBits[2],
-					bBits[3],
-					bBits[4],
-					bBits[5],
-					bBits[6],
-				]),
-				y: bitsToByte([
-					//
-					bBits[7],
-					cBits[0],
-					cBits[1],
-					cBits[2],
-					cBits[3],
-				]),
-			},
-		};
-	});
+			return {
+				points: {
+					x: bitsToByte([
+						//
+						aBits[0],
+						aBits[1],
+						aBits[2],
+						aBits[3],
+						aBits[4],
+					]),
+					y: bitsToByte([
+						//
+						aBits[5],
+						aBits[6],
+						aBits[7],
+						bBits[0],
+						bBits[1],
+					]),
+				},
+				powerups: {
+					x: bitsToByte([
+						//
+						bBits[2],
+						bBits[3],
+						bBits[4],
+						bBits[5],
+						bBits[6],
+					]),
+					y: bitsToByte([
+						//
+						bBits[7],
+						cBits[0],
+						cBits[1],
+						cBits[2],
+						cBits[3],
+					]),
+				},
+			};
+		}),
+		100
+	);
 }
 
 export function serializeItemSpawnPositions(

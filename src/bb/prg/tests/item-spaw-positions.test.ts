@@ -5,6 +5,7 @@ import {
 	parseItemSpawnPositions,
 	serializeItemSpawnPositions,
 } from "../item-spawn-positions";
+import { assertTuple } from "../../tuple";
 
 test("parseItemSpawnPositions / serializeItemSpawnPositions", () => {
 	const prgFileContent = readFileSync(
@@ -14,7 +15,10 @@ test("parseItemSpawnPositions / serializeItemSpawnPositions", () => {
 
 	const backAndForth = parseItemSpawnPositions(
 		serializeItemSpawnPositions(
-			parsedPrg.levels.map((level) => level.itemSpawnPositions)
+			assertTuple(
+				parsedPrg.levels.map((level) => level.itemSpawnPositions),
+				100
+			)
 		)
 	);
 
