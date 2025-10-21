@@ -15,7 +15,7 @@ import {
 import { BlobDownloadButton } from "../BlobDownloadButton";
 import { FileInput } from "../FileInput";
 import styled from "styled-components";
-import { assertTuple } from "../../bb/tuple";
+import { assertTuple, mapTuple } from "../../bb/tuple";
 
 const ImageButtons = styled.div`
 	display: flex;
@@ -45,10 +45,13 @@ export function Platforms(props: {
 
 					props.setParsedPrg({
 						...props.parsedPrg,
-						levels: zipObject({
-							level: props.parsedPrg.levels,
-							tiles: parsedTiles.result,
-						}).map(({ level, tiles }) => ({ ...level, tiles })),
+						levels: mapTuple(
+							zipObject({
+								level: props.parsedPrg.levels,
+								tiles: parsedTiles.result,
+							}),
+							({ level, tiles }) => ({ ...level, tiles })
+						),
 					});
 				}}
 			>

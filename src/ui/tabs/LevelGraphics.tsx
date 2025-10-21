@@ -19,6 +19,7 @@ import {
 	halfImageWidth,
 } from "../../bb/palette-image/palette-image";
 import styled from "styled-components";
+import { mapTuple } from "../../bb/tuple";
 
 const Styling = styled.div`
 	display: flex;
@@ -61,13 +62,16 @@ export function LevelGraphics(props: {
 
 						props.setParsedPrg({
 							...props.parsedPrg,
-							levels: zipObject({
-								level: props.parsedPrg.levels,
-								platformCharsData: parsedTiles.result,
-							}).map(({ level, platformCharsData }) => ({
-								...level,
-								...platformCharsData,
-							})),
+							levels: mapTuple(
+								zipObject({
+									level: props.parsedPrg.levels,
+									platformCharsData: parsedTiles.result,
+								}),
+								({ level, platformCharsData }) => ({
+									...level,
+									...platformCharsData,
+								})
+							),
 						});
 					}}
 				>

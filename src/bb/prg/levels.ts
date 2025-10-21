@@ -1,7 +1,6 @@
 import { zipObject, unzipObject, objectEntries } from "../functions";
 import { LevelDataSegmentName } from "../game-definitions/level-segment-name";
-import { Level } from "../internal-data-formats/level";
-import { assertTuple } from "../tuple";
+import { Levels } from "../internal-data-formats/levels";
 import { readBgColors, writeBgColors } from "./bg-colors";
 import { readBubbleCurrentPerLineDefaults } from "./bubble-current-per-line-defaults";
 import {
@@ -25,7 +24,7 @@ import { readTiles } from "./tiles";
 
 export function readLevels(
 	dataSegments: Record<LevelDataSegmentName, DataSegment>
-): ReadonlyArray<Level> {
+): Levels {
 	const tileBitmaps = readTileBitmaps(
 		dataSegments.bitmaps.buffer,
 		dataSegments.symmetry.buffer
@@ -56,8 +55,8 @@ export function readLevels(
 	});
 }
 
-export function getLevelsPatch(levels: readonly Level[]) {
-	const unzippedLevels = unzipObject(assertTuple(levels, 100));
+export function getLevelsPatch(levels: Levels) {
+	const unzippedLevels = unzipObject(levels);
 
 	const newSegments = {
 		platformChars: writePlatformChars(unzippedLevels.platformChar),

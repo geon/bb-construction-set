@@ -250,7 +250,7 @@ function layOutAllLevelsPlatformChars() {
 }
 
 export function drawPlatformChars(
-	levels: readonly PlatformCharsData[]
+	levels: Tuple<PlatformCharsData, 100>
 ): PaletteImage {
 	const layout = layOutAllLevelsPlatformChars();
 	return drawLayout(layout, levels.map(drawLevelPlatformChars));

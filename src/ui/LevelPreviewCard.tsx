@@ -21,6 +21,7 @@ import { ClickDragCanvasEventHandlerProvider } from "./ClickDragCanvasEventHandl
 import { RadioButton } from "./RadioButton";
 import { levelSize } from "../bb/game-definitions/level-size";
 import { Coord2, divide, floor } from "../math/coord2";
+import { assertTuple } from "../bb/tuple";
 
 const ImageCard = styled(Card)<{
 	readonly children: [JSX.Element, JSX.Element];
@@ -51,8 +52,11 @@ function LevelSelector(props: {
 		return levelCoord.x + levelCoord.y * 10;
 	}
 
-	function setLevels(levels: ParsedPrg["levels"]) {
-		props.setParsedPrg({ ...props.parsedPrg, levels });
+	function setLevels(levels: readonly Level[]) {
+		props.setParsedPrg({
+			...props.parsedPrg,
+			levels: assertTuple(levels, 100),
+		});
 	}
 
 	const [fromIndex, setFromIndex] = useState<number | undefined>(undefined);
@@ -99,10 +103,13 @@ export function LevelPreviewCard(props: {
 	const setLevel = (level: Level) =>
 		props.setParsedPrg({
 			...props.parsedPrg,
-			levels: updateArrayAtIndex(
-				props.parsedPrg.levels,
-				props.levelIndex,
-				() => level
+			levels: assertTuple(
+				updateArrayAtIndex(
+					props.parsedPrg.levels,
+					props.levelIndex,
+					() => level
+				),
+				100
 			),
 		});
 	const [activeTool, setActiveTool] = useState<ToolName>("draw-platforms");
