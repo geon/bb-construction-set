@@ -1,3 +1,5 @@
+import { Tuple } from "../tuple";
+
 export const validSpecialBubbleNames = [
 	"lightning",
 	"fire",
@@ -9,4 +11,4 @@ export type SpecialBubbleName = (typeof validSpecialBubbleNames)[number];
 
 export type PerLevelBubbleSpawns = Record<SpecialBubbleName, boolean>;
 
-export type BubbleSpawns = ReadonlyArray<PerLevelBubbleSpawns>;
+export type BubbleSpawns = Tuple<PerLevelBubbleSpawns, 100>;

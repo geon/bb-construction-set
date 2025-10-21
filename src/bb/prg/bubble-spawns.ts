@@ -3,20 +3,24 @@ import {
 	BubbleSpawns,
 	PerLevelBubbleSpawns,
 } from "../internal-data-formats/bubble-spawns.ts";
+import { assertTuple } from "../tuple.ts";
 import { ReadonlyUint8Array } from "../types.ts";
 import { levelSegmentLocations } from "./data-locations.ts";
 import { DataSegment, Patch, patchFromSegment } from "./io";
 
 export function readBubbleSpawns(buffer: ReadonlyUint8Array): BubbleSpawns {
-	return [...buffer].map((byte): PerLevelBubbleSpawns => {
-		const [, , , , lightning, fire, water, extend] = byteToBits(byte);
-		return {
-			lightning,
-			fire,
-			water,
-			extend,
-		};
-	});
+	return assertTuple(
+		[...buffer].map((byte): PerLevelBubbleSpawns => {
+			const [, , , , lightning, fire, water, extend] = byteToBits(byte);
+			return {
+				lightning,
+				fire,
+				water,
+				extend,
+			};
+		}),
+		100
+	);
 }
 
 export function serializeBubbleSpawns(bubbleSpawns: BubbleSpawns): DataSegment {
