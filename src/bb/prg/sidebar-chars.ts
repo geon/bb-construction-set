@@ -1,15 +1,14 @@
 import { Char, CharBlock } from "../internal-data-formats/char";
 import { parseColorPixelByte } from "../internal-data-formats/color-pixel-byte";
 import { isDefined, padRight, strictChunk } from "../functions";
-import { Level } from "../internal-data-formats/level";
-import { mapTuple } from "../tuple";
+import { assertTuple, mapTuple, Tuple } from "../tuple";
 import { maxSidebars, levelSegmentLocations } from "./data-locations";
 import { ReadonlyUint8Array } from "../types";
 
 export function readSidebarChars(
 	sidebarCharsBytes: ReadonlyUint8Array,
 	sidebarCharsIndexBytes: ReadonlyUint8Array
-): readonly (CharBlock | undefined)[] {
+): Tuple<CharBlock | undefined, 100> {
 	const linesPerChar = 8;
 	const allSidebarCharBlocks: Array<CharBlock> = strictChunk(
 		strictChunk([...sidebarCharsBytes], linesPerChar).map(
@@ -22,19 +21,22 @@ export function readSidebarChars(
 	if (mask === undefined) {
 		throw new Error("sidebarCharsIndex missing mask");
 	}
-	const sidebarChars = [...sidebarCharsIndexBytes].map((byte) => {
-		const sidebarCharsIndex = byte & mask;
-		const hasSidebarChars = sidebarCharsIndex < 100;
-		return hasSidebarChars
-			? allSidebarCharBlocks[sidebarCharsIndex]
-			: undefined;
-	});
+	const sidebarChars = assertTuple(
+		[...sidebarCharsIndexBytes].map((byte) => {
+			const sidebarCharsIndex = byte & mask;
+			const hasSidebarChars = sidebarCharsIndex < 100;
+			return hasSidebarChars
+				? allSidebarCharBlocks[sidebarCharsIndex]
+				: undefined;
+		}),
+		100
+	);
 
 	return sidebarChars;
 }
 
 export function writeSidebarChars(
-	sidebarCharses: readonly Level["sidebarChars"][]
+	sidebarCharses: Tuple<CharBlock | undefined, 100>
 ): Uint8Array {
 	const sidebarLevels = sidebarCharses.filter(isDefined);
 	if (sidebarLevels.length > maxSidebars) {
