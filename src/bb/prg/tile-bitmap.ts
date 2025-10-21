@@ -1,4 +1,5 @@
 import { isBitSet, mirrorBits } from "../bit-twiddling";
+import { assertTuple, Tuple } from "../tuple";
 import { ReadonlyUint8Array } from "../types";
 
 export type TileBitmap = {
@@ -9,7 +10,7 @@ export type TileBitmap = {
 export function readTileBitmaps(
 	bitmapBytes: ReadonlyUint8Array,
 	symmetryMetadataBytes: ReadonlyUint8Array
-): readonly TileBitmap[] {
+): Tuple<TileBitmap, 100> {
 	const tileBitmaps: TileBitmap[] = [];
 
 	let offset = 0;
@@ -25,7 +26,7 @@ export function readTileBitmaps(
 		offset += levelBitmapByteLength;
 	}
 
-	return tileBitmaps;
+	return assertTuple(tileBitmaps, 100);
 }
 
 function readTileBitmap(

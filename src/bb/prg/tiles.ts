@@ -3,10 +3,11 @@ import { levelWidth, levelHeight } from "../game-definitions/level-size";
 import { byteToBits, isBitSet } from "../bit-twiddling";
 import { TileBitmap } from "./tile-bitmap";
 import { ReadonlyUint8Array } from "../types";
+import { Tuple } from "../tuple";
 
 export function readTiles(
 	holeMetadataBytes: ReadonlyUint8Array,
-	tileBitmaps: readonly TileBitmap[]
+	tileBitmaps: Tuple<TileBitmap, 100>
 ) {
 	const tilesForAllLevels: Tiles[] = [];
 
