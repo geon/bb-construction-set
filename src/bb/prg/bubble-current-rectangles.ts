@@ -8,10 +8,11 @@ import {
 import { isBitSet } from "../bit-twiddling";
 import { uint8ArrayConcatenate } from "./io";
 import { ReadonlyUint8Array } from "../types";
+import { assertTuple, Tuple } from "../tuple";
 
 export function readBubbleCurrentRectangles(
 	bubbleCurrentRectangleBytes: ReadonlyUint8Array
-): BubbleCurrentRectangles[] {
+): Tuple<BubbleCurrentRectangles, 100> {
 	const bubbleCurrentRectanglesForAllLevels: BubbleCurrentRectangles[] = [];
 
 	let currentWindCurrentsByteIndex = 0;
@@ -32,7 +33,7 @@ export function readBubbleCurrentRectangles(
 		currentWindCurrentsByteIndex += firstByte.byteCount;
 	}
 
-	return bubbleCurrentRectanglesForAllLevels;
+	return assertTuple(bubbleCurrentRectanglesForAllLevels, 100);
 }
 
 type FirstByte = {
@@ -204,7 +205,7 @@ export function encodeFirstByte(firstByte: FirstByte): number {
 }
 
 export function writeBubbleCurrentRectangles(
-	bubbleCurrentses: readonly BubbleCurrentRectangles[]
+	bubbleCurrentses: Tuple<BubbleCurrentRectangles, 100>
 ): Uint8Array {
 	return uint8ArrayConcatenate(
 		bubbleCurrentses.map((bubbleCurrents) =>
