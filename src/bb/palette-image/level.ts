@@ -30,7 +30,7 @@ import {
 	ItemCategoryName,
 	validItemCategoryNames,
 } from "../prg/data-locations";
-import { assertTuple } from "../tuple";
+import { assertTuple, Tuple } from "../tuple";
 import {
 	getLevelCharPalette,
 	drawChar,
@@ -208,14 +208,14 @@ export function parseLevelTiles(image: PaletteImage): Tiles {
 	);
 }
 
-export function drawLevelsTiles(levelsTiles: readonly Tiles[]): PaletteImage {
+export function drawLevelsTiles(levelsTiles: Tuple<Tiles, 100>): PaletteImage {
 	const layout = layOutLevelThumbnails();
 
 	return drawLayout(layout, levelsTiles.map(drawLevelTiles));
 }
 
-export function parseLevelsTiles(image: PaletteImage): Tiles[] {
+export function parseLevelsTiles(image: PaletteImage): Tuple<Tiles, 100> {
 	const layout = layOutLevelThumbnails();
 
-	return parseLayout(layout, image).map(parseLevelTiles);
+	return assertTuple(parseLayout(layout, image).map(parseLevelTiles), 100);
 }

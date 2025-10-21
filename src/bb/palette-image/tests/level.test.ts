@@ -54,9 +54,12 @@ test("drawLevelTiles / parseLevelTiles", () => {
 });
 
 test("drawLevelsTiles / parseLevelsTiles", () => {
-	const levelsTiles = parsePrg(
-		readFileSync(__dirname + "/../../prg/tests/decompressed-bb.prg").buffer
-	).levels.map((level) => level.tiles);
+	const levelsTiles = assertTuple(
+		parsePrg(
+			readFileSync(__dirname + "/../../prg/tests/decompressed-bb.prg").buffer
+		).levels.map((level) => level.tiles),
+		100
+	);
 
 	expect(parseLevelsTiles(drawLevelsTiles(levelsTiles))).toStrictEqual(
 		levelsTiles

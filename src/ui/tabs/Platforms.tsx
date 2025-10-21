@@ -15,6 +15,7 @@ import {
 import { BlobDownloadButton } from "../BlobDownloadButton";
 import { FileInput } from "../FileInput";
 import styled from "styled-components";
+import { assertTuple } from "../../bb/tuple";
 
 const ImageButtons = styled.div`
 	display: flex;
@@ -59,7 +60,10 @@ export function Platforms(props: {
 					blob: await imageDataToBlob(
 						imageDataFromPaletteImage(
 							drawLevelsTiles(
-								props.parsedPrg.levels.map((level) => level.tiles)
+								assertTuple(
+									props.parsedPrg.levels.map((level) => level.tiles),
+									100
+								)
 							)
 						)
 					),
