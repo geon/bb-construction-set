@@ -5,11 +5,12 @@ import {
 import { isBitSet } from "../bit-twiddling";
 import { TileBitmap } from "./tile-bitmap";
 import { ReadonlyUint8Array } from "../types";
+import { assertTuple, Tuple } from "../tuple";
 
 export function readBubbleCurrentPerLineDefaults(
 	holeMetadataBytes: ReadonlyUint8Array,
 	tileBitmaps: readonly TileBitmap[]
-): BubbleCurrentPerLineDefaults[] {
+): Tuple<BubbleCurrentPerLineDefaults, 100> {
 	const monstersForAllLevels = [];
 
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
@@ -22,7 +23,7 @@ export function readBubbleCurrentPerLineDefaults(
 		);
 	}
 
-	return monstersForAllLevels;
+	return assertTuple(monstersForAllLevels, 100);
 }
 
 function readBubbleCurrentPerLineDefaultsForLevel(
