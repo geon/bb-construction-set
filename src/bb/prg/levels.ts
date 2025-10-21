@@ -1,6 +1,7 @@
 import { zipObject, unzipObject, objectEntries } from "../functions";
 import { LevelDataSegmentName } from "../game-definitions/level-segment-name";
 import { Level } from "../internal-data-formats/level";
+import { assertTuple } from "../tuple";
 import { readBgColors, writeBgColors } from "./bg-colors";
 import { readBubbleCurrentPerLineDefaults } from "./bubble-current-per-line-defaults";
 import {
@@ -56,11 +57,7 @@ export function readLevels(
 }
 
 export function getLevelsPatch(levels: readonly Level[]) {
-	if (levels.length !== 100) {
-		throw new Error(`Wrong number of levels: ${levels.length}. Should be 100.`);
-	}
-
-	const unzippedLevels = unzipObject(levels);
+	const unzippedLevels = unzipObject(assertTuple(levels, 100));
 
 	const newSegments = {
 		platformChars: writePlatformChars(unzippedLevels.platformChar),
