@@ -8,8 +8,11 @@ import {
 import { ReadonlyUint8Array } from "../types";
 import { monsterNames } from "../game-definitions/character-name";
 import { Patch, SingleBytePatchEntry } from "./io";
+import { assertTuple, Tuple } from "../tuple";
 
-export function readMonsters(monsterBytes: ReadonlyUint8Array) {
+export function readMonsters(
+	monsterBytes: ReadonlyUint8Array
+): Tuple<readonly Monster[], 100> {
 	const monstersForAllLevels: Monster[][] = [];
 
 	let currentMonsterByteIndex = 0;
@@ -37,7 +40,7 @@ export function readMonsters(monsterBytes: ReadonlyUint8Array) {
 		monstersForAllLevels.push(monsters);
 	}
 
-	return monstersForAllLevels;
+	return assertTuple(monstersForAllLevels, 100);
 }
 
 function readMonster(monsterBytes: ReadonlyUint8Array): Monster {
@@ -52,7 +55,7 @@ function readMonster(monsterBytes: ReadonlyUint8Array): Monster {
 }
 
 export function getMonstersPatch(
-	monsterses: readonly (readonly Monster[])[]
+	monsterses: Tuple<readonly Monster[], 100>
 ): Patch {
 	const numMonsters = monsterses.flatMap((monsters) => monsters).length;
 	if (numMonsters > maxMonsters) {
