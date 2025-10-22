@@ -147,11 +147,14 @@ export function drawLevel(
 	for (const [index, character] of [
 		...[...level.monsters, pl1, pl2].entries(),
 	]) {
+		const dragging =
+			options?.type === "move-enemies" &&
+			index === options.selectedMonsterIndex &&
+			options.dragging;
+
 		const sprite =
 			parsedPrg.sprites[character.characterName].sprites[
-				options?.type === "move-enemies" &&
-				index === options.selectedMonsterIndex &&
-				options.dragging
+				dragging
 					? parsedPrg.sprites[character.characterName].sprites.length - 1
 					: character.facingLeft
 					? spriteLeftIndex[character.characterName]
