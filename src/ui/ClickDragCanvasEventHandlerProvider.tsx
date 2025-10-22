@@ -4,13 +4,15 @@ import { Setter } from "./types";
 import { LevelEditorOptions } from "../bb/palette-image/level";
 import { LevelIndex, Levels } from "../bb/internal-data-formats/levels";
 
+export type ClickDragCanvasEventHandlerProviderChildren = (
+	eventHandlers: ClickDragCanvasDragEventHandlers,
+	extraTools?: React.ReactNode,
+	levelEditorOptions?: LevelEditorOptions
+) => React.ReactNode;
+
 export type ClickDragCanvasEventHandlerProvider = (props: {
 	levelIndex: LevelIndex;
 	levels: Levels;
 	setLevel: Setter<Level>;
-	children: (
-		eventHandlers: ClickDragCanvasDragEventHandlers,
-		extraTools?: React.ReactNode,
-		levelEditorOptions?: LevelEditorOptions
-	) => React.ReactNode;
+	children: ClickDragCanvasEventHandlerProviderChildren;
 }) => React.ReactNode;

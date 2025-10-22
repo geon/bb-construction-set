@@ -25,6 +25,12 @@ export type Player = Character<Extract<CharacterName, "player">>;
 // up, right, down, left
 export type BubbleCurrentDirection = 0 | 1 | 2 | 3;
 
+export function rotateDirectionClockwise(
+	direction: BubbleCurrentDirection
+): BubbleCurrentDirection {
+	return ((direction + 1) % 4) as BubbleCurrentDirection;
+}
+
 type TileRow = Tuple<boolean, 32>;
 export type Tiles = Tuple<TileRow, 25>;
 

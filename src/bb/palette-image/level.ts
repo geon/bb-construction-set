@@ -1,6 +1,6 @@
 import { spritePosOffset } from "../../c64/consts";
-import { origo, subtract } from "../../math/coord2";
-import { grid } from "../../math/rect";
+import { add, Coord2, multiply, origo, subtract } from "../../math/coord2";
+import { grid, rectIntersection } from "../../math/rect";
 import {
 	checkedAccess,
 	chunk,
@@ -44,14 +44,21 @@ import {
 	drawLayout,
 	parseLayout,
 	cropPaletteImage,
+	drawRect,
 } from "./palette-image";
 import { drawSprite, getSpritePalette } from "./sprite";
 
-export type LevelEditorOptions = {
-	readonly type: "move-enemies";
-	readonly selectedMonsterIndex: number | undefined;
-	readonly dragging: boolean;
-};
+export type LevelEditorOptions =
+	| {
+			readonly type: "move-enemies";
+			readonly selectedMonsterIndex: number | undefined;
+			readonly dragging: boolean;
+	  }
+	| {
+			readonly type: "wind-editor";
+			readonly selectedRectangleIndex?: number;
+			readonly dust: readonly Coord2[];
+	  };
 
 export function drawLevel(
 	levelIndex: number,
@@ -166,6 +173,45 @@ export function drawLevel(
 			x: spritePos.x / 2,
 			y: spritePos.y,
 		});
+	}
+
+	if (options?.type === "wind-editor") {
+		if (level.bubbleCurrentRectangles.type == "rectangles") {
+			for (const [index, rectangle] of [
+				...level.bubbleCurrentRectangles.rectangles.entries(),
+			]) {
+				if (rectangle?.type === "rectangle") {
+					const clippedRectangle = rectIntersection(rectangle.rect, {
+						pos: origo,
+						size: levelSize,
+					});
+					if (
+						clippedRectangle &&
+						clippedRectangle.size.x &&
+						clippedRectangle.size.y
+					) {
+						const scaledRectangle = mapRecord(clippedRectangle, (coord) =>
+							multiply(coord, { x: 4, y: 8 })
+						);
+						drawRect(image, scaledRectangle, palette.black);
+						drawRect(
+							image,
+							{
+								pos: add(scaledRectangle.pos, { x: 1, y: 1 }),
+								size: subtract(scaledRectangle.size, { x: 2, y: 2 }),
+							},
+							options.selectedRectangleIndex === index
+								? palette.white
+								: level.bgColors.dark
+						);
+					}
+				}
+			}
+		}
+
+		options.dust.forEach(
+			(pos) => (image[pos.y]![Math.floor(pos.x / 2)] = level.bgColors.dark)
+		);
 	}
 
 	return image;

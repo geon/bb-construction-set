@@ -23,6 +23,7 @@ import { levelSize } from "../bb/game-definitions/level-size";
 import { Coord2, divide, floor } from "../math/coord2";
 import { assertTuple } from "../bb/tuple";
 import { LevelIndex } from "../bb/internal-data-formats/levels";
+import { WindEditor } from "./ClickDragCanvasEventHandlerProviders/WindEditor";
 
 const ImageCard = styled(Card)<{
 	readonly children: [JSX.Element, JSX.Element];
@@ -90,6 +91,7 @@ const clickDragCanvasEventHandlerProviders = {
 	"move-items": MoveItems,
 	"move-enemies": MoveEnemies,
 	"spawn-bubbles": SpawnBubbles,
+	"wind-editor": WindEditor,
 } as const satisfies Record<string, ClickDragCanvasEventHandlerProvider>;
 
 export function LevelPreviewCard(props: {
@@ -220,6 +222,7 @@ function ToolButtons({
 				"move-items": icons.umbrella,
 				"move-enemies": icons.buster,
 				"spawn-bubbles": icons.fireBubble,
+				"wind-editor": icons.wind,
 			} satisfies Record<ToolName, ReactNode>).map(([toolName, icon]) => (
 				<RadioButton
 					key={toolName}
