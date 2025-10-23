@@ -16,6 +16,7 @@ import {
 	levelSize,
 	levelWidth,
 } from "../game-definitions/level-size";
+import { BgColors } from "../internal-data-formats/bg-colors";
 import { Char } from "../internal-data-formats/char";
 import { CharGroup } from "../internal-data-formats/char-group";
 import { parseColorPixelByte } from "../internal-data-formats/color-pixel-byte";
@@ -67,7 +68,12 @@ export function drawLevel(
 ): PaletteImage {
 	const level = parsedPrg.levels[levelIndex]!;
 
-	const bgColors = level.bgColors;
+	const mutedBgColors: BgColors = {
+		light: palette.white,
+		dark: palette.lightGrey,
+	};
+	const bgColors =
+		options?.type === "wind-editor" ? mutedBgColors : level.bgColors;
 
 	// Draw level.
 	const charPalette = getLevelCharPalette(bgColors);
