@@ -1,5 +1,5 @@
 import { spritePosOffset } from "../../c64/consts";
-import { add, Coord2, multiply, origo, subtract } from "../../math/coord2";
+import { Coord2, multiply, origo, subtract } from "../../math/coord2";
 import { grid, rectIntersection } from "../../math/rect";
 import {
 	checkedAccess,
@@ -204,24 +204,18 @@ export function drawLevel(
 						const scaledRectangle = mapRecord(clippedRectangle, (coord) =>
 							multiply(coord, { x: 4, y: 8 })
 						);
-						drawRect(image, scaledRectangle, palette.black);
-						drawRect(
-							image,
-							{
-								pos: add(scaledRectangle.pos, { x: 1, y: 1 }),
-								size: subtract(scaledRectangle.size, { x: 2, y: 2 }),
-							},
+						const rectColors =
 							options.selectedRectangleIndex === index
-								? palette.white
-								: bgColors.dark
-						);
+								? ([palette.lightGreen, palette.green] as const)
+								: ([palette.blue, palette.purple] as const);
+						drawRect(image, scaledRectangle, rectColors);
 					}
 				}
 			}
 		}
 
 		options.dust.forEach(
-			(pos) => (image[pos.y]![Math.floor(pos.x / 2)] = bgColors.dark)
+			(pos) => (image[pos.y]![Math.floor(pos.x / 2)] = palette.darkGrey)
 		);
 	}
 
