@@ -16,13 +16,15 @@ import {
 	PaletteIndex,
 	SubPalette,
 } from "../internal-data-formats/palette";
-import { mapTuple } from "../tuple";
+import { assertTuple, mapTuple } from "../tuple";
 import {
 	blitPaletteImage,
 	createPaletteImage,
 	drawGrid,
 	drawLayout,
 	PaletteImage,
+	paletteImagesEqual,
+	parseLayout,
 } from "./palette-image";
 
 export function drawChar(
@@ -110,7 +112,7 @@ export function getCharPalette(
 	];
 }
 
-type PlatformCharsData = Pick<
+export type PlatformCharsData = Pick<
 	Level,
 	"platformChar" | "sidebarChars" | "bgColors"
 >;
@@ -187,6 +189,36 @@ export function drawLevelPlatformChars(level: PlatformCharsData): PaletteImage {
 			[bgColorsCharImage, emptyCharImage],
 		].flat()
 	);
+}
+
+export function parseLevelPlatformChars(
+	image: PaletteImage
+): PlatformCharsData {
+	const charImages = parseLayout(layOutChars(), image) as PaletteImage<4, 8>[];
+	const sidebarCharImages = assertTuple(charImages.slice(0, 4), 4);
+	const platformCharImage = charImages[4]!;
+	const bgColorsImage = charImages[5]!;
+
+	const bgColors: BgColors = {
+		// When the image is transparent, assume black.
+		dark: bgColorsImage[7][0] ?? palette.black,
+		light: bgColorsImage[7][3] ?? palette.black,
+	};
+	const charPalette = getLevelCharPalette(bgColors);
+
+	const sidebarChars = sidebarCharImages.some(
+		(sidebarCharImage) =>
+			!paletteImagesEqual(sidebarCharImage, platformCharImage)
+	)
+		? mapTuple(
+				sidebarCharImages,
+				(charImage) => parseChar(charImage, charPalette).char
+		  )
+		: undefined;
+
+	const platformChar = parseChar(platformCharImage, charPalette).char;
+
+	return { bgColors, sidebarChars, platformChar };
 }
 
 export function drawCharBlock(
