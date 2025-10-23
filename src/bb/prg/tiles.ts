@@ -24,21 +24,27 @@ export function readTiles(
 		}
 		// Cut out the holes.
 		const holeMetadata = holeMetadataBytes[levelIndex]!;
-		const topLeft = isBitSet(holeMetadata, 7);
-		const topRight = isBitSet(holeMetadata, 6);
-		const bottomLeft = isBitSet(holeMetadata, 5);
-		const bottomRight = isBitSet(holeMetadata, 4);
+		const holes = {
+			top: {
+				left: isBitSet(holeMetadata, 7),
+				right: isBitSet(holeMetadata, 6),
+			},
+			bottom: {
+				left: isBitSet(holeMetadata, 5),
+				right: isBitSet(holeMetadata, 4),
+			},
+		};
 		for (let x = 0; x < 4; ++x) {
-			if (topLeft) {
+			if (holes.top.left) {
 				tiles[0]![9 + x]! = false;
 			}
-			if (topRight) {
+			if (holes.top.right) {
 				tiles[0]![19 + x]! = false;
 			}
-			if (bottomLeft) {
+			if (holes.bottom.left) {
 				tiles[24]![9 + x]! = false;
 			}
-			if (bottomRight) {
+			if (holes.bottom.right) {
 				tiles[24]![19 + x]! = false;
 			}
 		}
