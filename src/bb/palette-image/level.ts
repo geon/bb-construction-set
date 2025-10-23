@@ -70,8 +70,8 @@ export function drawLevel(
 	const level = parsedPrg.levels[levelIndex]!;
 
 	const mutedBgColors: BgColors = {
-		light: palette.white,
-		dark: palette.lightGrey,
+		light: palette.lightGrey,
+		dark: palette.darkGrey,
 	};
 	const bgColors =
 		options?.type === "wind-editor" ? mutedBgColors : level.bgColors;
@@ -210,15 +210,15 @@ export function drawLevel(
 						);
 						const rectColors =
 							options.selectedRectangleIndex === index
-								? ([palette.lightGreen, palette.green] as const)
-								: ([palette.blue, palette.purple] as const);
+								? ([palette.cyan, palette.white] as const)
+								: ([palette.blue, palette.lightBlue] as const);
 						drawRect(image, scaledRectangle, rectColors);
 					}
 				}
 			}
 		}
 
-		options.dust.forEach((pos) => (image[pos.y]![pos.x] = palette.darkGrey));
+		options.dust.forEach((pos) => (image[pos.y]![pos.x] = palette.blue));
 	}
 
 	return image;
