@@ -31,12 +31,20 @@ export function rotateDirectionClockwise(
 	return ((direction + 1) % 4) as BubbleCurrentDirection;
 }
 
-type TileRow = Tuple<boolean, 32>;
-export type Tiles = Tuple<TileRow, 25>;
+export const levelTilesSize = {
+	x: levelSize.x,
+	y: levelSize.y,
+} as const satisfies Coord2;
 
-export function createTiles(): MutableTuple<MutableTuple<boolean, 32>, 25> {
-	return mapTuple(range(levelHeight), () =>
-		mapTuple(range(levelWidth), () => false)
+type TileRow = Tuple<boolean, typeof levelTilesSize.x>;
+export type Tiles = Tuple<TileRow, typeof levelTilesSize.y>;
+
+export function createTiles(): MutableTuple<
+	MutableTuple<boolean, typeof levelTilesSize.x>,
+	typeof levelTilesSize.y
+> {
+	return mapTuple(range(levelTilesSize.y), () =>
+		mapTuple(range(levelTilesSize.x), () => false)
 	);
 }
 
