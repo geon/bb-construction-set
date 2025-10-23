@@ -11,7 +11,10 @@ import { getBubbleSpawnsPatch, readBubbleSpawns } from "./bubble-spawns";
 import { readPlatformChars, writePlatformChars } from "./charset-char";
 import { levelSegmentLocations } from "./data-locations";
 import { DataSegment, patchFromSegment } from "./io";
-import { parseItemSpawnPositions } from "./item-spawn-positions";
+import {
+	getItemSpawnPositionsPatch,
+	parseItemSpawnPositions,
+} from "./item-spawn-positions";
 import { writeHoles, writeSymmetry, writeBitmaps } from "./misc-patch";
 import { readMonsters, getMonstersPatch } from "./monsters";
 import {
@@ -83,5 +86,6 @@ export function getLevelsPatch(levels: Levels) {
 		),
 		getMonstersPatch(unzippedLevels.monsters),
 		getBubbleSpawnsPatch(unzippedLevels.bubbleSpawns),
+		getItemSpawnPositionsPatch(unzippedLevels.itemSpawnPositions),
 	].flat();
 }
