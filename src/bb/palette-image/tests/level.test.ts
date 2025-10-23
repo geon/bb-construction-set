@@ -6,9 +6,8 @@ import {
 	parseLevelsTiles,
 } from "../level";
 import { strictChunk } from "../../functions";
-import { levelSize } from "../../game-definitions/level-size";
 import { assertTuple } from "../../tuple";
-import { Tiles } from "../../internal-data-formats/level";
+import { levelTilesSize, Tiles } from "../../internal-data-formats/level";
 import { readFileSync } from "fs";
 import { parsePrg } from "../../prg/parse-prg";
 
@@ -45,9 +44,9 @@ test("drawLevelTiles / parseLevelTiles", () => {
 				.split("")
 				.map((char) => ({ x: true, _: false }[char]))
 				.filter((char) => char !== undefined),
-			levelSize.x
+			levelTilesSize.x
 		),
-		levelSize.y
+		levelTilesSize.y
 	);
 
 	expect(parseLevelTiles(drawLevelTiles(levelTiles))).toStrictEqual(levelTiles);

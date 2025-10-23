@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { bresenham } from "../../bb/functions";
-import { Tiles } from "../../bb/internal-data-formats/level";
+import { levelTilesSize, Tiles } from "../../bb/internal-data-formats/level";
 import { Coord2, equal, floor, scale } from "../../math/coord2";
 import { ClickDragCanvasEventHandlerProvider } from "../ClickDragCanvasEventHandlerProvider";
-import { levelSize } from "../../bb/game-definitions/level-size";
 import { assertTuple } from "../../bb/tuple";
 
 export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
@@ -63,8 +62,8 @@ export function createSetSomeTiles(
 ) {
 	return (coords: readonly Coord2[], value: boolean) => {
 		const newTiles = assertTuple(
-			tiles.map((row) => assertTuple([...row], levelSize.x)),
-			levelSize.y
+			tiles.map((row) => assertTuple([...row], levelTilesSize.x)),
+			levelTilesSize.y
 		);
 
 		for (const coord of coords) {

@@ -20,6 +20,7 @@ import {
 	makeCharset,
 	levelToCharNames,
 	Tiles,
+	levelTilesSize,
 } from "../internal-data-formats/level";
 import { palette } from "../internal-data-formats/palette";
 import { ParsedPrg } from "../internal-data-formats/parsed-prg";
@@ -250,10 +251,10 @@ export function parseLevelTiles(image: PaletteImage): Tiles {
 		image.map((row) =>
 			assertTuple(
 				row.map((color) => color === solidColor),
-				levelSize.x
+				levelTilesSize.x
 			)
 		),
-		levelSize.y
+		levelTilesSize.y
 	);
 }
 
