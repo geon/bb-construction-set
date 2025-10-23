@@ -135,26 +135,14 @@ export function layOutChars(): LayoutRect {
 			[
 				{ index: 0, pos, size },
 				{ index: 1, pos, size },
-				{ index: 4, pos, size },
-				{ index: 4, pos, size },
-			],
-			[
-				{ index: 2, pos, size },
-				{ index: 3, pos, size },
-				{ index: 4, pos, size },
-				{ index: 4, pos, size },
-			],
-			[
-				{ index: 0, pos, size },
-				{ index: 1, pos, size },
-				{ index: 4, pos, size },
+				{ index: 6, pos, size },
 				{ index: 4, pos, size },
 			],
 			[
 				{ index: 2, pos, size },
 				{ index: 3, pos, size },
-				{ index: 4, pos, size },
-				{ index: 4, pos, size },
+				{ index: 6, pos, size },
+				{ index: 5, pos, size },
 			],
 		].flat(),
 		4,
@@ -164,6 +152,7 @@ export function layOutChars(): LayoutRect {
 
 export function drawLevelPlatformChars(level: PlatformCharsData): PaletteImage {
 	const charPalette = getLevelCharPalette(level.bgColors);
+	const drawCharWithPalette = (char: Char) => drawChar(char, charPalette);
 
 	const sidebarChars = level.sidebarChars ?? [
 		level.platformChar,
@@ -172,11 +161,31 @@ export function drawLevelPlatformChars(level: PlatformCharsData): PaletteImage {
 		level.platformChar,
 	];
 
+	const emptyLine = [undefined, undefined, undefined, undefined];
+	const bgColorsLine = [
+		level.bgColors.dark,
+		level.bgColors.dark,
+		level.bgColors.light,
+		level.bgColors.light,
+	];
+	const bgColorsCharImage: PaletteImage = [
+		emptyLine,
+		emptyLine,
+		emptyLine,
+		emptyLine,
+		bgColorsLine,
+		bgColorsLine,
+		bgColorsLine,
+		bgColorsLine,
+	];
+	const emptyCharImage = createPaletteImage({ x: 4, y: 8 });
+
 	return drawLayout(
 		layOutChars(),
-		[...sidebarChars, level.platformChar].map((char) =>
-			drawChar(char, charPalette)
-		)
+		[
+			[...sidebarChars, level.platformChar].map(drawCharWithPalette),
+			[bgColorsCharImage, emptyCharImage],
+		].flat()
 	);
 }
 
