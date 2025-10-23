@@ -164,7 +164,8 @@ export function getSpritesPatch(spriteGroups: SpriteGroups) {
 		return sprites.flatMap((sprite, spriteIndex) => {
 			const mask = spriteMasks[segmentName];
 			const spriteBytes = serializeSprite(sprite);
-			const spriteOffset = spriteIndex * 64;
+			const spriteSizeBytesPlusPadding = 64;
+			const spriteOffset = spriteIndex * spriteSizeBytesPlusPadding;
 			const spriteStartAddress =
 				spriteDataSegmentLocations[segmentName].startAddress + spriteOffset;
 			return spriteBytes.map((spriteByte, byteIndex): SingleBytePatch => {
