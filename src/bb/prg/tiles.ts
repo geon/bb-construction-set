@@ -67,7 +67,7 @@ export function readTiles(
 		// Fill in the sides.
 		// The 2 tile wide left and right borders are used to store part of the bubbleCurrent.
 		// It needs to be set to true to be solid.
-		for (let rowIndex = 0; rowIndex < 25; ++rowIndex) {
+		for (let rowIndex = 0; rowIndex < levelTilesSize.y; ++rowIndex) {
 			tiles[rowIndex]![0]! = true;
 			tiles[rowIndex]![1]! = true;
 			tiles[rowIndex]![levelTilesSize.x - 2]! = true;

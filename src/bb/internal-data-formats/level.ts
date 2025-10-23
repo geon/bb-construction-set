@@ -168,7 +168,7 @@ export function levelToCharNames(
 	}
 
 	// Draw the 2x2 char sidebar tiles.
-	for (let indexY = 0; indexY < 25; ++indexY) {
+	for (let indexY = 0; indexY < levelSize.y; ++indexY) {
 		const left = indexY % 2 ? "sideBorderBottomLeft" : "sideBorderTopLeft";
 		const right = indexY % 2 ? "sideBorderBottomRight" : "sideBorderTopRight";
 
