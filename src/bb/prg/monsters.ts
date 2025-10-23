@@ -8,7 +8,7 @@ import { ReadonlyUint8Array } from "../types";
 import { monsterNames } from "../game-definitions/character-name";
 import { Patch, SingleBytePatchEntry } from "./io";
 import { assertTuple, Tuple } from "../tuple";
-import { Coord2 } from "../../math/coord2";
+import { add, Coord2, subtract } from "../../math/coord2";
 
 const prgMonsterPositionOffset: Coord2 = {
 	x: 20,
@@ -32,10 +32,7 @@ function parseMonster(monsterBytes: SingleMonsterBytes): Monster {
 
 	return {
 		characterName: monsterNames[monsterBytes[0] & nameMask]!,
-		spawnPoint: {
-			x: prgPosition.x + prgMonsterPositionOffset.x,
-			y: prgPosition.y + prgMonsterPositionOffset.y,
-		},
+		spawnPoint: add(prgPosition, prgMonsterPositionOffset),
 		facingLeft: !!(monsterBytes[2] & facingLeftBit),
 		// The game also shifts left when reading the delay.
 		delay: monsterBytes[2] & delayMask,
@@ -49,10 +46,7 @@ function serializeMonster(monster: Monster): SingleMonsterBytes {
 	const confirmed_mystery_bits_A_3A1C =
 		monster.confirmed_mystery_bits_A_3A1C ?? createMysteryBits(monster);
 
-	const prgPosition: Coord2 = {
-		x: monster.spawnPoint.x - prgMonsterPositionOffset.x,
-		y: monster.spawnPoint.y - prgMonsterPositionOffset.y,
-	};
+	const prgPosition = subtract(monster.spawnPoint, prgMonsterPositionOffset);
 
 	return [
 		(prgPosition.x & positionMask) |
