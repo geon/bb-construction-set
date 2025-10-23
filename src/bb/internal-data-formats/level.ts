@@ -174,8 +174,8 @@ export function levelToCharNames(
 
 		chars[indexY]![0]! = left;
 		chars[indexY]![1]! = right;
-		chars[indexY]![30]! = left;
-		chars[indexY]![31]! = right;
+		chars[indexY]![levelSize.x - 2]! = left;
+		chars[indexY]![levelSize.x - 1]! = right;
 	}
 
 	return assertTuple(
