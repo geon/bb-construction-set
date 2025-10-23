@@ -1,5 +1,5 @@
 import { spritePosOffset } from "../../c64/consts";
-import { Coord2, multiply, origo, subtract } from "../../math/coord2";
+import { Coord2, origo, scale, subtract } from "../../math/coord2";
 import { grid, rectIntersection } from "../../math/rect";
 import {
 	checkedAccess,
@@ -46,6 +46,7 @@ import {
 	parseLayout,
 	cropPaletteImage,
 	drawRect,
+	doubleImageWidth,
 } from "./palette-image";
 import { drawSprite, getSpritePalette } from "./sprite";
 
@@ -82,7 +83,7 @@ export function drawLevel(
 		(char) => drawChar(char, charPalette)
 	);
 
-	const image = drawGrid(
+	let image = drawGrid(
 		levelToCharNames(level)
 			.flat()
 			.map((charName) => charset[charName]),
@@ -186,6 +187,9 @@ export function drawLevel(
 		});
 	}
 
+	// Do the rectangles and dust in full resolution.
+	image = doubleImageWidth(image);
+
 	if (options?.type === "wind-editor") {
 		if (level.bubbleCurrentRectangles.type == "rectangles") {
 			for (const [index, rectangle] of [
@@ -202,7 +206,7 @@ export function drawLevel(
 						clippedRectangle.size.y
 					) {
 						const scaledRectangle = mapRecord(clippedRectangle, (coord) =>
-							multiply(coord, { x: 4, y: 8 })
+							scale(coord, 8)
 						);
 						const rectColors =
 							options.selectedRectangleIndex === index
@@ -214,9 +218,7 @@ export function drawLevel(
 			}
 		}
 
-		options.dust.forEach(
-			(pos) => (image[pos.y]![Math.floor(pos.x / 2)] = palette.darkGrey)
-		);
+		options.dust.forEach((pos) => (image[pos.y]![pos.x] = palette.darkGrey));
 	}
 
 	return image;

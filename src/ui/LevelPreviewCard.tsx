@@ -2,7 +2,6 @@ import { ReactNode, useState } from "react";
 import { ParsedPrg } from "../bb/internal-data-formats/parsed-prg";
 import { imageDataFromPaletteImage } from "../bb/image-data/image-data";
 import { drawLevel } from "../bb/palette-image/level";
-import { doubleImageWidth } from "../bb/palette-image/palette-image";
 import { Card } from "./Card";
 import styled from "styled-components";
 import { drawLevels } from "../bb/image-data/draw-level";
@@ -129,9 +128,7 @@ export function LevelPreviewCard(props: {
 						<ClickDragCanvas
 							style={{ width: "100%" }}
 							imageData={imageDataFromPaletteImage(
-								doubleImageWidth(
-									drawLevel(props.levelIndex, props.parsedPrg, renderOptions)
-								)
+								drawLevel(props.levelIndex, props.parsedPrg, renderOptions)
 							)}
 							{...eventHandlers}
 						/>

@@ -7,7 +7,6 @@ import {
 	imageDataToBlob,
 } from "../bb/image-data/image-data";
 import { drawLevel } from "../bb/palette-image/level";
-import { doubleImageWidth } from "../bb/palette-image/palette-image";
 import { Card } from "./Card";
 import { mapAsync, range } from "../bb/functions";
 import { Patch } from "../bb/prg/io";
@@ -48,7 +47,7 @@ export function FileMenu(props: {
 									fileName: (index + 1).toString().padStart(3, "0") + ".png",
 									blob: await imageDataToBlob(
 										imageDataFromPaletteImage(
-											doubleImageWidth(drawLevel(index, parsedPrg, undefined))
+											drawLevel(index, parsedPrg, undefined)
 										)
 									),
 								})),
