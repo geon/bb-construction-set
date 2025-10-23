@@ -1,7 +1,7 @@
 import { CharBlock } from "./char";
 import { Char } from "./char";
 import { assertTuple, mapTuple, Tuple, MutableTuple } from "../tuple";
-import { levelHeight, levelWidth } from "../game-definitions/level-size";
+import { levelSize } from "../game-definitions/level-size";
 import { range } from "../functions";
 import { CharName } from "../game-definitions/char-name";
 import { ShadowChars } from "../prg/shadow-chars";
@@ -97,10 +97,10 @@ export function levelIsSymmetric(tiles: Tiles) {
 
 export function levelToCharNames(
 	level: Level
-): Tuple<Tuple<CharName, typeof levelWidth>, typeof levelHeight> {
+): Tuple<Tuple<CharName, typeof levelSize.x>, typeof levelSize.y> {
 	// Create canvas.
-	const chars: CharName[][] = range(levelHeight).map(() =>
-		range(levelWidth).map(() => "empty")
+	const chars: CharName[][] = range(levelSize.y).map(() =>
+		range(levelSize.x).map(() => "empty")
 	);
 
 	// Draw the platforms.
@@ -171,8 +171,8 @@ export function levelToCharNames(
 	}
 
 	return assertTuple(
-		chars.map((x) => assertTuple(x, levelWidth)),
-		levelHeight
+		chars.map((x) => assertTuple(x, levelSize.x)),
+		levelSize.y
 	);
 }
 

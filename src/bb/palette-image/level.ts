@@ -11,11 +11,7 @@ import {
 } from "../functions";
 import { pl1, pl2, spriteLeftIndex } from "../game-definitions/character-name";
 import { getDesignatedPowerupItemIndex } from "../game-definitions/items";
-import {
-	levelHeight,
-	levelSize,
-	levelWidth,
-} from "../game-definitions/level-size";
+import { levelSize } from "../game-definitions/level-size";
 import { BgColors } from "../internal-data-formats/bg-colors";
 import { Char } from "../internal-data-formats/char";
 import { CharGroup } from "../internal-data-formats/char-group";
@@ -87,7 +83,7 @@ export function drawLevel(
 		levelToCharNames(level)
 			.flat()
 			.map((charName) => charset[charName]),
-		levelWidth,
+		levelSize.x,
 		{ x: 4, y: 8 }
 	);
 
@@ -254,10 +250,10 @@ export function parseLevelTiles(image: PaletteImage): Tiles {
 		image.map((row) =>
 			assertTuple(
 				row.map((color) => color === solidColor),
-				levelWidth
+				levelSize.x
 			)
 		),
-		levelHeight
+		levelSize.y
 	);
 }
 

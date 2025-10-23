@@ -1,5 +1,5 @@
 import { createTiles, Tiles } from "../internal-data-formats/level";
-import { levelWidth, levelHeight } from "../game-definitions/level-size";
+import { levelSize } from "../game-definitions/level-size";
 import { byteToBits, isBitSet } from "../bit-twiddling";
 import { TileBitmap } from "./tile-bitmap";
 import { ReadonlyUint8Array } from "../types";
@@ -15,9 +15,9 @@ export function readTiles(
 		const tiles = createTiles();
 
 		// Fill in top and bottom row.
-		for (let x = 0; x < levelWidth; ++x) {
+		for (let x = 0; x < levelSize.x; ++x) {
 			tiles[0]![x]! = true;
-			tiles[levelHeight - 1]![x]! = true;
+			tiles[levelSize.y - 1]![x]! = true;
 		}
 		// Cut out the holes.
 		const holeMetadata = holeMetadataBytes[levelIndex]!;
@@ -67,8 +67,8 @@ export function readTiles(
 		for (let rowIndex = 0; rowIndex < 25; ++rowIndex) {
 			tiles[rowIndex]![0]! = true;
 			tiles[rowIndex]![1]! = true;
-			tiles[rowIndex]![levelWidth - 2]! = true;
-			tiles[rowIndex]![levelWidth - 1]! = true;
+			tiles[rowIndex]![levelSize.x - 2]! = true;
+			tiles[rowIndex]![levelSize.x - 1]! = true;
 		}
 
 		tilesForAllLevels.push(tiles);

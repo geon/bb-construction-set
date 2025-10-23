@@ -6,7 +6,7 @@ import {
 	reorder,
 	updateArrayAtIndex,
 } from "../../bb/functions";
-import { levelSize, levelWidth } from "../../bb/game-definitions/level-size";
+import { levelSize } from "../../bb/game-definitions/level-size";
 import {
 	BubbleCurrentDirection,
 	BubbleCurrentPerLineDefaults,
@@ -515,7 +515,7 @@ export function fixInvalidRectangles(
 			: [
 					rectangle.rect,
 					{
-						pos: add(rectangle.rect.pos, { x: -levelWidth, y: 1 }),
+						pos: add(rectangle.rect.pos, { x: -levelSize.x, y: 1 }),
 						size: rectangle.rect.size,
 					},
 			  ]

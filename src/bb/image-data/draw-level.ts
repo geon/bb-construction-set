@@ -1,9 +1,5 @@
 import { levelToCharNames, makeCharset } from "../internal-data-formats/level";
-import {
-	levelHeight,
-	levelSize,
-	levelWidth,
-} from "../game-definitions/level-size";
+import { levelSize } from "../game-definitions/level-size";
 import { rgbPalette, SubPalette } from "../internal-data-formats/palette";
 import { Color, mixColors } from "../../math/color";
 import { Char } from "../internal-data-formats/char";
@@ -35,7 +31,7 @@ export function drawLevelThumbnail(
 	const spriteColors = mapRecord(parsedPrg.sprites, ({ color }) => color);
 	const level = parsedPrg.levels[levelIndex]!;
 
-	const image = new ImageData(levelWidth, levelHeight);
+	const image = new ImageData(levelSize.x, levelSize.y);
 
 	// Draw level.
 	const charPalette = getLevelCharPalette(level.bgColors);
@@ -47,11 +43,11 @@ export function drawLevelThumbnail(
 		levelToCharNames(level)
 			.flat()
 			.map((charName) => averageCharColors[charName]),
-		levelWidth
+		levelSize.x
 	);
 	for (const [tileY, row] of tiles.entries()) {
 		for (const [tileX, color] of row.entries()) {
-			const pixelIndex = tileY * levelWidth + tileX;
+			const pixelIndex = tileY * levelSize.x + tileX;
 			ImageDataFunctions.plotPixel(image, pixelIndex, color);
 		}
 	}
