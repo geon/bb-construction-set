@@ -113,10 +113,6 @@ export function levelToCharNames(
 	// Draw the shadows.
 	for (const [indexY, row] of chars.entries()) {
 		for (const [indexX, char] of row.entries()) {
-			if (indexX >= 32) {
-				continue;
-			}
-
 			if (char === "platform") {
 				continue;
 			}
