@@ -141,7 +141,10 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 				)}
 				<ButtonGroup $align="right">
 					<button
-						disabled={selectedMonster && selectedMonster.index <= 0}
+						disabled={
+							!monsters.length ||
+							(selectedMonster && selectedMonster.index <= 0)
+						}
 						onClick={() => {
 							const index = selectedMonster
 								? selectedMonster.index - 1
@@ -156,7 +159,8 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 					</button>
 					<button
 						disabled={
-							selectedMonster && selectedMonster.index >= monsters.length - 1
+							!monsters.length ||
+							(selectedMonster && selectedMonster.index >= monsters.length - 1)
 						}
 						onClick={() => {
 							const index = selectedMonster ? selectedMonster.index + 1 : 0;
