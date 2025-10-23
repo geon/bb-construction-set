@@ -90,13 +90,14 @@ export function applyPatch(prg: ArrayBuffer, patch: Patch): ArrayBuffer {
 
 export function patchFromSegment(
 	segmentLocation: SegmentLocation,
-	buffer: ReadonlyUint8Array
+	buffer: ReadonlyUint8Array,
+	mask?: readonly boolean[]
 ): Patch {
 	return [...buffer].map(
 		(value, index): SingleBytePatch => [
 			segmentLocation.startAddress + index,
 			value,
-			segmentLocation.mask,
+			mask?.[index] !== false ? segmentLocation.mask : 0x00,
 		]
 	);
 }

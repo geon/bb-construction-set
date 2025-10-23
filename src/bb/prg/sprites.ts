@@ -19,7 +19,7 @@ import {
 	SpriteGroupName,
 	spriteGroupNames,
 } from "../game-definitions/sprite-segment-name";
-import { DataSegment, patchFromSegment, SingleBytePatch } from "./io";
+import { DataSegment, patchFromSegment } from "./io";
 import { ReadonlyUint8Array } from "../types";
 import {
 	spriteSizeBytes,
@@ -168,13 +168,17 @@ export function getSpritesPatch(spriteGroups: SpriteGroups) {
 			const spriteOffset = spriteIndex * spriteSizeBytesPlusPadding;
 			const spriteStartAddress =
 				spriteDataSegmentLocations[segmentName].startAddress + spriteOffset;
-			return spriteBytes.map((spriteByte, byteIndex): SingleBytePatch => {
-				return [
-					spriteStartAddress + byteIndex,
-					spriteByte,
-					mask?.[byteIndex] !== false ? undefined : 0x00,
-				];
-			});
+
+			const individualSpriteSegmentLocation = {
+				startAddress: spriteStartAddress,
+				length: spriteSizeBytes,
+			};
+
+			return patchFromSegment(
+				individualSpriteSegmentLocation,
+				new Uint8Array(spriteBytes),
+				mask
+			);
 		});
 	});
 }
