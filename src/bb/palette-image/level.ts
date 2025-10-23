@@ -67,8 +67,10 @@ export function drawLevel(
 ): PaletteImage {
 	const level = parsedPrg.levels[levelIndex]!;
 
+	const bgColors = level.bgColors;
+
 	// Draw level.
-	const charPalette = getLevelCharPalette(level.bgColors);
+	const charPalette = getLevelCharPalette(bgColors);
 	const charset = mapRecord(
 		makeCharset(level, assertTuple(parsedPrg.chars.shadows.flat().flat(), 6)),
 		(char) => drawChar(char, charPalette)
@@ -95,7 +97,7 @@ export function drawLevel(
 					8
 				);
 				return cropPaletteImage(
-					drawChar(char, getCharPalette(palette.white, level.bgColors)),
+					drawChar(char, getCharPalette(palette.white, bgColors)),
 					{
 						pos: origo,
 						size: { x: 4, y: digitHeight + 1 },
@@ -130,7 +132,7 @@ export function drawLevel(
 					parsedPrg.chars.items as CharGroup<2, 2>,
 					item.charBlockIndex
 				),
-				getCharPalette(item.paletteIndex, level.bgColors)
+				getCharPalette(item.paletteIndex, bgColors)
 			),
 			{
 				x: spawnPosition.x * 4,
@@ -205,7 +207,7 @@ export function drawLevel(
 							},
 							options.selectedRectangleIndex === index
 								? palette.white
-								: level.bgColors.dark
+								: bgColors.dark
 						);
 					}
 				}
@@ -213,7 +215,7 @@ export function drawLevel(
 		}
 
 		options.dust.forEach(
-			(pos) => (image[pos.y]![Math.floor(pos.x / 2)] = level.bgColors.dark)
+			(pos) => (image[pos.y]![Math.floor(pos.x / 2)] = bgColors.dark)
 		);
 	}
 
