@@ -8,6 +8,7 @@ import { ReadonlyUint8Array } from "../types";
 import { monsterNames } from "../game-definitions/character-name";
 import { Patch, SingleBytePatchEntry } from "./io";
 import { assertTuple, Tuple } from "../tuple";
+import { Coord2 } from "../../math/coord2";
 
 export function readMonsters(
 	monsterBytes: ReadonlyUint8Array
@@ -47,6 +48,11 @@ export function readMonsters(
 	return assertTuple(monstersForAllLevels, 100);
 }
 
+const prgMonsterPositionOffset: Coord2 = {
+	x: 20,
+	y: 21,
+};
+
 const positionMask = 0b11111000;
 const nameMask = 0b00000111;
 const delayMask = 0b00111111;
@@ -60,8 +66,8 @@ function readMonster(
 	return {
 		characterName: monsterNames[monsterBytes[0] & nameMask]!,
 		spawnPoint: {
-			x: (monsterBytes[0] & positionMask) + 20,
-			y: (monsterBytes[1] & positionMask) + 21,
+			x: (monsterBytes[0] & positionMask) + prgMonsterPositionOffset.x,
+			y: (monsterBytes[1] & positionMask) + prgMonsterPositionOffset.y,
 		},
 		facingLeft: !!(monsterBytes[2] & facingLeftBit),
 		// The game also shifts left when reading the delay.
@@ -91,11 +97,13 @@ export function getMonstersPatch(
 
 				return [
 					[
-						((monster.spawnPoint.x - 20) & positionMask) |
+						((monster.spawnPoint.x - prgMonsterPositionOffset.x) &
+							positionMask) |
 							(monsterNames.indexOf(monster.characterName) & nameMask),
 					],
 					[
-						(monster.spawnPoint.y - 21) | (confirmed_mystery_bits_A_3A1C >> 1),
+						(monster.spawnPoint.y - prgMonsterPositionOffset.y) |
+							(confirmed_mystery_bits_A_3A1C >> 1),
 						positionMask | a_3A1C_top_3_mask,
 					],
 					[
