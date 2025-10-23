@@ -78,12 +78,24 @@ export function getLevelsPatch(levels: Levels) {
 		windCurrents: writeBubbleCurrentRectangles(
 			unzippedLevels.bubbleCurrentRectangles
 		),
-	} as const;
+	} as const satisfies Record<
+		Exclude<
+			LevelDataSegmentName,
+			// Segments handled manually.
+			| "monsters"
+			| "bubbleSpawns"
+			| "itemSpawnPositionsA"
+			| "itemSpawnPositionsB"
+			| "itemSpawnPositionsC"
+		>,
+		Uint8Array
+	>;
 
 	return [
 		objectEntries(newSegments).flatMap(([segmentName, newSegment]) =>
 			patchFromSegment(levelSegmentLocations[segmentName], newSegment)
 		),
+		// Manual patching.
 		getMonstersPatch(unzippedLevels.monsters),
 		getBubbleSpawnsPatch(unzippedLevels.bubbleSpawns),
 		getItemSpawnPositionsPatch(unzippedLevels.itemSpawnPositions),
