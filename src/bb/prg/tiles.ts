@@ -3,10 +3,11 @@ import {
 	levelTilesSize,
 	Tiles,
 } from "../internal-data-formats/level";
-import { byteToBits, isBitSet } from "../bit-twiddling";
+import { byteToBits } from "../bit-twiddling";
 import { TileBitmap } from "./tile-bitmap";
 import { ReadonlyUint8Array } from "../types";
 import { assertTuple, Tuple } from "../tuple";
+import { parseHoles } from "./holes";
 
 export function readTiles(
 	holeMetadataBytes: ReadonlyUint8Array,
@@ -24,16 +25,7 @@ export function readTiles(
 		}
 		// Cut out the holes.
 		const holeMetadata = holeMetadataBytes[levelIndex]!;
-		const holes = {
-			top: {
-				left: isBitSet(holeMetadata, 7),
-				right: isBitSet(holeMetadata, 6),
-			},
-			bottom: {
-				left: isBitSet(holeMetadata, 5),
-				right: isBitSet(holeMetadata, 4),
-			},
-		};
+		const holes = parseHoles(holeMetadata);
 		for (let x = 0; x < 4; ++x) {
 			if (holes.top.left) {
 				tiles[0]![9 + x]! = false;
