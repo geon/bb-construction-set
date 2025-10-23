@@ -1,4 +1,5 @@
 import { zipObject, chunk } from "../functions";
+import { levelSize } from "../game-definitions/level-size";
 import {
 	Tiles,
 	levelIsSymmetric,
@@ -78,7 +79,7 @@ export function writeBitmaps(
 			const bitPositions = (
 				{
 					symmetric: [0, 1],
-					notSymmetric: [31, 30],
+					notSymmetric: [levelSize.x - 1, levelSize.x - 2],
 				} as const
 			)[isSymmetric ? "symmetric" : "notSymmetric"];
 
