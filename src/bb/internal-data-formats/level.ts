@@ -86,8 +86,8 @@ export interface Level {
 }
 
 function rowIsSymmetric(row: readonly boolean[]): boolean {
-	for (let index = 0; index < 16; ++index) {
-		if (row[index] !== row[31 - index]) {
+	for (let index = 0; index < levelTilesSize.x / 2; ++index) {
+		if (row[index] !== row[levelTilesSize.x - 1 - index]) {
 			return false;
 		}
 	}
