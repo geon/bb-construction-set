@@ -67,7 +67,8 @@ export function drawLevelThumbnail(
 	for (const character of [pl1, pl2, ...level.monsters]) {
 		const spritePos = subtract(character.spawnPoint, spritePosOffset);
 		const pixelPos = scale(add(spritePos, fakeSpriteCharblockOffset), 1 / 8);
-		const pixelIndex = Math.floor(pixelPos.y) * 32 + Math.floor(pixelPos.x);
+		const pixelIndex =
+			Math.floor(pixelPos.y) * levelSize.x + Math.floor(pixelPos.x);
 		const spriteColor =
 			rgbPalette[
 				character.characterName === "player"
@@ -78,7 +79,7 @@ export function drawLevelThumbnail(
 			];
 
 		// Monsters are 2x2 chars large.
-		for (const offset of [0, 1, 32, 33]) {
+		for (const offset of [0, 1, levelSize.x, levelSize.x + 1]) {
 			ImageDataFunctions.plotPixel(image, pixelIndex + offset, spriteColor);
 		}
 	}
