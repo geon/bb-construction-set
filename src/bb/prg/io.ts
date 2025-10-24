@@ -31,18 +31,11 @@ export function getDataSegment(
 	};
 }
 
-function _getDataSegments<TDataSegmentName extends string>(
-	prg: ArrayBuffer,
-	levelSegmentLocations: Readonly<Record<TDataSegmentName, SegmentLocation>>
-): Record<TDataSegmentName, DataSegment> {
-	return mapRecord(levelSegmentLocations, curry(getDataSegment)(prg));
-}
-
 export function getDataSegments<TDataSegmentName extends string>(
 	prg: ArrayBuffer,
 	levelSegmentLocations: Readonly<Record<TDataSegmentName, SegmentLocation>>
 ): Record<TDataSegmentName, DataSegment> {
-	return _getDataSegments<TDataSegmentName>(prg, levelSegmentLocations);
+	return mapRecord(levelSegmentLocations, curry(getDataSegment)(prg));
 }
 
 // https://stackoverflow.com/a/43933693/446536
