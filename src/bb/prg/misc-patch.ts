@@ -1,4 +1,4 @@
-import { chunk } from "../functions";
+import { chunk, zipObject } from "../functions";
 import { levelSize } from "../game-definitions/level-size";
 import {
 	Tiles,
@@ -65,27 +65,31 @@ export function writeBitmaps(
 		const bubbleCurrentPerLineDefaults =
 			bubbleCurrentPerLineDefaultses[levelIndex]!;
 
-		const bitRows = tiles.slice(1, -1).map((fullRow, index) => {
-			const row = fullRow.slice(
-				0,
-				isSymmetric ? levelTilesSize.x / 2 : levelTilesSize.x
-			);
+		const bitRows = zipObject({
+			fullRow: tiles,
+			bubbleCurrent: bubbleCurrentPerLineDefaults,
+		})
+			.slice(1, -1)
+			.map(({ fullRow, bubbleCurrent }) => {
+				const row = fullRow.slice(
+					0,
+					isSymmetric ? levelTilesSize.x / 2 : levelTilesSize.x
+				);
 
-			// So stupid.
-			const bitPositions = (
-				{
-					symmetric: [0, 1],
-					notSymmetric: [levelSize.x - 1, levelSize.x - 2],
-				} as const
-			)[isSymmetric ? "symmetric" : "notSymmetric"];
+				// So stupid.
+				const bitPositions = (
+					{
+						symmetric: [0, 1],
+						notSymmetric: [levelSize.x - 1, levelSize.x - 2],
+					} as const
+				)[isSymmetric ? "symmetric" : "notSymmetric"];
 
-			// Encode the per-line bubble current into the edge of the platforms bitmap.
-			const rowIndex = index + 1;
-			row[bitPositions[0]] = !!(bubbleCurrentPerLineDefaults[rowIndex]! & 0b01);
-			row[bitPositions[1]] = !!(bubbleCurrentPerLineDefaults[rowIndex]! & 0b10);
+				// Encode the per-line bubble current into the edge of the platforms bitmap.
+				row[bitPositions[0]] = !!(bubbleCurrent & 0b01);
+				row[bitPositions[1]] = !!(bubbleCurrent & 0b10);
 
-			return row;
-		});
+				return row;
+			});
 
 		const byteRows = bitRows
 			.map((row) => chunk(row, 8))
