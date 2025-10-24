@@ -9,7 +9,7 @@ import { strictChunk } from "../../functions";
 import { assertTuple } from "../../tuple";
 import {
 	getTiles,
-	levelTilesSize,
+	platformTilesSize,
 	Tiles,
 } from "../../internal-data-formats/level";
 import { readFileSync } from "fs";
@@ -48,9 +48,9 @@ test("drawLevelTiles / parseLevelTiles", () => {
 				.split("")
 				.map((char) => ({ x: true, _: false }[char]))
 				.filter((char) => char !== undefined),
-			levelTilesSize.x
+			platformTilesSize.x
 		),
-		levelTilesSize.y
+		platformTilesSize.y
 	);
 
 	expect(parseLevelTiles(drawLevelTiles(levelTiles))).toStrictEqual(levelTiles);

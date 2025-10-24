@@ -2,7 +2,7 @@ import { useState } from "react";
 import { bresenham } from "../../bb/functions";
 import {
 	getTiles,
-	levelTilesSize,
+	platformTilesSize,
 	Tiles,
 } from "../../bb/internal-data-formats/level";
 import { Coord2, equal, floor, scale } from "../../math/coord2";
@@ -66,8 +66,8 @@ export function createSetSomeTiles(
 ) {
 	return (coords: readonly Coord2[], value: boolean) => {
 		const newTiles = assertTuple(
-			tiles.map((row) => assertTuple([...row], levelTilesSize.x)),
-			levelTilesSize.y
+			tiles.map((row) => assertTuple([...row], platformTilesSize.x)),
+			platformTilesSize.y
 		);
 
 		for (const coord of coords) {

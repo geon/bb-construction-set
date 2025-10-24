@@ -31,20 +31,20 @@ export function rotateDirectionClockwise(
 	return ((direction + 1) % 4) as BubbleCurrentDirection;
 }
 
-export const levelTilesSize = {
+export const platformTilesSize = {
 	x: levelSize.x,
 	y: levelSize.y,
 } as const satisfies Coord2;
 
-type TileRow = Tuple<boolean, typeof levelTilesSize.x>;
-export type Tiles = Tuple<TileRow, typeof levelTilesSize.y>;
+type TileRow = Tuple<boolean, typeof platformTilesSize.x>;
+export type Tiles = Tuple<TileRow, typeof platformTilesSize.y>;
 
 export function createTiles(): MutableTuple<
-	MutableTuple<boolean, typeof levelTilesSize.x>,
-	typeof levelTilesSize.y
+	MutableTuple<boolean, typeof platformTilesSize.x>,
+	typeof platformTilesSize.y
 > {
-	return mapTuple(range(levelTilesSize.y), () =>
-		mapTuple(range(levelTilesSize.x), () => false)
+	return mapTuple(range(platformTilesSize.y), () =>
+		mapTuple(range(platformTilesSize.x), () => false)
 	);
 }
 
@@ -89,8 +89,8 @@ export interface Level {
 }
 
 function rowIsSymmetric(row: readonly boolean[]): boolean {
-	for (let index = 0; index < levelTilesSize.x / 2; ++index) {
-		if (row[index] !== row[levelTilesSize.x - 1 - index]) {
+	for (let index = 0; index < platformTilesSize.x / 2; ++index) {
+		if (row[index] !== row[platformTilesSize.x - 1 - index]) {
 			return false;
 		}
 	}

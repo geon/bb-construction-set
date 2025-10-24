@@ -4,7 +4,7 @@ import {
 	Tiles,
 	levelIsSymmetric,
 	BubbleCurrentPerLineDefaults,
-	levelTilesSize,
+	platformTilesSize,
 	Holes,
 } from "../internal-data-formats/level";
 import { maxAsymmetric } from "./data-locations";
@@ -73,7 +73,7 @@ export function writeBitmaps(
 			.map(({ fullRow, bubbleCurrent }) => {
 				const row = fullRow.slice(
 					0,
-					isSymmetric ? levelTilesSize.x / 2 : levelTilesSize.x
+					isSymmetric ? platformTilesSize.x / 2 : platformTilesSize.x
 				);
 
 				// So stupid.
