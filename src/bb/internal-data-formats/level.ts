@@ -48,6 +48,8 @@ export function createTiles(): MutableTuple<
 	);
 }
 
+export type Holes = Record<"top" | "bottom", Record<"left" | "right", boolean>>;
+
 export type BubbleCurrentPerLineDefaults = Array<BubbleCurrentDirection>;
 
 export interface BubbleCurrentRectangle {
@@ -75,6 +77,7 @@ export type BubbleCurrentRectangles =
 
 export interface Level {
 	readonly tiles: Tiles;
+	readonly holes: Holes;
 	readonly bgColors: BgColors;
 	readonly platformChar: Char;
 	readonly sidebarChars: CharBlock | undefined;

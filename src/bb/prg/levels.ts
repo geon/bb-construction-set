@@ -10,6 +10,7 @@ import {
 import { getBubbleSpawnsPatch, readBubbleSpawns } from "./bubble-spawns";
 import { readPlatformChars, writePlatformChars } from "./charset-char";
 import { levelSegmentLocations } from "./data-locations";
+import { readHoles } from "./holes";
 import { DataSegment, patchFromSegment } from "./io";
 import {
 	getItemSpawnPositionsPatch,
@@ -46,6 +47,7 @@ export function readLevels(
 			dataSegments.sidebarCharsIndex.buffer
 		),
 		tiles: readTiles(dataSegments.holes.buffer, tileBitmaps),
+		holes: readHoles(dataSegments.holes.buffer),
 		monsters: readMonsters(dataSegments.monsters.buffer),
 		bubbleCurrentRectangles: readBubbleCurrentRectangles(
 			dataSegments.windCurrents.buffer
@@ -70,7 +72,7 @@ export function getLevelsPatch(levels: Levels) {
 		platformChars: writePlatformChars(unzippedLevels.platformChar),
 		sidebarChars: writeSidebarChars(unzippedLevels.sidebarChars),
 		bgColors: writeBgColors(unzippedLevels.bgColors),
-		holes: writeHoles(unzippedLevels.tiles),
+		holes: writeHoles(unzippedLevels.holes),
 		bubbleCurrentInHoles: writeBubbleCurrentInHoles(
 			unzippedLevels.bubbleCurrentPerLineDefaults
 		),

@@ -1,6 +1,8 @@
 import { isBitSet } from "../bit-twiddling";
+import { Holes } from "../internal-data-formats/level";
+import { Tuple, assertTuple, mapTuple } from "../tuple";
+import { ReadonlyUint8Array } from "../types";
 
-type Holes = Record<"top" | "bottom", Record<"left" | "right", boolean>>;
 export function parseHoles(holeMetadata: number): Holes {
 	return {
 		top: {
@@ -12,4 +14,10 @@ export function parseHoles(holeMetadata: number): Holes {
 			right: isBitSet(holeMetadata, 4),
 		},
 	};
+}
+
+export function readHoles(
+	holeMetadataBytes: ReadonlyUint8Array
+): Tuple<Holes, 100> {
+	return mapTuple(assertTuple([...holeMetadataBytes], 100), parseHoles);
 }

@@ -61,6 +61,16 @@ exports[`parsePrg 1`] = `
     "lightning": false,
     "water": false,
   },
+  "holes": {
+    "bottom": {
+      "left": false,
+      "right": false,
+    },
+    "top": {
+      "left": false,
+      "right": false,
+    },
+  },
   "itemSpawnPositions": {
     "points": {
       "x": 9,

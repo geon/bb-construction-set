@@ -5,21 +5,17 @@ import {
 	levelIsSymmetric,
 	BubbleCurrentPerLineDefaults,
 	levelTilesSize,
+	Holes,
 } from "../internal-data-formats/level";
 import { maxAsymmetric } from "./data-locations";
 
-export function writeHoles(tileses: readonly Tiles[]): Uint8Array {
-	const tilesHalfBytes = tileses.map((tiles) => {
-		const topLeft = !tiles[0][10];
-		const topRight = !tiles[0][20];
-		const bottomLeft = !tiles[24][10];
-		const bottomRight = !tiles[24][20];
-
+export function writeHoles(holeses: readonly Holes[]): Uint8Array {
+	const tilesHalfBytes = holeses.map((holes) => {
 		return (
-			((topLeft ? 1 : 0) << 0) +
-			((topRight ? 1 : 0) << 1) +
-			((bottomLeft ? 1 : 0) << 2) +
-			((bottomRight ? 1 : 0) << 3)
+			((holes.top.left ? 1 : 0) << 0) +
+			((holes.top.right ? 1 : 0) << 1) +
+			((holes.bottom.left ? 1 : 0) << 2) +
+			((holes.bottom.right ? 1 : 0) << 3)
 		);
 	});
 
