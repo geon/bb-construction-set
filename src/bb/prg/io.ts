@@ -28,8 +28,8 @@ export function getDataSegment(
 	const buffer = new Uint8Array(prg, begin, length);
 	const mask = segmentLocation.mask;
 	return {
-		buffer,
-		mask,
+		buffer: !mask ? buffer : buffer.map((byte) => byte & mask),
+		mask: mask,
 	};
 }
 
