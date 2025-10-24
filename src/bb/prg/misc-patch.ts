@@ -63,9 +63,8 @@ export function writeBitmaps(
 	const levelBitmapBytes = tileses.flatMap((tiles, levelIndex) => {
 		const isSymmetric = levelIsSymmetric(tiles);
 
-		const bitRows = [];
-		for (let rowIndex = 1; rowIndex < 24; ++rowIndex) {
-			const row = tiles[rowIndex]!.slice(
+		const bitRows = tiles.slice(1, -1).map((fullRow, index) => {
+			const row = fullRow.slice(
 				0,
 				isSymmetric ? levelTilesSize.x / 2 : levelTilesSize.x
 			);
@@ -79,6 +78,7 @@ export function writeBitmaps(
 			)[isSymmetric ? "symmetric" : "notSymmetric"];
 
 			// Encode the per-line bubble current into the edge of the platforms bitmap.
+			const rowIndex = index + 1;
 			row[bitPositions[0]] = !!(
 				bubbleCurrentPerLineDefaultses[levelIndex]![rowIndex]! & 0b01
 			);
@@ -86,8 +86,8 @@ export function writeBitmaps(
 				bubbleCurrentPerLineDefaultses[levelIndex]![rowIndex]! & 0b10
 			);
 
-			bitRows.push(row);
-		}
+			return row;
+		});
 
 		const byteRows = bitRows
 			.map((row) => chunk(row, 8))
