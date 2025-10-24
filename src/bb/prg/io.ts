@@ -25,8 +25,9 @@ export function getDataSegment(
 	// 2 bytes extra for the prg header.
 	const begin = segmentLocation.startAddress - prgStartAddress + 2;
 	const length = segmentLocation.length;
+	const buffer = new Uint8Array(prg, begin, length);
 	return {
-		buffer: new Uint8Array(prg, begin, length),
+		buffer,
 		mask: segmentLocation.mask,
 	};
 }
