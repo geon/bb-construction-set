@@ -68,23 +68,16 @@ export const levelSegmentLocations: Readonly<
 		startAddress: sidebarCharArrayAddress,
 		length: 4 * 8 * maxSidebars,
 	},
-
-	holeMetadata: {
+	holes: {
 		startAddress: holeMetadataArrayAddress,
 		length: 100,
+		mask: 0b00001111,
 	},
-
-	// holes: {
-	// 	startAddress: holeMetadataArrayAddress,
-	// 	length: 100,
-	// 	mask: 0b00001111,
-	// },
-	// bubbleCurrentInHoles: {
-	// 	startAddress: holeMetadataArrayAddress,
-	// 	length: 100,
-	// 	mask: 0b11110000,
-	// },
-
+	bubbleCurrentInHoles: {
+		startAddress: holeMetadataArrayAddress,
+		length: 100,
+		mask: 0b11110000,
+	},
 	monsters: {
 		startAddress: monsterArrayAddress,
 		length: maxMonsters * bytesPerMonster + monsterStopBytes,

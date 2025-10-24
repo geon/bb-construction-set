@@ -15,7 +15,12 @@ import {
 	getItemSpawnPositionsPatch,
 	parseItemSpawnPositions,
 } from "./item-spawn-positions";
-import { writeHoles, writeSymmetry, writeBitmaps } from "./misc-patch";
+import {
+	writeHoles,
+	writeSymmetry,
+	writeBitmaps,
+	writeBubbleCurrentInHoles,
+} from "./misc-patch";
 import { readMonsters, getMonstersPatch } from "./monsters";
 import {
 	readSidebarChars,
@@ -40,13 +45,13 @@ export function readLevels(
 			dataSegments.sidebarChars.buffer,
 			dataSegments.sidebarCharsIndex.buffer
 		),
-		tiles: readTiles(dataSegments.holeMetadata.buffer, tileBitmaps),
+		tiles: readTiles(dataSegments.holes.buffer, tileBitmaps),
 		monsters: readMonsters(dataSegments.monsters.buffer),
 		bubbleCurrentRectangles: readBubbleCurrentRectangles(
 			dataSegments.windCurrents.buffer
 		),
 		bubbleCurrentPerLineDefaults: readBubbleCurrentPerLineDefaults(
-			dataSegments.holeMetadata.buffer,
+			dataSegments.bubbleCurrentInHoles.buffer,
 			tileBitmaps
 		),
 		bubbleSpawns: readBubbleSpawns(dataSegments.bubbleSpawns.buffer),
@@ -65,8 +70,8 @@ export function getLevelsPatch(levels: Levels) {
 		platformChars: writePlatformChars(unzippedLevels.platformChar),
 		sidebarChars: writeSidebarChars(unzippedLevels.sidebarChars),
 		bgColors: writeBgColors(unzippedLevels.bgColors),
-		holeMetadata: writeHoles(
-			unzippedLevels.tiles,
+		holes: writeHoles(unzippedLevels.tiles),
+		bubbleCurrentInHoles: writeBubbleCurrentInHoles(
 			unzippedLevels.bubbleCurrentPerLineDefaults
 		),
 		symmetry: writeSymmetry(unzippedLevels.tiles),

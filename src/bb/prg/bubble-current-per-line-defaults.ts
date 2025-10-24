@@ -8,7 +8,7 @@ import { ReadonlyUint8Array } from "../types";
 import { assertTuple, Tuple } from "../tuple";
 
 export function readBubbleCurrentPerLineDefaults(
-	holeMetadataBytes: ReadonlyUint8Array,
+	bubbleCurrentInHolesBytes: ReadonlyUint8Array,
 	tileBitmaps: readonly TileBitmap[]
 ): Tuple<BubbleCurrentPerLineDefaults, 100> {
 	const monstersForAllLevels = [];
@@ -18,7 +18,7 @@ export function readBubbleCurrentPerLineDefaults(
 			readBubbleCurrentPerLineDefaultsForLevel(
 				levelIndex,
 				tileBitmaps[levelIndex]!,
-				holeMetadataBytes
+				bubbleCurrentInHolesBytes
 			)
 		);
 	}
@@ -29,12 +29,12 @@ export function readBubbleCurrentPerLineDefaults(
 function readBubbleCurrentPerLineDefaultsForLevel(
 	levelIndex: number,
 	tileBitmap: TileBitmap,
-	holeMetadataBytes: ReadonlyUint8Array
+	bubbleCurrentInHolesBytes: ReadonlyUint8Array
 ): BubbleCurrentPerLineDefaults {
-	const holeMetadata = holeMetadataBytes[levelIndex]!;
+	const bubbleCurrentInHoles = bubbleCurrentInHolesBytes[levelIndex]!;
 	const perLineDefaults = extractbubbleCurrentLineDefault(
 		tileBitmap,
-		holeMetadata
+		bubbleCurrentInHoles
 	);
 
 	return perLineDefaults;
@@ -42,14 +42,14 @@ function readBubbleCurrentPerLineDefaultsForLevel(
 
 function extractbubbleCurrentLineDefault(
 	tileBitmap: TileBitmap,
-	holeMetadata: number
+	bubbleCurrentInHoles: number
 ): Array<BubbleCurrentDirection> {
 	return [
-		((holeMetadata & 0b00110000) >> 4) as BubbleCurrentDirection,
+		((bubbleCurrentInHoles & 0b00110000) >> 4) as BubbleCurrentDirection,
 		...tileBitmap.bytes.map((row) =>
 			bitsToBubbleCurrentDirection([isBitSet(row[3], 6), isBitSet(row[3], 7)])
 		),
-		((holeMetadata & 0b11000000) >> 6) as BubbleCurrentDirection,
+		((bubbleCurrentInHoles & 0b11000000) >> 6) as BubbleCurrentDirection,
 	];
 }
 

@@ -17,7 +17,7 @@ test("readBubbleCurrentPerLineDefaults snapshot", () => {
 	);
 
 	const rectsFromPrg = readBubbleCurrentPerLineDefaults(
-		dataSegments.holeMetadata.buffer,
+		dataSegments.bubbleCurrentInHoles.buffer,
 		tileBitmaps
 	);
 

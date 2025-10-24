@@ -1,4 +1,4 @@
-import { zipObject, chunk } from "../functions";
+import { chunk } from "../functions";
 import { levelSize } from "../game-definitions/level-size";
 import {
 	Tiles,
@@ -8,10 +8,7 @@ import {
 } from "../internal-data-formats/level";
 import { maxAsymmetric } from "./data-locations";
 
-export function writeHoles(
-	tileses: readonly Tiles[],
-	bubbleCurrentPerLineDefaultses: readonly BubbleCurrentPerLineDefaults[]
-): Uint8Array {
+export function writeHoles(tileses: readonly Tiles[]): Uint8Array {
 	const tilesHalfBytes = tileses.map((tiles) => {
 		const topLeft = !tiles[0][10];
 		const topRight = !tiles[0][20];
@@ -26,6 +23,12 @@ export function writeHoles(
 		);
 	});
 
+	return new Uint8Array(tilesHalfBytes);
+}
+
+export function writeBubbleCurrentInHoles(
+	bubbleCurrentPerLineDefaultses: readonly BubbleCurrentPerLineDefaults[]
+): Uint8Array {
 	const currentsHalfBytes = bubbleCurrentPerLineDefaultses.map(
 		(bubbleCurrentPerLineDefaults) => {
 			return (
@@ -38,15 +41,7 @@ export function writeHoles(
 		}
 	);
 
-	const bytes = zipObject({
-		tilesHalfBytes,
-		currentsHalfBytes,
-	}).map(
-		({ tilesHalfBytes, currentsHalfBytes }) =>
-			tilesHalfBytes + currentsHalfBytes
-	);
-
-	return new Uint8Array(bytes);
+	return new Uint8Array(currentsHalfBytes);
 }
 
 export function writeSymmetry(tileses: readonly Tiles[]): Uint8Array {
