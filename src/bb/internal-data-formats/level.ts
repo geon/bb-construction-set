@@ -98,12 +98,7 @@ function rowIsSymmetric(row: readonly boolean[]): boolean {
 }
 
 export function levelIsSymmetric(tiles: Tiles) {
-	for (let rowIndex = 1; rowIndex < 24; ++rowIndex) {
-		if (!rowIsSymmetric(tiles[rowIndex]!)) {
-			return false;
-		}
-	}
-	return true;
+	return tiles.slice(1, -1).every(rowIsSymmetric);
 }
 
 export function levelToCharNames(
