@@ -7,7 +7,11 @@ import {
 } from "../level";
 import { strictChunk } from "../../functions";
 import { assertTuple } from "../../tuple";
-import { levelTilesSize, Tiles } from "../../internal-data-formats/level";
+import {
+	getTiles,
+	levelTilesSize,
+	Tiles,
+} from "../../internal-data-formats/level";
 import { readFileSync } from "fs";
 import { parsePrg } from "../../prg/parse-prg";
 
@@ -56,7 +60,7 @@ test("drawLevelsTiles / parseLevelsTiles", () => {
 	const levelsTiles = assertTuple(
 		parsePrg(
 			readFileSync(__dirname + "/../../prg/tests/decompressed-bb.prg").buffer
-		).levels.map((level) => level.tiles),
+		).levels.map(getTiles),
 		100
 	);
 

@@ -101,6 +101,10 @@ export function levelIsSymmetric(tiles: Tiles) {
 	return tiles.slice(1, -1).every(rowIsSymmetric);
 }
 
+export function getTiles(level: Level): Tiles {
+	return level.tiles;
+}
+
 export function levelToCharNames(
 	level: Level
 ): Tuple<Tuple<CharName, typeof levelSize.x>, typeof levelSize.y> {
@@ -110,7 +114,7 @@ export function levelToCharNames(
 	);
 
 	// Draw the platforms.
-	for (const [tileY, row] of level.tiles.entries()) {
+	for (const [tileY, row] of getTiles(level).entries()) {
 		for (const [tileX, tile] of row.entries()) {
 			chars[tileY]![tileX]! = tile ? "platform" : "empty";
 		}

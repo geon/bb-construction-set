@@ -1,13 +1,17 @@
 import { useState } from "react";
 import { bresenham } from "../../bb/functions";
-import { levelTilesSize, Tiles } from "../../bb/internal-data-formats/level";
+import {
+	getTiles,
+	levelTilesSize,
+	Tiles,
+} from "../../bb/internal-data-formats/level";
 import { Coord2, equal, floor, scale } from "../../math/coord2";
 import { ClickDragCanvasEventHandlerProvider } from "../ClickDragCanvasEventHandlerProvider";
 import { assertTuple } from "../../bb/tuple";
 
 export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 	const level = props.levels[props.levelIndex];
-	const tiles = level.tiles;
+	const tiles = getTiles(level);
 	const setTiles = (tiles: Tiles) =>
 		props.setLevel({
 			...level,

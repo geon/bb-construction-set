@@ -1,5 +1,6 @@
 import { zipObject, unzipObject, objectEntries } from "../functions";
 import { LevelDataSegmentName } from "../game-definitions/level-segment-name";
+import { getTiles } from "../internal-data-formats/level";
 import { Levels } from "../internal-data-formats/levels";
 import { readBgColors, writeBgColors } from "./bg-colors";
 import { readBubbleCurrentPerLineDefaults } from "./bubble-current-per-line-defaults";
@@ -67,6 +68,7 @@ export function readLevels(
 
 export function getLevelsPatch(levels: Levels) {
 	const unzippedLevels = unzipObject(levels);
+	const tileses = levels.map(getTiles);
 
 	const newSegments = {
 		platformChars: writePlatformChars(unzippedLevels.platformChar),
@@ -76,12 +78,9 @@ export function getLevelsPatch(levels: Levels) {
 		bubbleCurrentInHoles: writeBubbleCurrentInHoles(
 			unzippedLevels.bubbleCurrentPerLineDefaults
 		),
-		symmetry: writeSymmetry(unzippedLevels.tiles),
+		symmetry: writeSymmetry(tileses),
 		sidebarCharsIndex: writeSidebarCharsIndex(unzippedLevels.sidebarChars),
-		bitmaps: writeBitmaps(
-			unzippedLevels.tiles,
-			unzippedLevels.bubbleCurrentPerLineDefaults
-		),
+		bitmaps: writeBitmaps(tileses, unzippedLevels.bubbleCurrentPerLineDefaults),
 		windCurrents: writeBubbleCurrentRectangles(
 			unzippedLevels.bubbleCurrentRectangles
 		),
