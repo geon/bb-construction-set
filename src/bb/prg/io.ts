@@ -26,9 +26,10 @@ export function getDataSegment(
 	const begin = segmentLocation.startAddress - prgStartAddress + 2;
 	const length = segmentLocation.length;
 	const buffer = new Uint8Array(prg, begin, length);
+	const mask = segmentLocation.mask;
 	return {
 		buffer,
-		mask: segmentLocation.mask,
+		mask,
 	};
 }
 
