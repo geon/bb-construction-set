@@ -1,4 +1,7 @@
-import { levelToCharNames, makeCharset } from "../internal-data-formats/level";
+import {
+	levelToCharNames,
+	makeCharset,
+} from "../internal-data-formats/char-name";
 import { levelSize } from "../game-definitions/level-size";
 import { rgbPalette, SubPalette } from "../internal-data-formats/palette";
 import { Color, mixColors } from "../../math/color";

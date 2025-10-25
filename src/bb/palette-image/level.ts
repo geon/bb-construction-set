@@ -16,12 +16,11 @@ import { BgColors } from "../internal-data-formats/bg-colors";
 import { Char } from "../internal-data-formats/char";
 import { CharGroup } from "../internal-data-formats/char-group";
 import { parseColorPixelByte } from "../internal-data-formats/color-pixel-byte";
+import { Tiles, platformTilesSize } from "../internal-data-formats/level";
 import {
 	makeCharset,
 	levelToCharNames,
-	Tiles,
-	platformTilesSize,
-} from "../internal-data-formats/level";
+} from "../internal-data-formats/char-name";
 import { palette } from "../internal-data-formats/palette";
 import { ParsedPrg } from "../internal-data-formats/parsed-prg";
 import {
