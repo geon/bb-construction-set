@@ -5,9 +5,17 @@ import {
 	platformTilesSize,
 	Tiles,
 } from "../../bb/internal-data-formats/level";
-import { Coord2, equal, floor, scale } from "../../math/coord2";
+import { Coord2, equal, floor, scale, subtract } from "../../math/coord2";
 import { ClickDragCanvasEventHandlerProvider } from "../ClickDragCanvasEventHandlerProvider";
 import { assertTuple } from "../../bb/tuple";
+import { levelSize } from "../../bb/game-definitions/level-size";
+import { rectContainsPoint } from "../../math/rect";
+
+const borderWidth = { x: 2, y: 1 };
+const drawableTiles = {
+	pos: borderWidth,
+	size: subtract(levelSize, scale(borderWidth, 2)),
+};
 
 export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 	const level = props.levels[props.levelIndex];
@@ -31,6 +39,10 @@ export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 		},
 		onDragStart: (eventCoord) => {
 			const tileCoord = getTileCoord(eventCoord);
+			if (!rectContainsPoint(drawableTiles, tileCoord)) {
+				return;
+			}
+
 			const newDrawValue = !tiles[tileCoord.y]![tileCoord.x]!;
 			setDrawValue(newDrawValue);
 			setLineStart(tileCoord);
@@ -48,6 +60,9 @@ export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 			}
 			const tileCoord = getTileCoord(eventCoord);
 			if (equal(lineStart, tileCoord)) {
+				return;
+			}
+			if (!rectContainsPoint(drawableTiles, tileCoord)) {
 				return;
 			}
 			setSomeTiles(bresenham(lineStart, tileCoord), drawValue);
