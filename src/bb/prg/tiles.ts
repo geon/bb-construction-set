@@ -1,45 +1,19 @@
 import {
-	createTiles,
+	createPlatformTiles,
+	PlatformTiles,
 	platformTilesSize,
-	Tiles,
 } from "../internal-data-formats/level";
 import { byteToBits } from "../bit-twiddling";
 import { TileBitmap } from "./tile-bitmap";
-import { ReadonlyUint8Array } from "../types";
 import { assertTuple, Tuple } from "../tuple";
-import { parseHoles } from "./holes";
 
 export function readTiles(
-	holeMetadataBytes: ReadonlyUint8Array,
 	tileBitmaps: Tuple<TileBitmap, 100>
-): Tuple<Tiles, 100> {
-	const tilesForAllLevels: Tiles[] = [];
+): Tuple<PlatformTiles, 100> {
+	const tilesForAllLevels: PlatformTiles[] = [];
 
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
-		const tiles = createTiles();
-
-		// Fill in top and bottom row.
-		for (let x = 0; x < platformTilesSize.x; ++x) {
-			tiles[0]![x]! = true;
-			tiles[platformTilesSize.y - 1]![x]! = true;
-		}
-		// Cut out the holes.
-		const holeMetadata = holeMetadataBytes[levelIndex]!;
-		const holes = parseHoles(holeMetadata);
-		for (let x = 0; x < 4; ++x) {
-			if (holes.top.left) {
-				tiles[0]![9 + x]! = false;
-			}
-			if (holes.top.right) {
-				tiles[0]![19 + x]! = false;
-			}
-			if (holes.bottom.left) {
-				tiles[24]![9 + x]! = false;
-			}
-			if (holes.bottom.right) {
-				tiles[24]![19 + x]! = false;
-			}
-		}
+		const tiles = createPlatformTiles();
 
 		const tileBitmap = tileBitmaps[levelIndex]!;
 
@@ -55,8 +29,7 @@ export function readTiles(
 				// Convert the bitmap to an array of bools.
 				const bits = byteToBits(bitmapByte);
 				for (let bitIndex = 0; bitIndex < 8; ++bitIndex) {
-					// Offset by 32 for the top line.
-					tiles[rowIndex + 1]![bitmapByteOfRowIndex * 8 + bitIndex]! =
+					tiles[rowIndex]![bitmapByteOfRowIndex * 8 + bitIndex]! =
 						bits[bitIndex]!;
 				}
 			}

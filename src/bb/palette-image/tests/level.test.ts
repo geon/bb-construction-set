@@ -7,16 +7,13 @@ import {
 } from "../level";
 import { strictChunk } from "../../functions";
 import { assertTuple } from "../../tuple";
-import {
-	getTiles,
-	platformTilesSize,
-	Tiles,
-} from "../../internal-data-formats/level";
+import { getTiles, Tiles } from "../../internal-data-formats/tiles";
 import { readFileSync } from "fs";
 import { parsePrg } from "../../prg/parse-prg";
+import { levelSize } from "../../game-definitions/level-size";
 
 test("drawLevelTiles / parseLevelTiles", () => {
-	const levelTiles: Tiles = assertTuple(
+	const tiles: Tiles = assertTuple(
 		strictChunk(
 			`
 				xxxxxxxxx____xxxxxx____xxxxxxxxx
@@ -48,12 +45,12 @@ test("drawLevelTiles / parseLevelTiles", () => {
 				.split("")
 				.map((char) => ({ x: true, _: false }[char]))
 				.filter((char) => char !== undefined),
-			platformTilesSize.x
+			levelSize.x
 		),
-		platformTilesSize.y
+		levelSize.y
 	);
 
-	expect(parseLevelTiles(drawLevelTiles(levelTiles))).toStrictEqual(levelTiles);
+	expect(parseLevelTiles(drawLevelTiles(tiles))).toStrictEqual(tiles);
 });
 
 test("drawLevelsTiles / parseLevelsTiles", () => {

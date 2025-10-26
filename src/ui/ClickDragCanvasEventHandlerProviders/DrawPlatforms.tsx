@@ -2,9 +2,9 @@ import { useState } from "react";
 import { bresenham, objectEntries } from "../../bb/functions";
 import {
 	getTiles,
-	platformTilesSize,
 	Tiles,
-} from "../../bb/internal-data-formats/level";
+	getPlatformTilesAndHoles,
+} from "../../bb/internal-data-formats/tiles";
 import { Coord2, equal, floor, scale, subtract } from "../../math/coord2";
 import { ClickDragCanvasEventHandlerProvider } from "../ClickDragCanvasEventHandlerProvider";
 import { assertTuple } from "../../bb/tuple";
@@ -27,7 +27,7 @@ export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 	const setTiles = (tiles: Tiles) =>
 		props.setLevel({
 			...level,
-			tiles,
+			...getPlatformTilesAndHoles(tiles),
 		});
 	const toggleHole = (holePos: {
 		row: "top" | "bottom";
@@ -107,8 +107,8 @@ export function createSetSomeTiles(
 ) {
 	return (coords: readonly Coord2[], value: boolean) => {
 		const newTiles = assertTuple(
-			tiles.map((row) => assertTuple([...row], platformTilesSize.x)),
-			platformTilesSize.y
+			tiles.map((row) => assertTuple([...row], levelSize.x)),
+			levelSize.y
 		);
 
 		for (const coord of coords) {

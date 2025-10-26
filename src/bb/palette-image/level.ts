@@ -16,7 +16,6 @@ import { BgColors } from "../internal-data-formats/bg-colors";
 import { Char } from "../internal-data-formats/char";
 import { CharGroup } from "../internal-data-formats/char-group";
 import { parseColorPixelByte } from "../internal-data-formats/color-pixel-byte";
-import { Tiles, platformTilesSize } from "../internal-data-formats/level";
 import {
 	makeCharset,
 	levelToCharNames,
@@ -45,6 +44,7 @@ import {
 	doubleImageWidth,
 } from "./palette-image";
 import { drawSprite, getSpritePalette } from "./sprite";
+import { Tiles } from "../internal-data-formats/tiles";
 
 export type LevelEditorOptions =
 	| {
@@ -250,10 +250,10 @@ export function parseLevelTiles(image: PaletteImage): Tiles {
 		image.map((row) =>
 			assertTuple(
 				row.map((color) => color === solidColor),
-				platformTilesSize.x
+				levelSize.x
 			)
 		),
-		platformTilesSize.y
+		levelSize.y
 	);
 }
 
