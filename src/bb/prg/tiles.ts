@@ -1,11 +1,10 @@
 import {
-	createPlatformTiles,
 	PlatformTiles,
 	platformTilesSize,
 } from "../internal-data-formats/level";
 import { byteToBits } from "../bit-twiddling";
 import { TileBitmap } from "./tile-bitmap";
-import { assertTuple, Tuple } from "../tuple";
+import { assertTuple, mapTuple, Tuple } from "../tuple";
 
 export function readTiles(
 	tileBitmaps: Tuple<TileBitmap, 100>
@@ -13,13 +12,8 @@ export function readTiles(
 	const tilesForAllLevels: PlatformTiles[] = [];
 
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
-		const tiles = createPlatformTiles();
-
 		const tileBitmap = tileBitmaps[levelIndex]!;
-
-		for (let rowIndex = 0; rowIndex < 23; ++rowIndex) {
-			tiles[rowIndex] = getTilesRow(tileBitmap.bytes[rowIndex]!);
-		}
+		const tiles = mapTuple(tileBitmap.bytes, getTilesRow);
 
 		// Fill in the sides.
 		// The 2 tile wide left and right borders are used to store part of the bubbleCurrent.

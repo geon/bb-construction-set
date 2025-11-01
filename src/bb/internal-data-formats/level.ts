@@ -8,8 +8,7 @@ import { PerLevelBubbleSpawns } from "./bubble-spawns";
 import { PerLevelItemSpawnPositions } from "./item-spawn-positions";
 import { CharacterName } from "../game-definitions/character-name";
 import { LevelIndex } from "./levels";
-import { mapTuple, MutableTuple, Tuple } from "../tuple";
-import { range } from "../functions";
+import { Tuple } from "../tuple";
 
 interface Character<TCharacterName> {
 	readonly characterName: TCharacterName;
@@ -37,15 +36,6 @@ export const platformTilesSize = {
 
 type PlatformTileRow = Tuple<boolean, typeof platformTilesSize.x>;
 export type PlatformTiles = Tuple<PlatformTileRow, typeof platformTilesSize.y>;
-
-export function createPlatformTiles(): MutableTuple<
-	MutableTuple<boolean, typeof platformTilesSize.x>,
-	typeof platformTilesSize.y
-> {
-	return mapTuple(range(platformTilesSize.y), () =>
-		mapTuple(range(platformTilesSize.x), () => false)
-	);
-}
 
 export type Holes = Record<"top" | "bottom", Record<"left" | "right", boolean>>;
 
