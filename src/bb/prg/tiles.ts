@@ -18,6 +18,7 @@ export function readTiles(
 		const tileBitmap = tileBitmaps[levelIndex]!;
 
 		for (let rowIndex = 0; rowIndex < 23; ++rowIndex) {
+			const bytesRow = tileBitmap.bytes[rowIndex]!;
 			const bytesPerRow = 4;
 			const row: boolean[] = [];
 			// Read half or full lines from the level data.
@@ -26,7 +27,7 @@ export function readTiles(
 				bitmapByteOfRowIndex < bytesPerRow;
 				++bitmapByteOfRowIndex
 			) {
-				const bitmapByte = tileBitmap.bytes[rowIndex]![bitmapByteOfRowIndex]!;
+				const bitmapByte = bytesRow[bitmapByteOfRowIndex]!;
 				// Convert the bitmap to an array of bools.
 				const bits = byteToBits(bitmapByte);
 				for (let bitIndex = 0; bitIndex < 8; ++bitIndex) {
