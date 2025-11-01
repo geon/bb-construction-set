@@ -16,7 +16,7 @@ import { BlobDownloadButton } from "../BlobDownloadButton";
 import { FileInput } from "../FileInput";
 import styled from "styled-components";
 import { assertTuple, mapTuple } from "../../bb/tuple";
-import { getTiles } from "../../bb/internal-data-formats/level";
+import { getTiles } from "../../bb/internal-data-formats/tiles";
 
 const ImageButtons = styled.div`
 	display: flex;

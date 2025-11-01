@@ -1,12 +1,12 @@
 import { chunk, zipObject } from "../functions";
 import { levelSize } from "../game-definitions/level-size";
 import {
-	Tiles,
 	levelIsSymmetric,
 	BubbleCurrentPerLineDefaults,
 	platformTilesSize,
 	Holes,
 } from "../internal-data-formats/level";
+import { Tiles } from "../internal-data-formats/tiles";
 import { maxAsymmetric } from "./data-locations";
 
 export function writeHoles(holeses: readonly Holes[]): Uint8Array {

@@ -4,7 +4,8 @@ import { levelSize } from "../game-definitions/level-size";
 import { ShadowChars } from "../prg/shadow-chars";
 import { Tuple, assertTuple } from "../tuple";
 import { Char } from "./char";
-import { Level, getTiles } from "./level";
+import { Level } from "./level";
+import { getTiles } from "./tiles";
 
 export function levelToCharNames(
 	level: Level

@@ -1,8 +1,6 @@
 import { CharBlock } from "./char";
 import { Char } from "./char";
-import { mapTuple, Tuple, MutableTuple } from "../tuple";
 import { levelSize } from "../game-definitions/level-size";
-import { range } from "../functions";
 import { Coord2 } from "../../math/coord2";
 import { Rect } from "../../math/rect";
 import { BgColors } from "./bg-colors";
@@ -10,6 +8,7 @@ import { PerLevelBubbleSpawns } from "./bubble-spawns";
 import { PerLevelItemSpawnPositions } from "./item-spawn-positions";
 import { CharacterName } from "../game-definitions/character-name";
 import { LevelIndex } from "./levels";
+import { Tiles } from "./tiles";
 
 interface Character<TCharacterName> {
 	readonly characterName: TCharacterName;
@@ -33,18 +32,6 @@ export const platformTilesSize = {
 	x: levelSize.x,
 	y: levelSize.y,
 } as const satisfies Coord2;
-
-type TileRow = Tuple<boolean, typeof levelSize.x>;
-export type Tiles = Tuple<TileRow, typeof levelSize.y>;
-
-export function createTiles(): MutableTuple<
-	MutableTuple<boolean, typeof levelSize.x>,
-	typeof levelSize.y
-> {
-	return mapTuple(range(levelSize.y), () =>
-		mapTuple(range(levelSize.x), () => false)
-	);
-}
 
 export type Holes = Record<"top" | "bottom", Record<"left" | "right", boolean>>;
 
@@ -97,8 +84,4 @@ function rowIsSymmetric(row: readonly boolean[]): boolean {
 
 export function levelIsSymmetric(tiles: Tiles) {
 	return tiles.slice(1, -1).every(rowIsSymmetric);
-}
-
-export function getTiles(level: Level): Tiles {
-	return level.tiles;
 }

@@ -1,16 +1,13 @@
 import { useState } from "react";
 import { bresenham, objectEntries } from "../../bb/functions";
-import {
-	getTiles,
-	platformTilesSize,
-	Tiles,
-} from "../../bb/internal-data-formats/level";
+import { platformTilesSize } from "../../bb/internal-data-formats/level";
 import { Coord2, equal, floor, scale, subtract } from "../../math/coord2";
 import { ClickDragCanvasEventHandlerProvider } from "../ClickDragCanvasEventHandlerProvider";
 import { assertTuple } from "../../bb/tuple";
 import { levelSize } from "../../bb/game-definitions/level-size";
 import { rectContainsPoint } from "../../math/rect";
 import { holeRects } from "../../bb/game-definitions/holes";
+import { getTiles, Tiles } from "../../bb/internal-data-formats/tiles";
 
 const borderWidth = { x: 2, y: 1 };
 const drawableTiles = {

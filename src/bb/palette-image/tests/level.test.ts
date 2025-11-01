@@ -7,13 +7,10 @@ import {
 } from "../level";
 import { strictChunk } from "../../functions";
 import { assertTuple } from "../../tuple";
-import {
-	getTiles,
-	platformTilesSize,
-	Tiles,
-} from "../../internal-data-formats/level";
+import { platformTilesSize } from "../../internal-data-formats/level";
 import { readFileSync } from "fs";
 import { parsePrg } from "../../prg/parse-prg";
+import { getTiles, Tiles } from "../../internal-data-formats/tiles";
 
 test("drawLevelTiles / parseLevelTiles", () => {
 	const levelTiles: Tiles = assertTuple(

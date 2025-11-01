@@ -1,13 +1,10 @@
-import {
-	createTiles,
-	platformTilesSize,
-	Tiles,
-} from "../internal-data-formats/level";
+import { platformTilesSize } from "../internal-data-formats/level";
 import { byteToBits } from "../bit-twiddling";
 import { TileBitmap } from "./tile-bitmap";
 import { ReadonlyUint8Array } from "../types";
 import { assertTuple, Tuple } from "../tuple";
 import { parseHoles } from "./holes";
+import { Tiles, createTiles } from "../internal-data-formats/tiles";
 
 export function readTiles(
 	holeMetadataBytes: ReadonlyUint8Array,

@@ -1,7 +1,7 @@
 import { zipObject, unzipObject, objectEntries } from "../functions";
 import { LevelDataSegmentName } from "../game-definitions/level-segment-name";
-import { getTiles } from "../internal-data-formats/level";
 import { Levels } from "../internal-data-formats/levels";
+import { getTiles } from "../internal-data-formats/tiles";
 import { readBgColors, writeBgColors } from "./bg-colors";
 import { readBubbleCurrentPerLineDefaults } from "./bubble-current-per-line-defaults";
 import {
