@@ -19,22 +19,7 @@ export function readTiles(
 
 		for (let rowIndex = 0; rowIndex < 23; ++rowIndex) {
 			const bytesRow = tileBitmap.bytes[rowIndex]!;
-			const bytesPerRow = 4;
-			const row: boolean[] = [];
-			// Read half or full lines from the level data.
-			for (
-				let bitmapByteOfRowIndex = 0;
-				bitmapByteOfRowIndex < bytesPerRow;
-				++bitmapByteOfRowIndex
-			) {
-				const bitmapByte = bytesRow[bitmapByteOfRowIndex]!;
-				// Convert the bitmap to an array of bools.
-				const bits = byteToBits(bitmapByte);
-				for (let bitIndex = 0; bitIndex < 8; ++bitIndex) {
-					row[bitmapByteOfRowIndex * 8 + bitIndex] = bits[bitIndex]!;
-				}
-			}
-			const rowTuple = assertTuple(row, 32);
+			const rowTuple = getTilesRow(bytesRow);
 			tiles[rowIndex] = rowTuple;
 		}
 
@@ -52,4 +37,24 @@ export function readTiles(
 	}
 
 	return assertTuple(tilesForAllLevels, 100);
+}
+
+function getTilesRow(bytesRow: Tuple<number, 4>) {
+	const bytesPerRow = 4;
+	const row: boolean[] = [];
+	// Read half or full lines from the level data.
+	for (
+		let bitmapByteOfRowIndex = 0;
+		bitmapByteOfRowIndex < bytesPerRow;
+		++bitmapByteOfRowIndex
+	) {
+		const bitmapByte = bytesRow[bitmapByteOfRowIndex]!;
+		// Convert the bitmap to an array of bools.
+		const bits = byteToBits(bitmapByte);
+		for (let bitIndex = 0; bitIndex < 8; ++bitIndex) {
+			row[bitmapByteOfRowIndex * 8 + bitIndex] = bits[bitIndex]!;
+		}
+	}
+	const rowTuple = assertTuple(row, 32);
+	return rowTuple;
 }
