@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { bresenham } from "../../bb/functions";
+import { bresenham, objectEntries } from "../../bb/functions";
 import {
 	getTiles,
 	platformTilesSize,
@@ -10,12 +10,16 @@ import { ClickDragCanvasEventHandlerProvider } from "../ClickDragCanvasEventHand
 import { assertTuple } from "../../bb/tuple";
 import { levelSize } from "../../bb/game-definitions/level-size";
 import { rectContainsPoint } from "../../math/rect";
+import { holeRects } from "../../bb/game-definitions/holes";
 
 const borderWidth = { x: 2, y: 1 };
 const drawableTiles = {
 	pos: borderWidth,
 	size: subtract(levelSize, scale(borderWidth, 2)),
 };
+const holes = objectEntries(holeRects).flatMap(([row, holes]) =>
+	objectEntries(holes).map(([side, hole]) => ({ row, side, hole }))
+);
 
 export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 	const level = props.levels[props.levelIndex];
@@ -25,6 +29,20 @@ export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 			...level,
 			tiles,
 		});
+	const toggleHole = (holePos: {
+		row: "top" | "bottom";
+		side: "left" | "right";
+	}) =>
+		props.setLevel({
+			...level,
+			holes: {
+				...level.holes,
+				[holePos.row]: {
+					...level.holes[holePos.row],
+					[holePos.side]: !level.holes[holePos.row][holePos.side],
+				},
+			},
+		});
 
 	const setSomeTiles = createSetSomeTiles(setTiles, tiles);
 	let [drawValue, setDrawValue] = useState<boolean | undefined>(undefined);
@@ -32,6 +50,14 @@ export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 
 	return props.children({
 		onClick: (eventCoord) => {
+			const hole = holes.find((hole) =>
+				rectContainsPoint(hole.hole, getTileCoord(eventCoord))
+			);
+			if (hole) {
+				toggleHole(hole);
+				return;
+			}
+
 			if (drawValue === undefined) {
 				return;
 			}
