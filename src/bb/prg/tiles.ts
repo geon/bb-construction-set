@@ -18,9 +18,7 @@ export function readTiles(
 		const tileBitmap = tileBitmaps[levelIndex]!;
 
 		for (let rowIndex = 0; rowIndex < 23; ++rowIndex) {
-			const bytesRow = tileBitmap.bytes[rowIndex]!;
-			const rowTuple = getTilesRow(bytesRow);
-			tiles[rowIndex] = rowTuple;
+			tiles[rowIndex] = getTilesRow(tileBitmap.bytes[rowIndex]!);
 		}
 
 		// Fill in the sides.
