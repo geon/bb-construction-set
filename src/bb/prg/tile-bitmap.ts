@@ -4,7 +4,7 @@ import { ReadonlyUint8Array } from "../types";
 
 export type TileBitmap = {
 	readonly isSymmetric: boolean;
-	readonly bytes: readonly (readonly [number, number, number, number])[];
+	readonly bytes: Tuple<readonly [number, number, number, number], 23>;
 };
 
 export function readTileBitmaps(
@@ -68,6 +68,6 @@ function readTileBitmap(
 	}
 	return {
 		isSymmetric,
-		bytes: bitmapBytesRows,
+		bytes: assertTuple(bitmapBytesRows, 23),
 	};
 }
