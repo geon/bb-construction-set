@@ -43,7 +43,7 @@ function readBubbleCurrentPerLineDefaultsForLevel(
 function extractbubbleCurrentLineDefault(
 	tileBitmap: TileBitmap,
 	bubbleCurrentInHoles: number
-): Array<BubbleCurrentDirection> {
+): BubbleCurrentPerLineDefaults {
 	return [
 		((bubbleCurrentInHoles & 0b00110000) >> 4) as BubbleCurrentDirection,
 		...tileBitmap.bytes.map((row) =>
