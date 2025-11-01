@@ -46,7 +46,7 @@ export function readLevels(
 			dataSegments.sidebarChars.buffer,
 			dataSegments.sidebarCharsIndex.buffer
 		),
-		tiles: readTiles(tileBitmaps),
+		platformTiles: readTiles(tileBitmaps),
 		holes: readHoles(dataSegments.holes.buffer),
 		monsters: readMonsters(dataSegments.monsters.buffer),
 		bubbleCurrentRectangles: readBubbleCurrentRectangles(
@@ -67,7 +67,7 @@ export function readLevels(
 
 export function getLevelsPatch(levels: Levels) {
 	const unzippedLevels = unzipObject(levels);
-	const tileses = levels.map((level) => level.tiles);
+	const tileses = levels.map((level) => level.platformTiles);
 
 	const newSegments = {
 		platformChars: writePlatformChars(unzippedLevels.platformChar),

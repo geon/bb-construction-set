@@ -25,7 +25,7 @@ export function getTiles(level: Level): Tiles {
 	return assertTuple(
 		[
 			drawHoles(level.holes.top),
-			...level.tiles.map(getTileRow),
+			...level.platformTiles.map(getTileRow),
 			drawHoles(level.holes.bottom),
 		],
 		levelSize.y
@@ -52,7 +52,7 @@ function drawHoles(row: Holes["top"]): Tuple<boolean, 32> {
 
 export function getPlatformTilesAndHoles(
 	tiles: Tiles
-): Pick<Level, "tiles" | "holes"> {
+): Pick<Level, "platformTiles" | "holes"> {
 	const platformTiles: PlatformTiles = assertTuple(
 		tiles
 			.slice(1, -1)
@@ -71,7 +71,7 @@ export function getPlatformTilesAndHoles(
 	};
 
 	return {
-		tiles: platformTiles,
+		platformTiles: platformTiles,
 		holes,
 	};
 }

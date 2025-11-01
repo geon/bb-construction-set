@@ -56,7 +56,11 @@ export function Platforms(props: {
 								level: props.parsedPrg.levels,
 								...unzipObject(parsedTiles.result),
 							}),
-							({ level, tiles, holes }) => ({ ...level, tiles, holes })
+							({ level, platformTiles: tiles, holes }) => ({
+								...level,
+								tiles,
+								holes,
+							})
 						),
 					});
 				}}

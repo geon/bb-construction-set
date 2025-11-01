@@ -69,7 +69,7 @@ export type BubbleCurrentRectangles =
 	  };
 
 export interface Level {
-	readonly tiles: PlatformTiles;
+	readonly platformTiles: PlatformTiles;
 	readonly holes: Holes;
 	readonly bgColors: BgColors;
 	readonly platformChar: Char;

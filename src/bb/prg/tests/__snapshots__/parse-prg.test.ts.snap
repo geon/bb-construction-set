@@ -157,8 +157,7 @@ exports[`parsePrg 1`] = `
       2,
     ],
   ],
-  "sidebarChars": undefined,
-  "tiles": [
+  "platformTiles": [
     [
       false,
       false,
@@ -850,6 +849,7 @@ exports[`parsePrg 1`] = `
       false,
     ],
   ],
+  "sidebarChars": undefined,
 }
 `;
 

@@ -27,7 +27,7 @@ export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 	const setTiles = (tiles: Tiles) =>
 		props.setLevel({
 			...level,
-			tiles: getPlatformTilesAndHoles(tiles).tiles,
+			platformTiles: getPlatformTilesAndHoles(tiles).platformTiles,
 		});
 	const toggleHole = (holePos: {
 		row: "top" | "bottom";
