@@ -1,6 +1,5 @@
 import { CharBlock } from "./char";
 import { Char } from "./char";
-import { levelSize } from "../game-definitions/level-size";
 import { Coord2 } from "../../math/coord2";
 import { Rect } from "../../math/rect";
 import { BgColors } from "./bg-colors";
@@ -29,12 +28,13 @@ export function rotateDirectionClockwise(
 }
 
 export const platformTilesSize = {
-	x: levelSize.x,
+	// Not including the 4 side borders. 32-4 = 28
+	x: 28,
 	// Not including the top & bottom. 25-2 = 23
 	y: 23,
 } as const satisfies Coord2;
 
-type PlatformTileRow = Tuple<boolean, typeof platformTilesSize.x>;
+export type PlatformTileRow = Tuple<boolean, typeof platformTilesSize.x>;
 export type PlatformTiles = Tuple<PlatformTileRow, typeof platformTilesSize.y>;
 
 export type Holes = Record<"top" | "bottom", Record<"left" | "right", boolean>>;

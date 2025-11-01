@@ -13,17 +13,9 @@ export function readTiles(
 
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
 		const tileBitmap = tileBitmaps[levelIndex]!;
-		const tiles = mapTuple(tileBitmap.bytes, getTilesRow);
-
-		// Fill in the sides.
-		// The 2 tile wide left and right borders are used to store part of the bubbleCurrent.
-		// It needs to be set to true to be solid.
-		for (let rowIndex = 0; rowIndex < platformTilesSize.y; ++rowIndex) {
-			tiles[rowIndex]![0]! = true;
-			tiles[rowIndex]![1]! = true;
-			tiles[rowIndex]![platformTilesSize.x - 2]! = true;
-			tiles[rowIndex]![platformTilesSize.x - 1]! = true;
-		}
+		const tiles = mapTuple(tileBitmap.bytes, (byteRow) =>
+			assertTuple(getTilesRow(byteRow).slice(2, -2), platformTilesSize.x)
+		);
 
 		tilesForAllLevels.push(tiles);
 	}

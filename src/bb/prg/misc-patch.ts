@@ -3,10 +3,10 @@ import { levelSize } from "../game-definitions/level-size";
 import {
 	levelIsSymmetric,
 	BubbleCurrentPerLineDefaults,
-	platformTilesSize,
 	Holes,
 	PlatformTiles,
 } from "../internal-data-formats/level";
+import { getTileRow } from "../internal-data-formats/tiles";
 import { maxAsymmetric } from "./data-locations";
 
 export function writeHoles(holeses: readonly Holes[]): Uint8Array {
@@ -69,9 +69,9 @@ export function writeBitmaps(
 			fullRow: tiles,
 			bubbleCurrent: bubbleCurrentPerLineDefaults.slice(1, -1),
 		}).map(({ fullRow, bubbleCurrent }) => {
-			const row = fullRow.slice(
+			const row = getTileRow(fullRow).slice(
 				0,
-				isSymmetric ? platformTilesSize.x / 2 : platformTilesSize.x
+				isSymmetric ? levelSize.x / 2 : levelSize.x
 			);
 
 			// So stupid.
