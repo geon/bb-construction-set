@@ -10,7 +10,7 @@ import { assertTuple } from "../../tuple";
 import { getTiles, Tiles } from "../../internal-data-formats/tiles";
 import { readFileSync } from "fs";
 import { parsePrg } from "../../prg/parse-prg";
-import { platformTilesSize } from "../../internal-data-formats/level";
+import { levelSize } from "../../game-definitions/level-size";
 
 test("drawLevelTiles / parseLevelTiles", () => {
 	const tiles: Tiles = assertTuple(
@@ -45,9 +45,9 @@ test("drawLevelTiles / parseLevelTiles", () => {
 				.split("")
 				.map((char) => ({ x: true, _: false }[char]))
 				.filter((char) => char !== undefined),
-			platformTilesSize.x
+			levelSize.x
 		),
-		platformTilesSize.y
+		levelSize.y
 	);
 
 	expect(parseLevelTiles(drawLevelTiles(tiles))).toStrictEqual(tiles);

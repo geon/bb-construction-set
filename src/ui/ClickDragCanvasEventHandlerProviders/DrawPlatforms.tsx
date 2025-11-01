@@ -6,7 +6,11 @@ import { assertTuple } from "../../bb/tuple";
 import { levelSize } from "../../bb/game-definitions/level-size";
 import { rectContainsPoint } from "../../math/rect";
 import { holeRects } from "../../bb/game-definitions/holes";
-import { getTiles, Tiles } from "../../bb/internal-data-formats/tiles";
+import {
+	getPlatformTilesAndHoles,
+	getTiles,
+	Tiles,
+} from "../../bb/internal-data-formats/tiles";
 
 const borderWidth = { x: 2, y: 1 };
 const drawableTiles = {
@@ -23,7 +27,7 @@ export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 	const setTiles = (tiles: Tiles) =>
 		props.setLevel({
 			...level,
-			tiles,
+			tiles: getPlatformTilesAndHoles(tiles).tiles,
 		});
 	const toggleHole = (holePos: {
 		row: "top" | "bottom";

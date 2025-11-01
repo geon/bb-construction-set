@@ -1,22 +1,19 @@
-import { platformTilesSize } from "../internal-data-formats/level";
+import {
+	createPlatformTiles,
+	PlatformTiles,
+	platformTilesSize,
+} from "../internal-data-formats/level";
 import { byteToBits } from "../bit-twiddling";
 import { TileBitmap } from "./tile-bitmap";
 import { assertTuple, Tuple } from "../tuple";
-import { Tiles, createTiles } from "../internal-data-formats/tiles";
 
 export function readTiles(
 	tileBitmaps: Tuple<TileBitmap, 100>
-): Tuple<Tiles, 100> {
-	const tilesForAllLevels: Tiles[] = [];
+): Tuple<PlatformTiles, 100> {
+	const tilesForAllLevels: PlatformTiles[] = [];
 
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
-		const tiles = createTiles();
-
-		// Fill in top and bottom row.
-		for (let x = 0; x < platformTilesSize.x; ++x) {
-			tiles[0]![x]! = true;
-			tiles[platformTilesSize.y - 1]![x]! = true;
-		}
+		const tiles = createPlatformTiles();
 
 		const tileBitmap = tileBitmaps[levelIndex]!;
 
@@ -32,8 +29,7 @@ export function readTiles(
 				// Convert the bitmap to an array of bools.
 				const bits = byteToBits(bitmapByte);
 				for (let bitIndex = 0; bitIndex < 8; ++bitIndex) {
-					// Offset by 32 for the top line.
-					tiles[rowIndex + 1]![bitmapByteOfRowIndex * 8 + bitIndex]! =
+					tiles[rowIndex]![bitmapByteOfRowIndex * 8 + bitIndex]! =
 						bits[bitIndex]!;
 				}
 			}

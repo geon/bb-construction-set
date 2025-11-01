@@ -5,8 +5,8 @@ import {
 	BubbleCurrentPerLineDefaults,
 	platformTilesSize,
 	Holes,
+	PlatformTiles,
 } from "../internal-data-formats/level";
-import { Tiles } from "../internal-data-formats/tiles";
 import { maxAsymmetric } from "./data-locations";
 
 export function writeHoles(holeses: readonly Holes[]): Uint8Array {
@@ -40,7 +40,7 @@ export function writeBubbleCurrentInHoles(
 	return new Uint8Array(currentsHalfBytes);
 }
 
-export function writeSymmetry(tileses: readonly Tiles[]): Uint8Array {
+export function writeSymmetry(tileses: readonly PlatformTiles[]): Uint8Array {
 	const asymmetricLevels = tileses.filter((tiles) => !levelIsSymmetric(tiles));
 	if (asymmetricLevels.length > maxAsymmetric) {
 		throw new Error(
@@ -56,7 +56,7 @@ export function writeSymmetry(tileses: readonly Tiles[]): Uint8Array {
 }
 
 export function writeBitmaps(
-	tileses: readonly Tiles[],
+	tileses: readonly PlatformTiles[],
 	bubbleCurrentPerLineDefaultses: readonly BubbleCurrentPerLineDefaults[]
 ): Uint8Array {
 	// Write platforms bitmap
@@ -67,29 +67,27 @@ export function writeBitmaps(
 
 		const bitRows = zipObject({
 			fullRow: tiles,
-			bubbleCurrent: bubbleCurrentPerLineDefaults,
-		})
-			.slice(1, -1)
-			.map(({ fullRow, bubbleCurrent }) => {
-				const row = fullRow.slice(
-					0,
-					isSymmetric ? platformTilesSize.x / 2 : platformTilesSize.x
-				);
+			bubbleCurrent: bubbleCurrentPerLineDefaults.slice(1, -1),
+		}).map(({ fullRow, bubbleCurrent }) => {
+			const row = fullRow.slice(
+				0,
+				isSymmetric ? platformTilesSize.x / 2 : platformTilesSize.x
+			);
 
-				// So stupid.
-				const bitPositions = (
-					{
-						symmetric: [0, 1],
-						notSymmetric: [levelSize.x - 1, levelSize.x - 2],
-					} as const
-				)[isSymmetric ? "symmetric" : "notSymmetric"];
+			// So stupid.
+			const bitPositions = (
+				{
+					symmetric: [0, 1],
+					notSymmetric: [levelSize.x - 1, levelSize.x - 2],
+				} as const
+			)[isSymmetric ? "symmetric" : "notSymmetric"];
 
-				// Encode the per-line bubble current into the edge of the platforms bitmap.
-				row[bitPositions[0]] = !!(bubbleCurrent & 0b01);
-				row[bitPositions[1]] = !!(bubbleCurrent & 0b10);
+			// Encode the per-line bubble current into the edge of the platforms bitmap.
+			row[bitPositions[0]] = !!(bubbleCurrent & 0b01);
+			row[bitPositions[1]] = !!(bubbleCurrent & 0b10);
 
-				return row;
-			});
+			return row;
+		});
 
 		const byteRows = bitRows
 			.map((row) => chunk(row, 8))
