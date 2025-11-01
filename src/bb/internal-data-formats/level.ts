@@ -34,15 +34,15 @@ export const platformTilesSize = {
 	y: levelSize.y,
 } as const satisfies Coord2;
 
-type TileRow = Tuple<boolean, typeof platformTilesSize.x>;
-export type Tiles = Tuple<TileRow, typeof platformTilesSize.y>;
+type TileRow = Tuple<boolean, typeof levelSize.x>;
+export type Tiles = Tuple<TileRow, typeof levelSize.y>;
 
 export function createTiles(): MutableTuple<
-	MutableTuple<boolean, typeof platformTilesSize.x>,
-	typeof platformTilesSize.y
+	MutableTuple<boolean, typeof levelSize.x>,
+	typeof levelSize.y
 > {
-	return mapTuple(range(platformTilesSize.y), () =>
-		mapTuple(range(platformTilesSize.x), () => false)
+	return mapTuple(range(levelSize.y), () =>
+		mapTuple(range(levelSize.x), () => false)
 	);
 }
 
