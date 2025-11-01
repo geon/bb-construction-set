@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { attempt, zipObject } from "../../bb/functions";
+import { attempt, unzipObject, zipObject } from "../../bb/functions";
 import {
 	imageDataFromPaletteImage,
 	imageDataFromImage,
@@ -16,7 +16,10 @@ import { BlobDownloadButton } from "../BlobDownloadButton";
 import { FileInput } from "../FileInput";
 import styled from "styled-components";
 import { assertTuple, mapTuple } from "../../bb/tuple";
-import { getTiles } from "../../bb/internal-data-formats/tiles";
+import {
+	getPlatformTilesAndHoles,
+	getTiles,
+} from "../../bb/internal-data-formats/tiles";
 
 const ImageButtons = styled.div`
 	display: flex;
@@ -36,9 +39,11 @@ export function Platforms(props: {
 					const imageData = imageDataFromImage(await imageFromFile(file));
 
 					const parsedTiles = attempt(() =>
-						parseLevelsTiles(paletteImageFromImageData(imageData))
+						mapTuple(
+							parseLevelsTiles(paletteImageFromImageData(imageData)),
+							getPlatformTilesAndHoles
+						)
 					);
-
 					if (parsedTiles.type !== "ok") {
 						alert(`Could not read image: ${parsedTiles.error ?? "No reason."}`);
 						return;
@@ -49,9 +54,9 @@ export function Platforms(props: {
 						levels: mapTuple(
 							zipObject({
 								level: props.parsedPrg.levels,
-								tiles: parsedTiles.result,
+								...unzipObject(parsedTiles.result),
 							}),
-							({ level, tiles }) => ({ ...level, tiles })
+							({ level, tiles, holes }) => ({ ...level, tiles, holes })
 						),
 					});
 				}}

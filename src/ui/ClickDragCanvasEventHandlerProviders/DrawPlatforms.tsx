@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { bresenham, objectEntries } from "../../bb/functions";
-import { platformTilesSize } from "../../bb/internal-data-formats/level";
 import { Coord2, equal, floor, scale, subtract } from "../../math/coord2";
 import { ClickDragCanvasEventHandlerProvider } from "../ClickDragCanvasEventHandlerProvider";
 import { assertTuple } from "../../bb/tuple";
@@ -104,8 +103,8 @@ export function createSetSomeTiles(
 ) {
 	return (coords: readonly Coord2[], value: boolean) => {
 		const newTiles = assertTuple(
-			tiles.map((row) => assertTuple([...row], platformTilesSize.x)),
-			platformTilesSize.y
+			tiles.map((row) => assertTuple([...row], levelSize.x)),
+			levelSize.y
 		);
 
 		for (const coord of coords) {

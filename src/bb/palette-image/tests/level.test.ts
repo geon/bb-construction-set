@@ -7,13 +7,13 @@ import {
 } from "../level";
 import { strictChunk } from "../../functions";
 import { assertTuple } from "../../tuple";
-import { platformTilesSize } from "../../internal-data-formats/level";
+import { getTiles, Tiles } from "../../internal-data-formats/tiles";
 import { readFileSync } from "fs";
 import { parsePrg } from "../../prg/parse-prg";
-import { getTiles, Tiles } from "../../internal-data-formats/tiles";
+import { platformTilesSize } from "../../internal-data-formats/level";
 
 test("drawLevelTiles / parseLevelTiles", () => {
-	const levelTiles: Tiles = assertTuple(
+	const tiles: Tiles = assertTuple(
 		strictChunk(
 			`
 				xxxxxxxxx____xxxxxx____xxxxxxxxx
@@ -50,7 +50,7 @@ test("drawLevelTiles / parseLevelTiles", () => {
 		platformTilesSize.y
 	);
 
-	expect(parseLevelTiles(drawLevelTiles(levelTiles))).toStrictEqual(levelTiles);
+	expect(parseLevelTiles(drawLevelTiles(tiles))).toStrictEqual(tiles);
 });
 
 test("drawLevelsTiles / parseLevelsTiles", () => {

@@ -1,13 +1,10 @@
 import { platformTilesSize } from "../internal-data-formats/level";
 import { byteToBits } from "../bit-twiddling";
 import { TileBitmap } from "./tile-bitmap";
-import { ReadonlyUint8Array } from "../types";
 import { assertTuple, Tuple } from "../tuple";
-import { parseHoles } from "./holes";
 import { Tiles, createTiles } from "../internal-data-formats/tiles";
 
 export function readTiles(
-	holeMetadataBytes: ReadonlyUint8Array,
 	tileBitmaps: Tuple<TileBitmap, 100>
 ): Tuple<Tiles, 100> {
 	const tilesForAllLevels: Tiles[] = [];
@@ -19,23 +16,6 @@ export function readTiles(
 		for (let x = 0; x < platformTilesSize.x; ++x) {
 			tiles[0]![x]! = true;
 			tiles[platformTilesSize.y - 1]![x]! = true;
-		}
-		// Cut out the holes.
-		const holeMetadata = holeMetadataBytes[levelIndex]!;
-		const holes = parseHoles(holeMetadata);
-		for (let x = 0; x < 4; ++x) {
-			if (holes.top.left) {
-				tiles[0]![9 + x]! = false;
-			}
-			if (holes.top.right) {
-				tiles[0]![19 + x]! = false;
-			}
-			if (holes.bottom.left) {
-				tiles[24]![9 + x]! = false;
-			}
-			if (holes.bottom.right) {
-				tiles[24]![19 + x]! = false;
-			}
 		}
 
 		const tileBitmap = tileBitmaps[levelIndex]!;
