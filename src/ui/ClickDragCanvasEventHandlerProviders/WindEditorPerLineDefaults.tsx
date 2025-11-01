@@ -7,6 +7,8 @@ import {
 import { Coord2, floor, scale, subtract } from "../../math/coord2";
 import { ClickDragCanvasDragEventHandlers } from "../ClickDragCanvas";
 import { Setter } from "../types";
+import { assertTuple } from "../../bb/tuple";
+import { levelSize } from "../../bb/game-definitions/level-size";
 
 export const WindEditorPerLineDefaults = (props: {
 	readonly perLineDefaults: BubbleCurrentPerLineDefaults;
@@ -37,7 +39,10 @@ export const WindEditorPerLineDefaults = (props: {
 
 			const coord = getTileCoord(lastCoord);
 			props.setPerLineDefaults(
-				updateArrayAtIndex(props.perLineDefaults, coord.y, () => direction)
+				assertTuple(
+					updateArrayAtIndex(props.perLineDefaults, coord.y, () => direction),
+					levelSize.y
+				)
 			);
 		},
 	});

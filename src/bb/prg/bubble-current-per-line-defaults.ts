@@ -6,6 +6,7 @@ import { isBitSet } from "../bit-twiddling";
 import { TileBitmap } from "./tile-bitmap";
 import { ReadonlyUint8Array } from "../types";
 import { assertTuple, Tuple } from "../tuple";
+import { levelSize } from "../game-definitions/level-size";
 
 export function readBubbleCurrentPerLineDefaults(
 	bubbleCurrentInHolesBytes: ReadonlyUint8Array,
@@ -44,13 +45,16 @@ function extractbubbleCurrentLineDefault(
 	tileBitmap: TileBitmap,
 	bubbleCurrentInHoles: number
 ): BubbleCurrentPerLineDefaults {
-	return [
-		((bubbleCurrentInHoles & 0b00110000) >> 4) as BubbleCurrentDirection,
-		...tileBitmap.bytes.map((row) =>
-			bitsToBubbleCurrentDirection([isBitSet(row[3], 6), isBitSet(row[3], 7)])
-		),
-		((bubbleCurrentInHoles & 0b11000000) >> 6) as BubbleCurrentDirection,
-	];
+	return assertTuple(
+		[
+			((bubbleCurrentInHoles & 0b00110000) >> 4) as BubbleCurrentDirection,
+			...tileBitmap.bytes.map((row) =>
+				bitsToBubbleCurrentDirection([isBitSet(row[3], 6), isBitSet(row[3], 7)])
+			),
+			((bubbleCurrentInHoles & 0b11000000) >> 6) as BubbleCurrentDirection,
+		],
+		levelSize.y
+	);
 }
 
 function bitsToBubbleCurrentDirection(

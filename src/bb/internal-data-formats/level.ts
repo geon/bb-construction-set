@@ -8,6 +8,7 @@ import { PerLevelItemSpawnPositions } from "./item-spawn-positions";
 import { CharacterName } from "../game-definitions/character-name";
 import { LevelIndex } from "./levels";
 import { Tuple } from "../tuple";
+import { levelSize } from "../game-definitions/level-size";
 
 interface Character<TCharacterName> {
 	readonly characterName: TCharacterName;
@@ -39,7 +40,10 @@ export type PlatformTiles = Tuple<PlatformTileRow, typeof platformTilesSize.y>;
 
 export type Holes = Record<"top" | "bottom", Record<"left" | "right", boolean>>;
 
-export type BubbleCurrentPerLineDefaults = Array<BubbleCurrentDirection>;
+export type BubbleCurrentPerLineDefaults = Tuple<
+	BubbleCurrentDirection,
+	typeof levelSize.y
+>;
 
 export interface BubbleCurrentRectangle {
 	readonly rect: Rect;
