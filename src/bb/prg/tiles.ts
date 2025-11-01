@@ -17,8 +17,8 @@ export function readTiles(
 
 		const tileBitmap = tileBitmaps[levelIndex]!;
 
-		const bytesPerRow = 4;
 		for (let rowIndex = 0; rowIndex < 23; ++rowIndex) {
+			const bytesPerRow = 4;
 			const row: boolean[] = [];
 			// Read half or full lines from the level data.
 			for (
