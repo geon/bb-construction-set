@@ -33,7 +33,8 @@ export function readTiles(
 					row[bitmapByteOfRowIndex * 8 + bitIndex] = bits[bitIndex]!;
 				}
 			}
-			tiles[rowIndex] = assertTuple(row, 32);
+			const rowTuple = assertTuple(row, 32);
+			tiles[rowIndex] = rowTuple;
 		}
 
 		// Fill in the sides.
