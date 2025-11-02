@@ -49,12 +49,13 @@ export function readMonsters(
 }
 
 const positionMask = 0b11111000;
+const nameMask = 0b00000111;
 
 function readMonster(
 	monsterBytes: Tuple<number, typeof bytesPerMonster>
 ): Monster {
 	return {
-		characterName: monsterNames[monsterBytes[0] & 0b00000111]!,
+		characterName: monsterNames[monsterBytes[0] & nameMask]!,
 		spawnPoint: {
 			x: (monsterBytes[0] & positionMask) + 20,
 			y: (monsterBytes[1] & positionMask) + 21,
