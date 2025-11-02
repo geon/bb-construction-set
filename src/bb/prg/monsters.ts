@@ -55,7 +55,7 @@ function readMonster(
 		characterName: monsterNames[monsterBytes[0] & 0b00000111]!,
 		spawnPoint: {
 			x: (monsterBytes[0] & 0b11111000) + 20,
-			y: (monsterBytes[1] & 0b11111110) + 21,
+			y: (monsterBytes[1] & 0b11111000) + 21,
 		},
 		facingLeft: isBitSet(monsterBytes[2]!, 0),
 	};
@@ -79,7 +79,7 @@ export function getMonstersPatch(
 					((monster.spawnPoint.x - 20) & 0b11111000) +
 						monsterNames.indexOf(monster.characterName),
 				],
-				[monster.spawnPoint.y - 21, 0b11111110],
+				[monster.spawnPoint.y - 21, 0b11111000],
 				[(monster.facingLeft ? 1 : 0) << 7, 0b10000000],
 			]);
 			// Terminate each level with a zero.
