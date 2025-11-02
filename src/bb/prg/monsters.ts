@@ -79,7 +79,7 @@ export function getMonstersPatch(
 		.flatMap((monsters) => {
 			const subBytes = monsters.flatMap((monster) => [
 				[
-					((monster.spawnPoint.x - 20) & positionMask) +
+					((monster.spawnPoint.x - 20) & positionMask) |
 						(monsterNames.indexOf(monster.characterName) & nameMask),
 				],
 				[monster.spawnPoint.y - 21, positionMask],
