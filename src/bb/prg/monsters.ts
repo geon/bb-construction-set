@@ -27,9 +27,14 @@ export function readMonsters(
 		do {
 			monsters.push(
 				readMonster(
-					monsterBytes.subarray(
-						currentMonsterByteIndex,
-						currentMonsterByteIndex + bytesPerMonster
+					assertTuple(
+						[
+							...monsterBytes.subarray(
+								currentMonsterByteIndex,
+								currentMonsterByteIndex + bytesPerMonster
+							),
+						],
+						bytesPerMonster
 					)
 				)
 			);
@@ -43,12 +48,14 @@ export function readMonsters(
 	return assertTuple(monstersForAllLevels, 100);
 }
 
-function readMonster(monsterBytes: ReadonlyUint8Array): Monster {
+function readMonster(
+	monsterBytes: Tuple<number, typeof bytesPerMonster>
+): Monster {
 	return {
-		characterName: monsterNames[monsterBytes[0]! & 0b111]!,
+		characterName: monsterNames[monsterBytes[0] & 0b111]!,
 		spawnPoint: {
-			x: (monsterBytes[0]! & 0b11111000) + 20,
-			y: (monsterBytes[1]! & 0b11111110) + 21,
+			x: (monsterBytes[0] & 0b11111000) + 20,
+			y: (monsterBytes[1] & 0b11111110) + 21,
 		},
 		facingLeft: isBitSet(monsterBytes[2]!, 0),
 	};
