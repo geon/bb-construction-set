@@ -200,6 +200,7 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 										characterName: "bubbleBuster",
 										spawnPoint: { x: 100, y: 100 },
 										facingLeft: false,
+										delay: 0,
 								  };
 
 							setMonsters([...monsters, newMonster]);

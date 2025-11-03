@@ -50,6 +50,7 @@ export function readMonsters(
 
 const positionMask = 0b11111000;
 const nameMask = 0b00000111;
+const delayMask = 0b00111111;
 
 function readMonster(
 	monsterBytes: Tuple<number, typeof bytesPerMonster>
@@ -60,7 +61,9 @@ function readMonster(
 			x: (monsterBytes[0] & positionMask) + 20,
 			y: (monsterBytes[1] & positionMask) + 21,
 		},
-		facingLeft: isBitSet(monsterBytes[2]!, 0),
+		facingLeft: isBitSet(monsterBytes[2], 0),
+		// The game also shifts left when reading the delay.
+		delay: monsterBytes[2] & 0b00111111,
 	};
 }
 
@@ -83,7 +86,10 @@ export function getMonstersPatch(
 						(monsterNames.indexOf(monster.characterName) & nameMask),
 				],
 				[monster.spawnPoint.y - 21, positionMask],
-				[(monster.facingLeft ? 1 : 0) << 7, 0b10000000],
+				[
+					((monster.facingLeft ? 1 : 0) << 7) | monster.delay,
+					0b10000000 | delayMask,
+				],
 			]);
 			// Terminate each level with a zero.
 			return [...subBytes, [0] as const];

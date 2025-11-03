@@ -14,10 +14,14 @@ interface Character<TCharacterName> {
 	readonly characterName: TCharacterName;
 	readonly spawnPoint: Coord2;
 	readonly facingLeft: boolean;
+	readonly delay: number;
 }
 
 export type Monster = Character<Exclude<CharacterName, "player">>;
-export type Player = Character<Extract<CharacterName, "player">>;
+export type Player = Pick<
+	Character<Extract<CharacterName, "player">>,
+	"spawnPoint" | "characterName" | "facingLeft"
+>;
 
 // up, right, down, left
 export type BubbleCurrentDirection = 0 | 1 | 2 | 3;

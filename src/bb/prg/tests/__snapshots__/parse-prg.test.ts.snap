@@ -84,6 +84,7 @@ exports[`parsePrg 1`] = `
   "monsters": [
     {
       "characterName": "bubbleBuster",
+      "delay": 10,
       "facingLeft": true,
       "spawnPoint": {
         "x": 140,
@@ -92,6 +93,7 @@ exports[`parsePrg 1`] = `
     },
     {
       "characterName": "bubbleBuster",
+      "delay": 17,
       "facingLeft": true,
       "spawnPoint": {
         "x": 140,
@@ -100,6 +102,7 @@ exports[`parsePrg 1`] = `
     },
     {
       "characterName": "bubbleBuster",
+      "delay": 24,
       "facingLeft": true,
       "spawnPoint": {
         "x": 140,
