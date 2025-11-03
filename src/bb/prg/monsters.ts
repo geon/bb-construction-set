@@ -1,5 +1,4 @@
 import { Monster } from "../internal-data-formats/level";
-import { isBitSet } from "../bit-twiddling";
 import {
 	bytesPerMonster,
 	levelSegmentLocations,
@@ -51,6 +50,7 @@ export function readMonsters(
 const positionMask = 0b11111000;
 const nameMask = 0b00000111;
 const delayMask = 0b00111111;
+const facingLeftBit = 0b10000000;
 
 function readMonster(
 	monsterBytes: Tuple<number, typeof bytesPerMonster>
@@ -61,7 +61,7 @@ function readMonster(
 			x: (monsterBytes[0] & positionMask) + 20,
 			y: (monsterBytes[1] & positionMask) + 21,
 		},
-		facingLeft: isBitSet(monsterBytes[2], 0),
+		facingLeft: !!(monsterBytes[2] & facingLeftBit),
 		// The game also shifts left when reading the delay.
 		delay: monsterBytes[2] & 0b00111111,
 	};
@@ -87,8 +87,8 @@ export function getMonstersPatch(
 				],
 				[monster.spawnPoint.y - 21, positionMask],
 				[
-					((monster.facingLeft ? 1 : 0) << 7) | monster.delay,
-					0b10000000 | delayMask,
+					(monster.facingLeft ? facingLeftBit : 0) | monster.delay,
+					facingLeftBit | delayMask,
 				],
 			]);
 			// Terminate each level with a zero.
