@@ -48,14 +48,16 @@ export function readMonsters(
 	return assertTuple(monstersForAllLevels, 100);
 }
 
+const positionMask = 0b11111000;
+
 function readMonster(
 	monsterBytes: Tuple<number, typeof bytesPerMonster>
 ): Monster {
 	return {
 		characterName: monsterNames[monsterBytes[0] & 0b00000111]!,
 		spawnPoint: {
-			x: (monsterBytes[0] & 0b11111000) + 20,
-			y: (monsterBytes[1] & 0b11111000) + 21,
+			x: (monsterBytes[0] & positionMask) + 20,
+			y: (monsterBytes[1] & positionMask) + 21,
 		},
 		facingLeft: isBitSet(monsterBytes[2]!, 0),
 	};
@@ -76,10 +78,10 @@ export function getMonstersPatch(
 		.flatMap((monsters) => {
 			const subBytes = monsters.flatMap((monster) => [
 				[
-					((monster.spawnPoint.x - 20) & 0b11111000) +
+					((monster.spawnPoint.x - 20) & positionMask) +
 						monsterNames.indexOf(monster.characterName),
 				],
-				[monster.spawnPoint.y - 21, 0b11111000],
+				[monster.spawnPoint.y - 21, positionMask],
 				[(monster.facingLeft ? 1 : 0) << 7, 0b10000000],
 			]);
 			// Terminate each level with a zero.
