@@ -50,7 +50,7 @@ export function readMonsters(
 const positionMask = 0b11111000;
 const nameMask = 0b00000111;
 const delayMask = 0b00111111;
-const facingLeftBit = 0b10000000;
+const facingLeftBit = 0b01000000;
 
 function readMonster(
 	monsterBytes: Tuple<number, typeof bytesPerMonster>
