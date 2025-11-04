@@ -40,11 +40,11 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 		| undefined
 	>(undefined);
 
-	function updateMonster(
-		index: number,
-		updater: (monster: Monster) => Monster
-	) {
-		setMonsters(updateArrayAtIndex(monsters, index, updater));
+	function updateSelectedMonster(updater: (monster: Monster) => Monster) {
+		if (!selectedMonster) {
+			return;
+		}
+		setMonsters(updateArrayAtIndex(monsters, selectedMonster.index, updater));
 	}
 
 	const setSelectedMonsterPosition = (spawnPoint: Coord2) => {
@@ -62,7 +62,7 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 		};
 
 		setSelectedMonster(newMonster);
-		updateMonster(selectedMonster.index, () => newMonster);
+		updateSelectedMonster(() => newMonster);
 	};
 
 	useEffect(() => {
@@ -177,7 +177,7 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 						disabled={selectedMonster === undefined}
 						onClick={() =>
 							selectedMonster &&
-							updateMonster(selectedMonster.index, (monster) => ({
+							updateSelectedMonster((monster) => ({
 								...monster,
 								facingLeft: !monster.facingLeft,
 							}))
