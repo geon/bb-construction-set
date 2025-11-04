@@ -201,6 +201,7 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 										spawnPoint: { x: 100, y: 100 },
 										facingLeft: false,
 										delay: 0,
+										confirmed_mystery_bits_A_3A1C: undefined,
 								  };
 
 							setMonsters([...monsters, newMonster]);

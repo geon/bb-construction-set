@@ -51,6 +51,8 @@ const positionMask = 0b11111000;
 const nameMask = 0b00000111;
 const delayMask = 0b00111111;
 const facingLeftBit = 0b01000000;
+const a_3A1C_top_3_mask = 0b00000111;
+const a_3A1C_last_mask = 0b10000000;
 
 function readMonster(
 	monsterBytes: Tuple<number, typeof bytesPerMonster>
@@ -64,6 +66,9 @@ function readMonster(
 		facingLeft: !!(monsterBytes[2] & facingLeftBit),
 		// The game also shifts left when reading the delay.
 		delay: monsterBytes[2] & 0b00111111,
+		confirmed_mystery_bits_A_3A1C:
+			((monsterBytes[1] & a_3A1C_top_3_mask) << 1) |
+			((monsterBytes[2] & a_3A1C_last_mask) >> 7),
 	};
 }
 
@@ -80,17 +85,27 @@ export function getMonstersPatch(
 	// Write monsters.
 	return monsterses
 		.flatMap((monsters) => {
-			const subBytes = monsters.flatMap((monster) => [
-				[
-					((monster.spawnPoint.x - 20) & positionMask) |
-						(monsterNames.indexOf(monster.characterName) & nameMask),
-				],
-				[monster.spawnPoint.y - 21, positionMask],
-				[
-					(monster.facingLeft ? facingLeftBit : 0) | monster.delay,
-					facingLeftBit | delayMask,
-				],
-			]);
+			const subBytes = monsters.flatMap((monster) => {
+				const confirmed_mystery_bits_A_3A1C =
+					monster.confirmed_mystery_bits_A_3A1C ?? createMysteryBits(monster);
+
+				return [
+					[
+						((monster.spawnPoint.x - 20) & positionMask) |
+							(monsterNames.indexOf(monster.characterName) & nameMask),
+					],
+					[
+						(monster.spawnPoint.y - 21) | (confirmed_mystery_bits_A_3A1C >> 1),
+						positionMask | a_3A1C_top_3_mask,
+					],
+					[
+						(monster.facingLeft ? facingLeftBit : 0) |
+							monster.delay |
+							((confirmed_mystery_bits_A_3A1C & 1) << 7),
+						facingLeftBit | delayMask | a_3A1C_last_mask,
+					],
+				];
+			});
 			// Terminate each level with a zero.
 			return [...subBytes, [0] as const];
 		})
@@ -100,4 +115,40 @@ export function getMonstersPatch(
 				[value, mask],
 			]
 		);
+}
+
+function createMysteryBits(monster: Monster): number {
+	const movingLeft = monster.facingLeft ? 0b0001 : 0;
+	const movingRight = !monster.facingLeft ? 0b0010 : 0;
+	const leftRight = movingLeft | movingRight;
+
+	const startingUp = true;
+	const movingUp = startingUp ? 0b0001 : 0;
+	const movingDown = !startingUp ? 0b0010 : 0;
+	const upDown = movingUp | movingDown;
+
+	switch (monster.characterName) {
+		// Walkers
+		case "bubbleBuster":
+		case "stoner":
+		case "incendo":
+		case "willyWhistle": {
+			return leftRight;
+		}
+
+		// Flyers
+		case "beluga":
+		case "hullaballoon": {
+			return leftRight | upDown;
+		}
+
+		case "colley":
+		case "superSocket": {
+			return leftRight;
+		}
+
+		default: {
+			return monster.characterName satisfies never;
+		}
+	}
 }

@@ -15,6 +15,7 @@ interface Character<TCharacterName> {
 	readonly spawnPoint: Coord2;
 	readonly facingLeft: boolean;
 	readonly delay: number;
+	readonly confirmed_mystery_bits_A_3A1C: number | undefined;
 }
 
 export type Monster = Character<Exclude<CharacterName, "player">>;

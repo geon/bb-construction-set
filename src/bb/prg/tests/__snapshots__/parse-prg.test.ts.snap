@@ -84,6 +84,7 @@ exports[`parsePrg 1`] = `
   "monsters": [
     {
       "characterName": "bubbleBuster",
+      "confirmed_mystery_bits_A_3A1C": 1,
       "delay": 10,
       "facingLeft": true,
       "spawnPoint": {
@@ -93,6 +94,7 @@ exports[`parsePrg 1`] = `
     },
     {
       "characterName": "bubbleBuster",
+      "confirmed_mystery_bits_A_3A1C": 1,
       "delay": 17,
       "facingLeft": true,
       "spawnPoint": {
@@ -102,6 +104,7 @@ exports[`parsePrg 1`] = `
     },
     {
       "characterName": "bubbleBuster",
+      "confirmed_mystery_bits_A_3A1C": 1,
       "delay": 24,
       "facingLeft": true,
       "spawnPoint": {
