@@ -244,14 +244,10 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 						}
 						selected={level.monsters[selectedMonster.index]?.characterName}
 						setSelected={(characterName) =>
-							props.setLevel({
-								...level,
-								monsters: updateArrayAtIndex(
-									monsters,
-									selectedMonster.index,
-									(monster) => ({ ...monster, characterName })
-								),
-							})
+							updateSelectedMonster((monster) => ({
+								...monster,
+								characterName,
+							}))
 						}
 					/>
 				</ButtonRow>
