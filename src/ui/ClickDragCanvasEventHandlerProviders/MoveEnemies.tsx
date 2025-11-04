@@ -15,6 +15,8 @@ import { icons } from ".././icons";
 import { RadioButtonList } from ".././RadioButtonList";
 import { CoordFields } from "../CoordFields";
 import { ButtonGroup } from "../ButtonGroup";
+import { IntegerInput } from "../IntegerInput";
+import { clamp } from "../../math/scalar";
 
 export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 	const level = props.levels[props.levelIndex];
@@ -135,6 +137,18 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 						<span>
 							{selectedMonsterIndex + 1}/{monsters.length}
 						</span>
+						<label>
+							Delay:{" "}
+							<IntegerInput
+								value={selectedMonster.delay}
+								onChange={(newValue) =>
+									updateSelectedMonster((monster) => ({
+										...monster,
+										delay: clamp(newValue, 0, 0b00111111),
+									}))
+								}
+							/>
+						</label>
 						<CoordFields
 							// key-prop makes state work when switching selected monster.
 							key={selectedMonsterIndex}
@@ -249,6 +263,8 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 							updateSelectedMonster((monster) => ({
 								...monster,
 								characterName,
+								// The mystery bits are not identical for all monsters.
+								confirmed_mystery_bits_A_3A1C: undefined,
 							}))
 						}
 					/>
