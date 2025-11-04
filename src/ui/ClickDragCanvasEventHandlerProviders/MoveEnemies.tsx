@@ -33,18 +33,21 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 		  }
 		| undefined
 	>(undefined);
-	let [selectedMonster, setSelectedMonster] = useState<
-		| (Monster & {
-				readonly index: number;
-		  })
-		| undefined
+
+	let [selectedMonsterIndex, setSelectedMonsterIndex] = useState<
+		number | undefined
 	>(undefined);
 
+	const selectedMonster =
+		selectedMonsterIndex === undefined
+			? undefined
+			: monsters[selectedMonsterIndex];
+
 	function updateSelectedMonster(updater: (monster: Monster) => Monster) {
-		if (!selectedMonster) {
+		if (selectedMonsterIndex === undefined) {
 			return;
 		}
-		setMonsters(updateArrayAtIndex(monsters, selectedMonster.index, updater));
+		setMonsters(updateArrayAtIndex(monsters, selectedMonsterIndex, updater));
 	}
 
 	const setSelectedMonsterPosition = (spawnPoint: Coord2) => {
@@ -53,20 +56,18 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 		}
 
 		const newMonster = {
-			...monsters[selectedMonster.index]!,
+			...selectedMonster,
 			spawnPoint: {
 				x: Math.floor(spawnPoint.x / 2) * 2,
 				y: spawnPoint.y,
 			},
-			index: selectedMonster.index,
 		};
 
-		setSelectedMonster(newMonster);
 		updateSelectedMonster(() => newMonster);
 	};
 
 	useEffect(() => {
-		setSelectedMonster(undefined);
+		setSelectedMonsterIndex(undefined);
 	}, [props.levelIndex]);
 
 	function pixelCoordToHalfPixelCoord(coord: Coord2): Coord2 {
@@ -97,7 +98,7 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 		{
 			onClick: (eventCoord) => {
 				const monster = findMonsterAtCoord(eventCoord);
-				setSelectedMonster(monster);
+				setSelectedMonsterIndex(monster?.index);
 			},
 			onDragStart: (eventCoord) => {
 				const monster = findMonsterAtCoord(eventCoord);
@@ -111,7 +112,7 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 						pixelCoordToHalfPixelCoord(monster.spawnPoint)
 					),
 				});
-				setSelectedMonster(monster);
+				setSelectedMonsterIndex(monster.index);
 			},
 			onDragEnd: () => {
 				setDraggedMonster(undefined);
@@ -127,14 +128,16 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 		},
 		<Flex $col>
 			<ButtonRow $align="right">
-				{selectedMonster && (
+				{!(
+					selectedMonster && selectedMonsterIndex !== undefined
+				) ? undefined : (
 					<>
 						<span>
-							{selectedMonster.index + 1}/{monsters.length}
+							{selectedMonsterIndex + 1}/{monsters.length}
 						</span>
 						<CoordFields
 							// key-prop makes state work when switching selected monster.
-							key={selectedMonster.index}
+							key={selectedMonsterIndex}
 							coord={selectedMonster.spawnPoint}
 							onChange={(coord) => setSelectedMonsterPosition(coord)}
 						/>
@@ -144,16 +147,14 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 					<button
 						disabled={
 							!monsters.length ||
-							(selectedMonster && selectedMonster.index <= 0)
+							(selectedMonsterIndex !== undefined && selectedMonsterIndex <= 0)
 						}
 						onClick={() => {
-							const index = selectedMonster
-								? selectedMonster.index - 1
-								: monsters.length - 1;
-							setSelectedMonster({
-								...monsters[index]!,
-								index,
-							});
+							const index =
+								selectedMonsterIndex !== undefined
+									? selectedMonsterIndex - 1
+									: monsters.length - 1;
+							setSelectedMonsterIndex(index);
 						}}
 					>
 						{icons.chevrons.left}
@@ -161,14 +162,15 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 					<button
 						disabled={
 							!monsters.length ||
-							(selectedMonster && selectedMonster.index >= monsters.length - 1)
+							(selectedMonsterIndex !== undefined &&
+								selectedMonsterIndex >= monsters.length - 1)
 						}
 						onClick={() => {
-							const index = selectedMonster ? selectedMonster.index + 1 : 0;
-							setSelectedMonster({
-								...monsters[index]!,
-								index,
-							});
+							const index =
+								selectedMonsterIndex !== undefined
+									? selectedMonsterIndex + 1
+									: 0;
+							setSelectedMonsterIndex(index);
 						}}
 					>
 						{icons.chevrons.right}
@@ -206,7 +208,7 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 								  };
 
 							setMonsters([...monsters, newMonster]);
-							setSelectedMonster({ ...newMonster, index: monsters.length });
+							setSelectedMonsterIndex(monsters.length);
 						}}
 					>
 						{icons.plus}
@@ -214,13 +216,13 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 					<button
 						disabled={selectedMonster === undefined}
 						onClick={() => {
-							if (!selectedMonster) {
+							if (selectedMonsterIndex === undefined) {
 								return;
 							}
 							setMonsters(
-								deleteArrayElementAtIndex(monsters, selectedMonster.index)
+								deleteArrayElementAtIndex(monsters, selectedMonsterIndex)
 							);
-							setSelectedMonster(undefined);
+							setSelectedMonsterIndex(undefined);
 						}}
 					>
 						{icons.minus}
@@ -242,7 +244,7 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 								superSocket: "Super Socket",
 							} satisfies Record<Exclude<CharacterName, "player">, string>
 						}
-						selected={level.monsters[selectedMonster.index]?.characterName}
+						selected={selectedMonster?.characterName}
 						setSelected={(characterName) =>
 							updateSelectedMonster((monster) => ({
 								...monster,
@@ -255,7 +257,7 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 		</Flex>,
 		{
 			type: "move-enemies",
-			selectedMonsterIndex: selectedMonster?.index,
+			selectedMonsterIndex,
 			dragging: !!draggedMonster,
 		}
 	);
