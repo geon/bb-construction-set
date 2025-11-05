@@ -60,9 +60,9 @@ const facingLeftBit = 0b01000000;
 const a_3A1C_top_3_mask = 0b00000111;
 const a_3A1C_last_mask = 0b10000000;
 
-function readMonster(
-	monsterBytes: Tuple<number, typeof bytesPerMonster>
-): Monster {
+type SingleMonsterBytes = Tuple<number, typeof bytesPerMonster>;
+
+function readMonster(monsterBytes: SingleMonsterBytes): Monster {
 	return {
 		characterName: monsterNames[monsterBytes[0] & nameMask]!,
 		spawnPoint: {
@@ -91,7 +91,7 @@ export function getMonstersPatch(
 	// Write monsters.
 	return monsterses
 		.flatMap((monsters) => {
-			const subBytes = monsters.flatMap((monster): Tuple<number, 3> => {
+			const subBytes = monsters.flatMap((monster): SingleMonsterBytes => {
 				const confirmed_mystery_bits_A_3A1C =
 					monster.confirmed_mystery_bits_A_3A1C ?? createMysteryBits(monster);
 
