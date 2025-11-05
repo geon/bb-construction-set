@@ -25,11 +25,16 @@ const a_3A1C_last_mask = 0b10000000;
 type SingleMonsterBytes = Tuple<number, typeof bytesPerMonster>;
 
 function parseMonster(monsterBytes: SingleMonsterBytes): Monster {
+	const prgPosition: Coord2 = {
+		x: monsterBytes[0] & positionMask,
+		y: monsterBytes[1] & positionMask,
+	};
+
 	return {
 		characterName: monsterNames[monsterBytes[0] & nameMask]!,
 		spawnPoint: {
-			x: (monsterBytes[0] & positionMask) + prgMonsterPositionOffset.x,
-			y: (monsterBytes[1] & positionMask) + prgMonsterPositionOffset.y,
+			x: prgPosition.x + prgMonsterPositionOffset.x,
+			y: prgPosition.y + prgMonsterPositionOffset.y,
 		},
 		facingLeft: !!(monsterBytes[2] & facingLeftBit),
 		// The game also shifts left when reading the delay.
