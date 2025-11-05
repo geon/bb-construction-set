@@ -37,6 +37,10 @@ function serializeMonsterPosition(spawnPoint: Coord2): Coord2 {
 	);
 }
 
+export function truncateMonsterPosition(spawnPoint: Coord2): Coord2 {
+	return parseMonsterPosition(serializeMonsterPosition(spawnPoint));
+}
+
 type SingleMonsterBytes = Tuple<number, typeof bytesPerMonster>;
 
 function parseMonster(monsterBytes: SingleMonsterBytes): Monster {

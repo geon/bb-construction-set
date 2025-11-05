@@ -17,6 +17,7 @@ import { CoordFields } from "../CoordFields";
 import { ButtonGroup } from "../ButtonGroup";
 import { IntegerInput } from "../IntegerInput";
 import { clamp } from "../../math/scalar";
+import { truncateMonsterPosition } from "../../bb/prg/monsters";
 
 export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 	const level = props.levels[props.levelIndex];
@@ -59,10 +60,7 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 
 		const newMonster = {
 			...selectedMonster,
-			spawnPoint: {
-				x: Math.floor(spawnPoint.x / 2) * 2,
-				y: spawnPoint.y,
-			},
+			spawnPoint: truncateMonsterPosition(spawnPoint),
 		};
 
 		updateSelectedMonster(() => newMonster);
