@@ -24,15 +24,17 @@ const a_3A1C_top_3_mask = 0b00000111;
 const a_3A1C_last_mask = 0b10000000;
 
 function parseMonsterPosition(rawPrgPosition: Coord2): Coord2 {
-	const prgPosition = mapRecord(rawPrgPosition, (x) => x & positionMask);
-	const spawnPoint = add(prgPosition, prgMonsterPositionOffset);
-	return spawnPoint;
+	return add(
+		mapRecord(rawPrgPosition, (x) => x & positionMask),
+		prgMonsterPositionOffset
+	);
 }
 
 function serializeMonsterPosition(spawnPoint: Coord2): Coord2 {
-	const rawPrgPosition = subtract(spawnPoint, prgMonsterPositionOffset);
-	const prgPosition = mapRecord(rawPrgPosition, (x) => x & positionMask);
-	return prgPosition;
+	return mapRecord(
+		subtract(spawnPoint, prgMonsterPositionOffset),
+		(x) => x & positionMask
+	);
 }
 
 type SingleMonsterBytes = Tuple<number, typeof bytesPerMonster>;
