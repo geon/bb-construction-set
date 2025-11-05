@@ -10,44 +10,6 @@ import { Patch, SingleBytePatchEntry } from "./io";
 import { assertTuple, Tuple } from "../tuple";
 import { Coord2 } from "../../math/coord2";
 
-export function readMonsters(
-	monsterBytes: ReadonlyUint8Array
-): Tuple<readonly Monster[], 100> {
-	const monstersForAllLevels: Monster[][] = [];
-
-	let currentMonsterByteIndex = 0;
-	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
-		// Level 100 is the boss level. It has no monsters.
-		if (levelIndex === 99) {
-			monstersForAllLevels.push([]);
-			continue;
-		}
-
-		const monsters: Monster[] = [];
-		do {
-			monsters.push(
-				parseMonster(
-					assertTuple(
-						[
-							...monsterBytes.subarray(
-								currentMonsterByteIndex,
-								currentMonsterByteIndex + bytesPerMonster
-							),
-						],
-						bytesPerMonster
-					)
-				)
-			);
-			currentMonsterByteIndex += bytesPerMonster;
-		} while (monsterBytes[currentMonsterByteIndex]);
-		currentMonsterByteIndex += 1; // The monsters of each level are separated with a zero byte.
-
-		monstersForAllLevels.push(monsters);
-	}
-
-	return assertTuple(monstersForAllLevels, 100);
-}
-
 const prgMonsterPositionOffset: Coord2 = {
 	x: 20,
 	y: 21,
@@ -95,6 +57,44 @@ function serializeMonster(monster: Monster): SingleMonsterBytes {
 			monster.delay |
 			((confirmed_mystery_bits_A_3A1C & 1) << 7),
 	];
+}
+
+export function readMonsters(
+	monsterBytes: ReadonlyUint8Array
+): Tuple<readonly Monster[], 100> {
+	const monstersForAllLevels: Monster[][] = [];
+
+	let currentMonsterByteIndex = 0;
+	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
+		// Level 100 is the boss level. It has no monsters.
+		if (levelIndex === 99) {
+			monstersForAllLevels.push([]);
+			continue;
+		}
+
+		const monsters: Monster[] = [];
+		do {
+			monsters.push(
+				parseMonster(
+					assertTuple(
+						[
+							...monsterBytes.subarray(
+								currentMonsterByteIndex,
+								currentMonsterByteIndex + bytesPerMonster
+							),
+						],
+						bytesPerMonster
+					)
+				)
+			);
+			currentMonsterByteIndex += bytesPerMonster;
+		} while (monsterBytes[currentMonsterByteIndex]);
+		currentMonsterByteIndex += 1; // The monsters of each level are separated with a zero byte.
+
+		monstersForAllLevels.push(monsters);
+	}
+
+	return assertTuple(monstersForAllLevels, 100);
 }
 
 export function getMonstersPatch(
