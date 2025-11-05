@@ -71,7 +71,7 @@ function readMonster(
 		},
 		facingLeft: !!(monsterBytes[2] & facingLeftBit),
 		// The game also shifts left when reading the delay.
-		delay: monsterBytes[2] & 0b00111111,
+		delay: monsterBytes[2] & delayMask,
 		confirmed_mystery_bits_A_3A1C:
 			((monsterBytes[1] & a_3A1C_top_3_mask) << 1) |
 			((monsterBytes[2] & a_3A1C_last_mask) >> 7),
