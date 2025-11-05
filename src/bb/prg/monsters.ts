@@ -26,7 +26,7 @@ export function readMonsters(
 		const monsters: Monster[] = [];
 		do {
 			monsters.push(
-				readMonster(
+				parseMonster(
 					assertTuple(
 						[
 							...monsterBytes.subarray(
@@ -62,7 +62,7 @@ const a_3A1C_last_mask = 0b10000000;
 
 type SingleMonsterBytes = Tuple<number, typeof bytesPerMonster>;
 
-function readMonster(monsterBytes: SingleMonsterBytes): Monster {
+function parseMonster(monsterBytes: SingleMonsterBytes): Monster {
 	return {
 		characterName: monsterNames[monsterBytes[0] & nameMask]!,
 		spawnPoint: {
