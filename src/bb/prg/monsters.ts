@@ -48,12 +48,14 @@ function serializeMonster(monster: Monster): SingleMonsterBytes {
 	const confirmed_mystery_bits_A_3A1C =
 		monster.confirmed_mystery_bits_A_3A1C ?? createMysteryBits(monster);
 
-	const prgPosition = subtract(monster.spawnPoint, prgMonsterPositionOffset);
+	const prgPosition = mapRecord(
+		subtract(monster.spawnPoint, prgMonsterPositionOffset),
+		(x) => x & positionMask
+	);
 
 	return [
-		(prgPosition.x & positionMask) |
-			(monsterNames.indexOf(monster.characterName) & nameMask),
-		(prgPosition.y & positionMask) | (confirmed_mystery_bits_A_3A1C >> 1),
+		prgPosition.x | (monsterNames.indexOf(monster.characterName) & nameMask),
+		prgPosition.y | (confirmed_mystery_bits_A_3A1C >> 1),
 		(monster.facingLeft ? facingLeftBit : 0) |
 			monster.delay |
 			((confirmed_mystery_bits_A_3A1C & 1) << 7),
