@@ -9,6 +9,7 @@ import { monsterNames } from "../game-definitions/character-name";
 import { Patch, SingleBytePatchEntry } from "./io";
 import { assertTuple, Tuple } from "../tuple";
 import { add, Coord2, subtract } from "../../math/coord2";
+import { mapRecord } from "../functions";
 
 const prgMonsterPositionOffset: Coord2 = {
 	x: 20,
@@ -25,10 +26,11 @@ const a_3A1C_last_mask = 0b10000000;
 type SingleMonsterBytes = Tuple<number, typeof bytesPerMonster>;
 
 function parseMonster(monsterBytes: SingleMonsterBytes): Monster {
-	const prgPosition: Coord2 = {
-		x: monsterBytes[0] & positionMask,
-		y: monsterBytes[1] & positionMask,
+	const rawPrgPosition: Coord2 = {
+		x: monsterBytes[0],
+		y: monsterBytes[1],
 	};
+	const prgPosition = mapRecord(rawPrgPosition, (x) => x & positionMask);
 
 	return {
 		characterName: monsterNames[monsterBytes[0] & nameMask]!,
