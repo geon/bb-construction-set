@@ -23,6 +23,12 @@ const facingLeftBit = 0b01000000;
 const a_3A1C_top_3_mask = 0b00000111;
 const a_3A1C_last_mask = 0b10000000;
 
+function parseMonsterPosition(rawPrgPosition: Coord2): Coord2 {
+	const prgPosition = mapRecord(rawPrgPosition, (x) => x & positionMask);
+	const spawnPoint = add(prgPosition, prgMonsterPositionOffset);
+	return spawnPoint;
+}
+
 type SingleMonsterBytes = Tuple<number, typeof bytesPerMonster>;
 
 function parseMonster(monsterBytes: SingleMonsterBytes): Monster {
@@ -30,8 +36,7 @@ function parseMonster(monsterBytes: SingleMonsterBytes): Monster {
 		x: monsterBytes[0],
 		y: monsterBytes[1],
 	};
-	const prgPosition = mapRecord(rawPrgPosition, (x) => x & positionMask);
-	const spawnPoint = add(prgPosition, prgMonsterPositionOffset);
+	const spawnPoint = parseMonsterPosition(rawPrgPosition);
 
 	return {
 		characterName: monsterNames[monsterBytes[0] & nameMask]!,
