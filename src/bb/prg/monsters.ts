@@ -95,15 +95,18 @@ export function getMonstersPatch(
 				const confirmed_mystery_bits_A_3A1C =
 					monster.confirmed_mystery_bits_A_3A1C ?? createMysteryBits(monster);
 
+				const prgPosition: Coord2 = {
+					x: monster.spawnPoint.x - prgMonsterPositionOffset.x,
+					y: monster.spawnPoint.y - prgMonsterPositionOffset.y,
+				};
+
 				return [
 					[
-						((monster.spawnPoint.x - prgMonsterPositionOffset.x) &
-							positionMask) |
+						(prgPosition.x & positionMask) |
 							(monsterNames.indexOf(monster.characterName) & nameMask),
 					],
 					[
-						(monster.spawnPoint.y - prgMonsterPositionOffset.y) |
-							(confirmed_mystery_bits_A_3A1C >> 1),
+						prgPosition.y | (confirmed_mystery_bits_A_3A1C >> 1),
 						positionMask | a_3A1C_top_3_mask,
 					],
 					[
