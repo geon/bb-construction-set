@@ -40,15 +40,12 @@ function serializeMonsterPosition(spawnPoint: Coord2): Coord2 {
 type SingleMonsterBytes = Tuple<number, typeof bytesPerMonster>;
 
 function parseMonster(monsterBytes: SingleMonsterBytes): Monster {
-	const rawPrgPosition: Coord2 = {
-		x: monsterBytes[0],
-		y: monsterBytes[1],
-	};
-	const spawnPoint = parseMonsterPosition(rawPrgPosition);
-
 	return {
 		characterName: monsterNames[monsterBytes[0] & nameMask]!,
-		spawnPoint,
+		spawnPoint: parseMonsterPosition({
+			x: monsterBytes[0],
+			y: monsterBytes[1],
+		}),
 		facingLeft: !!(monsterBytes[2] & facingLeftBit),
 		// The game also shifts left when reading the delay.
 		delay: monsterBytes[2] & delayMask,
