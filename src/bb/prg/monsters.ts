@@ -29,6 +29,12 @@ function parseMonsterPosition(rawPrgPosition: Coord2): Coord2 {
 	return spawnPoint;
 }
 
+function serializeMonsterPosition(spawnPoint: Coord2): Coord2 {
+	const rawPrgPosition = subtract(spawnPoint, prgMonsterPositionOffset);
+	const prgPosition = mapRecord(rawPrgPosition, (x) => x & positionMask);
+	return prgPosition;
+}
+
 type SingleMonsterBytes = Tuple<number, typeof bytesPerMonster>;
 
 function parseMonster(monsterBytes: SingleMonsterBytes): Monster {
@@ -54,8 +60,7 @@ function serializeMonster(monster: Monster): SingleMonsterBytes {
 	const confirmed_mystery_bits_A_3A1C =
 		monster.confirmed_mystery_bits_A_3A1C ?? createMysteryBits(monster);
 
-	const rawPrgPosition = subtract(monster.spawnPoint, prgMonsterPositionOffset);
-	const prgPosition = mapRecord(rawPrgPosition, (x) => x & positionMask);
+	const prgPosition = serializeMonsterPosition(monster.spawnPoint);
 
 	return [
 		prgPosition.x | (monsterNames.indexOf(monster.characterName) & nameMask),
