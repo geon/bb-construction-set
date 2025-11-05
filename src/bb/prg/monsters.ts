@@ -106,7 +106,8 @@ export function getMonstersPatch(
 							(monsterNames.indexOf(monster.characterName) & nameMask),
 					],
 					[
-						prgPosition.y | (confirmed_mystery_bits_A_3A1C >> 1),
+						(prgPosition.y & positionMask) |
+							(confirmed_mystery_bits_A_3A1C >> 1),
 						positionMask | a_3A1C_top_3_mask,
 					],
 					[
