@@ -91,7 +91,7 @@ export function getMonstersPatch(
 	// Write monsters.
 	return monsterses
 		.flatMap((monsters) => {
-			const subBytes = monsters.flatMap((monster) => {
+			const subBytes = monsters.flatMap((monster): Tuple<number, 3> => {
 				const confirmed_mystery_bits_A_3A1C =
 					monster.confirmed_mystery_bits_A_3A1C ?? createMysteryBits(monster);
 
@@ -101,30 +101,21 @@ export function getMonstersPatch(
 				};
 
 				return [
-					[
-						(prgPosition.x & positionMask) |
-							(monsterNames.indexOf(monster.characterName) & nameMask),
-					],
-					[
-						(prgPosition.y & positionMask) |
-							(confirmed_mystery_bits_A_3A1C >> 1),
-						positionMask | a_3A1C_top_3_mask,
-					],
-					[
-						(monster.facingLeft ? facingLeftBit : 0) |
-							monster.delay |
-							((confirmed_mystery_bits_A_3A1C & 1) << 7),
-						facingLeftBit | delayMask | a_3A1C_last_mask,
-					],
+					(prgPosition.x & positionMask) |
+						(monsterNames.indexOf(monster.characterName) & nameMask),
+					(prgPosition.y & positionMask) | (confirmed_mystery_bits_A_3A1C >> 1),
+					(monster.facingLeft ? facingLeftBit : 0) |
+						monster.delay |
+						((confirmed_mystery_bits_A_3A1C & 1) << 7),
 				];
 			});
 			// Terminate each level with a zero.
-			return [...subBytes, [0] as const];
+			return [...subBytes, 0];
 		})
 		.map(
-			([value, mask], index): SingleBytePatchEntry => [
+			(value, index): SingleBytePatchEntry => [
 				levelSegmentLocations.monsters.startAddress + index,
-				[value, mask],
+				[value],
 			]
 		);
 }
