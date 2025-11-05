@@ -78,6 +78,25 @@ function parseMonster(monsterBytes: SingleMonsterBytes): Monster {
 	};
 }
 
+function serializeMonster(monster: Monster): SingleMonsterBytes {
+	const confirmed_mystery_bits_A_3A1C =
+		monster.confirmed_mystery_bits_A_3A1C ?? createMysteryBits(monster);
+
+	const prgPosition: Coord2 = {
+		x: monster.spawnPoint.x - prgMonsterPositionOffset.x,
+		y: monster.spawnPoint.y - prgMonsterPositionOffset.y,
+	};
+
+	return [
+		(prgPosition.x & positionMask) |
+			(monsterNames.indexOf(monster.characterName) & nameMask),
+		(prgPosition.y & positionMask) | (confirmed_mystery_bits_A_3A1C >> 1),
+		(monster.facingLeft ? facingLeftBit : 0) |
+			monster.delay |
+			((confirmed_mystery_bits_A_3A1C & 1) << 7),
+	];
+}
+
 export function getMonstersPatch(
 	monsterses: Tuple<readonly Monster[], 100>
 ): Patch {
@@ -91,24 +110,7 @@ export function getMonstersPatch(
 	// Write monsters.
 	return monsterses
 		.flatMap((monsters) => {
-			const subBytes = monsters.flatMap((monster): SingleMonsterBytes => {
-				const confirmed_mystery_bits_A_3A1C =
-					monster.confirmed_mystery_bits_A_3A1C ?? createMysteryBits(monster);
-
-				const prgPosition: Coord2 = {
-					x: monster.spawnPoint.x - prgMonsterPositionOffset.x,
-					y: monster.spawnPoint.y - prgMonsterPositionOffset.y,
-				};
-
-				return [
-					(prgPosition.x & positionMask) |
-						(monsterNames.indexOf(monster.characterName) & nameMask),
-					(prgPosition.y & positionMask) | (confirmed_mystery_bits_A_3A1C >> 1),
-					(monster.facingLeft ? facingLeftBit : 0) |
-						monster.delay |
-						((confirmed_mystery_bits_A_3A1C & 1) << 7),
-				];
-			});
+			const subBytes = monsters.flatMap(serializeMonster);
 			// Terminate each level with a zero.
 			return [...subBytes, 0];
 		})
