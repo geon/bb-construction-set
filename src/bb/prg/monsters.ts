@@ -31,10 +31,11 @@ function parseMonster(monsterBytes: SingleMonsterBytes): Monster {
 		y: monsterBytes[1],
 	};
 	const prgPosition = mapRecord(rawPrgPosition, (x) => x & positionMask);
+	const spawnPoint = add(prgPosition, prgMonsterPositionOffset);
 
 	return {
 		characterName: monsterNames[monsterBytes[0] & nameMask]!,
-		spawnPoint: add(prgPosition, prgMonsterPositionOffset),
+		spawnPoint,
 		facingLeft: !!(monsterBytes[2] & facingLeftBit),
 		// The game also shifts left when reading the delay.
 		delay: monsterBytes[2] & delayMask,
