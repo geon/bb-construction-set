@@ -3,7 +3,7 @@ import { ParsedPrg } from "../bb/internal-data-formats/parsed-prg";
 import { imageDataFromPaletteImage } from "../bb/image-data/image-data";
 import { drawLevel } from "../bb/palette-image/level";
 import { Card } from "./Card";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { drawLevels } from "../bb/image-data/draw-level";
 import { objectEntries, reorder, updateArrayAtIndex } from "../bb/functions";
 import { ButtonGroup } from "./ButtonGroup";
@@ -23,6 +23,12 @@ import { Coord2, divide, floor } from "../math/coord2";
 import { assertTuple } from "../bb/tuple";
 import { LevelIndex } from "../bb/internal-data-formats/levels";
 import { WindEditor } from "./ClickDragCanvasEventHandlerProviders/WindEditor";
+import {
+	Budget,
+	budgetBlown,
+	Budgets,
+	resourceNameLabels,
+} from "../bb/prg/budgets";
 
 const ImageCard = styled(Card)<{
 	readonly children: [JSX.Element, JSX.Element];
@@ -93,6 +99,24 @@ const clickDragCanvasEventHandlerProviders = {
 	"wind-editor": WindEditor,
 } as const satisfies Record<string, ClickDragCanvasEventHandlerProvider>;
 
+const BudgetView = styled(
+	(props: { readonly budget: Budget; className?: string }) => (
+		<span className={props.className}>
+			{props.budget.used}/{props.budget.max}
+		</span>
+	)
+)`
+	${(props) =>
+		!budgetBlown(props.budget)
+			? ""
+			: css`
+					background: red;
+					color: white;
+					border-radius: 0.1em;
+			  `}
+	padding: 0.2em;
+`;
+
 export function LevelPreviewCard(props: {
 	readonly parsedPrg: ParsedPrg;
 	readonly setParsedPrg: Setter<ParsedPrg>;
@@ -100,6 +124,7 @@ export function LevelPreviewCard(props: {
 	readonly setLevelIndex: Setter<LevelIndex>;
 	readonly showLevelSelectionGrid: boolean;
 	readonly setShowLevelSelectionGrid: Setter<boolean>;
+	readonly budgets: Budgets;
 }): ReactNode {
 	const setLevel = (level: Level) =>
 		props.setParsedPrg({
@@ -141,6 +166,13 @@ export function LevelPreviewCard(props: {
 					)}
 
 					<Flex $col>
+						<Flex $row $spaceBetween>
+							{resourceNameLabels.map(([key, label]) => (
+								<span key={key}>
+									{label}: <BudgetView budget={props.budgets[key]} />
+								</span>
+							))}
+						</Flex>
 						<Flex $row $spaceBetween>
 							<ButtonGroup>
 								<LevelSelectionButtons

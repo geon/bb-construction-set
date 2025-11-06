@@ -12,15 +12,23 @@ import { mapAsync, range } from "../bb/functions";
 import { Patch } from "../bb/prg/io";
 import { ButtonRow } from "./ButtonRow";
 import { FileInput } from "./FileInput";
+import { budgetBlown, Budgets, resourceNameLabels } from "../bb/prg/budgets";
 
 export function FileMenu(props: {
 	readonly parsedPrg?: ParsedPrg;
 	readonly prg?: ArrayBuffer;
 	readonly setPrg: (arrayBuffer: ArrayBuffer) => void;
 	readonly manualPatch: Patch;
+	readonly budgets: Budgets;
 }): ReactNode {
 	const parsedPrg = props.parsedPrg;
 	const prg = props.prg;
+	const blownBudgets = resourceNameLabels
+		.filter(([key]) => budgetBlown(props.budgets[key]))
+		.map(([, label]) => label.toLowerCase());
+	const error = !blownBudgets.length
+		? undefined
+		: `Over budget on ${blownBudgets.join(", ")}.`;
 
 	return (
 		<Card>
@@ -64,24 +72,25 @@ export function FileMenu(props: {
 					Open Prg...
 				</FileInput>
 				<BlobDownloadButton
+					title={error}
 					getBlob={
-						prg &&
-						parsedPrg &&
-						(async () => {
-							const patched = patchPrg(
-								//
-								prg,
-								parsedPrg,
-								props.manualPatch
-							);
+						!(!error && prg && parsedPrg)
+							? undefined
+							: async () => {
+									const patched = patchPrg(
+										//
+										prg,
+										parsedPrg,
+										props.manualPatch
+									);
 
-							return {
-								blob: new Blob([patched], {
-									type: "application/octet-stream",
-								}),
-								fileName: "custom bubble bobble.prg",
-							};
-						})
+									return {
+										blob: new Blob([patched], {
+											type: "application/octet-stream",
+										}),
+										fileName: "custom bubble bobble.prg",
+									};
+							  }
 					}
 					label="Save Custom Prg"
 				/>

@@ -17,6 +17,7 @@ import { Levels } from "./tabs/Levels";
 import { LevelPreviewCard } from "./LevelPreviewCard";
 import { originalPrg as originalPrg } from "../bb/prg/parsed-prg";
 import { LevelIndex } from "../bb/internal-data-formats/levels";
+import { getBudgets } from "../bb/prg/budgets";
 
 const Page = styled.div`
 	width: 100%;
@@ -70,6 +71,8 @@ export function App() {
 
 	const [manualPatch, setManualPatch] = useState<Patch>([]);
 
+	const budgets = getBudgets(parsedPrg.levels);
+
 	return (
 		<Page>
 			<h1>BB Construction Set</h1>
@@ -78,6 +81,7 @@ export function App() {
 				setPrg={setPrg}
 				parsedPrg={parsedPrg}
 				manualPatch={manualPatch}
+				budgets={budgets}
 			/>
 			<LevelPreviewCard
 				parsedPrg={parsedPrg}
@@ -86,6 +90,7 @@ export function App() {
 				setLevelIndex={setLevelIndex}
 				showLevelSelectionGrid={showLevelSelectionGrid}
 				setShowLevelSelectionGrid={setShowLevelSelectionGrid}
+				budgets={budgets}
 			/>
 			{levelIndex !== undefined && (
 				<TabBar

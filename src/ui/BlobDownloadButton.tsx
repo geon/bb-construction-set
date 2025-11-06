@@ -18,11 +18,13 @@ export function BlobDownloadButton(props: {
 	>;
 	label: string;
 	className?: string;
+	title?: string;
 }) {
 	const getBlob = props.getBlob;
 
 	return (
 		<button
+			title={props.title}
 			className={props.className}
 			disabled={!getBlob}
 			onClick={
