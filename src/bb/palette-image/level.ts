@@ -66,7 +66,7 @@ export function drawLevel(
 	const level = parsedPrg.levels[levelIndex]!;
 
 	const mutedBgColors: BgColors = {
-		light: palette.lightGrey,
+		light: palette.grey,
 		dark: palette.darkGrey,
 	};
 	const bgColors =
