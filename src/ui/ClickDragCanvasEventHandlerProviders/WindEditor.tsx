@@ -152,6 +152,7 @@ export const WindEditor: ClickDragCanvasEventHandlerProvider = (props) => {
 				props.children(
 					eventHandlers,
 					<ChildContent
+						type={level.bubbleCurrentRectangles.type}
 						showPerLineDefaults={showPerLineDefaults}
 						setShowPerLineDefaults={setShowPerLineDefaults}
 						setCopyLevelIndex={setCopyLevelIndex}
@@ -187,7 +188,7 @@ export const WindEditor: ClickDragCanvasEventHandlerProvider = (props) => {
 };
 
 function ChildContent(props: {
-	type?: "copy" | "rectangles";
+	type: "copy" | "rectangles";
 	showPerLineDefaults: boolean;
 	setShowPerLineDefaults: Setter<boolean>;
 	setCopyLevelIndex: (levelIndex: LevelIndex) => void;
