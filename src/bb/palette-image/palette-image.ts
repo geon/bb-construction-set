@@ -184,14 +184,14 @@ export function drawRect(
 	for (const index of range(rect.size.x)) {
 		const x = rect.pos.x + index;
 		image[rect.pos.y]![x] = colors[x % 2];
-		image[rect.pos.y + rect.size.y - 1]![x] = colors[x % 2];
+		image[rect.pos.y + rect.size.y - 1]![x] = colors[(x + 1) % 2];
 	}
 	const rangeY = rect.size.y - 2;
 	if (rangeY > 0) {
 		for (const index of range(rangeY)) {
 			const y = rect.pos.y + index + 1;
 			image[y]![rect.pos.x] = colors[y % 2];
-			image[y]![rect.pos.x + rect.size.x - 1] = colors[y % 2];
+			image[y]![rect.pos.x + rect.size.x - 1] = colors[(y + 1) % 2];
 		}
 	}
 }
