@@ -29,6 +29,7 @@ import {
 	Budgets,
 	resourceNameLabels,
 } from "../bb/prg/budgets";
+import { PlatformGraphics } from "./ClickDragCanvasEventHandlerProviders/PlatformGraphics";
 
 const ImageCard = styled(Card)<{
 	readonly children: [JSX.Element, JSX.Element];
@@ -93,6 +94,7 @@ function LevelSelector(props: {
 
 const clickDragCanvasEventHandlerProviders = {
 	"draw-platforms": DrawPlatforms,
+	"platform-graphics": PlatformGraphics,
 	"move-items": MoveItems,
 	"move-enemies": MoveEnemies,
 	"spawn-bubbles": SpawnBubbles,
@@ -248,6 +250,7 @@ function ToolButtons({
 		<>
 			{objectEntries({
 				"draw-platforms": icons.pen,
+				"platform-graphics": icons.palette,
 				"move-items": icons.umbrella,
 				"move-enemies": icons.buster,
 				"spawn-bubbles": icons.fireBubble,
