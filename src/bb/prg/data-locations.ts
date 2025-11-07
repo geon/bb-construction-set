@@ -19,6 +19,7 @@ export const maxSidebars = 59;
 export const maxMonsters = 572;
 export const bytesPerMonster = 3;
 const monsterStopBytes = 100; // A stop-byte for each level. Boss level has no stored monsters.
+export const maxWindCurrentBytes = 1145; // Determined through experimentation with ts code. Might be wrong.
 
 const platformCharArrayAddress = 0xc26e;
 const sidebarCharArrayAddress = 0xbb0e;
@@ -84,8 +85,7 @@ export const levelSegmentLocations: Readonly<
 	},
 	windCurrents: {
 		startAddress: windCurrentsArrayAddress,
-		// Determined through experimentation with ts code. Might be wrong.
-		length: 1145,
+		length: maxWindCurrentBytes,
 	},
 
 	// The 2 coords are stored as 4 5-bit ints, packed into 3 bytes:
