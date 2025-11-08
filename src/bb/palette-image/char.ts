@@ -209,9 +209,9 @@ export function parseLevelPlatformChars(
 }
 
 export function drawCharBlock(
-	charBlock: CharBlock<number, number>,
+	charBlock: CharBlock,
 	charPalette: SubPalette,
-	mask?: CharBlock<number, number>
+	mask?: CharBlock
 ): PaletteImage {
 	// The chars are column-order just like in the game.
 	const image = createPaletteImage({

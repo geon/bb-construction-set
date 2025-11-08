@@ -1,6 +1,5 @@
 import { ReactNode, useState } from "react";
 import { ParsedPrg } from "../../bb/internal-data-formats/parsed-prg";
-import { CharGroup } from "../../bb/internal-data-formats/char-group";
 import styled from "styled-components";
 import { checkedAccess, updateArrayAtIndex } from "../../bb/functions";
 import { CharBlockSelector } from "../CharBlockSelector";
@@ -37,7 +36,7 @@ export function EnemyBonuses(props: {
 					const item = checkedAccess(props.parsedPrg.items.points, bonusIndex);
 					return {
 						charBlock: checkedAccess(
-							props.parsedPrg.chars.items as CharGroup<2, 2>,
+							props.parsedPrg.chars.items,
 							item.charBlockIndex
 						),
 						palette: getCharPalette(item.paletteIndex, bgColors),
@@ -49,7 +48,7 @@ export function EnemyBonuses(props: {
 			<CharBlockSelector
 				charBlocks={props.parsedPrg.items.points.map((item) => ({
 					charBlock: checkedAccess(
-						props.parsedPrg.chars.items as CharGroup<2, 2>,
+						props.parsedPrg.chars.items,
 						item.charBlockIndex
 					),
 					palette: getCharPalette(item.paletteIndex, bgColors),

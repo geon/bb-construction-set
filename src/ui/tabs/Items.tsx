@@ -1,9 +1,6 @@
 import { ReactNode, useState } from "react";
 import { ParsedPrg } from "../../bb/internal-data-formats/parsed-prg";
-import {
-	CharBlock,
-	CharGroup,
-} from "../../bb/internal-data-formats/char-group";
+import { CharBlock } from "../../bb/internal-data-formats/char-group";
 import styled from "styled-components";
 import { PaletteIndex } from "../../bb/internal-data-formats/palette";
 import {
@@ -78,7 +75,7 @@ export function Items(props: {
 						}).map(({ itemName, item }) => ({
 							title: itemName,
 							charBlock: checkedAccess(
-								props.parsedPrg.chars.items as CharGroup<2, 2>,
+								props.parsedPrg.chars.items,
 								item.charBlockIndex
 							),
 							palette: getCharPalette(
@@ -145,9 +142,7 @@ export function Items(props: {
 							return (
 								<CharBlockSelector
 									charBlocks={(
-										props.parsedPrg.chars.items as ReadonlyArray<
-											CharBlock<2, 2>
-										>
+										props.parsedPrg.chars.items as ReadonlyArray<CharBlock>
 									).map((charBlock) => ({
 										charBlock,
 										palette: getCharPalette(

@@ -337,7 +337,7 @@ function reassembleAllChars(
 	chars: readonly { char: Char; color: PaletteIndex | undefined }[]
 ): CharGroups {
 	let groupStart = 0;
-	return mapRecord(charGroupMeta, (meta): CharGroup<number, number> => {
+	return mapRecord(charGroupMeta, (meta): CharGroup => {
 		const groupEnd = groupStart + meta.count * meta.width * meta.height;
 		const groupChars = chars
 			.slice(groupStart, groupEnd)

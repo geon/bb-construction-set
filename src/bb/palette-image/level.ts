@@ -131,10 +131,7 @@ export function drawLevel(
 		blitPaletteImage(
 			image,
 			drawCharBlock(
-				checkedAccess(
-					parsedPrg.chars.items as CharGroup<2, 2>,
-					item.charBlockIndex
-				),
+				checkedAccess(parsedPrg.chars.items as CharGroup, item.charBlockIndex),
 				getCharPalette(item.paletteIndex, bgColors)
 			),
 			{

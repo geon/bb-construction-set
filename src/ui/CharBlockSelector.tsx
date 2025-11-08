@@ -10,7 +10,7 @@ export const CharBlockSelector = styled(
 	(props: {
 		readonly charBlocks: ReadonlyArray<{
 			readonly title?: string;
-			readonly charBlock: CharBlock<2, 2>;
+			readonly charBlock: CharBlock;
 			readonly palette: SubPalette;
 		}>;
 		readonly charBlockIndex?: number;

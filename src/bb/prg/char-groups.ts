@@ -14,22 +14,19 @@ import { charSegmentLocations, fontLevelNumbersMask } from "./data-locations";
 export function parseCharGroups(
 	dataSegments: Record<CharSegmentName, DataSegment>
 ): CharGroups {
-	return mapRecord(
-		dataSegments,
-		(dataSegment, segmentName): CharGroup<number, number> => {
-			const charBlocks = strictChunk(
-				strictChunk(
-					strictChunk([...dataSegment.buffer], linesPerChar).map(
-						(char): Char => mapTuple(char, parseColorPixelByte)
-					),
-					charGroupMeta[segmentName].height
+	return mapRecord(dataSegments, (dataSegment, segmentName): CharGroup => {
+		const charBlocks = strictChunk(
+			strictChunk(
+				strictChunk([...dataSegment.buffer], linesPerChar).map(
+					(char): Char => mapTuple(char, parseColorPixelByte)
 				),
-				charGroupMeta[segmentName].width
-			);
+				charGroupMeta[segmentName].height
+			),
+			charGroupMeta[segmentName].width
+		);
 
-			return charBlocks;
-		}
-	);
+		return charBlocks;
+	});
 }
 
 export function serializeCharGroups(
