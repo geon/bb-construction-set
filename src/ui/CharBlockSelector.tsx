@@ -4,7 +4,7 @@ import { SubPalette } from "../bb/internal-data-formats/palette";
 import { drawCharBlock } from "../bb/palette-image/char";
 import { doubleImageWidth } from "../bb/palette-image/palette-image";
 import { ImageDataCanvas } from "./ImageDataCanvas";
-import { CharBlock } from "../bb/internal-data-formats/char-group";
+import { CharBlock } from "../bb/internal-data-formats/char-block";
 
 export const CharBlockSelector = styled(
 	(props: {

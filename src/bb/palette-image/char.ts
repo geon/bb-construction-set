@@ -4,7 +4,7 @@ import { bitsToByte, byteToBits } from "../bit-twiddling";
 import { range, zipObject } from "../functions";
 import { BgColors } from "../internal-data-formats/bg-colors";
 import { Char } from "../internal-data-formats/char";
-import { CharBlock } from "../internal-data-formats/char-group";
+import { CharBlock } from "../internal-data-formats/char-block";
 import {
 	parseColorPixelByte,
 	serializeColorPixelByte,

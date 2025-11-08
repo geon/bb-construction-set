@@ -1,6 +1,6 @@
 import { ReactNode, useState } from "react";
 import { ParsedPrg } from "../../bb/internal-data-formats/parsed-prg";
-import { CharBlock } from "../../bb/internal-data-formats/char-group";
+import { CharBlock } from "../../bb/internal-data-formats/char-block";
 import styled from "styled-components";
 import { PaletteIndex } from "../../bb/internal-data-formats/palette";
 import {
