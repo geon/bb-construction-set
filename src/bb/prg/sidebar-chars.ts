@@ -1,4 +1,4 @@
-import { Char, CharBlock } from "../internal-data-formats/char";
+import { Char, Char4Tuple } from "../internal-data-formats/char";
 import { parseColorPixelByte } from "../internal-data-formats/color-pixel-byte";
 import { isDefined, padRight, strictChunk } from "../functions";
 import { assertTuple, mapTuple, Tuple } from "../tuple";
@@ -8,9 +8,9 @@ import { ReadonlyUint8Array } from "../types";
 export function readSidebarChars(
 	sidebarCharsBytes: ReadonlyUint8Array,
 	sidebarCharsIndexBytes: ReadonlyUint8Array
-): Tuple<CharBlock | undefined, 100> {
+): Tuple<Char4Tuple | undefined, 100> {
 	const linesPerChar = 8;
-	const allSidebarCharBlocks: Array<CharBlock> = strictChunk(
+	const allSidebarCharBlocks: Array<Char4Tuple> = strictChunk(
 		strictChunk([...sidebarCharsBytes], linesPerChar).map(
 			(char): Char => mapTuple(char, parseColorPixelByte)
 		),
@@ -36,7 +36,7 @@ export function readSidebarChars(
 }
 
 export function writeSidebarChars(
-	sidebarCharses: Tuple<CharBlock | undefined, 100>
+	sidebarCharses: Tuple<Char4Tuple | undefined, 100>
 ): Uint8Array {
 	const sidebarLevels = sidebarCharses.filter(isDefined);
 	if (sidebarLevels.length > maxSidebars) {
@@ -62,7 +62,7 @@ export function writeSidebarChars(
 }
 
 export function writeSidebarCharsIndex(
-	sidebarCharses: readonly (CharBlock | undefined)[]
+	sidebarCharses: readonly (Char4Tuple | undefined)[]
 ): Uint8Array {
 	// TODO: Rewrite to find duplicates and reuse blocks.
 

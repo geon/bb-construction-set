@@ -1,4 +1,4 @@
-import { CharBlock } from "./char";
+import { Char4Tuple } from "./char";
 import { Char } from "./char";
 import { Coord2 } from "../../math/coord2";
 import { Rect } from "../../math/rect";
@@ -78,7 +78,7 @@ export interface Level {
 	readonly holes: Holes;
 	readonly bgColors: BgColors;
 	readonly platformChar: Char;
-	readonly sidebarChars: CharBlock | undefined;
+	readonly sidebarChars: Char4Tuple | undefined;
 	readonly monsters: ReadonlyArray<Monster>;
 	readonly bubbleCurrentRectangles: BubbleCurrentRectangles;
 	readonly bubbleCurrentPerLineDefaults: BubbleCurrentPerLineDefaults;
