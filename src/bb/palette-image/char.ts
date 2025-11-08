@@ -4,7 +4,11 @@ import { bitsToByte, byteToBits } from "../bit-twiddling";
 import { range, zipObject } from "../functions";
 import { BgColors } from "../internal-data-formats/bg-colors";
 import { Char } from "../internal-data-formats/char";
-import { CharBlock } from "../internal-data-formats/char-block";
+import {
+	CharBlock,
+	charBlockFromTuple,
+	tupleFromBlockFrom2x2CharBlock,
+} from "../internal-data-formats/char-block";
 import {
 	parseColorPixelByte,
 	serializeColorPixelByte,
@@ -144,10 +148,8 @@ export function drawLevelPlatformChars(level: PlatformCharsData): PaletteImage {
 	const drawCharWithPalette = (char: Char) => drawChar(char, charPalette);
 
 	const sidebarChars = level.sidebarChars ?? [
-		level.platformChar,
-		level.platformChar,
-		level.platformChar,
-		level.platformChar,
+		[level.platformChar, level.platformChar],
+		[level.platformChar, level.platformChar],
 	];
 
 	const emptyLine = [undefined, undefined, undefined, undefined];
@@ -172,7 +174,9 @@ export function drawLevelPlatformChars(level: PlatformCharsData): PaletteImage {
 	return drawLayout(
 		layOutChars(),
 		[
-			[...sidebarChars, level.platformChar].map(drawCharWithPalette),
+			[...tupleFromBlockFrom2x2CharBlock(sidebarChars), level.platformChar].map(
+				drawCharWithPalette
+			),
 			[bgColorsCharImage, emptyCharImage],
 		].flat()
 	);
@@ -197,9 +201,11 @@ export function parseLevelPlatformChars(
 		(sidebarCharImage) =>
 			!paletteImagesEqual(sidebarCharImage, platformCharImage)
 	)
-		? mapTuple(
-				sidebarCharImages,
-				(charImage) => parseChar(charImage, charPalette).char
+		? charBlockFromTuple(
+				mapTuple(
+					sidebarCharImages,
+					(charImage) => parseChar(charImage, charPalette).char
+				)
 		  )
 		: undefined;
 

@@ -1,4 +1,3 @@
-import { Char4Tuple } from "./char";
 import { Char } from "./char";
 import { Coord2 } from "../../math/coord2";
 import { Rect } from "../../math/rect";
@@ -9,6 +8,7 @@ import { CharacterName } from "../game-definitions/character-name";
 import { LevelIndex } from "./levels";
 import { Tuple } from "../tuple";
 import { levelSize } from "../game-definitions/level-size";
+import { CharBlock } from "./char-block";
 
 interface Character<TCharacterName> {
 	readonly characterName: TCharacterName;
@@ -78,7 +78,7 @@ export interface Level {
 	readonly holes: Holes;
 	readonly bgColors: BgColors;
 	readonly platformChar: Char;
-	readonly sidebarChars: Char4Tuple | undefined;
+	readonly sidebarChars: CharBlock | undefined;
 	readonly monsters: ReadonlyArray<Monster>;
 	readonly bubbleCurrentRectangles: BubbleCurrentRectangles;
 	readonly bubbleCurrentPerLineDefaults: BubbleCurrentPerLineDefaults;

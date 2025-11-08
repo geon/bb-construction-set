@@ -1,21 +1,26 @@
-import { Char, Char4Tuple } from "../internal-data-formats/char";
+import { Char } from "../internal-data-formats/char";
 import { parseColorPixelByte } from "../internal-data-formats/color-pixel-byte";
 import { isDefined, padRight, strictChunk } from "../functions";
 import { assertTuple, mapTuple, Tuple } from "../tuple";
 import { maxSidebars, levelSegmentLocations } from "./data-locations";
 import { ReadonlyUint8Array } from "../types";
+import {
+	CharBlock,
+	charBlockFromTuple,
+	tupleFromBlockFrom2x2CharBlock,
+} from "../internal-data-formats/char-block";
 
 export function readSidebarChars(
 	sidebarCharsBytes: ReadonlyUint8Array,
 	sidebarCharsIndexBytes: ReadonlyUint8Array
-): Tuple<Char4Tuple | undefined, 100> {
+): Tuple<CharBlock | undefined, 100> {
 	const linesPerChar = 8;
-	const allSidebarCharBlocks: Array<Char4Tuple> = strictChunk(
+	const allSidebarCharBlocks = strictChunk(
 		strictChunk([...sidebarCharsBytes], linesPerChar).map(
 			(char): Char => mapTuple(char, parseColorPixelByte)
 		),
 		4
-	);
+	).map(charBlockFromTuple);
 
 	const mask = levelSegmentLocations.sidebarCharsIndex.mask;
 	if (mask === undefined) {
@@ -36,7 +41,7 @@ export function readSidebarChars(
 }
 
 export function writeSidebarChars(
-	sidebarCharses: Tuple<Char4Tuple | undefined, 100>
+	sidebarCharses: Tuple<CharBlock | undefined, 100>
 ): Uint8Array {
 	const sidebarLevels = sidebarCharses.filter(isDefined);
 	if (sidebarLevels.length > maxSidebars) {
@@ -47,14 +52,19 @@ export function writeSidebarChars(
 
 	return new Uint8Array(
 		padRight(
-			sidebarLevels.flatMap((sidebarChars) =>
-				sidebarChars.flatMap((char) =>
-					char.map(
-						(line) =>
-							(line[0] << 6) + (line[1] << 4) + (line[2] << 2) + (line[3] << 0)
+			sidebarLevels
+				.map(tupleFromBlockFrom2x2CharBlock)
+				.flatMap((sidebarChars) =>
+					sidebarChars.flatMap((char) =>
+						char.map(
+							(line) =>
+								(line[0] << 6) +
+								(line[1] << 4) +
+								(line[2] << 2) +
+								(line[3] << 0)
+						)
 					)
-				)
-			),
+				),
 			maxSidebars * 4 * 8,
 			0
 		)
@@ -62,7 +72,7 @@ export function writeSidebarChars(
 }
 
 export function writeSidebarCharsIndex(
-	sidebarCharses: readonly (Char4Tuple | undefined)[]
+	sidebarCharses: readonly (CharBlock | undefined)[]
 ): Uint8Array {
 	// TODO: Rewrite to find duplicates and reuse blocks.
 
