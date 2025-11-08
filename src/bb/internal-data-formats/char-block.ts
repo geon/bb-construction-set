@@ -1,8 +1,11 @@
-import { Char, Char4Tuple } from "./char";
+import { Tuple } from "../tuple";
+import { Char } from "./char";
 
 export type CharBlock =
 	// The chars are column-order just like in the game.
 	ReadonlyArray<ReadonlyArray<Char>>;
+
+type Char4Tuple = Tuple<Char, 4>;
 
 export function charBlockFromTuple(tuple: Char4Tuple): CharBlock {
 	return [
