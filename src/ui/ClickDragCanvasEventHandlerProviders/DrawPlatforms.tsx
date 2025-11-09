@@ -1,6 +1,5 @@
-import { useState } from "react";
-import { bresenham, objectEntries, range } from "../../bb/functions";
-import { Coord2, equal, floor, scale } from "../../math/coord2";
+import { objectEntries, range } from "../../bb/functions";
+import { Coord2, floor, scale } from "../../math/coord2";
 import { ClickDragCanvasEventHandlerProvider } from "../ClickDragCanvasEventHandlerProvider";
 import { assertTuple } from "../../bb/tuple";
 import { levelSize } from "../../bb/game-definitions/level-size";
@@ -11,7 +10,7 @@ import {
 	getTiles,
 	Tiles,
 } from "../../bb/internal-data-formats/tiles";
-import { ClickDragCanvasDragEventHandlers } from "/Users/vicwid/code/geon/bb-construction-set/src/ui/ClickDragCanvas";
+import { useDraw } from "./use-draw";
 
 const holes = objectEntries(holeRects).flatMap(([row, holes]) =>
 	objectEntries(holes).map(([side, hole]) => ({ row, side, hole }))
@@ -35,48 +34,6 @@ export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 	const transformCoord = getTileCoord;
 	return props.children(useDraw(setSomeTiles, transformCoord, getDrawValue));
 };
-
-function useDraw(
-	setSomeTiles: (coords: readonly Coord2[], value: boolean) => void,
-	transformCoord: (coord: Coord2) => Coord2,
-	getDrawValue: (tileCoord: Coord2) => boolean
-): ClickDragCanvasDragEventHandlers {
-	let [drawValue, setDrawValue] = useState<boolean | undefined>(undefined);
-	let [lineStart, setLineStart] = useState<Coord2 | undefined>(undefined);
-
-	return {
-		onClick: (eventCoord) => {
-			if (drawValue === undefined) {
-				return;
-			}
-			setSomeTiles([transformCoord(eventCoord)], drawValue);
-		},
-		onDragStart: (eventCoord) => {
-			const tileCoord = transformCoord(eventCoord);
-
-			setDrawValue(getDrawValue(tileCoord));
-			setLineStart(tileCoord);
-		},
-		onDragEnd: () => {
-			setDrawValue(undefined);
-			setLineStart(undefined);
-		},
-		onDragUpdate: (eventCoord) => {
-			if (drawValue === undefined) {
-				return;
-			}
-			if (lineStart === undefined) {
-				return;
-			}
-			const tileCoord = transformCoord(eventCoord);
-			if (equal(lineStart, tileCoord)) {
-				return;
-			}
-			setSomeTiles(bresenham(lineStart, tileCoord), drawValue);
-			setLineStart(tileCoord);
-		},
-	};
-}
 
 export function getTileCoord(eventCoord: Coord2): Coord2 {
 	return floor(scale(eventCoord, 1 / 8));
