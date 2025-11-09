@@ -32,7 +32,7 @@ export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 	}
 
 	const transformCoord = getTileCoord;
-	return props.children(useDraw(setSomeTiles, transformCoord, getDrawValue));
+	return props.children(useDraw(getDrawValue, setSomeTiles, transformCoord));
 };
 
 export function getTileCoord(eventCoord: Coord2): Coord2 {
