@@ -45,13 +45,15 @@ export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 		});
 
 	const setSomeTiles = createSetSomeTiles(setTiles, tiles);
+
+	const transformCoord = getTileCoord;
 	let [drawValue, setDrawValue] = useState<boolean | undefined>(undefined);
 	let [lineStart, setLineStart] = useState<Coord2 | undefined>(undefined);
 
 	return props.children({
 		onClick: (eventCoord) => {
 			const hole = holes.find((hole) =>
-				rectContainsPoint(hole.hole, getTileCoord(eventCoord))
+				rectContainsPoint(hole.hole, transformCoord(eventCoord))
 			);
 			if (hole) {
 				toggleHole(hole);
@@ -61,10 +63,10 @@ export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 			if (drawValue === undefined) {
 				return;
 			}
-			setSomeTiles([getTileCoord(eventCoord)], drawValue);
+			setSomeTiles([transformCoord(eventCoord)], drawValue);
 		},
 		onDragStart: (eventCoord) => {
-			const tileCoord = getTileCoord(eventCoord);
+			const tileCoord = transformCoord(eventCoord);
 			if (!rectContainsPoint(drawableTiles, tileCoord)) {
 				return;
 			}
@@ -84,7 +86,7 @@ export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 			if (lineStart === undefined) {
 				return;
 			}
-			const tileCoord = getTileCoord(eventCoord);
+			const tileCoord = transformCoord(eventCoord);
 			if (equal(lineStart, tileCoord)) {
 				return;
 			}
