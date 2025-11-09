@@ -3,12 +3,12 @@ import { bresenham } from "../../bb/functions";
 import { Coord2, equal } from "../../math/coord2";
 import { ClickDragCanvasDragEventHandlers } from "../ClickDragCanvas";
 
-export function useDraw(
-	getValue: (tileCoord: Coord2) => boolean,
-	setValues: (coords: readonly Coord2[], value: boolean) => void,
+export function useDraw<T>(
+	getValue: (tileCoord: Coord2) => T,
+	setValues: (coords: readonly Coord2[], value: T) => void,
 	transformCoord: (coord: Coord2) => Coord2
 ): ClickDragCanvasDragEventHandlers {
-	let [drawValue, setDrawValue] = useState<boolean | undefined>(undefined);
+	let [drawValue, setDrawValue] = useState<T | undefined>(undefined);
 	let [lineStart, setLineStart] = useState<Coord2 | undefined>(undefined);
 
 	return {
