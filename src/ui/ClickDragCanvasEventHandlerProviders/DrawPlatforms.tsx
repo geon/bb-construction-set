@@ -71,7 +71,7 @@ export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 				return;
 			}
 
-			const newDrawValue = !tiles[tileCoord.y]![tileCoord.x]!;
+			const newDrawValue = getDrawValue(tiles, tileCoord);
 			setDrawValue(newDrawValue);
 			setLineStart(tileCoord);
 		},
@@ -98,6 +98,10 @@ export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 		},
 	});
 };
+
+function getDrawValue(tiles: Tiles, tileCoord: Coord2) {
+	return !tiles[tileCoord.y]![tileCoord.x]!;
+}
 
 export function getTileCoord(eventCoord: Coord2): Coord2 {
 	return floor(scale(eventCoord, 1 / 8));
