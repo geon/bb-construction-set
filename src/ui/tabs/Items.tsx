@@ -104,14 +104,14 @@ export function Items(props: {
 						render: () => {
 							return (
 								<Palette
-									selectePaletteIndex={
+									selectedOptionIndex={
 										checkedAccess(
 											props.parsedPrg.items[selectedItemCategoryName],
 											selectedItemIndex
 										).paletteIndex
 									}
 									options={range(8) as readonly PaletteIndex[]}
-									onPick={(paletteIndex) => {
+									onPick={(optionIndex) => {
 										props.setParsedPrg({
 											...props.parsedPrg,
 											items: {
@@ -121,7 +121,7 @@ export function Items(props: {
 													selectedItemIndex,
 													(item): Item => ({
 														...item,
-														paletteIndex,
+														paletteIndex: optionIndex as PaletteIndex,
 													})
 												),
 											},
