@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { bresenham, objectEntries } from "../../bb/functions";
-import { Coord2, equal, floor, scale, subtract } from "../../math/coord2";
+import { bresenham, objectEntries, range } from "../../bb/functions";
+import { Coord2, equal, floor, scale } from "../../math/coord2";
 import { ClickDragCanvasEventHandlerProvider } from "../ClickDragCanvasEventHandlerProvider";
 import { assertTuple } from "../../bb/tuple";
 import { levelSize } from "../../bb/game-definitions/level-size";
@@ -12,11 +12,6 @@ import {
 	Tiles,
 } from "../../bb/internal-data-formats/tiles";
 
-const borderWidth = { x: 2, y: 1 };
-const drawableTiles = {
-	pos: borderWidth,
-	size: subtract(levelSize, scale(borderWidth, 2)),
-};
 const holes = objectEntries(holeRects).flatMap(([row, holes]) =>
 	objectEntries(holes).map(([side, hole]) => ({ row, side, hole }))
 );
@@ -27,21 +22,7 @@ export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 	const setTiles = (tiles: Tiles) =>
 		props.setLevel({
 			...level,
-			platformTiles: getPlatformTilesAndHoles(tiles).platformTiles,
-		});
-	const toggleHole = (holePos: {
-		row: "top" | "bottom";
-		side: "left" | "right";
-	}) =>
-		props.setLevel({
-			...level,
-			holes: {
-				...level.holes,
-				[holePos.row]: {
-					...level.holes[holePos.row],
-					[holePos.side]: !level.holes[holePos.row][holePos.side],
-				},
-			},
+			...getPlatformTilesAndHoles(tiles),
 		});
 
 	const setSomeTiles = createSetSomeTiles(setTiles, tiles);
@@ -56,14 +37,6 @@ export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 
 	return props.children({
 		onClick: (eventCoord) => {
-			const hole = holes.find((hole) =>
-				rectContainsPoint(hole.hole, transformCoord(eventCoord))
-			);
-			if (hole) {
-				toggleHole(hole);
-				return;
-			}
-
 			if (drawValue === undefined) {
 				return;
 			}
@@ -71,9 +44,6 @@ export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 		},
 		onDragStart: (eventCoord) => {
 			const tileCoord = transformCoord(eventCoord);
-			if (!rectContainsPoint(drawableTiles, tileCoord)) {
-				return;
-			}
 
 			setDrawValue(getDrawValue(tileCoord));
 			setLineStart(tileCoord);
@@ -114,11 +84,19 @@ export function createSetSomeTiles(
 		);
 
 		for (const coord of coords) {
-			if (!rectContainsPoint(drawableTiles, coord)) {
-				continue;
-			}
-
 			newTiles[coord.y]![coord.x] = value;
+		}
+
+		// If the hole is touched at all, change all of it.
+		for (const hole of holes) {
+			if (coords.some((coord) => rectContainsPoint(hole.hole, coord))) {
+				const pos = hole.hole.pos;
+				// Changing only the leftmost tile would be enough for `getPlatformTilesAndHoles`,
+				// but that's leaky abstraction.
+				for (const x of range(hole.hole.size.x)) {
+					newTiles[pos.y]![pos.x + x] = value;
+				}
+			}
 		}
 
 		setTiles(newTiles);
