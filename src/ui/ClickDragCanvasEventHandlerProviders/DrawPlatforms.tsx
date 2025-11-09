@@ -11,6 +11,7 @@ import {
 	getTiles,
 	Tiles,
 } from "../../bb/internal-data-formats/tiles";
+import { ClickDragCanvasDragEventHandlers } from "/Users/vicwid/code/geon/bb-construction-set/src/ui/ClickDragCanvas";
 
 const holes = objectEntries(holeRects).flatMap(([row, holes]) =>
 	objectEntries(holes).map(([side, hole]) => ({ row, side, hole }))
@@ -32,10 +33,18 @@ export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 	}
 
 	const transformCoord = getTileCoord;
+	return props.children(useDraw(setSomeTiles, transformCoord, getDrawValue));
+};
+
+function useDraw(
+	setSomeTiles: (coords: readonly Coord2[], value: boolean) => void,
+	transformCoord: (coord: Coord2) => Coord2,
+	getDrawValue: (tileCoord: Coord2) => boolean
+): ClickDragCanvasDragEventHandlers {
 	let [drawValue, setDrawValue] = useState<boolean | undefined>(undefined);
 	let [lineStart, setLineStart] = useState<Coord2 | undefined>(undefined);
 
-	return props.children({
+	return {
 		onClick: (eventCoord) => {
 			if (drawValue === undefined) {
 				return;
@@ -66,8 +75,8 @@ export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 			setSomeTiles(bresenham(lineStart, tileCoord), drawValue);
 			setLineStart(tileCoord);
 		},
-	});
-};
+	};
+}
 
 export function getTileCoord(eventCoord: Coord2): Coord2 {
 	return floor(scale(eventCoord, 1 / 8));
