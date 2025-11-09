@@ -4,9 +4,9 @@ import { Coord2, equal } from "../../math/coord2";
 import { ClickDragCanvasDragEventHandlers } from "../ClickDragCanvas";
 
 export function useDraw(
+	getValue: (tileCoord: Coord2) => boolean,
 	setValues: (coords: readonly Coord2[], value: boolean) => void,
-	transformCoord: (coord: Coord2) => Coord2,
-	getValue: (tileCoord: Coord2) => boolean
+	transformCoord: (coord: Coord2) => Coord2
 ): ClickDragCanvasDragEventHandlers {
 	let [drawValue, setDrawValue] = useState<boolean | undefined>(undefined);
 	let [lineStart, setLineStart] = useState<Coord2 | undefined>(undefined);
