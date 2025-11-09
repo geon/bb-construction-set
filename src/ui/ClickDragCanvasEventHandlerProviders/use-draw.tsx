@@ -6,7 +6,7 @@ import { ClickDragCanvasDragEventHandlers } from "../ClickDragCanvas";
 export function useDraw(
 	setSomeTiles: (coords: readonly Coord2[], value: boolean) => void,
 	transformCoord: (coord: Coord2) => Coord2,
-	getDrawValue: (tileCoord: Coord2) => boolean
+	getValue: (tileCoord: Coord2) => boolean
 ): ClickDragCanvasDragEventHandlers {
 	let [drawValue, setDrawValue] = useState<boolean | undefined>(undefined);
 	let [lineStart, setLineStart] = useState<Coord2 | undefined>(undefined);
@@ -21,7 +21,7 @@ export function useDraw(
 		onDragStart: (eventCoord) => {
 			const tileCoord = transformCoord(eventCoord);
 
-			setDrawValue(getDrawValue(tileCoord));
+			setDrawValue(getValue(tileCoord));
 			setLineStart(tileCoord);
 		},
 		onDragEnd: () => {
