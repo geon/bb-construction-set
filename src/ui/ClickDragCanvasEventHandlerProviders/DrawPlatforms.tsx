@@ -46,6 +46,10 @@ export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 
 	const setSomeTiles = createSetSomeTiles(setTiles, tiles);
 
+	function getDrawValue(tileCoord: Coord2) {
+		return !tiles[tileCoord.y]![tileCoord.x]!;
+	}
+
 	const transformCoord = getTileCoord;
 	let [drawValue, setDrawValue] = useState<boolean | undefined>(undefined);
 	let [lineStart, setLineStart] = useState<Coord2 | undefined>(undefined);
@@ -71,7 +75,7 @@ export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 				return;
 			}
 
-			const newDrawValue = !tiles[tileCoord.y]![tileCoord.x]!;
+			const newDrawValue = getDrawValue(tileCoord);
 			setDrawValue(newDrawValue);
 			setLineStart(tileCoord);
 		},
