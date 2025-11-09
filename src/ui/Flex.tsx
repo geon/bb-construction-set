@@ -8,18 +8,32 @@ export const Flex = styled.div<
 		| {
 				readonly $col: true;
 		  }
-	) & {
-		readonly $gap?: string;
-		readonly $spaceBetween?: boolean;
-	}
+	) &
+		(
+			| {
+					readonly $spaceBetween: true;
+			  }
+			| {
+					readonly $center: true;
+			  }
+			| {}
+		) & {
+			readonly $gap?: string;
+		}
 >`
 	display: flex;
 	flex-direction: ${(props) => ("$col" in props ? "column" : "row")};
 	gap: ${({ $gap }) => $gap ?? "1em"};
-	${({ $spaceBetween }) =>
-		!$spaceBetween
+	${(props) =>
+		!("$spaceBetween" in props)
 			? ""
 			: css`
 					justify-content: space-between;
+			  `};
+	${(props) =>
+		!("$center" in props)
+			? ""
+			: css`
+					justify-content: center;
 			  `};
 `;
