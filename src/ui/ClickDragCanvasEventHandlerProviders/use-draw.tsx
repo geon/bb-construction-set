@@ -4,7 +4,7 @@ import { Coord2, equal } from "../../math/coord2";
 import { ClickDragCanvasDragEventHandlers } from "../ClickDragCanvas";
 
 export function useDraw(
-	setSomeTiles: (coords: readonly Coord2[], value: boolean) => void,
+	setValues: (coords: readonly Coord2[], value: boolean) => void,
 	transformCoord: (coord: Coord2) => Coord2,
 	getValue: (tileCoord: Coord2) => boolean
 ): ClickDragCanvasDragEventHandlers {
@@ -16,7 +16,7 @@ export function useDraw(
 			if (drawValue === undefined) {
 				return;
 			}
-			setSomeTiles([transformCoord(eventCoord)], drawValue);
+			setValues([transformCoord(eventCoord)], drawValue);
 		},
 		onDragStart: (eventCoord) => {
 			const tileCoord = transformCoord(eventCoord);
@@ -39,7 +39,7 @@ export function useDraw(
 			if (equal(lineStart, tileCoord)) {
 				return;
 			}
-			setSomeTiles(bresenham(lineStart, tileCoord), drawValue);
+			setValues(bresenham(lineStart, tileCoord), drawValue);
 			setLineStart(tileCoord);
 		},
 	};
