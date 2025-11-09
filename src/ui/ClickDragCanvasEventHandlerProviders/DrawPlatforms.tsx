@@ -71,8 +71,7 @@ export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 				return;
 			}
 
-			const newDrawValue = getDrawValue(tiles, tileCoord);
-			setDrawValue(newDrawValue);
+			setDrawValue(getDrawValue(tiles, tileCoord));
 			setLineStart(tileCoord);
 		},
 		onDragEnd: () => {
