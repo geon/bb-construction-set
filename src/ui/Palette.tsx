@@ -27,21 +27,20 @@ const PaletteIndexButton = styled.button.attrs<{ selected: boolean }>(
 
 export const Palette = styled(
 	(props: {
-		readonly selectePaletteIndex: PaletteIndex;
+		readonly selectedOptionIndex: number;
 		readonly options: readonly PaletteIndex[];
-		readonly onPick: (paletteIndex: PaletteIndex) => void;
+		readonly onPick: (optionIndex: number) => void;
 		readonly className?: string;
 	}): JSX.Element => {
 		return (
 			<nav className={props.className}>
-				{props.options.map((index) => {
-					const paletteIndex = index as PaletteIndex;
+				{props.options.map((paletteIndex, optionIndex) => {
 					return (
 						<PaletteIndexButton
-							key={paletteIndex}
+							key={optionIndex}
 							$paletteIndex={paletteIndex}
-							selected={paletteIndex === props.selectePaletteIndex}
-							onClick={() => props.onPick(paletteIndex)}
+							selected={optionIndex === props.selectedOptionIndex}
+							onClick={() => props.onPick(optionIndex)}
 						/>
 					);
 				})}

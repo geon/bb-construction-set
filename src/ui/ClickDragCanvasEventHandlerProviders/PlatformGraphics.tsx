@@ -32,7 +32,7 @@ export const PlatformGraphics: ClickDragCanvasEventHandlerProvider = (props: {
 			<ButtonRow key={shade} $align="right">
 				<span>{label}:</span>
 				<Palette
-					selectePaletteIndex={level.bgColors[shade]}
+					selectedOptionIndex={level.bgColors[shade]}
 					options={range(16) as readonly PaletteIndex[]}
 					onPick={(paletteIndex) => {
 						props.setLevel({
