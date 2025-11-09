@@ -93,9 +93,6 @@ export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 			if (equal(lineStart, tileCoord)) {
 				return;
 			}
-			if (!rectContainsPoint(drawableTiles, tileCoord)) {
-				return;
-			}
 			setSomeTiles(bresenham(lineStart, tileCoord), drawValue);
 			setLineStart(tileCoord);
 		},
@@ -117,6 +114,10 @@ export function createSetSomeTiles(
 		);
 
 		for (const coord of coords) {
+			if (!rectContainsPoint(drawableTiles, coord)) {
+				continue;
+			}
+
 			newTiles[coord.y]![coord.x] = value;
 		}
 
