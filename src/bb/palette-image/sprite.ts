@@ -7,9 +7,11 @@ import {
 	SubPalette,
 	PaletteIndex,
 	palette,
+	SubPaletteIndex,
 } from "../internal-data-formats/palette";
 import { SpriteGroups, Sprite } from "../internal-data-formats/sprite";
 import { spriteCounts } from "../prg/data-locations";
+import { assertTuple } from "../tuple";
 import { PaletteImage, drawLayout } from "./palette-image";
 
 export function getSpritePalette(color: PaletteIndex): SubPalette {
@@ -155,4 +157,33 @@ export function drawSprite(
 			pixelValue ? spritePalette[pixelValue] : undefined
 		)
 	);
+}
+
+export function parseSprite(image: PaletteImage): {
+	readonly sprite: Sprite;
+	readonly color: PaletteIndex;
+} {
+	let spritePalette = getSpritePalette(palette.green);
+
+	const sprite = assertTuple(
+		image.map((row) =>
+			assertTuple(
+				row.map((pixelValue) => {
+					const color = pixelValue ?? palette.black;
+					let subPaletteIndex = spritePalette.indexOf(color) as
+						| SubPaletteIndex
+						| -1;
+					if (subPaletteIndex === -1) {
+						spritePalette = getSpritePalette(color);
+						subPaletteIndex = 2; // The argument to getSpritePalette is on index 2.
+					}
+					return subPaletteIndex;
+				}),
+				spriteSizePixels.x
+			)
+		),
+		spriteSizePixels.y
+	);
+
+	return { sprite, color: spritePalette[2]! };
 }
