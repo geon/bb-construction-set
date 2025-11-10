@@ -1,5 +1,5 @@
 import { InputWithSizeMeta, makeZip } from "client-zip";
-import { ComponentProps } from "react";
+import { ComponentPropsWithoutRef } from "react";
 
 export function BlobDownloadButton(
 	props: {
@@ -18,7 +18,7 @@ export function BlobDownloadButton(
 				  }
 			)
 		>;
-	} & Omit<ComponentProps<"button">, "onClick" | "disabled">
+	} & Omit<ComponentPropsWithoutRef<"button">, "onClick" | "disabled">
 ) {
 	const { getBlob, ...rest } = props;
 
