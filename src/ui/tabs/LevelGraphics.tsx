@@ -87,8 +87,9 @@ export function LevelGraphics(props: {
 							)
 						),
 					})}
-					label={"Export Image"}
-				/>
+				>
+					Export Image
+				</BlobDownloadButton>
 			</ImageButtons>
 		</Styling>
 	);

@@ -63,8 +63,9 @@ export function FileMenu(props: {
 							};
 						})
 					}
-					label="Save Level Images"
-				/>
+				>
+					Save Level Images
+				</BlobDownloadButton>
 				<FileInput
 					accept={["prg"]}
 					onChange={async (file) => props.setPrg(await file.arrayBuffer())}
@@ -92,8 +93,9 @@ export function FileMenu(props: {
 									};
 							  }
 					}
-					label="Save Custom Prg"
-				/>
+				>
+					Save Custom Prg
+				</BlobDownloadButton>
 			</ButtonRow>
 		</Card>
 	);

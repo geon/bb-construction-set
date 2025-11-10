@@ -18,10 +18,9 @@ export function BlobDownloadButton(
 				  }
 			)
 		>;
-		label: string;
 	} & Omit<ComponentProps<"button">, "onClick" | "disabled">
 ) {
-	const { getBlob, label, ...rest } = props;
+	const { getBlob, ...rest } = props;
 
 	return (
 		<button
@@ -54,8 +53,6 @@ export function BlobDownloadButton(
 					URL.revokeObjectURL(link.href);
 				})
 			}
-		>
-			{label}
-		</button>
+		/>
 	);
 }

@@ -36,8 +36,9 @@ export function Chars(props: {
 						imageDataFromPaletteImage(drawCharGroups(props.parsedPrg.chars))
 					),
 				})}
-				label="Download image"
-			/>
+			>
+				Download image
+			</BlobDownloadButton>
 			<FileInput
 				accept={["image/*"]}
 				onChange={async (file) => {
