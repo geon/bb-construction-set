@@ -31,7 +31,8 @@ export function FileInput<Multiple extends boolean = false>({
 				multiple={multiple}
 				style={{ display: "none" }}
 				onChange={(event) => {
-					const files = event.target.files;
+					const target = event.target as HTMLInputElement;
+					const files = target.files;
 					if (!files) {
 						// https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/files
 						// > A FileList object listing the selected files, if any, or null if the HTMLInputElement is not of type="file".
@@ -47,7 +48,7 @@ export function FileInput<Multiple extends boolean = false>({
 						(onChange as (arg: CallbackArg<false>) => void)(files[0]);
 					}
 					// Clear the input, so the same file can trigger it consecutively.
-					event.target.value = "";
+					target.value = "";
 				}}
 			/>
 		</>
