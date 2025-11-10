@@ -78,8 +78,9 @@ export function Platforms(props: {
 						)
 					),
 				})}
-				label={"Export Image"}
-			/>
+			>
+				Export Image
+			</BlobDownloadButton>
 		</ImageButtons>
 	);
 }
