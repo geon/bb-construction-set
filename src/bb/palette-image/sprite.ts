@@ -9,10 +9,14 @@ import {
 	palette,
 	SubPaletteIndex,
 } from "../internal-data-formats/palette";
-import { SpriteGroups, Sprite } from "../internal-data-formats/sprite";
+import {
+	SpriteGroups,
+	Sprite,
+	SpriteGroup,
+} from "../internal-data-formats/sprite";
 import { spriteCounts } from "../prg/data-locations";
 import { assertTuple } from "../tuple";
-import { PaletteImage, drawLayout } from "./palette-image";
+import { PaletteImage, drawLayout, parseLayout } from "./palette-image";
 
 export function getSpritePalette(color: PaletteIndex): SubPalette {
 	return [
@@ -159,11 +163,35 @@ export function drawSprite(
 	);
 }
 
-export function parseSprite(image: PaletteImage): {
+export function parseSprites(image: PaletteImage): SpriteGroups {
+	const layout = layOutSpriteGroups();
+	const images = parseLayout(layout, image);
+
+	let index = 0;
+	let color: PaletteIndex = palette.green;
+	return mapRecord(spriteCounts, (count): SpriteGroup => {
+		const sprites = images.slice(index, index + count).map((image) => {
+			const parsed = parseSprite(image, color);
+			color = parsed.color;
+			return parsed.sprite;
+		});
+		index += count;
+
+		return {
+			color,
+			sprites,
+		};
+	});
+}
+
+export function parseSprite(
+	image: PaletteImage,
+	tryColor: PaletteIndex
+): {
 	readonly sprite: Sprite;
 	readonly color: PaletteIndex;
 } {
-	let spritePalette = getSpritePalette(palette.green);
+	let spritePalette = getSpritePalette(tryColor);
 
 	const sprite = assertTuple(
 		image.map((row) =>
