@@ -33,7 +33,7 @@ export function Sprites(props: {
 					fileName: "bubble bobble c64 - all sprites.bin",
 				})}
 			>
-				Download SpritePad bin-file.
+				Download SpritePad bin-file
 			</BlobDownloadButton>
 			<p>
 				Save the file generated above, then edit it in SpritePad, save it and
