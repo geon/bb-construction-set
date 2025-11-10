@@ -7,10 +7,19 @@ import {
 	parseSpriteGroups,
 } from "../../bb/sprite-bin/sprite-bin";
 import { ImageDataCanvas } from "../ImageDataCanvas";
-import { drawSprites } from "../../bb/palette-image/sprite";
+import { drawSprites, parseSprites } from "../../bb/palette-image/sprite";
 import { FileInput } from "../FileInput";
-import { imageDataFromPaletteImage } from "../../bb/image-data/image-data";
-import { doubleImageWidth } from "../../bb/palette-image/palette-image";
+import {
+	imageDataFromImage,
+	imageDataFromPaletteImage,
+	imageDataToBlob,
+	imageFromFile,
+	paletteImageFromImageData,
+} from "../../bb/image-data/image-data";
+import {
+	doubleImageWidth,
+	halfImageWidth,
+} from "../../bb/palette-image/palette-image";
 import { ButtonGroup } from "../ButtonGroup";
 import { ButtonRow } from "../ButtonRow";
 import { Flex } from "../Flex";
@@ -52,6 +61,52 @@ export function Sprites(props: {
 
 								const parsedSpriteBinData = attempt(() => {
 									const parsed = parseSpriteGroups(new Uint8Array(buffer));
+									return parsed;
+								});
+
+								if (parsedSpriteBinData.type !== "ok") {
+									alert(
+										`Could not parse bin: ${
+											parsedSpriteBinData.error ?? "No reason."
+										}`
+									);
+									return;
+								}
+
+								props.setParsedPrg({
+									...props.parsedPrg,
+									sprites: parsedSpriteBinData.result,
+								});
+							}}
+						>
+							Open...
+						</FileInput>
+					</ButtonGroup>
+				</ButtonRow>
+				<ButtonRow $align="left">
+					<span>Sprite Sheet:</span>
+					<ButtonGroup>
+						<BlobDownloadButton
+							getBlob={async () => ({
+								blob: await imageDataToBlob(
+									imageDataFromPaletteImage(
+										doubleImageWidth(drawSprites(props.parsedPrg.sprites))
+									)
+								),
+								fileName: "bubble bobble c64 - all sprites.png",
+							})}
+						>
+							Save
+						</BlobDownloadButton>
+						<FileInput
+							accept={["bin"]}
+							onChange={async (file) => {
+								const imageData = imageDataFromImage(await imageFromFile(file));
+
+								const parsedSpriteBinData = attempt(() => {
+									const parsed = parseSprites(
+										halfImageWidth(paletteImageFromImageData(imageData))
+									);
 									return parsed;
 								});
 
