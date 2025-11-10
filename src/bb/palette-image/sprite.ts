@@ -12,6 +12,40 @@ import { SpriteGroups, Sprite } from "../internal-data-formats/sprite";
 import { spriteCounts } from "../prg/data-locations";
 import { PaletteImage, drawLayout } from "./palette-image";
 
+export function getSpritePalette(color: PaletteIndex): SubPalette {
+	return [
+		//
+		palette.black,
+		palette.red,
+		color,
+		palette.white,
+	];
+}
+
+export const spriteGroupMultiWidths: Record<SpriteGroupName, number> = {
+	player: 1,
+	bubbleBuster: 1,
+	incendo: 1,
+	colley: 1,
+	hullaballoon: 1,
+	beluga: 1,
+	willyWhistle: 1,
+	stoner: 1,
+	superSocket: 1,
+	playerInBubbleA: 2,
+	playerInBubbleB: 2,
+	bossFacingLeft: 3,
+	bossInBubble: 3,
+	bossFacingRight: 3,
+	bonusCupCake: 2,
+	bonusMelonTopLeft: 1,
+	bonusMelonTopRight: 1,
+	bonusMelonBottom: 2,
+	bonusDiamond: 2,
+	hexagonExplosion: 1,
+	boxyExplosion: 1,
+};
+
 export function layOutSpriteGroups(): LayoutRect {
 	let index = 0;
 	const spriteRects = mapRecord(
@@ -122,37 +156,3 @@ export function drawSprite(
 		)
 	);
 }
-
-export function getSpritePalette(color: PaletteIndex): SubPalette {
-	return [
-		//
-		palette.black,
-		palette.red,
-		color,
-		palette.white,
-	];
-}
-
-export const spriteGroupMultiWidths: Record<SpriteGroupName, number> = {
-	player: 1,
-	bubbleBuster: 1,
-	incendo: 1,
-	colley: 1,
-	hullaballoon: 1,
-	beluga: 1,
-	willyWhistle: 1,
-	stoner: 1,
-	superSocket: 1,
-	playerInBubbleA: 2,
-	playerInBubbleB: 2,
-	bossFacingLeft: 3,
-	bossInBubble: 3,
-	bossFacingRight: 3,
-	bonusCupCake: 2,
-	bonusMelonTopLeft: 1,
-	bonusMelonTopRight: 1,
-	bonusMelonBottom: 2,
-	bonusDiamond: 2,
-	hexagonExplosion: 1,
-	boxyExplosion: 1,
-};
