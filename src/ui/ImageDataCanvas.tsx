@@ -1,8 +1,8 @@
-import { useRef, useEffect, ComponentProps } from "react";
+import { useRef, useEffect, ComponentPropsWithoutRef } from "react";
 
 export type ImageDataCanvasProps = {
 	readonly imageData: ImageData;
-} & ComponentProps<"canvas">;
+} & ComponentPropsWithoutRef<"canvas">;
 
 export function ImageDataCanvas({
 	imageData,
