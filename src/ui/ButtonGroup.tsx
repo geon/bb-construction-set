@@ -3,6 +3,7 @@ import { ButtonRow } from "./ButtonRow";
 
 export const ButtonGroup = styled(ButtonRow)`
 	gap: 2px;
+	justify-content: initial;
 
 	& > button:not(:first-child) {
 		border-top-left-radius: 0;
