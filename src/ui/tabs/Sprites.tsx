@@ -11,6 +11,9 @@ import { drawSprites } from "../../bb/palette-image/sprite";
 import { FileInput } from "../FileInput";
 import { imageDataFromPaletteImage } from "../../bb/image-data/image-data";
 import { doubleImageWidth } from "../../bb/palette-image/palette-image";
+import { ButtonGroup } from "../ButtonGroup";
+import { ButtonRow } from "../ButtonRow";
+import { Flex } from "../Flex";
 
 export function Sprites(props: {
 	readonly parsedPrg: ParsedPrg;
@@ -25,47 +28,53 @@ export function Sprites(props: {
 			/>
 			<br />
 			<br />
-			<BlobDownloadButton
-				getBlob={async () => ({
-					blob: new Blob([serializeSpriteGroups(props.parsedPrg.sprites)], {
-						type: "application/json",
-					}),
-					fileName: "bubble bobble c64 - all sprites.bin",
-				})}
-			>
-				Download SpritePad bin-file
-			</BlobDownloadButton>
-			<p>
-				Save the file generated above, then edit it in SpritePad, save it and
-				select it here.
-			</p>
-			<FileInput
-				accept={["bin"]}
-				onChange={async (file) => {
-					const buffer = await file.arrayBuffer();
+			<Flex $col>
+				<ButtonRow $align="left">
+					<span>SpritePad bin-file:</span>
+					<ButtonGroup>
+						<BlobDownloadButton
+							getBlob={async () => ({
+								blob: new Blob(
+									[serializeSpriteGroups(props.parsedPrg.sprites)],
+									{
+										type: "application/json",
+									}
+								),
+								fileName: "bubble bobble c64 - all sprites.bin",
+							})}
+						>
+							Save
+						</BlobDownloadButton>
+						<FileInput
+							accept={["bin"]}
+							onChange={async (file) => {
+								const buffer = await file.arrayBuffer();
 
-					const parsedSpriteBinData = attempt(() => {
-						const parsed = parseSpriteGroups(new Uint8Array(buffer));
-						return parsed;
-					});
+								const parsedSpriteBinData = attempt(() => {
+									const parsed = parseSpriteGroups(new Uint8Array(buffer));
+									return parsed;
+								});
 
-					if (parsedSpriteBinData.type !== "ok") {
-						alert(
-							`Could not parse bin: ${
-								parsedSpriteBinData.error ?? "No reason."
-							}`
-						);
-						return;
-					}
+								if (parsedSpriteBinData.type !== "ok") {
+									alert(
+										`Could not parse bin: ${
+											parsedSpriteBinData.error ?? "No reason."
+										}`
+									);
+									return;
+								}
 
-					props.setParsedPrg({
-						...props.parsedPrg,
-						sprites: parsedSpriteBinData.result,
-					});
-				}}
-			>
-				Choose file
-			</FileInput>
+								props.setParsedPrg({
+									...props.parsedPrg,
+									sprites: parsedSpriteBinData.result,
+								});
+							}}
+						>
+							Open...
+						</FileInput>
+					</ButtonGroup>
+				</ButtonRow>
+			</Flex>
 		</>
 	);
 }
