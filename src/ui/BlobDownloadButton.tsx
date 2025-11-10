@@ -1,31 +1,31 @@
 import { InputWithSizeMeta, makeZip } from "client-zip";
+import { ComponentProps } from "react";
 
-export function BlobDownloadButton(props: {
-	getBlob?: () => Promise<
-		{
-			readonly fileName: string;
-		} & (
-			| {
-					readonly blob: Blob;
-			  }
-			| {
-					readonly parts: readonly {
-						readonly fileName: string;
+export function BlobDownloadButton(
+	props: {
+		getBlob?: () => Promise<
+			{
+				readonly fileName: string;
+			} & (
+				| {
 						readonly blob: Blob;
-					}[];
-			  }
-		)
-	>;
-	label: string;
-	className?: string;
-	title?: string;
-}) {
-	const { getBlob, label } = props;
+				  }
+				| {
+						readonly parts: readonly {
+							readonly fileName: string;
+							readonly blob: Blob;
+						}[];
+				  }
+			)
+		>;
+		label: string;
+	} & Omit<ComponentProps<"button">, "onClick" | "disabled">
+) {
+	const { getBlob, label, ...rest } = props;
 
 	return (
 		<button
-			title={props.title}
-			className={props.className}
+			{...rest}
 			disabled={!getBlob}
 			onClick={
 				getBlob &&
