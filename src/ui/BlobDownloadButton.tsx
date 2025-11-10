@@ -20,7 +20,7 @@ export function BlobDownloadButton(props: {
 	className?: string;
 	title?: string;
 }) {
-	const getBlob = props.getBlob;
+	const { getBlob, label } = props;
 
 	return (
 		<button
@@ -55,7 +55,7 @@ export function BlobDownloadButton(props: {
 				})
 			}
 		>
-			{props.label}
+			{label}
 		</button>
 	);
 }
