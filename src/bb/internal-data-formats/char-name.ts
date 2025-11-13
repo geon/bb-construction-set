@@ -99,6 +99,17 @@ const emptyChar: Char = [
 	[0, 0, 0, 0],
 ];
 
+const solidChar: Char = [
+	[2, 2, 2, 2],
+	[2, 2, 2, 2],
+	[2, 2, 2, 2],
+	[2, 2, 2, 2],
+	[2, 2, 2, 2],
+	[2, 2, 2, 2],
+	[2, 2, 2, 2],
+	[2, 2, 2, 2],
+];
+
 export function makeCharset(
 	level: Level,
 	shadowChars: ShadowChars
@@ -118,3 +129,18 @@ export function makeCharset(
 		shadowInnerCorner: shadowChars[5],
 	};
 }
+
+export const simplifiedCharset: Readonly<Record<CharName, Char>> = {
+	empty: emptyChar,
+	platform: solidChar,
+	sideBorderTopLeft: solidChar,
+	sideBorderTopRight: solidChar,
+	sideBorderBottomLeft: solidChar,
+	sideBorderBottomRight: solidChar,
+	shadowEndUnder: emptyChar,
+	shadowOuterCorner: emptyChar,
+	shadowEndRight: emptyChar,
+	shadowUnder: emptyChar,
+	shadowRight: emptyChar,
+	shadowInnerCorner: emptyChar,
+};
