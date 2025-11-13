@@ -505,7 +505,7 @@ export function rectangleIsInvalid(rectangle: BubbleCurrentRectangle) {
 
 export function fixInvalidRectangles(
 	rectangles: readonly BubbleCurrentRectangleOrSymmetry[]
-) {
+): BubbleCurrentRectangleOrSymmetry[] {
 	const clip = (rect: Rect) =>
 		rectIntersection(rect, { pos: origo, size: levelSize });
 
