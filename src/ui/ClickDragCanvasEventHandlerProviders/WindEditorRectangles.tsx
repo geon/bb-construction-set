@@ -509,8 +509,8 @@ export function fixInvalidRectangles(
 	const clip = (rect: Rect) =>
 		rectIntersection(rect, { pos: origo, size: levelSize });
 
-	return rectangles.flatMap((rectangle) =>
-		rectangle.type !== "rectangle" || !rectangleIsInvalid(rectangle)
+	return rectangles.flatMap((rectangle) => {
+		return rectangle.type !== "rectangle" || !rectangleIsInvalid(rectangle)
 			? rectangle
 			: [
 					rectangle.rect,
@@ -526,6 +526,6 @@ export function fixInvalidRectangles(
 							...rectangle,
 							rect,
 						})
-					)
-	);
+					);
+	});
 }
