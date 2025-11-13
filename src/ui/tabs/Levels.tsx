@@ -31,6 +31,7 @@ import { FileInput } from "../FileInput";
 import { ButtonGroup } from "../ButtonGroup";
 import { ButtonRow } from "../ButtonRow";
 import { Flex } from "../Flex";
+import { Level } from "../../bb/internal-data-formats/level";
 
 export function Levels(props: {
 	readonly parsedPrg: ParsedPrg;
@@ -68,9 +69,9 @@ export function Levels(props: {
 										level: props.parsedPrg.levels,
 										...unzipObject(parsedTiles.result),
 									}),
-									({ level, platformTiles: tiles, holes }) => ({
+									({ level, platformTiles, holes }): Level => ({
 										...level,
-										tiles,
+										platformTiles,
 										holes,
 									})
 								),
