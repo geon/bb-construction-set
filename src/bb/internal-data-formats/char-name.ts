@@ -88,21 +88,21 @@ export function levelToCharNames(
 	);
 }
 
+const emptyChar: Char = [
+	[0, 0, 0, 0],
+	[0, 0, 0, 0],
+	[0, 0, 0, 0],
+	[0, 0, 0, 0],
+	[0, 0, 0, 0],
+	[0, 0, 0, 0],
+	[0, 0, 0, 0],
+	[0, 0, 0, 0],
+];
+
 export function makeCharset(
 	level: Level,
 	shadowChars: ShadowChars
 ): Readonly<Record<CharName, Char>> {
-	const emptyChar: Char = [
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-		[0, 0, 0, 0],
-	];
-
 	return {
 		empty: emptyChar,
 		platform: level.platformChar,
