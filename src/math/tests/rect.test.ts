@@ -164,4 +164,13 @@ describe("rectIntersection", () => {
 			size: { x: 1, y: 1 },
 		});
 	});
+
+	test("-x -y", () => {
+		const a = { pos: { x: 0, y: 0 }, size: { x: 2, y: 2 } };
+		const b = { pos: { x: -1, y: -1 }, size: { x: 2, y: 2 } };
+		expect(rectIntersection(a, b)).toStrictEqual({
+			pos: { x: 0, y: 0 },
+			size: { x: 1, y: 1 },
+		});
+	});
 });
