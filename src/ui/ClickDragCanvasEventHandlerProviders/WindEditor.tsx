@@ -21,7 +21,7 @@ import { add, Coord2, origo, scale } from "../../math/coord2";
 import { checkedAccess, range } from "../../bb/functions";
 import { levelSize } from "../../bb/game-definitions/level-size";
 import { MutableTuple } from "../../bb/tuple";
-import { LevelIndex } from "../../bb/internal-data-formats/levels";
+import { LevelIndex, Levels } from "../../bb/internal-data-formats/levels";
 import { rectContainsPoint } from "../../math/rect";
 import { Setter } from "../types";
 import { WindEditorPerLineDefaults } from "./WindEditorPerLineDefaults";
@@ -60,6 +60,7 @@ export const WindEditor: ClickDragCanvasEventHandlerProvider = (props) => {
 	}
 
 	function getRectangles(
+		levels: Levels,
 		level: Level
 	): readonly BubbleCurrentRectangleOrSymmetry[] {
 		let bubbleCurrentRectangles = level.bubbleCurrentRectangles;
@@ -69,7 +70,7 @@ export const WindEditor: ClickDragCanvasEventHandlerProvider = (props) => {
 				return bubbleCurrentRectangles.rectangles;
 			}
 
-			const otherLevel = props.levels[bubbleCurrentRectangles.levelIndex];
+			const otherLevel = levels[bubbleCurrentRectangles.levelIndex];
 			if (!otherLevel) {
 				throw new Error("Level index out of bounds.");
 			}
@@ -83,7 +84,7 @@ export const WindEditor: ClickDragCanvasEventHandlerProvider = (props) => {
 		return [];
 	}
 
-	const rectangles = useMemo(() => getRectangles(level), [level]);
+	const rectangles = useMemo(() => getRectangles(props.levels, level), [level]);
 
 	const directions = getBubbleCurrentDirections(
 		level.bubbleCurrentPerLineDefaults,
