@@ -13,6 +13,7 @@ import { Patch } from "../bb/prg/io";
 import { ButtonRow } from "./ButtonRow";
 import { FileInput } from "./FileInput";
 import { budgetBlown, Budgets, resourceNameLabels } from "../bb/prg/budgets";
+import { LevelIndex } from "../bb/internal-data-formats/levels";
 
 export function FileMenu(props: {
 	readonly parsedPrg?: ParsedPrg;
@@ -55,7 +56,7 @@ export function FileMenu(props: {
 									fileName: (index + 1).toString().padStart(3, "0") + ".png",
 									blob: await imageDataToBlob(
 										imageDataFromPaletteImage(
-											drawLevel(index, parsedPrg, undefined)
+											drawLevel(index as LevelIndex, parsedPrg, undefined)
 										)
 									),
 								})),
