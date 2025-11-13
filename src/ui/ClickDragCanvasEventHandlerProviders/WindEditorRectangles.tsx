@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 import {
 	deleteArrayElementAtIndex,
+	isDefined,
 	mapRecord,
 	range,
 	reorder,
@@ -509,25 +510,19 @@ export function fixInvalidRectangles(
 	const clip = (rect: Rect) =>
 		rectIntersection(rect, { pos: origo, size: levelSize });
 
-	return rectangles.flatMap((rectangle) => {
-		if (rectangle.type !== "rectangle" || !rectangleIsInvalid(rectangle)) {
-			return rectangle;
-		}
+	return rectangles
+		.map((rectangle) => {
+			if (rectangle.type !== "rectangle" || !rectangleIsInvalid(rectangle)) {
+				return rectangle;
+			}
 
-		return [
-			rectangle.rect,
-			{
-				pos: add(rectangle.rect.pos, { x: -levelSize.x, y: 1 }),
-				size: rectangle.rect.size,
-			},
-		]
-			.map(clip)
-			.filter((x) => x !== undefined)
-			.map(
-				(rect): BubbleCurrentRectangleOrSymmetry => ({
+			const clippedRect = clip(rectangle.rect);
+			return (
+				clippedRect && {
 					...rectangle,
-					rect,
-				})
+					rect: clippedRect,
+				}
 			);
-	});
+		})
+		.filter(isDefined);
 }
