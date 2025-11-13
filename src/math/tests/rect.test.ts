@@ -1,5 +1,10 @@
 import { describe, expect, test } from "vitest";
-import { bottomRight, boundingBox, flexboxChildPositions } from "../rect";
+import {
+	bottomRight,
+	boundingBox,
+	flexboxChildPositions,
+	rectIntersection,
+} from "../rect";
 import { origo } from "../coord2";
 
 test("bottomRight", () => {
@@ -141,5 +146,13 @@ describe("boundingBox", () => {
 			{ pos: { x: 0, y: 2 }, size: { x: 3, y: 3 } },
 		];
 		expect(boundingBox(rects)).toMatchSnapshot();
+	});
+});
+
+describe("rectIntersection", () => {
+	test("same", () => {
+		const a = { pos: { x: 0, y: 0 }, size: { x: 2, y: 2 } };
+		const b = { pos: { x: 0, y: 0 }, size: { x: 2, y: 2 } };
+		expect(rectIntersection(a, b)).toStrictEqual(a);
 	});
 });
