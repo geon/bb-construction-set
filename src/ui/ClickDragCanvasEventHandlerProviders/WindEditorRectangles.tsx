@@ -1,7 +1,6 @@
 import styled, { css } from "styled-components";
 import {
 	deleteArrayElementAtIndex,
-	isDefined,
 	mapRecord,
 	range,
 	reorder,
@@ -11,8 +10,9 @@ import { levelSize } from "../../bb/game-definitions/level-size";
 import {
 	BubbleCurrentDirection,
 	BubbleCurrentPerLineDefaults,
-	BubbleCurrentRectangle,
 	BubbleCurrentRectangleOrSymmetry,
+	clipRectanglesToLevel,
+	rectangleIsInvalid,
 	rotateDirectionClockwise,
 } from "../../bb/internal-data-formats/level";
 import { MutableTuple } from "../../bb/tuple";
@@ -25,12 +25,7 @@ import {
 	subtract,
 	scale,
 } from "../../math/coord2";
-import {
-	bottomRight,
-	Rect,
-	rectContainsPoint,
-	rectIntersection,
-} from "../../math/rect";
+import { bottomRight, Rect, rectContainsPoint } from "../../math/rect";
 import { Setter } from "../types";
 import { ButtonRow } from "../ButtonRow";
 import { icons } from "../icons";
@@ -491,37 +486,4 @@ export function getBubbleCurrentDirections(
 	}
 
 	return directions as BubbleCurrentDirections;
-}
-
-export function rectangleIsInvalid(rectangle: BubbleCurrentRectangle) {
-	const br = bottomRight(rectangle.rect);
-	return (
-		rectangle.rect.pos.y < 0 ||
-		rectangle.rect.pos.x < 0 ||
-		br.y > levelSize.y ||
-		br.x > levelSize.x
-	);
-}
-
-export function clipRectanglesToLevel(
-	rectangles: readonly BubbleCurrentRectangleOrSymmetry[]
-): BubbleCurrentRectangleOrSymmetry[] {
-	const clip = (rect: Rect) =>
-		rectIntersection(rect, { pos: origo, size: levelSize });
-
-	return rectangles
-		.map((rectangle) => {
-			if (rectangle.type !== "rectangle") {
-				return rectangle;
-			}
-
-			const clippedRect = clip(rectangle.rect);
-			return (
-				clippedRect && {
-					...rectangle,
-					rect: clippedRect,
-				}
-			);
-		})
-		.filter(isDefined);
 }
