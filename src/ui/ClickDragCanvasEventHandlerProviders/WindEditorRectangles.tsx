@@ -467,10 +467,6 @@ export function getBubbleCurrentDirections(
 
 	for (const rectangle of fixInvalidRectangles(rectangles)) {
 		if (rectangle.type === "rectangle") {
-			if (rectangleIsInvalid(rectangle)) {
-				throw new Error("Bad rectangle." /* , { cause: rectangle } */);
-			}
-
 			for (
 				let y = rectangle.rect.pos.y;
 				y < rectangle.rect.pos.y + rectangle.rect.size.y;
@@ -515,7 +511,7 @@ export function fixInvalidRectangles(
 
 	return rectangles
 		.map((rectangle) => {
-			if (rectangle.type !== "rectangle" || !rectangleIsInvalid(rectangle)) {
+			if (rectangle.type !== "rectangle") {
 				return rectangle;
 			}
 
