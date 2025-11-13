@@ -5,7 +5,12 @@ import { drawLevel } from "../bb/palette-image/level";
 import { Card } from "./Card";
 import styled, { css } from "styled-components";
 import { drawLevels } from "../bb/image-data/draw-level";
-import { objectEntries, reorder, updateArrayAtIndex } from "../bb/functions";
+import {
+	objectEntries,
+	reorder,
+	stringPadLeft,
+	updateArrayAtIndex,
+} from "../bb/functions";
 import { ButtonGroup } from "./ButtonGroup";
 import { icons } from "./icons";
 import { Setter } from "./types";
@@ -30,6 +35,8 @@ import {
 	resourceNameLabels,
 } from "../bb/prg/budgets";
 import { PlatformGraphics } from "./ClickDragCanvasEventHandlerProviders/PlatformGraphics";
+import { BlobDownloadButton } from "./BlobDownloadButton";
+import { FileInput } from "./FileInput";
 
 const ImageCard = styled(Card)<{
 	readonly children: [JSX.Element, JSX.Element];
@@ -128,6 +135,8 @@ export function LevelPreviewCard(props: {
 	readonly setShowLevelSelectionGrid: Setter<boolean>;
 	readonly budgets: Budgets;
 }): ReactNode {
+	const level = props.parsedPrg.levels[props.levelIndex];
+
 	const setLevel = (level: Level) =>
 		props.setParsedPrg({
 			...props.parsedPrg,
@@ -140,6 +149,7 @@ export function LevelPreviewCard(props: {
 				100
 			),
 		});
+
 	const [activeTool, setActiveTool] = useState<ToolName>("draw-platforms");
 
 	const Tool = clickDragCanvasEventHandlerProviders[activeTool];
@@ -183,6 +193,32 @@ export function LevelPreviewCard(props: {
 									showLevelSelectionGrid={props.showLevelSelectionGrid}
 									setShowLevelSelectionGrid={props.setShowLevelSelectionGrid}
 								/>
+							</ButtonGroup>
+							<ButtonGroup>
+								<FileInput
+									accept={["json"]}
+									onChange={async (file) =>
+										setLevel(JSON.parse(await file.text()))
+									}
+									title="Import Level File..."
+								>
+									{icons.upload}
+								</FileInput>
+								<BlobDownloadButton
+									getBlob={async () => ({
+										blob: new Blob([JSON.stringify(level)], {
+											type: "application/octet-stream",
+										}),
+										fileName: `level-${stringPadLeft(
+											(props.levelIndex + 1).toString(),
+											2,
+											"0"
+										)}.json`,
+									})}
+									title="Export Level File"
+								>
+									{icons.download}
+								</BlobDownloadButton>
 							</ButtonGroup>
 							<ButtonGroup>
 								<ToolButtons
