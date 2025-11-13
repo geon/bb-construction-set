@@ -103,7 +103,7 @@ export type LevelIndex =
 	| 96
 	| 97
 	| 98
-	| 9;
+	| 99;
 
 export function getRectangles(
 	levels: Levels,

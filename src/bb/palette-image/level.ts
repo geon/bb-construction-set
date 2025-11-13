@@ -45,6 +45,7 @@ import {
 } from "./palette-image";
 import { drawSprite, getSpritePalette } from "./sprite";
 import { Tiles } from "../internal-data-formats/tiles";
+import { LevelIndex } from "../internal-data-formats/levels";
 
 export type LevelEditorOptions =
 	| {
@@ -59,11 +60,11 @@ export type LevelEditorOptions =
 	  };
 
 export function drawLevel(
-	levelIndex: number,
+	levelIndex: LevelIndex,
 	parsedPrg: ParsedPrg,
 	options: LevelEditorOptions | undefined
 ): PaletteImage {
-	const level = parsedPrg.levels[levelIndex]!;
+	const level = parsedPrg.levels[levelIndex];
 
 	const mutedBgColors: BgColors = {
 		light: palette.grey,
