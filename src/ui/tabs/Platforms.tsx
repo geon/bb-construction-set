@@ -14,25 +14,19 @@ import {
 } from "../../bb/palette-image/level";
 import { BlobDownloadButton } from "../BlobDownloadButton";
 import { FileInput } from "../FileInput";
-import styled from "styled-components";
 import { assertTuple, mapTuple } from "../../bb/tuple";
 import {
 	getPlatformTilesAndHoles,
 	getTiles,
 } from "../../bb/internal-data-formats/tiles";
-
-const ImageButtons = styled.div`
-	display: flex;
-	flex-direction: row;
-	gap: 1em;
-`;
+import { ButtonGroup } from "../ButtonGroup";
 
 export function Platforms(props: {
 	readonly setParsedPrg: (parsedPrg: ParsedPrg) => void;
 	readonly parsedPrg: ParsedPrg;
 }): ReactNode | readonly ReactNode[] {
 	return (
-		<ImageButtons>
+		<ButtonGroup>
 			<FileInput
 				accept={["image/*"]}
 				onChange={async (file) => {
@@ -81,6 +75,6 @@ export function Platforms(props: {
 			>
 				Export Image
 			</BlobDownloadButton>
-		</ImageButtons>
+		</ButtonGroup>
 	);
 }

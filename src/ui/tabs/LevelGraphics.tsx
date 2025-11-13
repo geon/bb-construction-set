@@ -21,17 +21,12 @@ import {
 import styled from "styled-components";
 import { mapTuple } from "../../bb/tuple";
 import { LevelIndex } from "../../bb/internal-data-formats/levels";
+import { ButtonGroup } from "../ButtonGroup";
 
 const Styling = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 3em;
-`;
-
-export const ImageButtons = styled.div`
-	display: flex;
-	flex-direction: row;
-	gap: 1em;
 `;
 
 export function LevelGraphics(props: {
@@ -42,7 +37,7 @@ export function LevelGraphics(props: {
 }): ReactNode {
 	return (
 		<Styling>
-			<ImageButtons>
+			<ButtonGroup>
 				<FileInput
 					accept={["image/*"]}
 					onChange={async (file) => {
@@ -90,7 +85,7 @@ export function LevelGraphics(props: {
 				>
 					Export Image
 				</BlobDownloadButton>
-			</ImageButtons>
+			</ButtonGroup>
 		</Styling>
 	);
 }
