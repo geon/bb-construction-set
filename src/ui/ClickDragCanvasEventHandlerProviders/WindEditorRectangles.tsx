@@ -498,10 +498,8 @@ export function getBubbleCurrentDirections(
 }
 
 export function rectangleIsInvalid(rectangle: BubbleCurrentRectangle) {
-	return (
-		rectangle.rect.pos.y + rectangle.rect.size.y > levelSize.y ||
-		rectangle.rect.pos.x + rectangle.rect.size.x > levelSize.x
-	);
+	const br = bottomRight(rectangle.rect);
+	return br.y > levelSize.y || br.x > levelSize.x;
 }
 
 export function fixInvalidRectangles(
