@@ -499,7 +499,12 @@ export function getBubbleCurrentDirections(
 
 export function rectangleIsInvalid(rectangle: BubbleCurrentRectangle) {
 	const br = bottomRight(rectangle.rect);
-	return br.y > levelSize.y || br.x > levelSize.x;
+	return (
+		rectangle.rect.pos.y < 0 ||
+		rectangle.rect.pos.x < 0 ||
+		br.y > levelSize.y ||
+		br.x > levelSize.x
+	);
 }
 
 export function fixInvalidRectangles(
