@@ -1,6 +1,6 @@
 import { Char } from "./char";
-import { Coord2 } from "../../math/coord2";
-import { Rect } from "../../math/rect";
+import { Coord2, origo } from "../../math/coord2";
+import { bottomRight, Rect, rectIntersection } from "../../math/rect";
 import { BgColors } from "./bg-colors";
 import { PerLevelBubbleSpawns } from "./bubble-spawns";
 import { PerLevelItemSpawnPositions } from "./item-spawn-positions";
@@ -9,6 +9,7 @@ import { LevelIndex } from "./levels";
 import { Tuple } from "../tuple";
 import { levelSize } from "../game-definitions/level-size";
 import { CharBlock } from "./char-block";
+import { isDefined } from "../functions";
 
 interface Character<TCharacterName> {
 	readonly characterName: TCharacterName;
@@ -97,4 +98,37 @@ function rowIsSymmetric(row: readonly boolean[]): boolean {
 
 export function levelIsSymmetric(tiles: PlatformTiles) {
 	return tiles.every(rowIsSymmetric);
+}
+
+export function rectangleIsInvalid(rectangle: BubbleCurrentRectangle) {
+	const br = bottomRight(rectangle.rect);
+	return (
+		rectangle.rect.pos.y < 0 ||
+		rectangle.rect.pos.x < 0 ||
+		br.y > levelSize.y ||
+		br.x > levelSize.x
+	);
+}
+
+export function clipRectanglesToLevel(
+	rectangles: readonly BubbleCurrentRectangleOrSymmetry[]
+): BubbleCurrentRectangleOrSymmetry[] {
+	const clip = (rect: Rect) =>
+		rectIntersection(rect, { pos: origo, size: levelSize });
+
+	return rectangles
+		.map((rectangle) => {
+			if (rectangle.type !== "rectangle") {
+				return rectangle;
+			}
+
+			const clippedRect = clip(rectangle.rect);
+			return (
+				clippedRect && {
+					...rectangle,
+					rect: clippedRect,
+				}
+			);
+		})
+		.filter(isDefined);
 }
