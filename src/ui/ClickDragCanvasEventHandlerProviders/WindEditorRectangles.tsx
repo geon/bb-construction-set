@@ -510,22 +510,24 @@ export function fixInvalidRectangles(
 		rectIntersection(rect, { pos: origo, size: levelSize });
 
 	return rectangles.flatMap((rectangle) => {
-		return rectangle.type !== "rectangle" || !rectangleIsInvalid(rectangle)
-			? rectangle
-			: [
-					rectangle.rect,
-					{
-						pos: add(rectangle.rect.pos, { x: -levelSize.x, y: 1 }),
-						size: rectangle.rect.size,
-					},
-			  ]
-					.map(clip)
-					.filter((x) => x !== undefined)
-					.map(
-						(rect): BubbleCurrentRectangleOrSymmetry => ({
-							...rectangle,
-							rect,
-						})
-					);
+		if (rectangle.type !== "rectangle" || !rectangleIsInvalid(rectangle)) {
+			return rectangle;
+		}
+
+		return [
+			rectangle.rect,
+			{
+				pos: add(rectangle.rect.pos, { x: -levelSize.x, y: 1 }),
+				size: rectangle.rect.size,
+			},
+		]
+			.map(clip)
+			.filter((x) => x !== undefined)
+			.map(
+				(rect): BubbleCurrentRectangleOrSymmetry => ({
+					...rectangle,
+					rect,
+				})
+			);
 	});
 }
