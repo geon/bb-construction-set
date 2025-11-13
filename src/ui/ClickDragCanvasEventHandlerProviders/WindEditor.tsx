@@ -20,7 +20,10 @@ import { add, Coord2, origo, scale } from "../../math/coord2";
 import { checkedAccess, range } from "../../bb/functions";
 import { levelSize } from "../../bb/game-definitions/level-size";
 import { MutableTuple } from "../../bb/tuple";
-import { LevelIndex, Levels } from "../../bb/internal-data-formats/levels";
+import {
+	getRectangles,
+	LevelIndex,
+} from "../../bb/internal-data-formats/levels";
 import { rectContainsPoint } from "../../math/rect";
 import { Setter } from "../types";
 import { WindEditorPerLineDefaults } from "./WindEditorPerLineDefaults";
@@ -56,31 +59,6 @@ export const WindEditor: ClickDragCanvasEventHandlerProvider = (props) => {
 				rectangles,
 			},
 		});
-	}
-
-	function getRectangles(
-		levels: Levels,
-		levelIndex: LevelIndex
-	): readonly BubbleCurrentRectangleOrSymmetry[] {
-		let bubbleCurrentRectangles = levels[levelIndex].bubbleCurrentRectangles;
-
-		for (const _ of range(100)) {
-			if (bubbleCurrentRectangles.type === "rectangles") {
-				return bubbleCurrentRectangles.rectangles;
-			}
-
-			const otherLevel = levels[bubbleCurrentRectangles.levelIndex];
-			if (!otherLevel) {
-				throw new Error("Level index out of bounds.");
-			}
-
-			bubbleCurrentRectangles = otherLevel.bubbleCurrentRectangles;
-		}
-
-		// TODO: Show this error to the user.
-		// throw new Error("Source rectangles not found.");
-
-		return [];
 	}
 
 	const rectangles = useMemo(
