@@ -1,8 +1,4 @@
-import {
-	BubbleCurrentDirection,
-	BubbleCurrentRectangleOrSymmetry,
-	getBubbleCurrentDirections,
-} from "../../bb/internal-data-formats/level";
+import { BubbleCurrentRectangleOrSymmetry } from "../../bb/internal-data-formats/level";
 import { ClickDragCanvasEventHandlerProvider } from "../ClickDragCanvasEventHandlerProvider";
 import { WindEditorCopy } from "./WindEditorCopy";
 import { WindEditorRectangles } from "./WindEditorRectangles";
@@ -11,24 +7,11 @@ import { ButtonRow } from "../ButtonRow";
 import { icons } from "../icons";
 import { ButtonGroup } from "../ButtonGroup";
 import { RadioButton } from "../RadioButton";
-import { useEffect, useMemo, useState } from "react";
-import { add, Coord2, origo, scale } from "../../math/coord2";
+import { useState } from "react";
 import { checkedAccess } from "../../bb/functions";
-import { levelSize } from "../../bb/game-definitions/level-size";
-import {
-	getRectangles,
-	LevelIndex,
-} from "../../bb/internal-data-formats/levels";
-import { rectContainsPoint } from "../../math/rect";
+import { LevelIndex } from "../../bb/internal-data-formats/levels";
 import { Setter } from "../types";
 import { WindEditorPerLineDefaults } from "./WindEditorPerLineDefaults";
-
-const directionVectors: Record<BubbleCurrentDirection, Coord2> = {
-	[0]: { x: 0, y: -1 },
-	[1]: { x: 1, y: 0 },
-	[2]: { x: 0, y: 1 },
-	[3]: { x: -1, y: 0 },
-};
 
 export const WindEditor: ClickDragCanvasEventHandlerProvider = (props) => {
 	const level = props.levels[props.levelIndex];
@@ -56,44 +39,6 @@ export const WindEditor: ClickDragCanvasEventHandlerProvider = (props) => {
 		});
 	}
 
-	const rectangles = useMemo(
-		() => getRectangles(props.levels, props.levelIndex),
-		[level]
-	);
-
-	const directions = getBubbleCurrentDirections(
-		level.bubbleCurrentPerLineDefaults,
-		rectangles
-	);
-
-	const [frame, setFrame] = useState<number>(0);
-	useEffect(() => {
-		const getFrame = createGetFrame();
-
-		const timerId = setInterval(() => {
-			setFrame(getFrame.next().value);
-		}, 1000 / 20);
-
-		function stop() {
-			clearInterval(timerId);
-		}
-
-		return stop;
-	}, []);
-
-	const dust = directions.flatMap((row, y) =>
-		row
-			.map((direction, x) =>
-				add(
-					add(scale({ x, y }, 8), { x: 4, y: 4 }),
-					scale(directionVectors[direction], frame)
-				)
-			)
-			.filter((mote) =>
-				rectContainsPoint({ pos: origo, size: scale(levelSize, 8) }, mote)
-			)
-	);
-
 	const [showPerLineDefaults, setShowPerLineDefaults] =
 		useState<boolean>(false);
 
@@ -116,7 +61,7 @@ export const WindEditor: ClickDragCanvasEventHandlerProvider = (props) => {
 						setCopyLevelIndex={setCopyLevelIndex}
 						setRectangles={setRectangles}
 					/>,
-					{ type: "wind-editor", dust }
+					{ type: "wind-editor" }
 				)
 			}
 		/>
@@ -135,7 +80,7 @@ export const WindEditor: ClickDragCanvasEventHandlerProvider = (props) => {
 						setRectangles={setRectangles}
 						extraTools={extraTools}
 					/>,
-					{ type: "wind-editor", dust }
+					{ type: "wind-editor" }
 				)
 			}
 		/>
@@ -156,7 +101,7 @@ export const WindEditor: ClickDragCanvasEventHandlerProvider = (props) => {
 						extraTools={extraTools}
 						rectsList={rectsList}
 					/>,
-					{ ...levelEditorOptions, dust }
+					{ ...levelEditorOptions }
 				)
 			}
 		/>
@@ -213,15 +158,4 @@ function ChildContent(props: {
 			{props.rectsList}
 		</Flex>
 	);
-}
-
-function* createGetFrame(): Generator<number, never, void> {
-	let frame = 0;
-	for (;;) {
-		yield frame;
-		++frame;
-		if (frame >= 8) {
-			frame = 0;
-		}
-	}
 }

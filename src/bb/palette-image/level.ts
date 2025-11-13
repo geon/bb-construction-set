@@ -1,5 +1,5 @@
 import { spritePosOffset } from "../../c64/consts";
-import { Coord2, origo, scale, subtract } from "../../math/coord2";
+import { origo, scale, subtract } from "../../math/coord2";
 import { grid, rectIntersection } from "../../math/rect";
 import {
 	checkedAccess,
@@ -19,6 +19,7 @@ import { parseColorPixelByte } from "../internal-data-formats/color-pixel-byte";
 import {
 	makeCharset,
 	levelToCharNames,
+	simplifiedCharset,
 } from "../internal-data-formats/char-name";
 import { palette } from "../internal-data-formats/palette";
 import { ParsedPrg } from "../internal-data-formats/parsed-prg";
@@ -45,7 +46,9 @@ import {
 } from "./palette-image";
 import { drawSprite, getSpritePalette } from "./sprite";
 import { Tiles } from "../internal-data-formats/tiles";
-import { LevelIndex } from "../internal-data-formats/levels";
+import { getRectangles, LevelIndex } from "../internal-data-formats/levels";
+import { getBubbleCurrentDirections } from "../internal-data-formats/level";
+import { arrowImages } from "./arrow-chars";
 
 export type LevelEditorOptions =
 	| {
@@ -56,7 +59,6 @@ export type LevelEditorOptions =
 	| {
 			readonly type: "wind-editor";
 			readonly selectedRectangleIndex?: number;
-			readonly dust: readonly Coord2[];
 	  };
 
 export function drawLevel(
@@ -67,8 +69,8 @@ export function drawLevel(
 	const level = parsedPrg.levels[levelIndex];
 
 	const mutedBgColors: BgColors = {
-		light: palette.grey,
-		dark: palette.darkGrey,
+		light: palette.lightGrey,
+		dark: palette.black,
 	};
 	const bgColors =
 		options?.type === "wind-editor" ? mutedBgColors : level.bgColors;
@@ -76,7 +78,12 @@ export function drawLevel(
 	// Draw level.
 	const charPalette = getLevelCharPalette(bgColors);
 	const charset = mapRecord(
-		makeCharset(level, assertTuple(parsedPrg.chars.shadows.flat().flat(), 6)),
+		options?.type === "wind-editor"
+			? simplifiedCharset
+			: makeCharset(
+					level,
+					assertTuple(parsedPrg.chars.shadows.flat().flat(), 6)
+			  ),
 		(char) => drawChar(char, charPalette)
 	);
 
@@ -119,7 +126,9 @@ export function drawLevel(
 			})
 		);
 	}
-	drawLevelNumber(levelIndex);
+	if (options?.type !== "wind-editor") {
+		drawLevelNumber(levelIndex);
+	}
 
 	function drawItem(itemCategoryName: ItemCategoryName): void {
 		const spawnPosition = level.itemSpawnPositions[itemCategoryName];
@@ -142,45 +151,50 @@ export function drawLevel(
 		);
 	}
 
-	// No normal items on the boss level.
-	if (levelIndex !== 99) {
-		validItemCategoryNames.forEach(drawItem);
+	if (options?.type !== "wind-editor") {
+		// No normal items on the boss level.
+		if (levelIndex !== 99) {
+			validItemCategoryNames.forEach(drawItem);
+		}
+
+		for (const [index, character] of [
+			...[...level.monsters, pl1, pl2].entries(),
+		]) {
+			const dragging =
+				options?.type === "move-enemies" &&
+				index === options.selectedMonsterIndex &&
+				options.dragging;
+
+			const sprite =
+				parsedPrg.sprites[character.characterName].sprites[
+					dragging
+						? parsedPrg.sprites[character.characterName].sprites.length - 1
+						: character.facingLeft
+						? spriteLeftIndex[character.characterName]
+						: 0
+				]!;
+			const spritePos = subtract(character.spawnPoint, spritePosOffset);
+			const spriteColor =
+				options?.type === "move-enemies" &&
+				index === options.selectedMonsterIndex &&
+				!options.dragging
+					? palette.lightRed
+					: character.characterName === "player"
+					? character.facingLeft
+						? palette.cyan
+						: palette.green
+					: parsedPrg.sprites[character.characterName].color;
+
+			blitPaletteImage(
+				image,
+				drawSprite(sprite, getSpritePalette(spriteColor)),
+				{
+					x: spritePos.x / 2,
+					y: spritePos.y,
+				}
+			);
+		}
 	}
-
-	for (const [index, character] of [
-		...[...level.monsters, pl1, pl2].entries(),
-	]) {
-		const dragging =
-			options?.type === "move-enemies" &&
-			index === options.selectedMonsterIndex &&
-			options.dragging;
-
-		const sprite =
-			parsedPrg.sprites[character.characterName].sprites[
-				dragging
-					? parsedPrg.sprites[character.characterName].sprites.length - 1
-					: character.facingLeft
-					? spriteLeftIndex[character.characterName]
-					: 0
-			]!;
-		const spritePos = subtract(character.spawnPoint, spritePosOffset);
-		const spriteColor =
-			options?.type === "move-enemies" &&
-			index === options.selectedMonsterIndex &&
-			!options.dragging
-				? palette.lightRed
-				: character.characterName === "player"
-				? character.facingLeft
-					? palette.cyan
-					: palette.green
-				: parsedPrg.sprites[character.characterName].color;
-
-		blitPaletteImage(image, drawSprite(sprite, getSpritePalette(spriteColor)), {
-			x: spritePos.x / 2,
-			y: spritePos.y,
-		});
-	}
-
 	// Do the rectangles and dust in full resolution.
 	image = doubleImageWidth(image);
 
@@ -212,7 +226,19 @@ export function drawLevel(
 			}
 		}
 
-		options.dust.forEach((pos) => (image[pos.y]![pos.x] = palette.blue));
+		const directions = getBubbleCurrentDirections(
+			level.bubbleCurrentPerLineDefaults,
+			getRectangles(parsedPrg.levels, levelIndex)
+		);
+		for (const [y, row] of directions.entries()) {
+			for (const [x, direction] of row.entries()) {
+				blitPaletteImage(
+					image,
+					checkedAccess(arrowImages, direction.toString()),
+					scale({ x, y }, 8)
+				);
+			}
+		}
 	}
 
 	return image;
