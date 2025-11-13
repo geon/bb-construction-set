@@ -2,7 +2,6 @@ import {
 	BubbleCurrentDirection,
 	BubbleCurrentPerLineDefaults,
 	BubbleCurrentRectangleOrSymmetry,
-	Level,
 } from "../../bb/internal-data-formats/level";
 import { ClickDragCanvasEventHandlerProvider } from "../ClickDragCanvasEventHandlerProvider";
 import { WindEditorCopy } from "./WindEditorCopy";
@@ -61,9 +60,9 @@ export const WindEditor: ClickDragCanvasEventHandlerProvider = (props) => {
 
 	function getRectangles(
 		levels: Levels,
-		level: Level
+		levelIndex: LevelIndex
 	): readonly BubbleCurrentRectangleOrSymmetry[] {
-		let bubbleCurrentRectangles = level.bubbleCurrentRectangles;
+		let bubbleCurrentRectangles = levels[levelIndex].bubbleCurrentRectangles;
 
 		for (const _ of range(100)) {
 			if (bubbleCurrentRectangles.type === "rectangles") {
@@ -84,7 +83,10 @@ export const WindEditor: ClickDragCanvasEventHandlerProvider = (props) => {
 		return [];
 	}
 
-	const rectangles = useMemo(() => getRectangles(props.levels, level), [level]);
+	const rectangles = useMemo(
+		() => getRectangles(props.levels, props.levelIndex),
+		[level]
+	);
 
 	const directions = getBubbleCurrentDirections(
 		level.bubbleCurrentPerLineDefaults,
