@@ -1,13 +1,11 @@
 import {
 	BubbleCurrentDirection,
 	BubbleCurrentRectangleOrSymmetry,
+	getBubbleCurrentDirections,
 } from "../../bb/internal-data-formats/level";
 import { ClickDragCanvasEventHandlerProvider } from "../ClickDragCanvasEventHandlerProvider";
 import { WindEditorCopy } from "./WindEditorCopy";
-import {
-	WindEditorRectangles,
-	getBubbleCurrentDirections,
-} from "./WindEditorRectangles";
+import { WindEditorRectangles } from "./WindEditorRectangles";
 import { Flex } from "../Flex";
 import { ButtonRow } from "../ButtonRow";
 import { icons } from "../icons";

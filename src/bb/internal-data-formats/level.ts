@@ -6,10 +6,10 @@ import { PerLevelBubbleSpawns } from "./bubble-spawns";
 import { PerLevelItemSpawnPositions } from "./item-spawn-positions";
 import { CharacterName } from "../game-definitions/character-name";
 import { LevelIndex } from "./levels";
-import { Tuple } from "../tuple";
+import { MutableTuple, Tuple } from "../tuple";
 import { levelSize } from "../game-definitions/level-size";
 import { CharBlock } from "./char-block";
-import { isDefined } from "../functions";
+import { isDefined, range } from "../functions";
 
 interface Character<TCharacterName> {
 	readonly characterName: TCharacterName;
@@ -131,4 +131,62 @@ export function clipRectanglesToLevel(
 			);
 		})
 		.filter(isDefined);
+}
+
+type BubbleCurrentDirections = MutableTuple<
+	MutableTuple<BubbleCurrentDirection, (typeof levelSize)["x"]>,
+	(typeof levelSize)["y"]
+>;
+
+export function getBubbleCurrentDirections(
+	bubbleCurrentPerLineDefaults: BubbleCurrentPerLineDefaults,
+	rectangles: readonly BubbleCurrentRectangleOrSymmetry[]
+): BubbleCurrentDirections {
+	const reflectedDirections: Record<
+		BubbleCurrentDirection,
+		BubbleCurrentDirection
+	> = {
+		0: 0,
+		1: 3,
+		2: 2,
+		3: 1,
+	};
+
+	const directions = range(levelSize.y).map(() =>
+		range(levelSize.x).map((): BubbleCurrentDirection => 0)
+	);
+
+	for (const [y, row] of directions.entries()) {
+		const perLineDefaultCurrent = bubbleCurrentPerLineDefaults[y]!;
+		for (const [tileX] of row.entries()) {
+			directions[y]![tileX]! = perLineDefaultCurrent;
+		}
+	}
+
+	for (const rectangle of clipRectanglesToLevel(rectangles)) {
+		if (rectangle.type === "rectangle") {
+			for (
+				let y = rectangle.rect.pos.y;
+				y < rectangle.rect.pos.y + rectangle.rect.size.y;
+				++y
+			) {
+				for (
+					let x = rectangle.rect.pos.x;
+					x < rectangle.rect.pos.x + rectangle.rect.size.x;
+					++x
+				) {
+					directions[y]![x] = rectangle.direction;
+				}
+			}
+		} else {
+			for (let y = 0; y < levelSize.y; ++y) {
+				for (let x = 0; x < levelSize.x / 2; ++x) {
+					directions[y]![levelSize.x - 1 - x] =
+						reflectedDirections[directions[y]![x]!]!;
+				}
+			}
+		}
+	}
+
+	return directions as BubbleCurrentDirections;
 }

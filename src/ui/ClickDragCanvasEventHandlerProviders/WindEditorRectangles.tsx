@@ -2,20 +2,15 @@ import styled, { css } from "styled-components";
 import {
 	deleteArrayElementAtIndex,
 	mapRecord,
-	range,
 	reorder,
 	updateArrayAtIndex,
 } from "../../bb/functions";
-import { levelSize } from "../../bb/game-definitions/level-size";
 import {
 	BubbleCurrentDirection,
-	BubbleCurrentPerLineDefaults,
 	BubbleCurrentRectangleOrSymmetry,
-	clipRectanglesToLevel,
 	rectangleIsInvalid,
 	rotateDirectionClockwise,
 } from "../../bb/internal-data-formats/level";
-import { MutableTuple } from "../../bb/tuple";
 import {
 	origo,
 	add,
@@ -428,62 +423,4 @@ function RectFields(props: { rect: Rect; onChange: Setter<Rect> }): ReactNode {
 			/>
 		</ButtonRow>
 	);
-}
-
-type BubbleCurrentDirections = MutableTuple<
-	MutableTuple<BubbleCurrentDirection, (typeof levelSize)["x"]>,
-	(typeof levelSize)["y"]
->;
-
-export function getBubbleCurrentDirections(
-	bubbleCurrentPerLineDefaults: BubbleCurrentPerLineDefaults,
-	rectangles: readonly BubbleCurrentRectangleOrSymmetry[]
-): BubbleCurrentDirections {
-	const reflectedDirections: Record<
-		BubbleCurrentDirection,
-		BubbleCurrentDirection
-	> = {
-		0: 0,
-		1: 3,
-		2: 2,
-		3: 1,
-	};
-
-	const directions = range(levelSize.y).map(() =>
-		range(levelSize.x).map((): BubbleCurrentDirection => 0)
-	);
-
-	for (const [y, row] of directions.entries()) {
-		const perLineDefaultCurrent = bubbleCurrentPerLineDefaults[y]!;
-		for (const [tileX] of row.entries()) {
-			directions[y]![tileX]! = perLineDefaultCurrent;
-		}
-	}
-
-	for (const rectangle of clipRectanglesToLevel(rectangles)) {
-		if (rectangle.type === "rectangle") {
-			for (
-				let y = rectangle.rect.pos.y;
-				y < rectangle.rect.pos.y + rectangle.rect.size.y;
-				++y
-			) {
-				for (
-					let x = rectangle.rect.pos.x;
-					x < rectangle.rect.pos.x + rectangle.rect.size.x;
-					++x
-				) {
-					directions[y]![x] = rectangle.direction;
-				}
-			}
-		} else {
-			for (let y = 0; y < levelSize.y; ++y) {
-				for (let x = 0; x < levelSize.x / 2; ++x) {
-					directions[y]![levelSize.x - 1 - x] =
-						reflectedDirections[directions[y]![x]!]!;
-				}
-			}
-		}
-	}
-
-	return directions as BubbleCurrentDirections;
 }
