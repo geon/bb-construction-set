@@ -465,7 +465,7 @@ export function getBubbleCurrentDirections(
 		}
 	}
 
-	for (const rectangle of fixInvalidRectangles(rectangles)) {
+	for (const rectangle of clipRectanglesToLevel(rectangles)) {
 		if (rectangle.type === "rectangle") {
 			for (
 				let y = rectangle.rect.pos.y;
@@ -503,7 +503,7 @@ export function rectangleIsInvalid(rectangle: BubbleCurrentRectangle) {
 	);
 }
 
-export function fixInvalidRectangles(
+export function clipRectanglesToLevel(
 	rectangles: readonly BubbleCurrentRectangleOrSymmetry[]
 ): BubbleCurrentRectangleOrSymmetry[] {
 	const clip = (rect: Rect) =>
