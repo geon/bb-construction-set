@@ -34,6 +34,15 @@ export const SpawnBubbles: ClickDragCanvasEventHandlerProvider = (props: {
 				setSelected={(bubbleSpawns) =>
 					props.setLevel({ ...props.levels[props.levelIndex], bubbleSpawns })
 				}
+				disabled={
+					props.levels[props.levelIndex].bubbleSpawns.extend
+						? {}
+						: {
+								lightning: true,
+								fire: true,
+								water: true,
+						  }
+				}
 			/>
 		</ButtonRow>
 	);

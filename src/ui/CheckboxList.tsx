@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 
 type CheckboxListProps<T extends string> = {
 	readonly selected: Record<T, boolean>;
+	readonly disabled: Partial<Record<T, boolean>>;
 	readonly setSelected: (newSelected: Record<T, boolean>) => void;
 	readonly options: Record<T, string>;
 
@@ -21,6 +22,7 @@ export const CheckboxList: <T extends string>(
 				<Checkbox
 					key={name}
 					checked={!!props.selected[name]}
+					disabled={props.disabled[name]}
 					onToggle={() => toggle(name)}
 					label={label}
 				/>
@@ -31,14 +33,16 @@ export const CheckboxList: <T extends string>(
 
 function Checkbox(props: {
 	readonly checked: boolean;
+	readonly disabled?: boolean;
 	readonly onToggle: () => void;
 	readonly label: string;
 }): ReactNode {
 	return (
-		<label>
+		<label style={props.disabled ? { opacity: 0.5 } : undefined}>
 			<input
 				type="checkbox"
 				checked={props.checked}
+				disabled={props.disabled}
 				onChange={props.onToggle}
 			/>{" "}
 			{props.label}
