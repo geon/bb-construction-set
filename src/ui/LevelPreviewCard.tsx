@@ -37,6 +37,7 @@ import {
 import { PlatformGraphics } from "./ClickDragCanvasEventHandlerProviders/PlatformGraphics";
 import { BlobDownloadButton } from "./BlobDownloadButton";
 import { FileInput } from "./FileInput";
+import { Recycle } from "./ClickDragCanvasEventHandlerProviders/Recycle";
 
 const ImageCard = styled(Card)<{
 	readonly children: [JSX.Element, JSX.Element];
@@ -106,6 +107,7 @@ const clickDragCanvasEventHandlerProviders = {
 	"move-enemies": MoveEnemies,
 	"spawn-bubbles": SpawnBubbles,
 	"wind-editor": WindEditor,
+	recycle: Recycle,
 } as const satisfies Record<string, ClickDragCanvasEventHandlerProvider>;
 
 const BudgetView = styled(
@@ -291,6 +293,7 @@ function ToolButtons({
 				"move-enemies": icons.buster,
 				"spawn-bubbles": icons.fireBubble,
 				"wind-editor": icons.wind,
+				recycle: icons.recycle,
 			} satisfies Record<ToolName, ReactNode>).map(([toolName, icon]) => (
 				<RadioButton
 					key={toolName}

@@ -88,7 +88,7 @@ export function levelToCharNames(
 	);
 }
 
-const emptyChar: Char = [
+export const emptyChar: Char = [
 	[0, 0, 0, 0],
 	[0, 0, 0, 0],
 	[0, 0, 0, 0],
@@ -99,7 +99,7 @@ const emptyChar: Char = [
 	[0, 0, 0, 0],
 ];
 
-const solidChar: Char = [
+export const solidChar: Char = [
 	[2, 2, 2, 2],
 	[2, 2, 2, 2],
 	[2, 2, 2, 2],
