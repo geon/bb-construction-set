@@ -143,8 +143,8 @@ function createMysteryBits(monster: Monster): number {
 	const leftRight = movingLeft | movingRight;
 
 	const startingUp = true;
-	const movingUp = startingUp ? 0b0001 : 0;
-	const movingDown = !startingUp ? 0b0010 : 0;
+	const movingUp = !startingUp ? 0b0100 : 0;
+	const movingDown = startingUp ? 0b1000 : 0;
 	const upDown = movingUp | movingDown;
 
 	switch (monster.characterName) {
@@ -157,14 +157,19 @@ function createMysteryBits(monster: Monster): number {
 		}
 
 		// Flyers
-		case "beluga":
-		case "hullaballoon": {
+		case "beluga": {
 			return leftRight | upDown;
 		}
+		case "hullaballoon": {
+			return upDown | 0b01;
+		}
 
-		case "colley":
+		// Weirdos
 		case "superSocket": {
 			return leftRight;
+		}
+		case "colley": {
+			return 0;
 		}
 
 		default: {
