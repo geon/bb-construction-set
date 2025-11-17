@@ -16,7 +16,7 @@ export const WindEditorCopy = (props: {
 		{},
 		<ButtonRow $align="right">
 			<label>
-				Copy winds from level:{" "}
+				Use rectangles from level:{" "}
 				<IntegerInput
 					value={props.sourceLevelIndex + 1}
 					onChange={(levelNumber) =>

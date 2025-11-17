@@ -149,7 +149,7 @@ function ChildContent(props: {
 								props.setCopyLevelIndex(0)
 							}
 						>
-							{icons.copy}
+							{icons.link}
 						</RadioButton>
 					</ButtonGroup>
 				)}
