@@ -3,7 +3,7 @@ import { validItemCategoryNames } from "../prg/data-locations";
 import { mapTuple, Tuple } from "../tuple";
 import { OneOrMore } from "../types";
 import { validSpecialBubbleNames } from "./bubble-spawns";
-import { Level } from "./level";
+import { Level, platformTilesSize } from "./level";
 import { Levels } from "./levels";
 
 function randomInteger(toNotIncluding: number) {
@@ -29,8 +29,22 @@ function mixArrays2<T>(arrays: Tuple<readonly T[], 2>): T[] {
 		return randomInteger(2) ? array : array.slice().reverse();
 	}
 
-	const a = randomReverse(arrays[0]);
-	const b = randomReverse(arrays[1]);
+	function randomInsideOut<T>(array: readonly T[]): readonly T[] {
+		return randomInteger(2)
+			? array
+			: array.map((row) => {
+					if (!Array.isArray(row)) {
+						throw new Error();
+					}
+					return [
+						row.slice(platformTilesSize.x / 2),
+						row.slice(0, platformTilesSize.x / 2),
+					].flat() as T;
+			  });
+	}
+
+	const a = randomInsideOut(randomReverse(arrays[0]));
+	const b = randomInsideOut(randomReverse(arrays[1]));
 
 	return [
 		a.slice(0, start),
