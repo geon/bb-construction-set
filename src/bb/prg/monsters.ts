@@ -73,6 +73,12 @@ function serializeMonster(monster: Monster): SingleMonsterBytes {
 			((confirmed_mystery_bits_A_3A1C & 1) << 7),
 	] as const;
 
+	if (bytes[0] === 0) {
+		throw new Error(
+			`Bubble Busters are not allowed to be placed at position <${monster.spawnPoint.x}, ${monster.spawnPoint.y}>, since that serializes to zero - which is the stop-byte.`
+		);
+	}
+
 	return bytes;
 }
 
