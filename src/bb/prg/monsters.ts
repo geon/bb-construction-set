@@ -65,13 +65,15 @@ function serializeMonster(monster: Monster): SingleMonsterBytes {
 
 	const prgPosition = serializeMonsterPosition(monster.spawnPoint);
 
-	return [
+	const bytes = [
 		prgPosition.x | (monsterNames.indexOf(monster.characterName) & nameMask),
 		prgPosition.y | (confirmed_mystery_bits_A_3A1C >> 1),
 		(monster.facingLeft ? facingLeftBit : 0) |
 			monster.delay |
 			((confirmed_mystery_bits_A_3A1C & 1) << 7),
-	];
+	] as const;
+
+	return bytes;
 }
 
 export function readMonsters(
