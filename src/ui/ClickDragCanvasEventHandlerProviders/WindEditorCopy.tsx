@@ -3,6 +3,7 @@ import { ButtonRow } from "../ButtonRow";
 import { IntegerInput } from "../IntegerInput";
 import { ClickDragCanvasDragEventHandlers } from "../ClickDragCanvas";
 import { LevelIndex } from "../../bb/internal-data-formats/levels";
+import { clamp } from "../../math/scalar";
 
 export const WindEditorCopy = (props: {
 	readonly sourceLevelIndex: LevelIndex;
@@ -20,7 +21,7 @@ export const WindEditorCopy = (props: {
 				<IntegerInput
 					value={props.sourceLevelIndex + 1}
 					onChange={(levelNumber) =>
-						props.setCopyLevelIndex((levelNumber - 1) as LevelIndex)
+						props.setCopyLevelIndex(clamp(levelNumber - 1, 0, 99) as LevelIndex)
 					}
 				/>
 			</label>
