@@ -123,7 +123,9 @@ export function readMonsters(
 export function getMonstersPatch(
 	monsterses: Tuple<readonly Monster[], 100>
 ): Patch {
-	const numMonsters = monsterses.flatMap((monsters) => monsters).length;
+	const numMonsters = monsterses.flatMap((monsters) => {
+		return monsters;
+	}).length;
 	if (numMonsters > maxMonsters) {
 		throw new Error(
 			`Too many monsters: ${numMonsters}. Should be max ${maxMonsters}.`
