@@ -18,7 +18,7 @@ export const maxAsymmetric = 45;
 export const maxSidebars = 59;
 export const maxMonsters = 572;
 export const bytesPerMonster = 3;
-const monsterStopBytes = 100; // A stop-byte for each level. Boss level has no stored monsters.
+const monsterStopBytes = 99; // A stop-byte for normal level. Boss level has no stored monsters.
 export const maxWindCurrentBytes = 1145; // Determined through experimentation with ts code. Might be wrong.
 
 const platformCharArrayAddress = 0xc26e;
