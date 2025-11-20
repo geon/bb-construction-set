@@ -4,19 +4,20 @@ import { ComponentPropsWithoutRef } from "react";
 export function BlobDownloadButton(
 	props: {
 		getBlob?: () => Promise<
-			{
-				readonly fileName: string;
-			} & (
-				| {
-						readonly blob: Blob;
-				  }
-				| {
-						readonly parts: readonly {
-							readonly fileName: string;
+			| ({
+					readonly fileName: string;
+			  } & (
+					| {
 							readonly blob: Blob;
-						}[];
-				  }
-			)
+					  }
+					| {
+							readonly parts: readonly {
+								readonly fileName: string;
+								readonly blob: Blob;
+							}[];
+					  }
+			  ))
+			| undefined
 		>;
 	} & Omit<ComponentPropsWithoutRef<"button">, "onClick" | "disabled">
 ) {
@@ -30,6 +31,9 @@ export function BlobDownloadButton(
 				getBlob &&
 				(async () => {
 					const result = await getBlob();
+					if (!result) {
+						return;
+					}
 					const { blob, fileName } = !("parts" in result)
 						? result
 						: {

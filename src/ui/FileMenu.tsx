@@ -8,7 +8,7 @@ import {
 } from "../bb/image-data/image-data";
 import { drawLevel } from "../bb/palette-image/level";
 import { Card } from "./Card";
-import { mapAsync, range } from "../bb/functions";
+import { attempt, mapAsync, range } from "../bb/functions";
 import { Patch } from "../bb/prg/io";
 import { ButtonRow } from "./ButtonRow";
 import { FileInput } from "./FileInput";
@@ -79,12 +79,21 @@ export function FileMenu(props: {
 						!(!error && prg && parsedPrg)
 							? undefined
 							: async () => {
-									const patched = patchPrg(
-										//
-										prg,
-										parsedPrg,
-										props.manualPatch
+									const maybePatched = attempt(() =>
+										patchPrg(
+											//
+											prg,
+											parsedPrg,
+											props.manualPatch
+										)
 									);
+
+									if (maybePatched.type === "error") {
+										alert(maybePatched.error);
+										return undefined;
+									}
+
+									const patched = maybePatched.result;
 
 									return {
 										blob: new Blob([patched], {
