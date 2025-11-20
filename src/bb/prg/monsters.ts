@@ -123,6 +123,10 @@ export function readMonsters(
 export function getMonstersPatch(
 	monsterses: Tuple<readonly Monster[], 100>
 ): Patch {
+	if (monsterses[99].length) {
+		throw new Error(`Level 100 may not have monsters.`);
+	}
+
 	const numMonsters = monsterses.flatMap((monsters, levelIndex) => {
 		const maxMonstersPerLevel = 6;
 		if (monsters.length > maxMonstersPerLevel) {
