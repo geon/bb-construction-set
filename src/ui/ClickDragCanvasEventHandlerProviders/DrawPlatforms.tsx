@@ -105,6 +105,27 @@ export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 				>
 					{icons.horizontalArrows}
 				</button>
+				<button
+					onClick={() =>
+						props.setLevel({
+							...level,
+							platformTiles: assertTuple(
+								level.platformTiles.map((row) =>
+									assertTuple(
+										[
+											row.slice(platformTilesSize.x / 2),
+											row.slice(0, platformTilesSize.x / 2),
+										].flat(),
+										platformTilesSize.x
+									)
+								),
+								platformTilesSize.y
+							),
+						})
+					}
+				>
+					{icons.fold}
+				</button>
 			</ButtonGroup>
 			<ButtonGroup>
 				<button onClick={() => props.setLevel(scrollLevelX("left", level))}>
