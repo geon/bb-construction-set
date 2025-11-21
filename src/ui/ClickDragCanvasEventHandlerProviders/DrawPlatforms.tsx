@@ -11,7 +11,11 @@ import {
 	Tiles,
 } from "../../bb/internal-data-formats/tiles";
 import { useDraw } from "./use-draw";
-import { Level, platformTilesSize } from "../../bb/internal-data-formats/level";
+import {
+	Level,
+	levelIsSymmetric,
+	platformTilesSize,
+} from "../../bb/internal-data-formats/level";
 import { ButtonGroup } from "../ButtonGroup";
 import { ButtonRow } from "../ButtonRow";
 import { icons } from "../icons";
@@ -39,6 +43,28 @@ export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 	return props.children(
 		useDraw(getDrawValue, setSomeTiles, transformCoord),
 		<ButtonRow $align="right">
+			<ButtonGroup>
+				<button
+					disabled={levelIsSymmetric(level.platformTiles)}
+					onClick={() =>
+						props.setLevel({
+							...level,
+							platformTiles: assertTuple(
+								level.platformTiles.map((row) => {
+									const leftHalf = row.slice(0, platformTilesSize.x / 2);
+									return assertTuple(
+										[leftHalf, leftHalf.slice().reverse()].flat(),
+										platformTilesSize.x
+									);
+								}),
+								platformTilesSize.y
+							),
+						})
+					}
+				>
+					{icons.symmetry}
+				</button>
+			</ButtonGroup>
 			<ButtonGroup>
 				<button
 					onClick={() =>
