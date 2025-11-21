@@ -79,9 +79,34 @@ function PlatformGraphicsEditor(props: {
 	const [selectedSubPaletteIndex, setSelectedSubPaletteIndex] =
 		useState<SubPaletteIndex>(0);
 
+	const [platformGraphicsClipBoard, setPlatformGraphicsClipBoard] = useState<
+		Pick<Level, "platformChar" | "sidebarChars" | "bgColors"> | undefined
+	>(undefined);
+
 	return (
 		<Flex $row $center>
 			<Flex $col $center>
+				<ButtonGroup style={{ justifyContent: "flex-end" }}>
+					<button
+						onClick={() =>
+							setPlatformGraphicsClipBoard({
+								platformChar: props.level.platformChar,
+								sidebarChars: props.level.sidebarChars,
+								bgColors: props.level.bgColors,
+							})
+						}
+					>
+						{icons.copy}
+					</button>
+					<button
+						disabled={!platformGraphicsClipBoard}
+						onClick={() =>
+							props.setLevel({ ...props.level, ...platformGraphicsClipBoard }!)
+						}
+					>
+						{icons.paste}
+					</button>
+				</ButtonGroup>
 				<ButtonGroup style={{ justifyContent: "flex-end" }}>
 					<RadioButton
 						$active={!!props.level.sidebarChars}
