@@ -184,7 +184,7 @@ function createMysteryBits(monster: Monster): number {
 			return leftRight | upDown;
 		}
 		case "hullaballoon": {
-			return upDown | 0b01;
+			return leftRight | upDown;
 		}
 
 		// Weirdos
