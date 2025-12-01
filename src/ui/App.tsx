@@ -189,6 +189,11 @@ export function App() {
 											<Custom
 												manualPatch={manualPatch}
 												setManualPatch={setManualPatch}
+												purge={() => {
+													setManualPatch([]);
+													const prg = new Uint8Array(originalPrg).buffer;
+													setState({ prg, parsedPrg });
+												}}
 											/>
 										</Card>
 									</>
