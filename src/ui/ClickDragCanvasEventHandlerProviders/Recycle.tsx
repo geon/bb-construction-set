@@ -42,7 +42,15 @@ export const Recycle: ClickDragCanvasEventHandlerProvider = (props: {
 							},
 							platformChar: solidChar,
 							sidebarChars: undefined,
-							monsters: [],
+							monsters: [
+								{
+									characterName: "bubbleBuster",
+									spawnPoint: { x: 116, y: 101 },
+									facingLeft: false,
+									delay: 0,
+									confirmed_mystery_bits_A_3A1C: undefined,
+								},
+							],
 							bubbleCurrentRectangles: {
 								type: "rectangles",
 								rectangles: [],
