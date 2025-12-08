@@ -62,7 +62,10 @@ function mixLevels(levels: Tuple<Level, 2>): Level {
 				randomElement(levels).holes[rowName],
 			])
 		),
-		bgColors: randomElement(levels).bgColors,
+		bgColors: {
+			light: randomElement(levels).bgColors.light,
+			dark: randomElement(levels).bgColors.dark,
+		},
 		platformChar: mixArrays(mapTuple(levels, (x) => x.platformChar)) as any,
 		sidebarChars: undefined,
 		monsters: mixArrays(mapTuple(levels, (x) => x.monsters)) as any,
