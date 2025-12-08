@@ -1,6 +1,6 @@
 import { range } from "../functions";
 import { Tuple } from "../tuple";
-import { BubbleCurrentRectangleOrSymmetry, Level } from "./level";
+import { Level } from "./level";
 
 export type Levels = Tuple<Level, 100>;
 export type LevelIndex =
@@ -105,27 +105,20 @@ export type LevelIndex =
 	| 98
 	| 99;
 
-export function getRectangles(
+export function getLevelIndexToCopyWindFrom(
 	levels: Levels,
 	levelIndex: LevelIndex
-): readonly BubbleCurrentRectangleOrSymmetry[] {
-	let bubbleCurrentRectangles = levels[levelIndex].bubbleCurrentRectangles;
-
+): LevelIndex {
 	for (const _ of range(100)) {
-		if (bubbleCurrentRectangles.type === "rectangles") {
-			return bubbleCurrentRectangles.rectangles;
+		const bubbleCurrentRectangles = levels[levelIndex].bubbleCurrentRectangles;
+		if (bubbleCurrentRectangles.type !== "copy") {
+			return levelIndex;
 		}
 
-		const otherLevel = levels[bubbleCurrentRectangles.levelIndex];
-		if (!otherLevel) {
-			throw new Error("Level index out of bounds.");
-		}
-
-		bubbleCurrentRectangles = otherLevel.bubbleCurrentRectangles;
+		levelIndex = bubbleCurrentRectangles.levelIndex;
 	}
 
 	// TODO: Show this error to the user.
 	// throw new Error("Source rectangles not found.");
-
-	return [];
+	return 0;
 }

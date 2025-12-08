@@ -46,7 +46,10 @@ import {
 } from "./palette-image";
 import { drawSprite, getSpritePalette } from "./sprite";
 import { Tiles } from "../internal-data-formats/tiles";
-import { getRectangles, LevelIndex } from "../internal-data-formats/levels";
+import {
+	getLevelIndexToCopyWindFrom,
+	LevelIndex,
+} from "../internal-data-formats/levels";
 import { getBubbleCurrentDirections } from "../internal-data-formats/level";
 import { arrowImages } from "./arrow-chars";
 
@@ -199,9 +202,13 @@ export function drawLevel(
 	image = doubleImageWidth(image);
 
 	if (options?.type === "wind-editor") {
-		if (level.bubbleCurrentRectangles.type == "rectangles") {
+		const levelToTakeWindsFrom =
+			parsedPrg.levels[
+				getLevelIndexToCopyWindFrom(parsedPrg.levels, levelIndex)
+			];
+		if (levelToTakeWindsFrom.bubbleCurrentRectangles.type === "rectangles") {
 			for (const [index, rectangle] of [
-				...level.bubbleCurrentRectangles.rectangles.entries(),
+				...levelToTakeWindsFrom.bubbleCurrentRectangles.rectangles.entries(),
 			]) {
 				if (rectangle?.type === "rectangle") {
 					const clippedRectangle = rectIntersection(rectangle.rect, {
@@ -224,19 +231,19 @@ export function drawLevel(
 					}
 				}
 			}
-		}
 
-		const directions = getBubbleCurrentDirections(
-			level.bubbleCurrentPerLineDefaults,
-			getRectangles(parsedPrg.levels, levelIndex)
-		);
-		for (const [y, row] of directions.entries()) {
-			for (const [x, direction] of row.entries()) {
-				blitPaletteImage(
-					image,
-					checkedAccess(arrowImages, direction.toString()),
-					scale({ x, y }, 8)
-				);
+			const directions = getBubbleCurrentDirections(
+				levelToTakeWindsFrom.bubbleCurrentPerLineDefaults,
+				levelToTakeWindsFrom.bubbleCurrentRectangles.rectangles
+			);
+			for (const [y, row] of directions.entries()) {
+				for (const [x, direction] of row.entries()) {
+					blitPaletteImage(
+						image,
+						checkedAccess(arrowImages, direction.toString()),
+						scale({ x, y }, 8)
+					);
+				}
 			}
 		}
 	}
