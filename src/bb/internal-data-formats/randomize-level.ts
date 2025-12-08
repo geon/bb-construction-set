@@ -70,8 +70,8 @@ function mixLevels(levels: Tuple<Level, 2>): Level {
 		sidebarChars: undefined,
 		monsters: mixArrays(mapTuple(levels, (x) => x.monsters)) as any,
 		bubbleCurrentRectangles: {
-			type: "copy",
-			levelIndex: randomInteger(100) as any,
+			type: "rectangles",
+			rectangles: [],
 		},
 		bubbleCurrentPerLineDefaults: mixArrays(
 			mapTuple(levels, (x) => x.bubbleCurrentPerLineDefaults)
