@@ -14,6 +14,7 @@ const TextArea = styled.textarea<{ $error?: boolean }>`
 export function Custom(props: {
 	readonly manualPatch: Patch;
 	readonly setManualPatch: (manualPatch: Patch) => void;
+	readonly purge: () => void;
 }): ReactNode {
 	const [inputState, setInputState] = useState(
 		formatViceMonitorPokes(props.manualPatch)
@@ -27,6 +28,14 @@ export function Custom(props: {
 
 	return (
 		<>
+			<button
+				onClick={() => {
+					setInputState("");
+					props.purge();
+				}}
+			>
+				Purge everything but graphics and levels
+			</button>
 			<TextArea
 				value={inputState}
 				$error={error}
