@@ -196,6 +196,16 @@ export function LevelPreviewCard(props: {
 									setShowLevelSelectionGrid={props.setShowLevelSelectionGrid}
 								/>
 							</ButtonGroup>
+							<button
+								onClick={() =>
+									navigator.clipboard.writeText(
+										`>10 ${((props.levelIndex - 1) & 0xff).toString(16)}`
+									)
+								}
+								title="Copy Vice code"
+							>
+								&gt;10
+							</button>
 							<ButtonGroup>
 								<FileInput
 									accept={["json"]}
