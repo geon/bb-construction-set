@@ -18,6 +18,7 @@ import { LevelPreviewCard } from "./LevelPreviewCard";
 import { originalPrg as originalPrg } from "../bb/prg/parsed-prg";
 import { LevelIndex } from "../bb/internal-data-formats/levels";
 import { getBudgets } from "../bb/prg/budgets";
+import { Purge } from "./tabs/Purge";
 
 const Page = styled.div`
 	width: 100%;
@@ -189,6 +190,25 @@ export function App() {
 											<Custom
 												manualPatch={manualPatch}
 												setManualPatch={setManualPatch}
+												purge={() => {
+													setManualPatch([]);
+													const prg = new Uint8Array(originalPrg).buffer;
+													setState({ prg, parsedPrg });
+												}}
+											/>
+										</Card>
+									</>
+								);
+							},
+						},
+						purge: {
+							title: "Purge",
+							render: (tab) => {
+								return (
+									<>
+										<Card>
+											<h2>{tab.title}</h2>
+											<Purge
 												purge={() => {
 													setManualPatch([]);
 													const prg = new Uint8Array(originalPrg).buffer;

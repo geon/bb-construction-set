@@ -27,30 +27,20 @@ export function Custom(props: {
 	}
 
 	return (
-		<>
-			<button
-				onClick={() => {
-					setInputState("");
-					props.purge();
-				}}
-			>
-				Purge everything but graphics and levels
-			</button>
-			<TextArea
-				value={inputState}
-				$error={error}
-				onChange={(e) => {
-					const newInputState = e.target.value;
-					const patch = parseViceMonitorPokes(newInputState);
-					setError(!patch);
-					if (patch) {
-						setManualPatch(patch);
-					} else {
-						setInputState(newInputState);
-					}
-				}}
-			/>
-		</>
+		<TextArea
+			value={inputState}
+			$error={error}
+			onChange={(e) => {
+				const newInputState = e.target.value;
+				const patch = parseViceMonitorPokes(newInputState);
+				setError(!patch);
+				if (patch) {
+					setManualPatch(patch);
+				} else {
+					setInputState(newInputState);
+				}
+			}}
+		/>
 	);
 }
 
