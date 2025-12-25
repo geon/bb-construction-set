@@ -60,9 +60,9 @@ function parseMonster(monsterBytes: SingleMonsterBytes): Monster {
 }
 
 function serializeMonster(monster: Monster): SingleMonsterBytes {
-	// const confirmed_mystery_bits_A_3A1C =
-	// 	monster.confirmed_mystery_bits_A_3A1C ?? createMysteryBits(monster);
-	const confirmed_mystery_bits_A_3A1C = createMysteryBits(monster);
+	const confirmed_mystery_bits_A_3A1C =
+		monster.confirmed_mystery_bits_A_3A1C ?? createMysteryBits(monster);
+	// const confirmed_mystery_bits_A_3A1C = createMysteryBits(monster);
 
 	const prgPosition = serializeMonsterPosition(monster.spawnPoint);
 
