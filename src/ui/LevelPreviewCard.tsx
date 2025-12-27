@@ -60,6 +60,7 @@ const ImageCard = styled(Card)<{
 function LevelSelector(props: {
 	readonly parsedPrg: ParsedPrg;
 	readonly setParsedPrg: Setter<ParsedPrg>;
+	readonly levelIndex: LevelIndex;
 	readonly setLevelIndex: (index: LevelIndex) => void;
 	readonly className?: string;
 }): JSX.Element {
@@ -80,7 +81,7 @@ function LevelSelector(props: {
 	return (
 		<ClickDragCanvas
 			style={{ width: "100%" }}
-			imageData={drawLevels(props.parsedPrg)}
+			imageData={drawLevels(props.parsedPrg, props.levelIndex)}
 			onClick={(eventCoord) => props.setLevelIndex(getLevelIndex(eventCoord))}
 			onDragStart={(eventCoord) => setFromIndex(getLevelIndex(eventCoord))}
 			onDragUpdate={(eventCoord) => {
@@ -175,6 +176,7 @@ export function LevelPreviewCard(props: {
 						<LevelSelector
 							parsedPrg={props.parsedPrg}
 							setParsedPrg={props.setParsedPrg}
+							levelIndex={props.levelIndex}
 							setLevelIndex={props.setLevelIndex}
 						/>
 					)}

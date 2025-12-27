@@ -3,7 +3,11 @@ import {
 	makeCharset,
 } from "../internal-data-formats/char-name";
 import { levelSize } from "../game-definitions/level-size";
-import { rgbPalette, SubPalette } from "../internal-data-formats/palette";
+import {
+	palette,
+	rgbPalette,
+	SubPalette,
+} from "../internal-data-formats/palette";
 import { Color, mixColors } from "../../math/color";
 import { Char } from "../internal-data-formats/char";
 import { spritePosOffset, spriteSizePixels } from "../../c64/consts";
@@ -14,12 +18,47 @@ import { getLevelCharPalette } from "../palette-image/char";
 import * as ImageDataFunctions from "./image-data";
 import { ParsedPrg } from "../internal-data-formats/parsed-prg";
 import { assertTuple } from "../tuple";
+import { LevelIndex } from "../internal-data-formats/levels";
+import { getDesignatedPowerupItemIndex } from "../game-definitions/items";
 
-export function drawLevels(parsedPrg: ParsedPrg): ImageData {
+function isSkippedByBlueUmbrella(levelIndex: number) {
+	const blueUmbrellaItemIndex = 20;
+	return range(2).some(
+		(index) =>
+			getDesignatedPowerupItemIndex(levelIndex - (1 + index)) ===
+			blueUmbrellaItemIndex
+	);
+}
+
+function isSkippedByPurpleUmbrella(levelIndex: number) {
+	const purpleUmbrellaItemIndex = 22;
+	return range(6).some(
+		(index) =>
+			getDesignatedPowerupItemIndex(levelIndex - (1 + index)) ===
+			purpleUmbrellaItemIndex
+	);
+}
+
+export function drawLevels(
+	parsedPrg: ParsedPrg,
+	selectedLevelIndex: LevelIndex
+): ImageData {
 	const gap = { x: 0, y: 0 };
 
 	return ImageDataFunctions.drawGrid(
-		range(100).map((levelIndex) => drawLevelThumbnail(parsedPrg, levelIndex)),
+		range(100).map((levelIndex) =>
+			drawLevelThumbnail(
+				parsedPrg,
+				levelIndex,
+				levelIndex === selectedLevelIndex
+					? "selected"
+					: isSkippedByBlueUmbrella(levelIndex)
+					? "skipped-by-purple-and-blue"
+					: isSkippedByPurpleUmbrella(levelIndex)
+					? "skipped-by-purple"
+					: undefined
+			)
+		),
 		10,
 		levelSize,
 		gap
@@ -28,7 +67,12 @@ export function drawLevels(parsedPrg: ParsedPrg): ImageData {
 
 export function drawLevelThumbnail(
 	parsedPrg: ParsedPrg,
-	levelIndex: number
+	levelIndex: number,
+	mode:
+		| "selected"
+		| "skipped-by-purple"
+		| "skipped-by-purple-and-blue"
+		| undefined
 ): ImageData {
 	const shadowChars = assertTuple(parsedPrg.chars.shadows.flat().flat(), 6);
 	const spriteColors = mapRecord(parsedPrg.sprites, ({ color }) => color);
@@ -37,7 +81,14 @@ export function drawLevelThumbnail(
 	const image = new ImageData(levelSize.x, levelSize.y);
 
 	// Draw level.
-	const charPalette = getLevelCharPalette(level.bgColors);
+	const charPalette = assertTuple([...getLevelCharPalette(level.bgColors)], 4);
+	if (mode) {
+		charPalette[0] = {
+			selected: palette.white,
+			"skipped-by-purple-and-blue": palette.blue,
+			"skipped-by-purple": palette.purple,
+		}[mode];
+	}
 	const charset = makeCharset(level, shadowChars);
 	const averageCharColors = mapRecord(charset, (char) =>
 		getAverageCharColor(char, charPalette)
