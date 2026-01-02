@@ -84,10 +84,11 @@ export function writeBitmaps(
 			)[isSymmetric ? "symmetric" : "notSymmetric"];
 
 			// Encode the per-line bubble current into the edge of the platforms bitmap.
-			row[bitPositions[0]] = !!(bubbleCurrent & 0b01);
-			row[bitPositions[1]] = !!(bubbleCurrent & 0b10);
+			const bits = [...row];
+			bits[bitPositions[0]] = !!(bubbleCurrent & 0b01);
+			bits[bitPositions[1]] = !!(bubbleCurrent & 0b10);
 
-			return row;
+			return bits;
 		});
 
 		const byteRows = bitRows
