@@ -1,3 +1,4 @@
+import { bitsToByte } from "../bit-twiddling";
 import { chunk, zipObject } from "../functions";
 import { levelSize } from "../game-definitions/level-size";
 import {
@@ -88,17 +89,7 @@ export function writeBitmaps(
 		const byteRows = bitRows
 			.map((row) => chunk(row, 8))
 			.flat()
-			.map(
-				(bits) =>
-					((bits[0] ? 1 : 0) << 7) +
-					((bits[1] ? 1 : 0) << 6) +
-					((bits[2] ? 1 : 0) << 5) +
-					((bits[3] ? 1 : 0) << 4) +
-					((bits[4] ? 1 : 0) << 3) +
-					((bits[5] ? 1 : 0) << 2) +
-					((bits[6] ? 1 : 0) << 1) +
-					((bits[7] ? 1 : 0) << 0)
-			);
+			.map(bitsToByte);
 
 		return byteRows;
 	});
