@@ -69,6 +69,21 @@ export function ClickDragCanvas(
 				setDragCoord(eventCoord);
 				setHasDragged(true);
 			}}
+			onMouseLeave={() => {
+				onDragEnd?.();
+				setDragCoord(undefined);
+			}}
+			onMouseEnter={(event) => {
+				if (event.buttons === 1) {
+					// The user is still dragging or started dragging outside, so start dragging.
+					const eventCoord = getEventCoord(event, imageSize);
+					if (!dragCoord) {
+						onDragStart?.(eventCoord);
+					}
+					setDragCoord(eventCoord);
+					setHasDragged(false);
+				}
+			}}
 		/>
 	);
 }
