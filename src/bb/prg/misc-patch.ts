@@ -26,13 +26,10 @@ export function writeBubbleCurrentInHoles(
 	bubbleCurrentPerLineDefaultses: readonly BubbleCurrentPerLineDefaults[]
 ): Uint8Array {
 	const currentsHalfBytes = bubbleCurrentPerLineDefaultses.map(
-		(bubbleCurrentPerLineDefaults) => {
-			return (
-				// The most significant bits are the bubble current of the top and bottom rows.
-				(bubbleCurrentPerLineDefaults[0] << 4) |
-				(bubbleCurrentPerLineDefaults[24] << 6)
-			);
-		}
+		(bubbleCurrentPerLineDefaults) =>
+			// The most significant bits are the bubble current of the top and bottom rows.
+			(bubbleCurrentPerLineDefaults[0] << 4) |
+			(bubbleCurrentPerLineDefaults[24] << 6)
 	);
 
 	return new Uint8Array(currentsHalfBytes);
