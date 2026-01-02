@@ -83,10 +83,7 @@ export function zipObject<
 			) as ZipObjectReturnElement<TInput>
 		);
 	}
-	return results as Tuple<
-		ZipObjectReturnElement<TInput>,
-		NOfTuple<Exclude<TInput[keyof TInput], undefined>>
-	>;
+	return results as ReturnType<typeof zipObject<TInput>>;
 }
 
 export function unzipObject<TTuple extends Tuple<object, number>>(
