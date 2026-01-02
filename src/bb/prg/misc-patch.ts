@@ -60,9 +60,9 @@ export function writeBitmaps(
 		const bubbleCurrentPerLineDefaults =
 			bubbleCurrentPerLineDefaultses[levelIndex]!;
 
-		const rows = tiles
+		const fullRows = tiles.map(getTileRow);
+		const rows = fullRows
 			//
-			.map(getTileRow)
 			.map((fullRow) => {
 				const row = fullRow.slice(
 					0,
