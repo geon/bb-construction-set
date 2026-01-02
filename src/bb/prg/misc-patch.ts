@@ -63,12 +63,7 @@ export function writeBitmaps(
 		const fullRows = tiles.map(getTileRow);
 		const rows = !isSymmetric
 			? fullRows
-			: fullRows
-					//
-					.map((fullRow) => {
-						const row = fullRow.slice(0, levelSize.x / 2);
-						return row;
-					});
+			: fullRows.map((fullRow) => fullRow.slice(0, levelSize.x / 2));
 
 		const bitRows = zipObject({
 			row: rows,
