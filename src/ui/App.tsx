@@ -2,7 +2,6 @@ import { TabBar } from "./TabBar";
 import styled from "styled-components";
 import { Card } from "./Card";
 import { useState } from "react";
-// import { Levels } from "./tabs/Levels";
 import { Sprites } from "./tabs/Sprites";
 import { FileMenu } from "./FileMenu";
 import { Chars } from "./tabs/Chars";
@@ -209,11 +208,9 @@ export function App() {
 										<Card>
 											<h2>{tab.title}</h2>
 											<Purge
-												purge={() => {
-													setManualPatch([]);
-													const prg = new Uint8Array(originalPrg).buffer;
-													setState({ prg, parsedPrg });
-												}}
+												state={state}
+												setState={setState}
+												setManualPatch={setManualPatch}
 											/>
 										</Card>
 									</>
