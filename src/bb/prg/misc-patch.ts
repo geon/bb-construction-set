@@ -29,10 +29,8 @@ export function writeBubbleCurrentInHoles(
 		(bubbleCurrentPerLineDefaults) => {
 			return (
 				// The most significant bits are the bubble current of the top and bottom rows.
-				((bubbleCurrentPerLineDefaults[0]! & 0b01 ? 1 : 0) << 4) +
-				((bubbleCurrentPerLineDefaults[0]! & 0b10 ? 1 : 0) << 5) +
-				((bubbleCurrentPerLineDefaults[24]! & 0b01 ? 1 : 0) << 6) +
-				((bubbleCurrentPerLineDefaults[24]! & 0b10 ? 1 : 0) << 7)
+				(bubbleCurrentPerLineDefaults[0] << 4) |
+				(bubbleCurrentPerLineDefaults[24] << 6)
 			);
 		}
 	);
