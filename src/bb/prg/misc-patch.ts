@@ -60,15 +60,18 @@ export function writeBitmaps(
 		const bubbleCurrentPerLineDefaults =
 			bubbleCurrentPerLineDefaultses[levelIndex]!;
 
-		const bitRows = zipObject({
-			fullRow: tiles,
-			bubbleCurrent: bubbleCurrentPerLineDefaults.slice(1, -1),
-		}).map(({ fullRow, bubbleCurrent }) => {
+		const rows = tiles.map((fullRow) => {
 			const row = getTileRow(fullRow).slice(
 				0,
 				isSymmetric ? levelSize.x / 2 : levelSize.x
 			);
+			return row;
+		});
 
+		const bitRows = zipObject({
+			row: rows,
+			bubbleCurrent: bubbleCurrentPerLineDefaults.slice(1, -1),
+		}).map(({ row, bubbleCurrent }) => {
 			// So stupid.
 			const bitPositions = (
 				{
