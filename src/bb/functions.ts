@@ -53,7 +53,7 @@ export function zipObject<
 	TInput extends Record<string, Tuple<unknown, number> | undefined>
 >(
 	arrays: TInput
-): Tuple<
+): MutableTuple<
 	ZipObjectReturnElement<TInput>,
 	NOfTuple<Exclude<TInput[keyof TInput], undefined>>
 > {
