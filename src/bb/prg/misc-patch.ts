@@ -87,21 +87,20 @@ export function writeBitmaps(
 
 		const byteRows = bitRows
 			.map((row) => chunk(row, 8))
-			.map((row) =>
-				row.map(
-					(bits) =>
-						((bits[0] ? 1 : 0) << 7) +
-						((bits[1] ? 1 : 0) << 6) +
-						((bits[2] ? 1 : 0) << 5) +
-						((bits[3] ? 1 : 0) << 4) +
-						((bits[4] ? 1 : 0) << 3) +
-						((bits[5] ? 1 : 0) << 2) +
-						((bits[6] ? 1 : 0) << 1) +
-						((bits[7] ? 1 : 0) << 0)
-				)
+			.flat()
+			.map(
+				(bits) =>
+					((bits[0] ? 1 : 0) << 7) +
+					((bits[1] ? 1 : 0) << 6) +
+					((bits[2] ? 1 : 0) << 5) +
+					((bits[3] ? 1 : 0) << 4) +
+					((bits[4] ? 1 : 0) << 3) +
+					((bits[5] ? 1 : 0) << 2) +
+					((bits[6] ? 1 : 0) << 1) +
+					((bits[7] ? 1 : 0) << 0)
 			);
 
-		return byteRows.flat();
+		return byteRows;
 	});
 	const maxLevelBytes = 46 * 100 + 46 * maxAsymmetric;
 	if (levelBitmapBytes.length > maxLevelBytes) {
