@@ -132,6 +132,15 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 					selectedMonster && selectedMonsterIndex !== undefined
 				) ? undefined : (
 					<>
+						<button
+							onClick={() =>
+								setMonsters(
+									monsters.map((monster) => ({ ...monster, delay: 20 }))
+								)
+							}
+						>
+							20f
+						</button>
 						<span>
 							{selectedMonsterIndex + 1}/{monsters.length}
 						</span>
