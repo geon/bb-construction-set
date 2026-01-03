@@ -8,6 +8,7 @@ import {
 	PlatformTiles,
 } from "../internal-data-formats/level";
 import { getTileRow } from "../internal-data-formats/tiles";
+import { Tuple } from "../tuple";
 import { maxAsymmetric } from "./data-locations";
 
 export function writeHoles(holeses: readonly Holes[]): Uint8Array {
@@ -71,12 +72,9 @@ export function writeBitmaps(
 			bubbleCurrent: bubbleCurrentPerLineDefaults.slice(1, -1),
 		}).map(({ row, bubbleCurrent }) => {
 			// So stupid.
-			const bitPositions = (
-				{
-					symmetric: [0, 1],
-					notSymmetric: [levelSize.x - 1, levelSize.x - 2],
-				} as const
-			)[isSymmetric ? "symmetric" : "notSymmetric"];
+			const bitPositions: Tuple<number, 2> = isSymmetric
+				? [0, 1]
+				: [levelSize.x - 1, levelSize.x - 2];
 
 			// Encode the per-line bubble current into the edge of the platforms bitmap.
 			const bits = [...row];
