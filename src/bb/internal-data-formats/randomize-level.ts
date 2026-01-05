@@ -1,9 +1,9 @@
-import { objectFromEntries } from "../functions";
+import { objectFromEntries, zipObject } from "../functions";
 import { validItemCategoryNames } from "../prg/data-locations";
-import { mapTuple, Tuple } from "../tuple";
+import { assertTuple, mapTuple, Tuple } from "../tuple";
 import { OneOrMore } from "../types";
 import { validSpecialBubbleNames } from "./bubble-spawns";
-import { Level, platformTilesSize } from "./level";
+import { Level, PlatformTiles, platformTilesSize } from "./level";
 import { Levels } from "./levels";
 
 function randomInteger(toNotIncluding: number) {
@@ -21,7 +21,7 @@ function mixArrays<T>(arrays: Tuple<readonly T[], 2>): T[] {
 	].flat();
 }
 
-function mixArrays2<T>(arrays: Tuple<readonly T[], 2>): T[] {
+function mixArrays2(arrays: Tuple<PlatformTiles, 2>): PlatformTiles {
 	const start = 4 + randomInteger(8);
 	const length = 12;
 
@@ -46,16 +46,39 @@ function mixArrays2<T>(arrays: Tuple<readonly T[], 2>): T[] {
 	const a = randomInsideOut(randomReverse(arrays[0]));
 	const b = randomInsideOut(randomReverse(arrays[1]));
 
-	return [
-		a.slice(0, start),
-		b.slice(start, start + length),
-		a.slice(start + length),
-	].flat();
+	return assertTuple(
+		[
+			a.slice(0, start),
+			b.slice(start, start + length),
+			a.slice(start + length),
+		].flat(),
+		platformTilesSize.y
+	);
+}
+
+function randomHalves(tileses: Tuple<PlatformTiles, 2>): PlatformTiles {
+	return mapTuple(zipObject({ a: tileses[0], b: tileses[1] }), ({ a, b }) =>
+		assertTuple(
+			[
+				a.slice(0, platformTilesSize.x / 2),
+				b.slice(platformTilesSize.x / 2),
+			].flat(),
+			platformTilesSize.x
+		)
+	);
+}
+
+function randomizePlatformTiles(
+	tileses: Tuple<PlatformTiles, 2>
+): PlatformTiles {
+	return Math.random() > 0.9 ? randomHalves(tileses) : mixArrays2(tileses);
 }
 
 function mixLevels(levels: Tuple<Level, 2>): Level {
 	return {
-		platformTiles: mixArrays2(mapTuple(levels, (x) => x.platformTiles)) as any,
+		platformTiles: randomizePlatformTiles(
+			mapTuple(levels, (x) => x.platformTiles)
+		),
 		holes: objectFromEntries(
 			(["top", "bottom"] as const).map((rowName) => [
 				rowName,
