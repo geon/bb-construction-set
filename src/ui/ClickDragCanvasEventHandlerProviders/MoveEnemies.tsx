@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import {
 	updateArrayAtIndex,
 	deleteArrayElementAtIndex,
+	objectFromEntries,
+	objectEntries,
 } from "../../bb/functions";
 import { CharacterName } from "../../bb/game-definitions/character-name";
 import { Monster } from "../../bb/internal-data-formats/level";
@@ -18,6 +20,8 @@ import { ButtonGroup } from "../ButtonGroup";
 import { IntegerInput } from "../IntegerInput";
 import { clamp } from "../../math/scalar";
 import { setMysteryBits, truncateMonsterPosition } from "../../bb/prg/monsters";
+import { CheckboxList } from "../CheckboxList";
+import { assertTuple } from "../../bb/tuple";
 
 export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 	const level = props.levels[props.levelIndex];
@@ -252,6 +256,31 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 			</ButtonRow>
 			{selectedMonster && (
 				<ButtonRow $align="right">
+					<CheckboxList
+						disabled={{}}
+						options={{
+							"3": "3",
+							"2": "2",
+							"1": "1",
+							"0": "0",
+						}}
+						selected={objectFromEntries(
+							selectedMonster.confirmed_mystery_bits_A_3A1C.map(
+								(value, key) => [key, value],
+							),
+						)}
+						setSelected={(confirmed_mystery_bits_A_3A1C) =>
+							updateSelectedMonster((monster) => ({
+								...monster,
+								confirmed_mystery_bits_A_3A1C: assertTuple(
+									objectEntries(confirmed_mystery_bits_A_3A1C).map(
+										([, value]) => value,
+									),
+									4,
+								),
+							}))
+						}
+					/>
 					<RadioButtonList
 						options={
 							{
