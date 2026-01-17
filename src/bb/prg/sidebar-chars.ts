@@ -72,7 +72,7 @@ export function writeSidebarChars(
 }
 
 export function writeSidebarCharsIndex(
-	sidebarCharses: readonly (CharBlock | undefined)[],
+	sidebarCharses: Tuple<CharBlock | undefined, 100>,
 ): Uint8Array {
 	// TODO: Rewrite to find duplicates and reuse blocks.
 
