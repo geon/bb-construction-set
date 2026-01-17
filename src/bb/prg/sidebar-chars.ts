@@ -40,9 +40,12 @@ export function readSidebarChars(
 	return sidebarChars;
 }
 
-function writeSidebarChars(
+export function writeSidebarCharsAndIndices(
 	sidebarCharses: Tuple<CharBlock | undefined, 100>,
-): Uint8Array {
+): {
+	readonly sidebarChars: Uint8Array;
+	readonly sidebarCharsIndex: Uint8Array;
+} {
 	const sidebarLevels = sidebarCharses.filter(isDefined);
 	if (sidebarLevels.length > maxSidebars) {
 		throw new Error(
@@ -50,7 +53,7 @@ function writeSidebarChars(
 		);
 	}
 
-	return new Uint8Array(
+	const sidebarChars = new Uint8Array(
 		padRight(
 			sidebarLevels
 				.map(tupleFromBlockFrom2x2CharBlock)
@@ -69,11 +72,7 @@ function writeSidebarChars(
 			0,
 		),
 	);
-}
 
-function writeSidebarCharsIndex(
-	sidebarCharses: Tuple<CharBlock | undefined, 100>,
-): Uint8Array {
 	// TODO: Rewrite to find duplicates and reuse blocks.
 
 	let index = 0;
@@ -82,17 +81,10 @@ function writeSidebarCharsIndex(
 		!sidebarChars ? 0b01111111 : index++,
 	);
 
-	return new Uint8Array(sidebarCharsBits);
-}
+	const sidebarCharsIndex = new Uint8Array(sidebarCharsBits);
 
-export function writeSidebarCharsAndIndices(
-	sidebarCharses: Tuple<CharBlock | undefined, 100>,
-): {
-	readonly sidebarChars: Uint8Array;
-	readonly sidebarCharsIndex: Uint8Array;
-} {
 	return {
-		sidebarChars: writeSidebarChars(sidebarCharses),
-		sidebarCharsIndex: writeSidebarCharsIndex(sidebarCharses),
+		sidebarChars,
+		sidebarCharsIndex,
 	};
 }
