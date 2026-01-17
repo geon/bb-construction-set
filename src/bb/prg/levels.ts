@@ -23,11 +23,7 @@ import {
 	writeBubbleCurrentInHoles,
 } from "./misc-patch";
 import { readMonsters, getMonstersPatch } from "./monsters";
-import {
-	readSidebarChars,
-	writeSidebarChars,
-	writeSidebarCharsIndex,
-} from "./sidebar-chars";
+import { readSidebarChars, writeSidebarCharsAndIndices } from "./sidebar-chars";
 import { readTileBitmaps } from "./tile-bitmap";
 import { readTiles } from "./tiles";
 
@@ -68,17 +64,20 @@ export function readLevels(
 export function getLevelsPatch(levels: Levels) {
 	const unzippedLevels = unzipObject(levels);
 	const tileses = levels.map((level) => level.platformTiles);
+	const { sidebarChars, sidebarCharsIndex } = writeSidebarCharsAndIndices(
+		unzippedLevels.sidebarChars,
+	);
 
 	const newSegments = {
 		platformChars: writePlatformChars(unzippedLevels.platformChar),
-		sidebarChars: writeSidebarChars(unzippedLevels.sidebarChars),
+		sidebarChars,
 		bgColors: writeBgColors(unzippedLevels.bgColors),
 		holes: writeHoles(unzippedLevels.holes),
 		bubbleCurrentInHoles: writeBubbleCurrentInHoles(
 			unzippedLevels.bubbleCurrentPerLineDefaults,
 		),
 		symmetry: writeSymmetry(tileses),
-		sidebarCharsIndex: writeSidebarCharsIndex(unzippedLevels.sidebarChars),
+		sidebarCharsIndex,
 		bitmaps: writeBitmaps(tileses, unzippedLevels.bubbleCurrentPerLineDefaults),
 		windCurrents: writeBubbleCurrentRectangles(
 			unzippedLevels.bubbleCurrentRectangles,

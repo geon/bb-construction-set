@@ -40,7 +40,7 @@ export function readSidebarChars(
 	return sidebarChars;
 }
 
-export function writeSidebarChars(
+function writeSidebarChars(
 	sidebarCharses: Tuple<CharBlock | undefined, 100>,
 ): Uint8Array {
 	const sidebarLevels = sidebarCharses.filter(isDefined);
@@ -71,7 +71,7 @@ export function writeSidebarChars(
 	);
 }
 
-export function writeSidebarCharsIndex(
+function writeSidebarCharsIndex(
 	sidebarCharses: Tuple<CharBlock | undefined, 100>,
 ): Uint8Array {
 	// TODO: Rewrite to find duplicates and reuse blocks.
@@ -83,4 +83,16 @@ export function writeSidebarCharsIndex(
 	);
 
 	return new Uint8Array(sidebarCharsBits);
+}
+
+export function writeSidebarCharsAndIndices(
+	sidebarCharses: Tuple<CharBlock | undefined, 100>,
+): {
+	readonly sidebarChars: Uint8Array;
+	readonly sidebarCharsIndex: Uint8Array;
+} {
+	return {
+		sidebarChars: writeSidebarChars(sidebarCharses),
+		sidebarCharsIndex: writeSidebarCharsIndex(sidebarCharses),
+	};
 }
