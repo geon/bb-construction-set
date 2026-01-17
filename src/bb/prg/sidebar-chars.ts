@@ -1,4 +1,4 @@
-import { Char } from "../internal-data-formats/char";
+import { Char, serializeChar } from "../internal-data-formats/char";
 import { parseColorPixelByte } from "../internal-data-formats/color-pixel-byte";
 import { isDefined, padRight, strictChunk } from "../functions";
 import { assertTuple, mapTuple, Tuple } from "../tuple";
@@ -57,17 +57,7 @@ export function writeSidebarCharsAndIndices(
 		padRight(
 			sidebarLevels
 				.map(tupleFromBlockFrom2x2CharBlock)
-				.flatMap((sidebarChars) =>
-					sidebarChars.flatMap((char) =>
-						char.map(
-							(line) =>
-								(line[0] << 6) +
-								(line[1] << 4) +
-								(line[2] << 2) +
-								(line[3] << 0),
-						),
-					),
-				),
+				.flatMap((sidebarChars) => sidebarChars.flatMap(serializeChar)),
 			maxSidebars * 4 * 8,
 			0,
 		),

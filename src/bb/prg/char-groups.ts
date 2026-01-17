@@ -1,4 +1,4 @@
-import { Char } from "../internal-data-formats/char";
+import { Char, serializeChar } from "../internal-data-formats/char";
 import { parseColorPixelByte } from "../internal-data-formats/color-pixel-byte";
 import { mapRecord, objectEntries, strictChunk } from "../functions";
 import { linesPerChar } from "./charset-char";
@@ -36,20 +36,7 @@ export function serializeCharGroups(
 		charGroups,
 		(charGroup): DataSegment => ({
 			mask: 0xff,
-			buffer: new Uint8Array(
-				charGroup
-					.flat()
-					.flat()
-					.flatMap((char) =>
-						char.map(
-							(line) =>
-								(line[0] << 6) +
-								(line[1] << 4) +
-								(line[2] << 2) +
-								(line[3] << 0),
-						),
-					),
-			),
+			buffer: new Uint8Array(charGroup.flat().flat().flatMap(serializeChar)),
 		}),
 	);
 }

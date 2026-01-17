@@ -1,4 +1,4 @@
-import { Char } from "../internal-data-formats/char";
+import { Char, serializeChar } from "../internal-data-formats/char";
 import { parseColorPixelByte } from "../internal-data-formats/color-pixel-byte";
 import { strictChunk } from "../functions";
 import { Level } from "../internal-data-formats/level";
@@ -21,12 +21,5 @@ export function readPlatformChars(
 export function writePlatformChars(
 	platformChars: Tuple<Level["platformChar"], 100>,
 ): Uint8Array {
-	return new Uint8Array(
-		platformChars.flatMap((platformChar) =>
-			platformChar.map(
-				(line) =>
-					(line[0] << 6) + (line[1] << 4) + (line[2] << 2) + (line[3] << 0),
-			),
-		),
-	);
+	return new Uint8Array(platformChars.flatMap(serializeChar));
 }
