@@ -41,12 +41,12 @@ export function readSidebarChars(
 }
 
 export function writeSidebarCharsAndIndices(
-	sidebarCharses: Tuple<CharBlock | undefined, 100>,
+	sidebarCharBlocks: Tuple<CharBlock | undefined, 100>,
 ): {
 	readonly sidebarChars: Uint8Array;
 	readonly sidebarCharsIndex: Uint8Array;
 } {
-	const sidebarLevels = sidebarCharses.filter(isDefined);
+	const sidebarLevels = sidebarCharBlocks.filter(isDefined);
 	if (sidebarLevels.length > maxSidebars) {
 		throw new Error(
 			`Too many levels with sidebar graphics: ${sidebarLevels.length}. Should be max ${maxSidebars}.`,
@@ -66,7 +66,7 @@ export function writeSidebarCharsAndIndices(
 	// TODO: Rewrite to find duplicates and reuse blocks.
 
 	let index = 0;
-	const sidebarCharsBits = sidebarCharses.map((sidebarChars) =>
+	const sidebarCharsBits = sidebarCharBlocks.map((sidebarChars) =>
 		// Just use consecutive indices, just like the original levels.
 		!sidebarChars ? 0b01111111 : index++,
 	);
