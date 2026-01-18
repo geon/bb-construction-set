@@ -10,6 +10,7 @@ import { Patch, SingleBytePatchEntry } from "./io";
 import { assertTuple, Tuple } from "../tuple";
 import { add, Coord2, subtract } from "../../math/coord2";
 import { mapRecord } from "../functions";
+import { bitsToByte, byteToBits } from "../bit-twiddling";
 
 const prgMonsterPositionOffset: Coord2 = {
 	x: 20,
@@ -53,16 +54,17 @@ function parseMonster(monsterBytes: SingleMonsterBytes): Monster {
 		facingLeft: !!(monsterBytes[2] & facingLeftBit),
 		// The game also shifts left when reading the delay.
 		delay: monsterBytes[2] & delayMask,
-		confirmed_mystery_bits_A_3A1C:
+		confirmed_mystery_bits_A_3A1C: byteToMysteryBits(
 			((monsterBytes[1] & a_3A1C_top_3_mask) << 1) |
-			((monsterBytes[2] & a_3A1C_last_mask) >> 7),
+				((monsterBytes[2] & a_3A1C_last_mask) >> 7),
+		),
 	};
 }
 
 function serializeMonster(monster: Monster): SingleMonsterBytes {
 	const confirmed_mystery_bits_A_3A1C =
 		monster.confirmed_mystery_bits_A_3A1C !== undefined
-			? monster.confirmed_mystery_bits_A_3A1C
+			? bitsToByte(monster.confirmed_mystery_bits_A_3A1C)
 			: createMysteryBits(monster);
 	// const confirmed_mystery_bits_A_3A1C = createMysteryBits(monster);
 
@@ -161,7 +163,8 @@ export function getMonstersPatch(
 			],
 		);
 }
-function createMysteryBits(
+
+export function createMysteryBits(
 	monster: Omit<Monster, "confirmed_mystery_bits_A_3A1C">,
 ): number {
 	const movingLeft = monster.facingLeft ? 0b0001 : 0;
@@ -202,4 +205,8 @@ function createMysteryBits(
 			return monster.characterName satisfies never;
 		}
 	}
+}
+
+export function byteToMysteryBits(byte: number): Tuple<boolean, 4> {
+	return assertTuple(byteToBits(byte).slice(4), 4);
 }

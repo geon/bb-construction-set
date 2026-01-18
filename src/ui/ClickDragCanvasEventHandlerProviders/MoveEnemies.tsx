@@ -212,6 +212,7 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 						disabled={monsters.length >= 6}
 						onClick={() => {
 							const cloneSource = selectedMonster ?? monsters[0];
+
 							const newMonster: Monster = cloneSource
 								? {
 										...cloneSource,
