@@ -161,8 +161,9 @@ export function getMonstersPatch(
 			],
 		);
 }
-
-function createMysteryBits(monster: Monster): number {
+function createMysteryBits(
+	monster: Omit<Monster, "confirmed_mystery_bits_A_3A1C">,
+): number {
 	const movingLeft = monster.facingLeft ? 0b0001 : 0;
 	const movingRight = !monster.facingLeft ? 0b0010 : 0;
 	const leftRight = movingLeft | movingRight;
