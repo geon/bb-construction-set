@@ -46,16 +46,16 @@ export function writeSidebarCharsAndIndices(
 	readonly sidebarChars: Uint8Array;
 	readonly sidebarCharsIndex: Uint8Array;
 } {
-	const sidebarLevels = sidebarCharBlocks.filter(isDefined);
-	if (sidebarLevels.length > maxSidebars) {
+	const usedBlocks = sidebarCharBlocks.filter(isDefined);
+	if (usedBlocks.length > maxSidebars) {
 		throw new Error(
-			`Too many levels with sidebar graphics: ${sidebarLevels.length}. Should be max ${maxSidebars}.`,
+			`Too many levels with sidebar graphics: ${usedBlocks.length}. Should be max ${maxSidebars}.`,
 		);
 	}
 
 	const sidebarChars = new Uint8Array(
 		padRight(
-			sidebarLevels
+			usedBlocks
 				.map(tupleFromBlockFrom2x2CharBlock)
 				.flatMap((sidebarChars) => sidebarChars.flatMap(serializeChar)),
 			maxSidebars * 4 * 8,
