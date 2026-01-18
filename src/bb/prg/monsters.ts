@@ -210,3 +210,14 @@ export function createMysteryBits(
 export function byteToMysteryBits(byte: number): Tuple<boolean, 4> {
 	return assertTuple(byteToBits(byte).slice(4), 4);
 }
+
+export function setMysteryBits(
+	monster: Omit<Monster, "confirmed_mystery_bits_A_3A1C">,
+): Monster {
+	return {
+		...monster,
+		confirmed_mystery_bits_A_3A1C: byteToMysteryBits(
+			createMysteryBits(monster),
+		),
+	};
+}

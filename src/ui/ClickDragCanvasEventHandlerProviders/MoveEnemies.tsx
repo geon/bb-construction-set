@@ -17,7 +17,7 @@ import { CoordFields } from "../CoordFields";
 import { ButtonGroup } from "../ButtonGroup";
 import { IntegerInput } from "../IntegerInput";
 import { clamp } from "../../math/scalar";
-import { truncateMonsterPosition } from "../../bb/prg/monsters";
+import { setMysteryBits, truncateMonsterPosition } from "../../bb/prg/monsters";
 
 export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 	const level = props.levels[props.levelIndex];
@@ -221,13 +221,12 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 											y: 30,
 										}),
 									}
-								: {
+								: setMysteryBits({
 										characterName: "bubbleBuster",
 										spawnPoint: { x: 100, y: 100 },
 										facingLeft: false,
 										delay: 0,
-										confirmed_mystery_bits_A_3A1C: undefined,
-									};
+									});
 
 							setMonsters([...monsters, newMonster]);
 							setSelectedMonsterIndex(monsters.length);
@@ -269,10 +268,9 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 						selected={selectedMonster?.characterName}
 						setSelected={(characterName) =>
 							updateSelectedMonster((monster) => ({
-								...monster,
-								characterName,
 								// The mystery bits are not identical for all monsters.
-								confirmed_mystery_bits_A_3A1C: undefined,
+								...setMysteryBits(monster),
+								characterName,
 							}))
 						}
 					/>

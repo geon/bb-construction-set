@@ -10,6 +10,7 @@ import {
 	getPlatformTilesAndHoles,
 } from "../../bb/internal-data-formats/tiles";
 import { LevelEditorOptions } from "../../bb/palette-image/level";
+import { setMysteryBits } from "../../bb/prg/monsters";
 import { assertTuple } from "../../bb/tuple";
 import { ButtonGroup } from "../ButtonGroup";
 import { ButtonRow } from "../ButtonRow";
@@ -43,13 +44,12 @@ export const Recycle: ClickDragCanvasEventHandlerProvider = (props: {
 							platformChar: solidChar,
 							sidebarChars: undefined,
 							monsters: [
-								{
+								setMysteryBits({
 									characterName: "bubbleBuster",
 									spawnPoint: { x: 116, y: 101 },
 									facingLeft: false,
 									delay: 0,
-									confirmed_mystery_bits_A_3A1C: undefined,
-								},
+								}),
 							],
 							bubbleCurrentRectangles: {
 								type: "rectangles",
