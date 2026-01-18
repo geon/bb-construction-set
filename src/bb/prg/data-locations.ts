@@ -133,19 +133,19 @@ export const spriteMasks: Partial<
 > = {
 	// The last 8 bytes are used.
 	bonusMelonTopLeft: mapTuple(range(spriteSizeBytes), (index) =>
-		index < spriteSizeBytes - 8 ? false : true
+		index < spriteSizeBytes - 8 ? false : true,
 	),
 	// The last 9 bytes are used except the last.
 	bonusMelonTopRight: mapTuple(range(spriteSizeBytes), (index) =>
-		index < spriteSizeBytes - 9 || index == spriteSizeBytes - 1 ? false : true
+		index < spriteSizeBytes - 9 || index == spriteSizeBytes - 1 ? false : true,
 	),
 	// The first 12 lines are used.
 	hexagonExplosion: mapTuple(range(spriteSizeBytes), (index) =>
-		index >= 12 * spriteWidthBytes ? false : true
+		index >= 12 * spriteWidthBytes ? false : true,
 	),
 	// The first 9 lines are used.
 	boxyExplosion: mapTuple(range(spriteSizeBytes), (index) =>
-		index >= 9 * spriteWidthBytes ? false : true
+		index >= 9 * spriteWidthBytes ? false : true,
 	),
 };
 
@@ -158,7 +158,7 @@ function getCharacterStartAddress(characterName: CharacterName): number {
 			sum(
 				characterNames
 					.slice(0, characterNames.indexOf(characterName))
-					.map((characterName) => spriteCounts[characterName])
+					.map((characterName) => spriteCounts[characterName]),
 			)
 	);
 }
@@ -177,7 +177,7 @@ const spriteSegmentAddresses: Readonly<Record<SpriteGroupName, number>> = {
 				"stoner",
 				"superSocket",
 			] as const
-		).map((name) => [name, getCharacterStartAddress(name)])
+		).map((name) => [name, getCharacterStartAddress(name)]),
 	),
 	playerInBubbleA: 0x7440,
 	playerInBubbleB: 0x7440 + 64 * 4,
@@ -213,7 +213,7 @@ export const largeBonusSpriteColorsSegmentLocation: SegmentLocation = {
 
 const charSegmentLengths = mapRecord(
 	charGroupMeta,
-	(x) => 8 * x.count * x.width * x.height
+	(x) => 8 * x.count * x.width * x.height,
 );
 
 const mainBlockStartAddress = 0x8f00;
@@ -225,9 +225,9 @@ function getCharSegmentStartAddress(name: CharSegmentName): number {
 			charSegmentNames
 				.slice(
 					charSegmentNames.indexOf("baronVonBlubba"),
-					charSegmentNames.indexOf(name)
+					charSegmentNames.indexOf(name),
 				)
-				.map((characterName) => charSegmentLengths[characterName])
+				.map((characterName) => charSegmentLengths[characterName]),
 		)
 	);
 }
@@ -360,7 +360,7 @@ export const charSegmentLocations: Readonly<
 
 export const fontLevelNumbersMask = mapTuple(
 	range(charSegmentLocations.fontLevelNumbers5px.length * 8),
-	(index) => index < 10 * 5
+	(index) => index < 10 * 5,
 );
 
 export const validItemCategoryNames = ["points", "powerups"] as const;

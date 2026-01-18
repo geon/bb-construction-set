@@ -40,7 +40,7 @@ function mixArrays2(arrays: Tuple<PlatformTiles, 2>): PlatformTiles {
 						row.slice(platformTilesSize.x / 2),
 						row.slice(0, platformTilesSize.x / 2),
 					].flat() as T;
-			  });
+				});
 	}
 
 	const a = randomInsideOut(randomReverse(arrays[0]));
@@ -52,7 +52,7 @@ function mixArrays2(arrays: Tuple<PlatformTiles, 2>): PlatformTiles {
 			b.slice(start, start + length),
 			a.slice(start + length),
 		].flat(),
-		platformTilesSize.y
+		platformTilesSize.y,
 	);
 }
 
@@ -63,13 +63,13 @@ function randomHalves(tileses: Tuple<PlatformTiles, 2>): PlatformTiles {
 				a.slice(0, platformTilesSize.x / 2),
 				b.slice(platformTilesSize.x / 2),
 			].flat(),
-			platformTilesSize.x
-		)
+			platformTilesSize.x,
+		),
 	);
 }
 
 function randomizePlatformTiles(
-	tileses: Tuple<PlatformTiles, 2>
+	tileses: Tuple<PlatformTiles, 2>,
 ): PlatformTiles {
 	return Math.random() > 0.9 ? randomHalves(tileses) : mixArrays2(tileses);
 }
@@ -77,13 +77,13 @@ function randomizePlatformTiles(
 function mixLevels(levels: Tuple<Level, 2>): Level {
 	return {
 		platformTiles: randomizePlatformTiles(
-			mapTuple(levels, (x) => x.platformTiles)
+			mapTuple(levels, (x) => x.platformTiles),
 		),
 		holes: objectFromEntries(
 			(["top", "bottom"] as const).map((rowName) => [
 				rowName,
 				randomElement(levels).holes[rowName],
-			])
+			]),
 		),
 		bgColors: {
 			light: randomElement(levels).bgColors.light,
@@ -97,19 +97,19 @@ function mixLevels(levels: Tuple<Level, 2>): Level {
 			rectangles: [],
 		},
 		bubbleCurrentPerLineDefaults: mixArrays(
-			mapTuple(levels, (x) => x.bubbleCurrentPerLineDefaults)
+			mapTuple(levels, (x) => x.bubbleCurrentPerLineDefaults),
 		) as any,
 		bubbleSpawns: objectFromEntries(
 			validSpecialBubbleNames.map((name) => [
 				name,
 				randomElement(levels).bubbleSpawns[name],
-			])
+			]),
 		),
 		itemSpawnPositions: objectFromEntries(
 			validItemCategoryNames.map((name) => [
 				name,
 				randomElement(levels).itemSpawnPositions[name],
-			])
+			]),
 		),
 	};
 }

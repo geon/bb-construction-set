@@ -28,7 +28,7 @@ export const WindEditor: ClickDragCanvasEventHandlerProvider = (props) => {
 	}
 
 	function setRectangles(
-		rectangles: readonly BubbleCurrentRectangleOrSymmetry[]
+		rectangles: readonly BubbleCurrentRectangleOrSymmetry[],
 	): void {
 		props.setLevel({
 			...level,
@@ -61,7 +61,7 @@ export const WindEditor: ClickDragCanvasEventHandlerProvider = (props) => {
 						setCopyLevelIndex={setCopyLevelIndex}
 						setRectangles={setRectangles}
 					/>,
-					{ type: "wind-editor" }
+					{ type: "wind-editor" },
 				)
 			}
 		/>
@@ -80,7 +80,7 @@ export const WindEditor: ClickDragCanvasEventHandlerProvider = (props) => {
 						setRectangles={setRectangles}
 						extraTools={extraTools}
 					/>,
-					{ type: "wind-editor" }
+					{ type: "wind-editor" },
 				)
 			}
 		/>
@@ -101,7 +101,7 @@ export const WindEditor: ClickDragCanvasEventHandlerProvider = (props) => {
 						extraTools={extraTools}
 						rectsList={rectsList}
 					/>,
-					{ ...levelEditorOptions }
+					{ ...levelEditorOptions },
 				)
 			}
 		/>

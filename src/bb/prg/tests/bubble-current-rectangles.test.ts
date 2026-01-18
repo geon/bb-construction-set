@@ -15,11 +15,11 @@ import { levelSegmentLocations } from "../data-locations";
 test("readBubbleCurrentRectangles snapshot", () => {
 	const dataSegments = getDataSegments(
 		readFileSync(__dirname + "/decompressed-bb.prg").buffer,
-		levelSegmentLocations
+		levelSegmentLocations,
 	);
 
 	const rectsFromPrg = readBubbleCurrentRectangles(
-		dataSegments.windCurrents.buffer
+		dataSegments.windCurrents.buffer,
 	);
 
 	expect(rectsFromPrg).toMatchSnapshot();
@@ -43,13 +43,13 @@ test("encodeFirstByte", () => {
 			type: "copy",
 			levelIndex: 5,
 			byteCount: 1,
-		})
+		}),
 	).toStrictEqual(0b10000000 | 5);
 	expect(
 		encodeFirstByte({
 			type: "rectangles",
 			byteCount: 5,
-		})
+		}),
 	).toStrictEqual(5);
 });
 
@@ -70,7 +70,7 @@ test("readBubbleCurrentRectanglesForLevel & patchBubbleCurrentRectanglesForLevel
 test("readBubbleCurrentRectangles & writeBubbleCurrentRectangles", () => {
 	const dataSegments = getDataSegments(
 		readFileSync(__dirname + "/decompressed-bb.prg").buffer,
-		levelSegmentLocations
+		levelSegmentLocations,
 	);
 
 	const rects = readBubbleCurrentRectangles(dataSegments.windCurrents.buffer);

@@ -21,7 +21,7 @@ test("blitPaletteImage", () => {
 			[1, 1],
 			[1, 1],
 		],
-		{ x: 0, y: 0 }
+		{ x: 0, y: 0 },
 	);
 
 	expect(image).toStrictEqual([
@@ -37,7 +37,7 @@ test("blitPaletteImage", () => {
 			[2, 2],
 			[2, 2],
 		],
-		{ x: 1, y: 1 }
+		{ x: 1, y: 1 },
 	);
 
 	expect(image).toStrictEqual([
@@ -53,7 +53,7 @@ test("blitPaletteImage", () => {
 			[3, undefined],
 			[undefined, 3],
 		],
-		{ x: 2, y: 2 }
+		{ x: 2, y: 2 },
 	);
 
 	expect(image).toStrictEqual([
@@ -80,7 +80,7 @@ test("blitPaletteImage outside", () => {
 			[1, 1, 1, 1],
 			[1, 1, 1, 1],
 		],
-		{ x: 2, y: -2 }
+		{ x: 2, y: -2 },
 	);
 
 	expect(image).toStrictEqual([
@@ -103,7 +103,7 @@ test("cropPaletteImage", () => {
 		cropPaletteImage(image, {
 			pos: { x: 1, y: 0 },
 			size: { x: 2, y: 2 },
-		})
+		}),
 	).toStrictEqual([
 		[1, 0],
 		[2, 2],
@@ -113,7 +113,7 @@ test("cropPaletteImage", () => {
 		cropPaletteImage(image, {
 			pos: { x: 3, y: 0 },
 			size: { x: 2, y: 2 },
-		})
+		}),
 	).toThrow();
 });
 

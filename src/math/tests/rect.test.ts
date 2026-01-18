@@ -12,14 +12,14 @@ test("bottomRight", () => {
 		bottomRight({
 			pos: { x: 123, y: 456 },
 			size: { x: 10, y: 1 },
-		})
+		}),
 	).toMatchSnapshot();
 });
 
 describe("flexbox", () => {
 	test("length", () => {
 		expect(
-			flexboxChildPositions([{ x: 1, y: 1 }], "row", 0).length
+			flexboxChildPositions([{ x: 1, y: 1 }], "row", 0).length,
 		).toStrictEqual(1);
 		expect(
 			flexboxChildPositions(
@@ -29,14 +29,14 @@ describe("flexbox", () => {
 					{ x: 1, y: 1 },
 				],
 				"row",
-				0
-			).length
+				0,
+			).length,
 		).toStrictEqual(3);
 	});
 
 	test("first pos", () => {
 		expect(flexboxChildPositions([{ x: 1, y: 1 }], "row", 0)[0]).toStrictEqual(
-			origo
+			origo,
 		);
 	});
 
@@ -49,8 +49,8 @@ describe("flexbox", () => {
 					{ x: 1, y: 1 },
 				],
 				"row",
-				0
-			)[2]?.x
+				0,
+			)[2]?.x,
 		).toStrictEqual(124);
 	});
 
@@ -63,8 +63,8 @@ describe("flexbox", () => {
 					{ x: 1, y: 1 },
 				],
 				"row",
-				0
-			)[2]?.y
+				0,
+			)[2]?.y,
 		).toStrictEqual(0);
 	});
 
@@ -77,8 +77,8 @@ describe("flexbox", () => {
 					{ x: 1, y: 1 },
 				],
 				"row",
-				1
-			)[2]?.x
+				1,
+			)[2]?.x,
 		).toStrictEqual(4);
 	});
 
@@ -91,8 +91,8 @@ describe("flexbox", () => {
 					{ x: 1, y: 1 },
 				],
 				"column",
-				1
-			)
+				1,
+			),
 		).toMatchInlineSnapshot(`
 			[
 			  {

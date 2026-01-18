@@ -67,7 +67,7 @@ export type LevelEditorOptions =
 export function drawLevel(
 	levelIndex: LevelIndex,
 	parsedPrg: ParsedPrg,
-	options: LevelEditorOptions | undefined
+	options: LevelEditorOptions | undefined,
 ): PaletteImage {
 	const level = parsedPrg.levels[levelIndex];
 
@@ -85,9 +85,9 @@ export function drawLevel(
 			? simplifiedCharset
 			: makeCharset(
 					level,
-					assertTuple(parsedPrg.chars.shadows.flat().flat(), 6)
-			  ),
-		(char) => drawChar(char, charPalette)
+					assertTuple(parsedPrg.chars.shadows.flat().flat(), 6),
+				),
+		(char) => drawChar(char, charPalette),
 	);
 
 	let image = drawGrid(
@@ -95,27 +95,27 @@ export function drawLevel(
 			.flat()
 			.map((charName) => charset[charName]),
 		levelSize.x,
-		{ x: 4, y: 8 }
+		{ x: 4, y: 8 },
 	);
 
 	function drawLevelNumber(levelIndex: number): void {
 		const digitHeight = 5;
 		const digitCharImages = chunk(
 			parsedPrg.chars.fontLevelNumbers5px.flat(3),
-			digitHeight
+			digitHeight,
 		)
 			.slice(0, 10)
 			.map((char6px) => {
 				const char: Char = assertTuple(
 					[...char6px, ...repeat(parseColorPixelByte(0), 8 - digitHeight)],
-					8
+					8,
 				);
 				return cropPaletteImage(
 					drawChar(char, getCharPalette(palette.white, bgColors)),
 					{
 						pos: origo,
 						size: { x: 4, y: digitHeight + 1 },
-					}
+					},
 				);
 			});
 
@@ -126,7 +126,7 @@ export function drawLevel(
 			blitPaletteImage(image, digitCharImages[digit]!, {
 				x: levelIndex === 99 ? index * 3 - 1 : 4 * index,
 				y: 0,
-			})
+			}),
 		);
 	}
 	if (options?.type !== "wind-editor") {
@@ -139,18 +139,18 @@ export function drawLevel(
 			parsedPrg.items[itemCategoryName],
 			itemCategoryName === "powerups"
 				? getDesignatedPowerupItemIndex(levelIndex)
-				: levelIndex % 47
+				: levelIndex % 47,
 		);
 		blitPaletteImage(
 			image,
 			drawCharBlock(
 				checkedAccess(parsedPrg.chars.items as CharGroup, item.charBlockIndex),
-				getCharPalette(item.paletteIndex, bgColors)
+				getCharPalette(item.paletteIndex, bgColors),
 			),
 			{
 				x: spawnPosition.x * 4,
 				y: spawnPosition.y * 8,
-			}
+			},
 		);
 	}
 
@@ -173,8 +173,8 @@ export function drawLevel(
 					dragging
 						? parsedPrg.sprites[character.characterName].sprites.length - 1
 						: character.facingLeft
-						? spriteLeftIndex[character.characterName]
-						: 0
+							? spriteLeftIndex[character.characterName]
+							: 0
 				]!;
 			const spritePos = subtract(character.spawnPoint, spritePosOffset);
 			const spriteColor =
@@ -183,10 +183,10 @@ export function drawLevel(
 				!options.dragging
 					? palette.lightRed
 					: character.characterName === "player"
-					? character.facingLeft
-						? palette.cyan
-						: palette.green
-					: parsedPrg.sprites[character.characterName].color;
+						? character.facingLeft
+							? palette.cyan
+							: palette.green
+						: parsedPrg.sprites[character.characterName].color;
 
 			blitPaletteImage(
 				image,
@@ -194,7 +194,7 @@ export function drawLevel(
 				{
 					x: spritePos.x / 2,
 					y: spritePos.y,
-				}
+				},
 			);
 		}
 	}
@@ -221,7 +221,7 @@ export function drawLevel(
 						clippedRectangle.size.y
 					) {
 						const scaledRectangle = mapRecord(clippedRectangle, (coord) =>
-							scale(coord, 8)
+							scale(coord, 8),
 						);
 						const rectColors =
 							options.selectedRectangleIndex === index
@@ -234,14 +234,14 @@ export function drawLevel(
 
 			const directions = getBubbleCurrentDirections(
 				levelToTakeWindsFrom.bubbleCurrentPerLineDefaults,
-				levelToTakeWindsFrom.bubbleCurrentRectangles.rectangles
+				levelToTakeWindsFrom.bubbleCurrentRectangles.rectangles,
 			);
 			for (const [y, row] of directions.entries()) {
 				for (const [x, direction] of row.entries()) {
 					blitPaletteImage(
 						image,
 						checkedAccess(arrowImages, direction.toString()),
-						scale({ x, y }, 8)
+						scale({ x, y }, 8),
 					);
 				}
 			}
@@ -261,7 +261,7 @@ export function layOutLevelThumbnails() {
 			pos: origo,
 		})),
 		10,
-		gap
+		gap,
 	);
 }
 
@@ -270,7 +270,7 @@ export function drawLevelTiles(tiles: Tiles): PaletteImage {
 	const emptyColor = 0;
 
 	return tiles.map((row) =>
-		row.map((solid) => (solid ? solidColor : emptyColor))
+		row.map((solid) => (solid ? solidColor : emptyColor)),
 	);
 }
 
@@ -281,10 +281,10 @@ export function parseLevelTiles(image: PaletteImage): Tiles {
 		image.map((row) =>
 			assertTuple(
 				row.map((color) => color === solidColor),
-				levelSize.x
-			)
+				levelSize.x,
+			),
 		),
-		levelSize.y
+		levelSize.y,
 	);
 }
 

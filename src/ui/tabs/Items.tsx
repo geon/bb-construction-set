@@ -41,7 +41,7 @@ export function Items(props: {
 
 	const objectFromUseState = function <T>([value, set]: [
 		T,
-		(value: T) => void
+		(value: T) => void,
 	]) {
 		return { value, set };
 	};
@@ -76,11 +76,12 @@ export function Items(props: {
 							title: itemName,
 							charBlock: checkedAccess(
 								props.parsedPrg.chars.items,
-								item.charBlockIndex
+								item.charBlockIndex,
 							),
 							palette: getCharPalette(
 								item.paletteIndex,
-								checkedAccess(props.parsedPrg.levels, props.levelIndex).bgColors
+								checkedAccess(props.parsedPrg.levels, props.levelIndex)
+									.bgColors,
 							),
 						}))}
 						charBlockIndex={
@@ -107,7 +108,7 @@ export function Items(props: {
 									selectedOptionIndex={
 										checkedAccess(
 											props.parsedPrg.items[selectedItemCategoryName],
-											selectedItemIndex
+											selectedItemIndex,
 										).paletteIndex
 									}
 									options={range(8) as readonly PaletteIndex[]}
@@ -122,7 +123,7 @@ export function Items(props: {
 													(item): Item => ({
 														...item,
 														paletteIndex: optionIndex as PaletteIndex,
-													})
+													}),
 												),
 											},
 										});
@@ -136,7 +137,7 @@ export function Items(props: {
 						render: () => {
 							const paletteIndex = checkedAccess(
 								props.parsedPrg.items[selectedItemCategoryName],
-								selectedItemIndex
+								selectedItemIndex,
 							).paletteIndex;
 
 							return (
@@ -148,13 +149,13 @@ export function Items(props: {
 										palette: getCharPalette(
 											paletteIndex,
 											checkedAccess(props.parsedPrg.levels, props.levelIndex)
-												.bgColors
+												.bgColors,
 										),
 									}))}
 									charBlockIndex={
 										checkedAccess(
 											props.parsedPrg.items[selectedItemCategoryName],
-											selectedItemIndex
+											selectedItemIndex,
 										).charBlockIndex
 									}
 									setCharBlockIndex={(charBlockIndex) => {
@@ -168,7 +169,7 @@ export function Items(props: {
 													(item): Item => ({
 														...item,
 														charBlockIndex,
-													})
+													}),
 												),
 											},
 										});

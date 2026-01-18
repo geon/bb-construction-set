@@ -8,17 +8,17 @@ import { levelSegmentLocations } from "../data-locations";
 test("readBubbleCurrentPerLineDefaults snapshot", () => {
 	const dataSegments = getDataSegments(
 		readFileSync(__dirname + "/decompressed-bb.prg").buffer,
-		levelSegmentLocations
+		levelSegmentLocations,
 	);
 
 	const tileBitmaps = readTileBitmaps(
 		dataSegments.bitmaps.buffer,
-		dataSegments.symmetry.buffer
+		dataSegments.symmetry.buffer,
 	);
 
 	const rectsFromPrg = readBubbleCurrentPerLineDefaults(
 		dataSegments.bubbleCurrentInHoles.buffer,
-		tileBitmaps
+		tileBitmaps,
 	);
 
 	expect(rectsFromPrg).toMatchSnapshot();

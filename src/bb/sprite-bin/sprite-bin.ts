@@ -23,7 +23,7 @@ export function serializeSpriteGroups(spriteGroups: SpriteGroups): Uint8Array {
 				...serializeSprite(sprite),
 				multicolorBit | spriteGroup.color,
 			]);
-		})
+		}),
 	);
 }
 
@@ -33,7 +33,7 @@ export function parseSpriteGroups(binFileContents: Uint8Array): SpriteGroups {
 		({ length }, segmentName) => {
 			const offset = getSpriteDataSegmentOffsetInBin(segmentName);
 			return new Uint8Array(binFileContents.buffer, offset, length);
-		}
+		},
 	);
 
 	const characterSpriteColors = objectFromEntries(
@@ -48,7 +48,7 @@ export function parseSpriteGroups(binFileContents: Uint8Array): SpriteGroups {
 			const color = (colorByte & 0b00001111) as PaletteIndex;
 
 			return [name, color];
-		})
+		}),
 	);
 
 	const largeBonusSpriteColors = mapRecord(
@@ -64,7 +64,7 @@ export function parseSpriteGroups(binFileContents: Uint8Array): SpriteGroups {
 			const color = (colorByte & 0b00001111) as PaletteIndex;
 
 			return color;
-		}
+		},
 	);
 
 	return mapRecord(
@@ -74,9 +74,9 @@ export function parseSpriteGroups(binFileContents: Uint8Array): SpriteGroups {
 			color: getSpriteGroupColor(
 				groupName,
 				characterSpriteColors,
-				largeBonusSpriteColors
+				largeBonusSpriteColors,
 			),
-		})
+		}),
 	);
 }
 
@@ -85,6 +85,6 @@ function getSpriteDataSegmentOffsetInBin(segmentName: SpriteGroupName): number {
 	return sum(
 		spriteGroupNames
 			.slice(0, spriteGroupNames.indexOf(segmentName))
-			.map((segmentName) => spriteDataSegmentLocations[segmentName].length)
+			.map((segmentName) => spriteDataSegmentLocations[segmentName].length),
 	);
 }

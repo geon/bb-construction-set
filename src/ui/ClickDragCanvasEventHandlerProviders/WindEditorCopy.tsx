@@ -10,7 +10,7 @@ export const WindEditorCopy = (props: {
 	readonly setCopyLevelIndex: Setter<LevelIndex>;
 	readonly children: (
 		eventHandlers: ClickDragCanvasDragEventHandlers,
-		extraTools: React.ReactNode
+		extraTools: React.ReactNode,
 	) => React.ReactNode;
 }) => {
 	return props.children(
@@ -25,6 +25,6 @@ export const WindEditorCopy = (props: {
 					}
 				/>
 			</label>
-		</ButtonRow>
+		</ButtonRow>,
 	);
 };

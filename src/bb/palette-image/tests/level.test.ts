@@ -43,11 +43,11 @@ test("drawLevelTiles / parseLevelTiles", () => {
 				xxxxxxxxx____xxxxxx____xxxxxxxxx
 			`
 				.split("")
-				.map((char) => ({ x: true, _: false }[char]))
+				.map((char) => ({ x: true, _: false })[char])
 				.filter((char) => char !== undefined),
-			levelSize.x
+			levelSize.x,
 		),
-		levelSize.y
+		levelSize.y,
 	);
 
 	expect(parseLevelTiles(drawLevelTiles(tiles))).toStrictEqual(tiles);
@@ -56,12 +56,12 @@ test("drawLevelTiles / parseLevelTiles", () => {
 test("drawLevelsTiles / parseLevelsTiles", () => {
 	const levelsTiles = assertTuple(
 		parsePrg(
-			readFileSync(__dirname + "/../../prg/tests/decompressed-bb.prg").buffer
+			readFileSync(__dirname + "/../../prg/tests/decompressed-bb.prg").buffer,
 		).levels.map(getTiles),
-		100
+		100,
 	);
 
 	expect(parseLevelsTiles(drawLevelsTiles(levelsTiles))).toStrictEqual(
-		levelsTiles
+		levelsTiles,
 	);
 });

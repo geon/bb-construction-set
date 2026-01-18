@@ -14,7 +14,7 @@ export const WindEditorPerLineDefaults = (props: {
 	readonly perLineDefaults: BubbleCurrentPerLineDefaults;
 	readonly setPerLineDefaults: Setter<BubbleCurrentPerLineDefaults>;
 	readonly children: (
-		eventHandlers: ClickDragCanvasDragEventHandlers
+		eventHandlers: ClickDragCanvasDragEventHandlers,
 	) => React.ReactNode;
 }) => {
 	const [lastCoord, setLeastCoord] = useState<Coord2 | undefined>(undefined);
@@ -34,15 +34,15 @@ export const WindEditorPerLineDefaults = (props: {
 						? 1
 						: 3
 					: diff.y > 0
-					? 2
-					: 0;
+						? 2
+						: 0;
 
 			const coord = getTileCoord(lastCoord);
 			props.setPerLineDefaults(
 				assertTuple(
 					updateArrayAtIndex(props.perLineDefaults, coord.y, () => direction),
-					levelSize.y
-				)
+					levelSize.y,
+				),
 			);
 		},
 	});

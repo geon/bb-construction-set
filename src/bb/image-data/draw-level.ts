@@ -26,7 +26,7 @@ function isSkippedByBlueUmbrella(levelIndex: number) {
 	return range(2).some(
 		(index) =>
 			getDesignatedPowerupItemIndex(levelIndex - (1 + index)) ===
-			blueUmbrellaItemIndex
+			blueUmbrellaItemIndex,
 	);
 }
 
@@ -35,13 +35,13 @@ function isSkippedByPurpleUmbrella(levelIndex: number) {
 	return range(6).some(
 		(index) =>
 			getDesignatedPowerupItemIndex(levelIndex - (1 + index)) ===
-			purpleUmbrellaItemIndex
+			purpleUmbrellaItemIndex,
 	);
 }
 
 export function drawLevels(
 	parsedPrg: ParsedPrg,
-	selectedLevelIndex: LevelIndex
+	selectedLevelIndex: LevelIndex,
 ): ImageData {
 	const gap = { x: 0, y: 0 };
 
@@ -53,15 +53,15 @@ export function drawLevels(
 				levelIndex === selectedLevelIndex
 					? "selected"
 					: isSkippedByBlueUmbrella(levelIndex)
-					? "skipped-by-purple-and-blue"
-					: isSkippedByPurpleUmbrella(levelIndex)
-					? "skipped-by-purple"
-					: undefined
-			)
+						? "skipped-by-purple-and-blue"
+						: isSkippedByPurpleUmbrella(levelIndex)
+							? "skipped-by-purple"
+							: undefined,
+			),
 		),
 		10,
 		levelSize,
-		gap
+		gap,
 	);
 }
 
@@ -72,7 +72,7 @@ export function drawLevelThumbnail(
 		| "selected"
 		| "skipped-by-purple"
 		| "skipped-by-purple-and-blue"
-		| undefined
+		| undefined,
 ): ImageData {
 	const shadowChars = assertTuple(parsedPrg.chars.shadows.flat().flat(), 6);
 	const spriteColors = mapRecord(parsedPrg.sprites, ({ color }) => color);
@@ -91,13 +91,13 @@ export function drawLevelThumbnail(
 	}
 	const charset = makeCharset(level, shadowChars);
 	const averageCharColors = mapRecord(charset, (char) =>
-		getAverageCharColor(char, charPalette)
+		getAverageCharColor(char, charPalette),
 	);
 	const tiles = chunk(
 		levelToCharNames(level)
 			.flat()
 			.map((charName) => averageCharColors[charName]),
-		levelSize.x
+		levelSize.x,
 	);
 	for (const [tileY, row] of tiles.entries()) {
 		for (const [tileX, color] of row.entries()) {
@@ -112,7 +112,7 @@ export function drawLevelThumbnail(
 			x: spriteSizePixels.x * 2,
 			y: spriteSizePixels.y,
 		},
-		charBlockSize
+		charBlockSize,
 	);
 	for (const character of [pl1, pl2, ...level.monsters]) {
 		const spritePos = subtract(character.spawnPoint, spritePosOffset);
@@ -143,6 +143,6 @@ function getAverageCharColor(char: Char, charPalette: SubPalette): Color {
 			.flatMap((pixels) => pixels)
 			.map((pixel) => charPalette[pixel])
 			.filter(isDefined)
-			.map((paletteIndex) => rgbPalette[paletteIndex])
+			.map((paletteIndex) => rgbPalette[paletteIndex]),
 	);
 }

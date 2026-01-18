@@ -6,7 +6,7 @@ import { ClickDragCanvasDragEventHandlers } from "../ClickDragCanvas";
 export function useDraw<T>(
 	getValue: (tileCoord: Coord2) => T,
 	setValues: (coords: readonly Coord2[], value: T) => void,
-	transformCoord: (coord: Coord2) => Coord2
+	transformCoord: (coord: Coord2) => Coord2,
 ): ClickDragCanvasDragEventHandlers {
 	let [drawValue, setDrawValue] = useState<T | undefined>(undefined);
 	let [lineStart, setLineStart] = useState<Coord2 | undefined>(undefined);

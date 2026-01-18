@@ -17,7 +17,7 @@ export function Custom(props: {
 	readonly purge: () => void;
 }): ReactNode {
 	const [inputState, setInputState] = useState(
-		formatViceMonitorPokes(props.manualPatch)
+		formatViceMonitorPokes(props.manualPatch),
 	);
 	const [error, setError] = useState(false);
 
@@ -68,7 +68,7 @@ function parseViceMonitorPokes(value: string): Patch | undefined {
 			} catch (_) {
 				// Nicer error message than assertTuple.
 				throw new Error(
-					"Lines must have exactly one address and one value, separated with a space."
+					"Lines must have exactly one address and one value, separated with a space.",
 				);
 			}
 		});
@@ -80,7 +80,7 @@ function parseViceMonitorPokes(value: string): Patch | undefined {
 function formatViceMonitorPokes(manual: Patch): string {
 	return manual
 		.map(
-			([address, [value]]) => `> ${address.toString(16)} ${value.toString(16)}`
+			([address, [value]]) => `> ${address.toString(16)} ${value.toString(16)}`,
 		)
 		.join("\n");
 }

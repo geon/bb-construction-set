@@ -19,7 +19,7 @@ export function BlobDownloadButton(
 			  ))
 			| undefined
 		>;
-	} & Omit<ComponentPropsWithoutRef<"button">, "onClick" | "disabled">
+	} & Omit<ComponentPropsWithoutRef<"button">, "onClick" | "disabled">,
 ) {
 	const { getBlob, ...rest } = props;
 
@@ -43,12 +43,12 @@ export function BlobDownloadButton(
 											(x): InputWithSizeMeta => ({
 												input: x.blob,
 												name: x.fileName,
-											})
-										)
-									)
+											}),
+										),
+									),
 								).blob(),
 								fileName: result.fileName,
-						  };
+							};
 
 					const link = document.createElement("a");
 					link.download = fileName;

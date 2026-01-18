@@ -33,7 +33,7 @@ test("unzipObject", () => {
 			{ foo: 1, bar: "a" },
 			{ foo: 2, bar: "b" },
 			{ foo: 3, bar: "c" },
-		])
+		]),
 	).toStrictEqual({ foo: [1, 2, 3], bar: ["a", "b", "c"] });
 });
 

@@ -15,7 +15,7 @@ export function charBlockFromTuple(tuple: Char4Tuple): CharBlock {
 }
 
 export function tupleFromBlockFrom2x2CharBlock(
-	charBlock: CharBlock
+	charBlock: CharBlock,
 ): Char4Tuple {
 	return [
 		charBlock[0]![0]!,

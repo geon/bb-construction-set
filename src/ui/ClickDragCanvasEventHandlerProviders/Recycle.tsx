@@ -25,7 +25,7 @@ export const Recycle: ClickDragCanvasEventHandlerProvider = (props: {
 	children: (
 		eventHandlers: ClickDragCanvasDragEventHandlers,
 		extraTools?: React.ReactNode,
-		levelEditorOptions?: LevelEditorOptions
+		levelEditorOptions?: LevelEditorOptions,
 	) => React.ReactNode;
 }) => {
 	return props.children(
@@ -57,7 +57,7 @@ export const Recycle: ClickDragCanvasEventHandlerProvider = (props: {
 							},
 							bubbleCurrentPerLineDefaults: assertTuple(
 								repeat(0 as const, levelSize.y),
-								levelSize.y
+								levelSize.y,
 							),
 							bubbleSpawns: {
 								lightning: false,
@@ -78,6 +78,6 @@ export const Recycle: ClickDragCanvasEventHandlerProvider = (props: {
 					{icons.random}
 				</button>
 			</ButtonGroup>
-		</ButtonRow>
+		</ButtonRow>,
 	);
 };

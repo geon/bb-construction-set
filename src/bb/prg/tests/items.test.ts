@@ -5,7 +5,7 @@ import { parseItems, serializeItems } from "../items";
 
 test("parseItems / serializeItems", () => {
 	const prgFileContent = readFileSync(
-		__dirname + "/decompressed-bb.prg"
+		__dirname + "/decompressed-bb.prg",
 	).buffer;
 	const parsedPrg = parsePrg(prgFileContent);
 

@@ -13,14 +13,14 @@ export function blitImageData(
 	to: ImageData,
 	from: ImageData,
 	dx: number,
-	dy: number
+	dy: number,
 ) {
 	for (let y = 0; y < from.height; ++y) {
 		const toStart = ((y + dy) * to.width + dx) * 4;
 		const fromStart = y * from.width * 4;
 		to.data.set(
 			from.data.slice(fromStart, fromStart + from.width * 4),
-			toStart
+			toStart,
 		);
 	}
 }
@@ -30,7 +30,7 @@ export function blitImageDataMasked(
 	from: ImageData,
 	dx: number,
 	dy: number,
-	maskColor: Color
+	maskColor: Color,
 ) {
 	for (let y = 0; y < from.height; ++y) {
 		for (let x = 0; x < from.width; ++x) {
@@ -56,13 +56,13 @@ export function drawGrid(
 	images: readonly ImageData[],
 	numColumns: number,
 	size: Coord2,
-	gap: Coord2 = origo
+	gap: Coord2 = origo,
 ): ImageData {
 	const numRows = Math.ceil(images.length / numColumns);
 
 	const gridImage = new ImageData(
 		size.x * numColumns + gap.x * (numColumns - 1),
-		size.y * numRows + gap.y * (numRows - 1)
+		size.y * numRows + gap.y * (numRows - 1),
 	);
 
 	const stepSize = add(size, gap);
@@ -85,7 +85,7 @@ export function plotPixel(
 	image: ImageData,
 	pixelIndex: number,
 	color: Color,
-	alpha: number = 255
+	alpha: number = 255,
 ): void {
 	image.data[pixelIndex * 4 + 0] = color.r;
 	image.data[pixelIndex * 4 + 1] = color.g;
@@ -104,19 +104,19 @@ export function imageDataFromPaletteImage(image: PaletteImage): ImageData {
 						: [black, 0];
 
 				return [color.r, color.g, color.b, alpha];
-			})
+			}),
 		),
 		size.x,
-		size.y
+		size.y,
 	);
 }
 
 export function paletteImageFromImageData(imageData: ImageData): PaletteImage {
 	return strictChunk(
 		strictChunk([...imageData.data], 4).map(([r, g, b, a]) =>
-			a < 128 ? undefined : quantize({ r, g, b }, rgbPalette)
+			a < 128 ? undefined : quantize({ r, g, b }, rgbPalette),
 		),
-		imageData.width
+		imageData.width,
 	);
 }
 
@@ -147,7 +147,7 @@ export function imageDataFromImage(img: HTMLImageElement) {
 	const imageData = new ImageData(
 		new Uint8ClampedArray(buffer),
 		img.width,
-		img.height
+		img.height,
 	);
 	return imageData;
 }

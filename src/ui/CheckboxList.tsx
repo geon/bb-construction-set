@@ -10,7 +10,7 @@ type CheckboxListProps<T extends string> = {
 };
 
 export const CheckboxList: <T extends string>(
-	props: CheckboxListProps<T>
+	props: CheckboxListProps<T>,
 ) => ReactNode = (props: CheckboxListProps<string>) => {
 	const toggle = (name: string): void => {
 		props.setSelected({ ...props.selected, [name]: !props.selected[name] });

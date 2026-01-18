@@ -3,8 +3,8 @@ import { ComponentPropsWithoutRef } from "react";
 type CallbackArg<Multiple> = Multiple extends true
 	? readonly File[]
 	: Multiple extends false | undefined
-	? File
-	: never;
+		? File
+		: never;
 export function FileInput<Multiple extends boolean = false>({
 	multiple,
 	accept,

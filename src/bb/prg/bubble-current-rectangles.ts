@@ -12,23 +12,23 @@ import { assertTuple, Tuple } from "../tuple";
 import { LevelIndex } from "../internal-data-formats/levels";
 
 export function readBubbleCurrentRectangles(
-	bubbleCurrentRectangleBytes: ReadonlyUint8Array
+	bubbleCurrentRectangleBytes: ReadonlyUint8Array,
 ): Tuple<BubbleCurrentRectangles, 100> {
 	const bubbleCurrentRectanglesForAllLevels: BubbleCurrentRectangles[] = [];
 
 	let currentWindCurrentsByteIndex = 0;
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
 		const firstByte = parseFirstByte(
-			bubbleCurrentRectangleBytes[currentWindCurrentsByteIndex]!
+			bubbleCurrentRectangleBytes[currentWindCurrentsByteIndex]!,
 		);
 
 		bubbleCurrentRectanglesForAllLevels.push(
 			readBubbleCurrentRectanglesForLevel(
 				bubbleCurrentRectangleBytes.subarray(
 					currentWindCurrentsByteIndex,
-					currentWindCurrentsByteIndex + firstByte.byteCount
-				)
-			)
+					currentWindCurrentsByteIndex + firstByte.byteCount,
+				),
+			),
 		);
 
 		currentWindCurrentsByteIndex += firstByte.byteCount;
@@ -58,11 +58,11 @@ export function parseFirstByte(firstByte: number): FirstByte {
 				type: "copy",
 				levelIndex: firstByteWithoutCopyFlag,
 				byteCount: 1,
-		  }
+			}
 		: {
 				type: "rectangles",
 				byteCount: Math.max(1, firstByteWithoutCopyFlag),
-		  };
+			};
 }
 
 // Bytes are within [square brackets].
@@ -74,7 +74,7 @@ export function parseFirstByte(firstByte: number): FirstByte {
 // [a bbbbbbb]
 
 export function readBubbleCurrentRectanglesForLevel(
-	bubbleCurrentRectangleBytes: ReadonlyUint8Array
+	bubbleCurrentRectangleBytes: ReadonlyUint8Array,
 ): BubbleCurrentRectangles {
 	const firstByte = parseFirstByte(bubbleCurrentRectangleBytes[0]!);
 
@@ -99,16 +99,16 @@ export function readBubbleCurrentRectanglesForLevel(
 			symmetry
 				? {
 						type: "symmetry",
-				  }
+					}
 				: {
 						type: "rectangle",
 						...bytesToBubbleCurrentRectangle(
 							bubbleCurrentRectangleBytes.subarray(
 								currentWindCurrentsByteIndex,
-								currentWindCurrentsByteIndex + 3
-							)
+								currentWindCurrentsByteIndex + 3,
+							),
 						),
-				  }
+					},
 		);
 
 		currentWindCurrentsByteIndex += symmetry ? 1 : 3;
@@ -121,7 +121,7 @@ export function readBubbleCurrentRectanglesForLevel(
 }
 
 export function writeBubbleCurrentRectanglesForLevel(
-	rectangles: BubbleCurrentRectangles
+	rectangles: BubbleCurrentRectangles,
 ): Uint8Array {
 	if (rectangles.type === "copy") {
 		return new Uint8Array([
@@ -151,7 +151,7 @@ export function writeBubbleCurrentRectanglesForLevel(
 }
 
 export function bytesToBubbleCurrentRectangle(
-	bytes: ReadonlyUint8Array
+	bytes: ReadonlyUint8Array,
 ): BubbleCurrentRectangle {
 	// Bytes are within [square brackets].
 	// Values are separated | with | pipes.
@@ -180,7 +180,7 @@ export function bytesToBubbleCurrentRectangle(
 }
 
 export function bubbleCurrentRectangleToBytes(
-	rectangle: BubbleCurrentRectangle
+	rectangle: BubbleCurrentRectangle,
 ): Uint8Array {
 	const bytes: [number, number, number] = [0, 0, 0];
 
@@ -201,16 +201,16 @@ export function encodeFirstByte(firstByte: FirstByte): number {
 	return firstByte.type === "copy"
 		? 0b10000000 | firstByte.levelIndex
 		: firstByte.byteCount === 1
-		? 0
-		: firstByte.byteCount;
+			? 0
+			: firstByte.byteCount;
 }
 
 export function writeBubbleCurrentRectangles(
-	bubbleCurrentses: Tuple<BubbleCurrentRectangles, 100>
+	bubbleCurrentses: Tuple<BubbleCurrentRectangles, 100>,
 ): Uint8Array {
 	return uint8ArrayConcatenate(
 		bubbleCurrentses.map((bubbleCurrents) =>
-			writeBubbleCurrentRectanglesForLevel(bubbleCurrents)
-		)
+			writeBubbleCurrentRectanglesForLevel(bubbleCurrents),
+		),
 	);
 }

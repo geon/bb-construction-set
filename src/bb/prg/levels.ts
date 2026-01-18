@@ -32,11 +32,11 @@ import { readTileBitmaps } from "./tile-bitmap";
 import { readTiles } from "./tiles";
 
 export function readLevels(
-	dataSegments: Record<LevelDataSegmentName, DataSegment>
+	dataSegments: Record<LevelDataSegmentName, DataSegment>,
 ): Levels {
 	const tileBitmaps = readTileBitmaps(
 		dataSegments.bitmaps.buffer,
-		dataSegments.symmetry.buffer
+		dataSegments.symmetry.buffer,
 	);
 
 	return zipObject({
@@ -44,17 +44,17 @@ export function readLevels(
 		bgColors: readBgColors(dataSegments.bgColors.buffer),
 		sidebarChars: readSidebarChars(
 			dataSegments.sidebarChars.buffer,
-			dataSegments.sidebarCharsIndex.buffer
+			dataSegments.sidebarCharsIndex.buffer,
 		),
 		platformTiles: readTiles(tileBitmaps),
 		holes: readHoles(dataSegments.holes.buffer),
 		monsters: readMonsters(dataSegments.monsters.buffer),
 		bubbleCurrentRectangles: readBubbleCurrentRectangles(
-			dataSegments.windCurrents.buffer
+			dataSegments.windCurrents.buffer,
 		),
 		bubbleCurrentPerLineDefaults: readBubbleCurrentPerLineDefaults(
 			dataSegments.bubbleCurrentInHoles.buffer,
-			tileBitmaps
+			tileBitmaps,
 		),
 		bubbleSpawns: readBubbleSpawns(dataSegments.bubbleSpawns.buffer),
 		itemSpawnPositions: parseItemSpawnPositions({
@@ -75,13 +75,13 @@ export function getLevelsPatch(levels: Levels) {
 		bgColors: writeBgColors(unzippedLevels.bgColors),
 		holes: writeHoles(unzippedLevels.holes),
 		bubbleCurrentInHoles: writeBubbleCurrentInHoles(
-			unzippedLevels.bubbleCurrentPerLineDefaults
+			unzippedLevels.bubbleCurrentPerLineDefaults,
 		),
 		symmetry: writeSymmetry(tileses),
 		sidebarCharsIndex: writeSidebarCharsIndex(unzippedLevels.sidebarChars),
 		bitmaps: writeBitmaps(tileses, unzippedLevels.bubbleCurrentPerLineDefaults),
 		windCurrents: writeBubbleCurrentRectangles(
-			unzippedLevels.bubbleCurrentRectangles
+			unzippedLevels.bubbleCurrentRectangles,
 		),
 	} as const satisfies Record<
 		Exclude<
@@ -98,7 +98,7 @@ export function getLevelsPatch(levels: Levels) {
 
 	return [
 		objectEntries(newSegments).flatMap(([segmentName, newSegment]) =>
-			patchFromSegment(levelSegmentLocations[segmentName], newSegment)
+			patchFromSegment(levelSegmentLocations[segmentName], newSegment),
 		),
 		// Manual patching.
 		getMonstersPatch(unzippedLevels.monsters),

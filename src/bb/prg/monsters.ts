@@ -26,14 +26,14 @@ const a_3A1C_last_mask = 0b10000000;
 function parseMonsterPosition(rawPrgPosition: Coord2): Coord2 {
 	return add(
 		mapRecord(rawPrgPosition, (x) => x & positionMask),
-		prgMonsterPositionOffset
+		prgMonsterPositionOffset,
 	);
 }
 
 function serializeMonsterPosition(spawnPoint: Coord2): Coord2 {
 	return mapRecord(
 		subtract(spawnPoint, prgMonsterPositionOffset),
-		(x) => x & positionMask
+		(x) => x & positionMask,
 	);
 }
 
@@ -76,7 +76,7 @@ function serializeMonster(monster: Monster): SingleMonsterBytes {
 
 	if (bytes[0] === 0) {
 		throw new Error(
-			`Bubble Busters are not allowed to be placed at position <${monster.spawnPoint.x}, ${monster.spawnPoint.y}>, since that serializes to zero - which is the stop-byte.`
+			`Bubble Busters are not allowed to be placed at position <${monster.spawnPoint.x}, ${monster.spawnPoint.y}>, since that serializes to zero - which is the stop-byte.`,
 		);
 	}
 
@@ -84,7 +84,7 @@ function serializeMonster(monster: Monster): SingleMonsterBytes {
 }
 
 export function readMonsters(
-	monsterBytes: ReadonlyUint8Array
+	monsterBytes: ReadonlyUint8Array,
 ): Tuple<readonly Monster[], 100> {
 	const monstersForAllLevels: Monster[][] = [];
 
@@ -104,12 +104,12 @@ export function readMonsters(
 						[
 							...monsterBytes.subarray(
 								currentMonsterByteIndex,
-								currentMonsterByteIndex + bytesPerMonster
+								currentMonsterByteIndex + bytesPerMonster,
 							),
 						],
-						bytesPerMonster
-					)
-				)
+						bytesPerMonster,
+					),
+				),
 			);
 			currentMonsterByteIndex += bytesPerMonster;
 		} while (monsterBytes[currentMonsterByteIndex]);
@@ -122,7 +122,7 @@ export function readMonsters(
 }
 
 export function getMonstersPatch(
-	monsterses: Tuple<readonly Monster[], 100>
+	monsterses: Tuple<readonly Monster[], 100>,
 ): Patch {
 	if (monsterses[99].length) {
 		throw new Error(`Level 100 may not have monsters.`);
@@ -134,14 +134,14 @@ export function getMonstersPatch(
 			throw new Error(
 				`Too many monsters on level ${
 					levelIndex + 1
-				}. Should be max ${maxMonstersPerLevel}.`
+				}. Should be max ${maxMonstersPerLevel}.`,
 			);
 		}
 		return monsters;
 	}).length;
 	if (numMonsters > maxMonsters) {
 		throw new Error(
-			`Too many monsters: ${numMonsters}. Should be max ${maxMonsters}.`
+			`Too many monsters: ${numMonsters}. Should be max ${maxMonsters}.`,
 		);
 	}
 
@@ -156,7 +156,7 @@ export function getMonstersPatch(
 			(value, index): SingleBytePatchEntry => [
 				levelSegmentLocations.monsters.startAddress + index,
 				[value],
-			]
+			],
 		);
 }
 

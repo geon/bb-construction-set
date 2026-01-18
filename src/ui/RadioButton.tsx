@@ -10,5 +10,5 @@ export const RadioButton = styled.button<{ readonly $active?: boolean }>`
 					&:focus {
 						outline-color: ${colors.active};
 					}
-			  `}
+				`}
 `;

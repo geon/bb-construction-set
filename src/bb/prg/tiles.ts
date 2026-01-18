@@ -7,14 +7,14 @@ import { TileBitmap } from "./tile-bitmap";
 import { assertTuple, mapTuple, Tuple } from "../tuple";
 
 export function readTiles(
-	tileBitmaps: Tuple<TileBitmap, 100>
+	tileBitmaps: Tuple<TileBitmap, 100>,
 ): Tuple<PlatformTiles, 100> {
 	const tilesForAllLevels: PlatformTiles[] = [];
 
 	for (let levelIndex = 0; levelIndex < 100; ++levelIndex) {
 		const tileBitmap = tileBitmaps[levelIndex]!;
 		const tiles = mapTuple(tileBitmap.bytes, (byteRow) =>
-			assertTuple(getTilesRow(byteRow).slice(2, -2), platformTilesSize.x)
+			assertTuple(getTilesRow(byteRow).slice(2, -2), platformTilesSize.x),
 		);
 
 		tilesForAllLevels.push(tiles);

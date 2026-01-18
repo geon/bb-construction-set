@@ -32,7 +32,7 @@ export function Sprites(props: {
 		<>
 			<ImageDataCanvas
 				imageData={imageDataFromPaletteImage(
-					doubleImageWidth(drawSprites(props.parsedPrg.sprites))
+					doubleImageWidth(drawSprites(props.parsedPrg.sprites)),
 				)}
 			/>
 			<br />
@@ -47,7 +47,7 @@ export function Sprites(props: {
 									[serializeSpriteGroups(props.parsedPrg.sprites)],
 									{
 										type: "application/json",
-									}
+									},
 								),
 								fileName: "bubble bobble c64 - all sprites.bin",
 							})}
@@ -68,7 +68,7 @@ export function Sprites(props: {
 									alert(
 										`Could not parse bin: ${
 											parsedSpriteBinData.error ?? "No reason."
-										}`
+										}`,
 									);
 									return;
 								}
@@ -90,8 +90,8 @@ export function Sprites(props: {
 							getBlob={async () => ({
 								blob: await imageDataToBlob(
 									imageDataFromPaletteImage(
-										doubleImageWidth(drawSprites(props.parsedPrg.sprites))
-									)
+										doubleImageWidth(drawSprites(props.parsedPrg.sprites)),
+									),
 								),
 								fileName: "bubble bobble c64 - all sprites.png",
 							})}
@@ -105,7 +105,7 @@ export function Sprites(props: {
 
 								const parsedSpriteBinData = attempt(() => {
 									const parsed = parseSprites(
-										halfImageWidth(paletteImageFromImageData(imageData))
+										halfImageWidth(paletteImageFromImageData(imageData)),
 									);
 									return parsed;
 								});
@@ -114,7 +114,7 @@ export function Sprites(props: {
 									alert(
 										`Could not parse bin: ${
 											parsedSpriteBinData.error ?? "No reason."
-										}`
+										}`,
 									);
 									return;
 								}

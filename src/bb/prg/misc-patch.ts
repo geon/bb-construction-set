@@ -25,13 +25,13 @@ export function writeHoles(holeses: readonly Holes[]): Uint8Array {
 }
 
 export function writeBubbleCurrentInHoles(
-	bubbleCurrentPerLineDefaultses: readonly BubbleCurrentPerLineDefaults[]
+	bubbleCurrentPerLineDefaultses: readonly BubbleCurrentPerLineDefaults[],
 ): Uint8Array {
 	const currentsHalfBytes = bubbleCurrentPerLineDefaultses.map(
 		(bubbleCurrentPerLineDefaults) =>
 			// The most significant bits are the bubble current of the top and bottom rows.
 			(bubbleCurrentPerLineDefaults[0] << 4) |
-			(bubbleCurrentPerLineDefaults[24] << 6)
+			(bubbleCurrentPerLineDefaults[24] << 6),
 	);
 
 	return new Uint8Array(currentsHalfBytes);
@@ -41,12 +41,12 @@ export function writeSymmetry(tileses: readonly PlatformTiles[]): Uint8Array {
 	const asymmetricLevels = tileses.filter((tiles) => !levelIsSymmetric(tiles));
 	if (asymmetricLevels.length > maxAsymmetric) {
 		throw new Error(
-			`Too many asymmetric levels: ${asymmetricLevels.length}. Should be max ${maxAsymmetric}.`
+			`Too many asymmetric levels: ${asymmetricLevels.length}. Should be max ${maxAsymmetric}.`,
 		);
 	}
 
 	const tilesBits = tileses.map(
-		(tiles) => (levelIsSymmetric(tiles) ? 1 : 0) << 7
+		(tiles) => (levelIsSymmetric(tiles) ? 1 : 0) << 7,
 	);
 
 	return new Uint8Array(tilesBits);
@@ -54,7 +54,7 @@ export function writeSymmetry(tileses: readonly PlatformTiles[]): Uint8Array {
 
 export function writeBitmaps(
 	tileses: readonly PlatformTiles[],
-	bubbleCurrentPerLineDefaultses: readonly BubbleCurrentPerLineDefaults[]
+	bubbleCurrentPerLineDefaultses: readonly BubbleCurrentPerLineDefaults[],
 ): Uint8Array {
 	// Write platforms bitmap
 	const levelBitmapBytes = tileses.flatMap((tiles, levelIndex) => {

@@ -11,7 +11,7 @@ export function parseItems(
 			readonly charBlockIndices: DataSegment;
 			readonly colorIndices: DataSegment;
 		}
-	>
+	>,
 ): ItemGroups {
 	return mapRecord(
 		dataSegments,
@@ -20,9 +20,9 @@ export function parseItems(
 				charBlockIndex: [...subSegments.charBlockIndices.buffer],
 				paletteIndex: [...subSegments.colorIndices.buffer].map(
 					// The top bit controls multicolor.
-					(byte) => (byte & 0b111) as PaletteIndex
+					(byte) => (byte & 0b111) as PaletteIndex,
 				),
-			})
+			}),
 	);
 }
 
@@ -36,7 +36,7 @@ export function serializeItems(itemGroups: ItemGroups): Record<
 	return mapRecord(
 		itemGroups,
 		(
-			itemGroup
+			itemGroup,
 		): {
 			readonly charBlockIndices: DataSegment;
 			readonly colorIndices: DataSegment;
@@ -52,11 +52,11 @@ export function serializeItems(itemGroups: ItemGroups): Record<
 					buffer: new Uint8Array(
 						newLocal.paletteIndex
 							// Put back the multi color bit.
-							.map((color) => color | 0b1000)
+							.map((color) => color | 0b1000),
 					),
 				},
 			};
-		}
+		},
 	);
 }
 
@@ -69,8 +69,8 @@ export function getItemPatch(itemGroups: ItemGroups): Patch {
 				([segmentName, segmentLocation]) =>
 					patchFromSegment(
 						segmentLocation,
-						newItemSegments[itemCategoryName][segmentName].buffer
-					)
-			)
+						newItemSegments[itemCategoryName][segmentName].buffer,
+					),
+			),
 	);
 }

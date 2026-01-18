@@ -23,8 +23,8 @@ test("drawChar", () => {
 				[1, 1, 1, 1],
 				[2, 1, 1, 1],
 			],
-			[0, 5, 13, 1]
-		)
+			[0, 5, 13, 1],
+		),
 	).toStrictEqual([
 		[13, 5, 0, 0],
 		[1, 13, 5, 0],
@@ -58,8 +58,8 @@ test("drawChar", () => {
 				[3, 0, 0, 3],
 				[3, 3, 0, 0],
 				[0, 3, 3, 0],
-			]
-		)
+			],
+		),
 	).toStrictEqual([
 		[13, 5, undefined, undefined],
 		[undefined, 13, 5, undefined],
@@ -85,8 +85,8 @@ test("parseChar", () => {
 				[5, 5, 5, 5],
 				[13, 5, 5, 5],
 			],
-			[0, 5, 13, 1]
-		)
+			[0, 5, 13, 1],
+		),
 	).toStrictEqual({
 		char: [
 			[2, 1, 0, 0],
@@ -113,8 +113,8 @@ test("parseChar", () => {
 				[5, 5, 5, 5],
 				[13, 5, 5, 5],
 			],
-			[0, 5, 13, 1]
-		)
+			[0, 5, 13, 1],
+		),
 	).toStrictEqual({
 		char: [
 			[2, 1, 0, 0],
@@ -141,7 +141,7 @@ test("parseHiresChar", () => {
 			[0, 0, 0, 0, 0, 0, 0, 0],
 			[0, 0, 0, 0, 0, 0, 0, 0],
 			[0, 0, 0, 0, 0, 0, 0, 0],
-		])
+		]),
 	).toStrictEqual({
 		char: [
 			[1, 3, 3, 3],
@@ -159,7 +159,7 @@ test("parseHiresChar", () => {
 
 test("drawLevelPlatformChars / parseLevelPlatformChars", () => {
 	const level = parsePrg(
-		readFileSync(__dirname + "/../../prg/tests/decompressed-bb.prg").buffer
+		readFileSync(__dirname + "/../../prg/tests/decompressed-bb.prg").buffer,
 	).levels[0]!;
 	const platformCharsData: PlatformCharsData = {
 		bgColors: level.bgColors,
@@ -168,6 +168,6 @@ test("drawLevelPlatformChars / parseLevelPlatformChars", () => {
 	};
 
 	expect(
-		parseLevelPlatformChars(drawLevelPlatformChars(platformCharsData))
+		parseLevelPlatformChars(drawLevelPlatformChars(platformCharsData)),
 	).toStrictEqual(platformCharsData);
 });

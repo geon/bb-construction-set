@@ -8,25 +8,25 @@ import { ReadonlyUint8Array } from "../types";
 export const linesPerChar = 8;
 
 export function readPlatformChars(
-	platformCharsBytes: ReadonlyUint8Array
+	platformCharsBytes: ReadonlyUint8Array,
 ): Tuple<Char, 100> {
 	return assertTuple(
 		strictChunk([...platformCharsBytes], linesPerChar).map((char) =>
-			mapTuple(char, parseColorPixelByte)
+			mapTuple(char, parseColorPixelByte),
 		),
-		100
+		100,
 	);
 }
 
 export function writePlatformChars(
-	platformChars: Tuple<Level["platformChar"], 100>
+	platformChars: Tuple<Level["platformChar"], 100>,
 ): Uint8Array {
 	return new Uint8Array(
 		platformChars.flatMap((platformChar) =>
 			platformChar.map(
 				(line) =>
-					(line[0] << 6) + (line[1] << 4) + (line[2] << 2) + (line[3] << 0)
-			)
-		)
+					(line[0] << 6) + (line[1] << 4) + (line[2] << 2) + (line[3] << 0),
+			),
+		),
 	);
 }

@@ -10,7 +10,7 @@ export const MoveItems: ClickDragCanvasEventHandlerProvider = (props) => {
 	const level = props.levels[props.levelIndex];
 	const itemSpawnPositions = level.itemSpawnPositions;
 	const setItemSpawnPositions = (
-		itemSpawnPositions: PerLevelItemSpawnPositions
+		itemSpawnPositions: PerLevelItemSpawnPositions,
 	) =>
 		props.setLevel({
 			...level,
@@ -31,14 +31,14 @@ export const MoveItems: ClickDragCanvasEventHandlerProvider = (props) => {
 			const foundItem = objectEntries(itemSpawnPositions)
 				.map(([category, pos]) => ({ category, pos }))
 				.find(({ pos }) =>
-					rectContainsPoint({ pos, size: { x: 2, y: 2 } }, scaledEventCoord)
+					rectContainsPoint({ pos, size: { x: 2, y: 2 } }, scaledEventCoord),
 				);
 
 			setDraggedItem(
 				foundItem && {
 					category: foundItem.category,
 					offset: subtract(scaledEventCoord, foundItem.pos),
-				}
+				},
 			);
 		},
 		onDragEnd: () => {
@@ -53,7 +53,7 @@ export const MoveItems: ClickDragCanvasEventHandlerProvider = (props) => {
 				add(subtract(scaledEventCoord, draggedItem.offset), {
 					x: 0.5,
 					y: 0.5,
-				})
+				}),
 			);
 			if (equal(itemSpawnPositions[draggedItem.category], newItemPosition)) {
 				return;

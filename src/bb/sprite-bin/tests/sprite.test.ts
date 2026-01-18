@@ -11,24 +11,24 @@ import {
 
 test("readSpritesBin snapshot", () => {
 	const prg = readFileSync(
-		__dirname + "/../../prg/tests/decompressed-bb.prg"
+		__dirname + "/../../prg/tests/decompressed-bb.prg",
 	).buffer;
 	const segments = getDataSegments(prg, spriteDataSegmentLocations);
 	const monsterColorsSegment = getDataSegment(
 		prg,
-		monsterSpriteColorsSegmentLocation
+		monsterSpriteColorsSegmentLocation,
 	);
 	const largeBonusSpriteColorsSegment = getDataSegment(
 		prg,
-		largeBonusSpriteColorsSegmentLocation
+		largeBonusSpriteColorsSegmentLocation,
 	);
 
 	const sprites = serializeSpriteGroups(
 		parseSpriteGroupsFromPrg(
 			segments,
 			monsterColorsSegment,
-			largeBonusSpriteColorsSegment
-		)
+			largeBonusSpriteColorsSegment,
+		),
 	);
 
 	expect(sprites).toMatchSnapshot();

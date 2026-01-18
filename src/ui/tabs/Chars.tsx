@@ -24,7 +24,7 @@ export function Chars(props: {
 		<>
 			<ImageDataCanvas
 				imageData={imageDataFromPaletteImage(
-					drawCharGroups(props.parsedPrg.chars)
+					drawCharGroups(props.parsedPrg.chars),
 				)}
 			/>
 			<br />
@@ -33,7 +33,7 @@ export function Chars(props: {
 				getBlob={async () => ({
 					fileName: "chars.png",
 					blob: await imageDataToBlob(
-						imageDataFromPaletteImage(drawCharGroups(props.parsedPrg.chars))
+						imageDataFromPaletteImage(drawCharGroups(props.parsedPrg.chars)),
 					),
 				})}
 			>
@@ -45,12 +45,12 @@ export function Chars(props: {
 					const imageData = imageDataFromImage(await imageFromFile(file));
 
 					const parsedCharGroups = attempt(() =>
-						parseCharGroups(paletteImageFromImageData(imageData))
+						parseCharGroups(paletteImageFromImageData(imageData)),
 					);
 
 					if (parsedCharGroups.type !== "ok") {
 						alert(
-							`Could not read image: ${parsedCharGroups.error ?? "No reason."}`
+							`Could not read image: ${parsedCharGroups.error ?? "No reason."}`,
 						);
 						return;
 					}

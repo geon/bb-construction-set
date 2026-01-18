@@ -52,12 +52,12 @@ export function Levels(props: {
 							const parsedTiles = attempt(() =>
 								mapTuple(
 									parseLevelsTiles(paletteImageFromImageData(imageData)),
-									getPlatformTilesAndHoles
-								)
+									getPlatformTilesAndHoles,
+								),
 							);
 							if (parsedTiles.type !== "ok") {
 								alert(
-									`Could not read image: ${parsedTiles.error ?? "No reason."}`
+									`Could not read image: ${parsedTiles.error ?? "No reason."}`,
 								);
 								return;
 							}
@@ -73,7 +73,7 @@ export function Levels(props: {
 										...level,
 										platformTiles,
 										holes,
-									})
+									}),
 								),
 							});
 						}}
@@ -86,9 +86,9 @@ export function Levels(props: {
 							blob: await imageDataToBlob(
 								imageDataFromPaletteImage(
 									drawLevelsTiles(
-										assertTuple(props.parsedPrg.levels.map(getTiles), 100)
-									)
-								)
+										assertTuple(props.parsedPrg.levels.map(getTiles), 100),
+									),
+								),
 							),
 						})}
 					>
@@ -106,13 +106,13 @@ export function Levels(props: {
 
 							const parsedTiles = attempt(() =>
 								parsePlatformChars(
-									halfImageWidth(paletteImageFromImageData(imageData))
-								)
+									halfImageWidth(paletteImageFromImageData(imageData)),
+								),
 							);
 
 							if (parsedTiles.type !== "ok") {
 								alert(
-									`Could not read image: ${parsedTiles.error ?? "No reason."}`
+									`Could not read image: ${parsedTiles.error ?? "No reason."}`,
 								);
 								return;
 							}
@@ -127,7 +127,7 @@ export function Levels(props: {
 									({ level, platformCharsData }) => ({
 										...level,
 										...platformCharsData,
-									})
+									}),
 								),
 							});
 						}}
@@ -139,8 +139,8 @@ export function Levels(props: {
 							fileName: "level graphics.png",
 							blob: await imageDataToBlob(
 								imageDataFromPaletteImage(
-									doubleImageWidth(drawPlatformChars(props.parsedPrg.levels))
-								)
+									doubleImageWidth(drawPlatformChars(props.parsedPrg.levels)),
+								),
 							),
 						})}
 					>

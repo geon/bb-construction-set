@@ -17,7 +17,7 @@ export function createTiles(): MutableTuple<
 	typeof levelSize.y
 > {
 	return mapTuple(range(levelSize.y), () =>
-		mapTuple(range(levelSize.x), () => false)
+		mapTuple(range(levelSize.x), () => false),
 	);
 }
 
@@ -28,7 +28,7 @@ export function getTiles(level: Level): Tiles {
 			...level.platformTiles.map(getTileRow),
 			drawHoles(level.holes.bottom),
 		],
-		levelSize.y
+		levelSize.y,
 	);
 }
 
@@ -46,18 +46,18 @@ function drawHoles(row: Holes["top"]): Tuple<boolean, 32> {
 			range(4).map(() => !row.right),
 			range(9).map(() => true),
 		].flat(),
-		32
+		32,
 	);
 }
 
 export function getPlatformTilesAndHoles(
-	tiles: Tiles
+	tiles: Tiles,
 ): Pick<Level, "platformTiles" | "holes"> {
 	const platformTiles: PlatformTiles = assertTuple(
 		tiles
 			.slice(1, -1)
 			.map((row) => assertTuple(row.slice(2, -2), platformTilesSize.x)),
-		platformTilesSize.y
+		platformTilesSize.y,
 	);
 	const holes: Holes = {
 		top: {

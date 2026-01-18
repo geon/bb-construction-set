@@ -62,8 +62,8 @@ export function layOutSpriteGroups(): LayoutRect {
 					pos: origo,
 					size: spriteSizePixels,
 					index: index++,
-				})
-			)
+				}),
+			),
 	);
 
 	const spriteGroupRects = mapRecord(spriteRects, (rects, groupName) => {
@@ -71,10 +71,10 @@ export function layOutSpriteGroups(): LayoutRect {
 		const gap = multiWidth === 1 ? { x: 4, y: 8 } : origo;
 		return flexbox(
 			chunk(rects, multiWidth === 1 ? 4 : multiWidth).map((row) =>
-				flexbox(row, "row", gap.x)
+				flexbox(row, "row", gap.x),
 			),
 			"column",
-			gap.y
+			gap.y,
 		);
 	});
 
@@ -97,7 +97,7 @@ export function layOutSpriteGroups(): LayoutRect {
 				flexbox(
 					[spriteGroupRects.playerInBubbleA, spriteGroupRects.playerInBubbleB],
 					"row",
-					8
+					8,
 				),
 				spriteGroupRects.bossFacingLeft,
 				spriteGroupRects.bossFacingRight,
@@ -113,28 +113,28 @@ export function layOutSpriteGroups(): LayoutRect {
 										spriteGroupRects.bonusMelonTopRight,
 									],
 									"row",
-									0
+									0,
 								),
 								spriteGroupRects.bonusMelonBottom,
 							],
 							"column",
-							0
+							0,
 						),
 						spriteGroupRects.bonusDiamond,
 					],
 					"row",
 					4,
-					"end"
+					"end",
 				),
 				flexbox(
 					[spriteGroupRects.hexagonExplosion, spriteGroupRects.boxyExplosion],
 					"row",
-					8
+					8,
 				),
 			],
 		].map((chunk) => flexbox(chunk, "column", 3 * 8)),
 		"row",
-		3 * 4
+		3 * 4,
 	);
 }
 
@@ -142,9 +142,9 @@ export function drawSprites(spriteGroups: SpriteGroups): PaletteImage {
 	const sprites = Object.values(
 		mapRecord(spriteGroups, (spriteGroup) => {
 			return spriteGroup.sprites.map((sprite) =>
-				drawSprite(sprite, getSpritePalette(spriteGroup.color))
+				drawSprite(sprite, getSpritePalette(spriteGroup.color)),
 			);
-		})
+		}),
 	).flat();
 
 	const layout = layOutSpriteGroups();
@@ -154,12 +154,12 @@ export function drawSprites(spriteGroups: SpriteGroups): PaletteImage {
 
 export function drawSprite(
 	sprite: Sprite,
-	spritePalette: SubPalette
+	spritePalette: SubPalette,
 ): PaletteImage {
 	return sprite.map((row) =>
 		row.map((pixelValue) =>
-			pixelValue ? spritePalette[pixelValue] : undefined
-		)
+			pixelValue ? spritePalette[pixelValue] : undefined,
+		),
 	);
 }
 
@@ -186,7 +186,7 @@ export function parseSprites(image: PaletteImage): SpriteGroups {
 
 export function parseSprite(
 	image: PaletteImage,
-	tryColor: PaletteIndex
+	tryColor: PaletteIndex,
 ): {
 	readonly sprite: Sprite;
 	readonly color: PaletteIndex;
@@ -207,10 +207,10 @@ export function parseSprite(
 					}
 					return subPaletteIndex;
 				}),
-				spriteSizePixels.x
-			)
+				spriteSizePixels.x,
+			),
 		),
-		spriteSizePixels.y
+		spriteSizePixels.y,
 	);
 
 	return { sprite, color: spritePalette[2]! };

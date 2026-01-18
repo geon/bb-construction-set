@@ -5,7 +5,7 @@ const pickerSize = "2em";
 const PaletteIndexButton = styled.button.attrs<{ selected: boolean }>(
 	(props) => ({
 		className: props.selected ? "selected" : "",
-	})
+	}),
 )<{
 	readonly $paletteIndex: PaletteIndex;
 }>`
@@ -18,9 +18,13 @@ const PaletteIndexButton = styled.button.attrs<{ selected: boolean }>(
 		`rgb(${Object.values(rgbPalette[$paletteIndex]).join(", ")})`};
 
 	&.selected {
-		box-shadow: 0 0 0 2px black, 0 0 0 3px white;
+		box-shadow:
+			0 0 0 2px black,
+			0 0 0 3px white;
 		@media (prefers-color-scheme: light) {
-			box-shadow: 0 0 0 2px white, 0 0 0 3px black;
+			box-shadow:
+				0 0 0 2px white,
+				0 0 0 3px black;
 		}
 	}
 `;
@@ -46,7 +50,7 @@ export const Palette = styled(
 				})}
 			</nav>
 		);
-	}
+	},
 )`
 	display: flex;
 	gap: 8px;

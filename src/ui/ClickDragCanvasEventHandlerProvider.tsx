@@ -7,7 +7,7 @@ import { LevelIndex, Levels } from "../bb/internal-data-formats/levels";
 export type ClickDragCanvasEventHandlerProviderChildren = (
 	eventHandlers: ClickDragCanvasDragEventHandlers,
 	extraTools?: React.ReactNode,
-	levelEditorOptions?: LevelEditorOptions
+	levelEditorOptions?: LevelEditorOptions,
 ) => React.ReactNode;
 
 export type ClickDragCanvasEventHandlerProvider = (props: {

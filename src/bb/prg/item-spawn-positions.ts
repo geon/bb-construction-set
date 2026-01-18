@@ -19,7 +19,7 @@ import {
 import { Patch, patchFromSegment } from "./io";
 
 export function parseItemSpawnPositions(
-	buffers: Record<ItemSpawnPositionArrayName, ReadonlyUint8Array>
+	buffers: Record<ItemSpawnPositionArrayName, ReadonlyUint8Array>,
 ): ItemSpawnPositions {
 	return assertTuple(
 		zipObject({
@@ -70,12 +70,12 @@ export function parseItemSpawnPositions(
 				},
 			};
 		}),
-		100
+		100,
 	);
 }
 
 export function serializeItemSpawnPositions(
-	itemSpawnPositions: ItemSpawnPositions
+	itemSpawnPositions: ItemSpawnPositions,
 ): Record<ItemSpawnPositionArrayName, ReadonlyUint8Array> {
 	const arrays = unzipObject(
 		itemSpawnPositions.map((spawn) => {
@@ -93,23 +93,23 @@ export function serializeItemSpawnPositions(
 						.flat()
 						// (4+1) bytes x 5 bits = 25 bits. Slice off the excess bit.
 						.slice(0, -1),
-					8
+					8,
 				).map(bitsToByte),
-				3
+				3,
 			);
 
 			return { a, b, c };
-		})
+		}),
 	);
 
 	return mapRecord(
 		arrays,
-		(array): ReadonlyUint8Array => new Uint8Array(array)
+		(array): ReadonlyUint8Array => new Uint8Array(array),
 	);
 }
 
 export function getItemSpawnPositionsPatch(
-	itemSpawnPositions: ItemSpawnPositions
+	itemSpawnPositions: ItemSpawnPositions,
 ): Patch {
 	const newSegments = serializeItemSpawnPositions(itemSpawnPositions);
 
@@ -124,7 +124,7 @@ export function getItemSpawnPositionsPatch(
 					} as const
 				)[segmentName]
 			],
-			newSegment
-		)
+			newSegment,
+		),
 	);
 }

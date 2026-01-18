@@ -49,6 +49,6 @@ export const arrowImages = mapRecord(
 	} as const satisfies Record<BubbleCurrentDirection, unknown>,
 	(charBytes): PaletteImage =>
 		charBytes.map((byte: number) =>
-			byteToBits(byte).map((bit) => (bit ? palette.darkGrey : undefined))
-		)
+			byteToBits(byte).map((bit) => (bit ? palette.darkGrey : undefined)),
+		),
 );

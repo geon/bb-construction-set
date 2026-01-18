@@ -16,7 +16,7 @@ export type DataSegment = _DataSegment<ReadonlyUint8Array>;
 
 export function getDataSegment(
 	prg: ArrayBuffer,
-	segmentLocation: SegmentLocation
+	segmentLocation: SegmentLocation,
 ): {
 	readonly buffer: Uint8Array<ArrayBuffer>;
 	readonly mask: number | undefined;
@@ -35,14 +35,14 @@ export function getDataSegment(
 
 export function getDataSegments<TDataSegmentName extends string>(
 	prg: ArrayBuffer,
-	levelSegmentLocations: Readonly<Record<TDataSegmentName, SegmentLocation>>
+	levelSegmentLocations: Readonly<Record<TDataSegmentName, SegmentLocation>>,
 ): Record<TDataSegmentName, DataSegment> {
 	return mapRecord(levelSegmentLocations, curry(getDataSegment)(prg));
 }
 
 // https://stackoverflow.com/a/43933693/446536
 export function uint8ArrayConcatenate(
-	arrays: readonly Uint8Array[]
+	arrays: readonly Uint8Array[],
 ): Uint8Array {
 	let totalLength = 0;
 	for (const arr of arrays) {
@@ -60,7 +60,7 @@ export function uint8ArrayConcatenate(
 export function mixByte(
 	newByte: number,
 	originalByte: number,
-	mask: number
+	mask: number,
 ): number {
 	return (newByte & mask) | (originalByte & ~mask);
 }
@@ -78,7 +78,7 @@ export function applyPatch(prg: ArrayBuffer, patch: Patch): ArrayBuffer {
 		patchedPrg[index] = mixByte(
 			value,
 			checkedAccess(patchedPrg, index),
-			mask ?? 0xff
+			mask ?? 0xff,
 		);
 	}
 	return patchedPrg;
@@ -87,12 +87,12 @@ export function applyPatch(prg: ArrayBuffer, patch: Patch): ArrayBuffer {
 export function patchFromSegment(
 	segmentLocation: SegmentLocation,
 	buffer: ReadonlyUint8Array,
-	mask?: readonly boolean[]
+	mask?: readonly boolean[],
 ): Patch {
 	return [...buffer].map(
 		(value, index): SingleBytePatchEntry => [
 			segmentLocation.startAddress + index,
 			[value, mask?.[index] !== false ? segmentLocation.mask : 0x00],
-		]
+		],
 	);
 }

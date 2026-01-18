@@ -19,5 +19,5 @@ export const ButtonRow = styled.div<{
 							right: "margin-left",
 						} as const
 					)[$align]}: auto;
-			  `}
+				`}
 `;

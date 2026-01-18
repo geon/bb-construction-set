@@ -29,7 +29,7 @@ export type Player = Pick<
 export type BubbleCurrentDirection = 0 | 1 | 2 | 3;
 
 export function rotateDirectionClockwise(
-	direction: BubbleCurrentDirection
+	direction: BubbleCurrentDirection,
 ): BubbleCurrentDirection {
 	return ((direction + 1) % 4) as BubbleCurrentDirection;
 }
@@ -111,7 +111,7 @@ export function rectangleIsInvalid(rectangle: BubbleCurrentRectangle) {
 }
 
 export function clipRectanglesToLevel(
-	rectangles: readonly BubbleCurrentRectangleOrSymmetry[]
+	rectangles: readonly BubbleCurrentRectangleOrSymmetry[],
 ): BubbleCurrentRectangleOrSymmetry[] {
 	const clip = (rect: Rect) =>
 		rectIntersection(rect, { pos: origo, size: levelSize });
@@ -140,7 +140,7 @@ type BubbleCurrentDirections = MutableTuple<
 
 export function getBubbleCurrentDirections(
 	bubbleCurrentPerLineDefaults: BubbleCurrentPerLineDefaults,
-	rectangles: readonly BubbleCurrentRectangleOrSymmetry[]
+	rectangles: readonly BubbleCurrentRectangleOrSymmetry[],
 ): BubbleCurrentDirections {
 	const reflectedDirections: Record<
 		BubbleCurrentDirection,
@@ -153,7 +153,7 @@ export function getBubbleCurrentDirections(
 	};
 
 	const directions = range(levelSize.y).map(() =>
-		range(levelSize.x).map((): BubbleCurrentDirection => 0)
+		range(levelSize.x).map((): BubbleCurrentDirection => 0),
 	);
 
 	for (const [y, row] of directions.entries()) {

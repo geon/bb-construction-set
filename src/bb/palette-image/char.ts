@@ -33,29 +33,29 @@ import {
 export function drawChar(
 	char: Char,
 	charPalette: SubPalette,
-	mask?: Char
+	mask?: Char,
 ): PaletteImage<4, 8> {
 	return mapTuple(zipObject({ color: char, mask }), (row) =>
 		mapTuple(zipObject(row), (pixel) =>
-			pixel.mask === 0b11 ? undefined : charPalette[pixel.color]
-		)
+			pixel.mask === 0b11 ? undefined : charPalette[pixel.color],
+		),
 	);
 }
 
 export function drawHiresChar(
 	char: Char,
-	paletteIndex: PaletteIndex
+	paletteIndex: PaletteIndex,
 ): PaletteImage<8, 8> {
 	return mapTuple(char, (row) =>
 		mapTuple(byteToBits(serializeColorPixelByte(row)), (pixel) =>
-			pixel ? paletteIndex : 0
-		)
+			pixel ? paletteIndex : 0,
+		),
 	);
 }
 
 export function parseChar(
 	image: PaletteImage<4, 8>,
-	charPalette: SubPalette
+	charPalette: SubPalette,
 ): { readonly char: Char; readonly color: PaletteIndex | undefined } {
 	let color: PaletteIndex | undefined;
 	return {
@@ -66,13 +66,13 @@ export function parseChar(
 					getSubPaletteIndex(
 						// For transparent pixels, default to the background color.
 						paletteIndex ?? 0,
-						charPalette
+						charPalette,
 					) ??
 					// Hack: For colors outside the givien charPalette:
 					// * Set the first unknown color to return
 					// * Assume they are the char color
-					((color = color ?? paletteIndex), 3)
-			)
+					((color = color ?? paletteIndex), 3),
+			),
 		),
 		color,
 	};
@@ -87,8 +87,8 @@ export function parseHiresChar(image: PaletteImage<8, 8>): {
 		char: mapTuple(image, (row) =>
 			// Reinterpret the hires char as multicolor.
 			parseColorPixelByte(
-				bitsToByte(mapTuple(row, (paletteIndex) => paletteIndex !== 0))
-			)
+				bitsToByte(mapTuple(row, (paletteIndex) => paletteIndex !== 0)),
+			),
 		),
 		color,
 	};
@@ -98,13 +98,13 @@ export function getLevelCharPalette(bgColors: BgColors): SubPalette {
 	return getCharPalette(
 		// The color ram gets cleared to green at the beginning of the game.
 		palette.green,
-		bgColors
+		bgColors,
 	);
 }
 
 export function getCharPalette(
 	charColor: PaletteIndex,
-	bgColors: BgColors
+	bgColors: BgColors,
 ): SubPalette {
 	return [
 		// The background is black by default.
@@ -139,7 +139,7 @@ export function layOutChars(): LayoutRect {
 			],
 		].flat(),
 		4,
-		origo
+		origo,
 	);
 }
 
@@ -175,15 +175,15 @@ export function drawLevelPlatformChars(level: PlatformCharsData): PaletteImage {
 		layOutChars(),
 		[
 			[...tupleFromBlockFrom2x2CharBlock(sidebarChars), level.platformChar].map(
-				drawCharWithPalette
+				drawCharWithPalette,
 			),
 			[bgColorsCharImage, emptyCharImage],
-		].flat()
+		].flat(),
 	);
 }
 
 export function parseLevelPlatformChars(
-	image: PaletteImage
+	image: PaletteImage,
 ): PlatformCharsData {
 	const charImages = parseLayout(layOutChars(), image) as PaletteImage<4, 8>[];
 	const sidebarCharImages = assertTuple(charImages.slice(0, 4), 4);
@@ -199,14 +199,14 @@ export function parseLevelPlatformChars(
 
 	const sidebarChars = sidebarCharImages.some(
 		(sidebarCharImage) =>
-			!paletteImagesEqual(sidebarCharImage, platformCharImage)
+			!paletteImagesEqual(sidebarCharImage, platformCharImage),
 	)
 		? charBlockFromTuple(
 				mapTuple(
 					sidebarCharImages,
-					(charImage) => parseChar(charImage, charPalette).char
-				)
-		  )
+					(charImage) => parseChar(charImage, charPalette).char,
+				),
+			)
 		: undefined;
 
 	const platformChar = parseChar(platformCharImage, charPalette).char;
@@ -217,7 +217,7 @@ export function parseLevelPlatformChars(
 export function drawCharBlock(
 	charBlock: CharBlock,
 	charPalette: SubPalette,
-	mask?: CharBlock
+	mask?: CharBlock,
 ): PaletteImage {
 	// The chars are column-order just like in the game.
 	const image = createPaletteImage({
@@ -233,7 +233,7 @@ export function drawCharBlock(
 				{
 					x: charBlockX * 4,
 					y: charBlockY * 8,
-				}
+				},
 			);
 		}
 	}
@@ -251,23 +251,23 @@ function layOutAllLevelsPlatformChars() {
 			pos: origo,
 		})),
 		10,
-		gap
+		gap,
 	);
 }
 
 export function drawPlatformChars(
-	levels: Tuple<PlatformCharsData, 100>
+	levels: Tuple<PlatformCharsData, 100>,
 ): PaletteImage {
 	const layout = layOutAllLevelsPlatformChars();
 	return drawLayout(layout, levels.map(drawLevelPlatformChars));
 }
 
 export function parsePlatformChars(
-	image: PaletteImage
+	image: PaletteImage,
 ): Tuple<PlatformCharsData, 100> {
 	const layout = layOutAllLevelsPlatformChars();
 	return assertTuple(
 		parseLayout(layout, image).map(parseLevelPlatformChars),
-		100
+		100,
 	);
 }

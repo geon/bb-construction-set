@@ -43,7 +43,7 @@ export const rgbPalette: Palette = mapTuple(
 		// 	0xedf171, 0x8e5029, 0x553800, 0xc46c71, 0x4a4a4a, 0x7b7b7b, 0xa9ff9f,
 		// 	0x706deb, 0xb2b2b2,
 	],
-	hexToRgb
+	hexToRgb,
 );
 
 export const palette = {
@@ -81,7 +81,7 @@ export type SubPaletteIndex = 0 | 1 | 2 | 3;
 
 export function getSubPaletteIndex(
 	paletteIndex: PaletteIndex,
-	subPalette: SubPalette
+	subPalette: SubPalette,
 ): SubPaletteIndex | undefined {
 	const subPaletteIndex = subPalette.indexOf(paletteIndex) as
 		| SubPaletteIndex

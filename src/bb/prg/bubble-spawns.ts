@@ -19,7 +19,7 @@ export function readBubbleSpawns(buffer: ReadonlyUint8Array): BubbleSpawns {
 				extend,
 			};
 		}),
-		100
+		100,
 	);
 }
 
@@ -33,7 +33,7 @@ export function serializeBubbleSpawns(bubbleSpawns: BubbleSpawns): DataSegment {
 					spawn.water,
 					spawn.extend,
 				]);
-			})
+			}),
 		),
 		mask: levelSegmentLocations.bubbleSpawns.mask,
 	};
@@ -42,6 +42,6 @@ export function serializeBubbleSpawns(bubbleSpawns: BubbleSpawns): DataSegment {
 export function getBubbleSpawnsPatch(bubbleSpawns: BubbleSpawns): Patch {
 	return patchFromSegment(
 		levelSegmentLocations.bubbleSpawns,
-		serializeBubbleSpawns(bubbleSpawns).buffer
+		serializeBubbleSpawns(bubbleSpawns).buffer,
 	);
 }

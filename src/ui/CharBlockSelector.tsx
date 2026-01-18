@@ -27,7 +27,7 @@ export const CharBlockSelector = styled(
 							itemIndex === props.charBlockIndex ? "active" : undefined
 						}
 						imageData={imageDataFromPaletteImage(
-							doubleImageWidth(drawCharBlock(item.charBlock, item.palette))
+							doubleImageWidth(drawCharBlock(item.charBlock, item.palette)),
 						)}
 						onClick={() => props.setCharBlockIndex(itemIndex)}
 						style={{ cursor: "pointer", width: "32px" }}
@@ -35,7 +35,7 @@ export const CharBlockSelector = styled(
 				))}
 			</nav>
 		);
-	}
+	},
 )`
 	display: grid;
 	grid-template-columns: repeat(10, auto);
@@ -45,9 +45,13 @@ export const CharBlockSelector = styled(
 	justify-content: center;
 
 	> .active {
-		box-shadow: 0 0 0 2px black, 0 0 0 3px white;
+		box-shadow:
+			0 0 0 2px black,
+			0 0 0 3px white;
 		@media (prefers-color-scheme: light) {
-			box-shadow: 0 0 0 2px white, 0 0 0 3px black;
+			box-shadow:
+				0 0 0 2px white,
+				0 0 0 3px black;
 		}
 	}
 `;

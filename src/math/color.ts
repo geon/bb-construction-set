@@ -24,7 +24,7 @@ export function mixColors(colors: readonly Color[]): Color {
 			g: soFar.g + current.g,
 			b: soFar.b + current.b,
 		}),
-		black
+		black,
 	);
 	return {
 		r: sum.r / colors.length,
@@ -39,6 +39,6 @@ export function distance(a: Color, b: Color): number {
 
 export function quantize(color: Color, palette: Palette): PaletteIndex {
 	return indexOfMinBy(palette, (entry) =>
-		distance(color, entry)
+		distance(color, entry),
 	) as PaletteIndex;
 }

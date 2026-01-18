@@ -27,7 +27,7 @@ export function ClickDragCanvas(
 		| "onDragUpdate"
 		| "onDragEnd"
 	> &
-		ClickDragCanvasDragEventHandlers
+		ClickDragCanvasDragEventHandlers,
 ): React.ReactNode {
 	const { onDragStart, onDragUpdate, onDragEnd, onClick, ...rest } = props;
 
@@ -90,7 +90,7 @@ export function ClickDragCanvas(
 
 function getEventCoord(
 	event: React.MouseEvent<HTMLCanvasElement, MouseEvent>,
-	imageSize: Coord2
+	imageSize: Coord2,
 ) {
 	const eventCoordOnPage: Coord2 = { x: event.clientX, y: event.clientY };
 	const elementLocation: Coord2 = event.currentTarget.getBoundingClientRect();

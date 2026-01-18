@@ -39,7 +39,7 @@ export function getBudgets(levels: Levels): Budgets {
 				getUsedWindCurrentBytes,
 			],
 			max: [maxAsymmetric, maxSidebars, maxMonsters, maxWindCurrentBytes],
-		}).map(({ key, getUsed, max }) => [key, { used: getUsed(levels), max }])
+		}).map(({ key, getUsed, max }) => [key, { used: getUsed(levels), max }]),
 	);
 }
 
@@ -59,11 +59,11 @@ function getUsedWindCurrentBytes(levels: Levels): number {
 			level.bubbleCurrentRectangles.type === "copy"
 				? 1
 				: 1 +
-				  sum(
+					sum(
 						level.bubbleCurrentRectangles.rectangles.map(({ type }) =>
-							type === "symmetry" ? 1 : 3
-						)
-				  )
-		)
+							type === "symmetry" ? 1 : 3,
+						),
+					),
+		),
 	);
 }

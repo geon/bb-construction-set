@@ -15,7 +15,7 @@ export const SpawnBubbles: ClickDragCanvasEventHandlerProvider = (props: {
 	children: (
 		eventHandlers: ClickDragCanvasDragEventHandlers,
 		extraTools?: React.ReactNode,
-		levelEditorOptions?: LevelEditorOptions
+		levelEditorOptions?: LevelEditorOptions,
 	) => React.ReactNode;
 }) =>
 	props.children(
@@ -41,8 +41,8 @@ export const SpawnBubbles: ClickDragCanvasEventHandlerProvider = (props: {
 								lightning: true,
 								fire: true,
 								water: true,
-						  }
+							}
 				}
 			/>
-		</ButtonRow>
+		</ButtonRow>,
 	);

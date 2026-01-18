@@ -13,12 +13,12 @@ import { MutableTuple, Tuple } from "../tuple";
 /** Double width pixels. */
 export type PaletteImage<
 	Width extends number = number,
-	Height extends number = number
+	Height extends number = number,
 > = MutableTuple<MutableTuple<PaletteIndex | undefined, Width>, Height>;
 
 export function createPaletteImage<
 	Height extends number = number,
-	Width extends number = number
+	Width extends number = number,
 >(size: { x: Width; y: Height }): PaletteImage {
 	return range(size.y).map(() => range(size.x).map(() => undefined));
 }
@@ -30,7 +30,7 @@ export function getPaletteImageSize(image: PaletteImage): Coord2 {
 export function blitPaletteImage(
 	to: PaletteImage,
 	from: PaletteImage,
-	pos: Coord2
+	pos: Coord2,
 ) {
 	// All rects in to-space coordinates.
 	const toRect = {
@@ -59,7 +59,7 @@ export function blitPaletteImage(
 export function blitUnclippedPaletteImage(
 	to: PaletteImage,
 	from: PaletteImage,
-	pos: Coord2
+	pos: Coord2,
 ) {
 	for (const row of zipObject({
 		to: to.slice(pos.y, pos.y + from.length),
@@ -75,7 +75,7 @@ export function blitUnclippedPaletteImage(
 
 export function cropPaletteImage(
 	image: PaletteImage,
-	rect: Rect
+	rect: Rect,
 ): PaletteImage {
 	const br = bottomRight(rect);
 
@@ -98,7 +98,7 @@ export function drawGrid(
 	images: readonly PaletteImage[],
 	numColumns: number,
 	size: Coord2,
-	gap: Coord2 = origo
+	gap: Coord2 = origo,
 ): PaletteImage {
 	const numRows = Math.ceil(images.length / numColumns);
 
@@ -128,7 +128,7 @@ export function drawGrid(
 
 export function drawLayout(
 	layout: LayoutRect,
-	images: ReadonlyArray<PaletteImage>
+	images: ReadonlyArray<PaletteImage>,
 ): PaletteImage {
 	return leafs(layout).reduce((soFar, current) => {
 		blitPaletteImage(soFar, checkedAccess(images, current.index), current.pos);
@@ -138,7 +138,7 @@ export function drawLayout(
 
 export function mapLayout(
 	layout: LayoutRect,
-	transform: (rect: Rect) => Rect
+	transform: (rect: Rect) => Rect,
 ): LayoutRect {
 	const newRect = transform(layout);
 	if (!("children" in layout)) {
@@ -156,7 +156,7 @@ export function mapLayout(
 
 export function parseLayout(
 	layout: LayoutRect,
-	image: PaletteImage
+	image: PaletteImage,
 ): ReadonlyArray<PaletteImage> {
 	return leafs(layout).map((rect) => cropPaletteImage(image, rect));
 }
@@ -179,7 +179,7 @@ export function paletteImagesEqual(a: PaletteImage, b: PaletteImage): boolean {
 export function drawRect(
 	image: PaletteImage,
 	rect: Rect,
-	colors: Tuple<PaletteIndex, 2>
+	colors: Tuple<PaletteIndex, 2>,
 ): void {
 	for (const index of range(rect.size.x)) {
 		const x = rect.pos.x + index;

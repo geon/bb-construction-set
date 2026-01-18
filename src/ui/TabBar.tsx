@@ -20,7 +20,7 @@ const TabBarItemStyle = styled(
 			{...props}
 			className={props.className + " " + (active ? "active" : "")}
 		/>
-	)
+	),
 )<TabBarItemStyleProps>``;
 
 export const TabBarStyle = styled.div`
@@ -60,7 +60,7 @@ type Tab<TId extends string> = {
 	readonly title: string | ReactNode;
 	readonly render: (
 		tab: Tab<TId>,
-		id: TId
+		id: TId,
 	) => ReactNode | ReadonlyArray<ReactNode>;
 };
 

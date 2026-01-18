@@ -10,7 +10,7 @@ type RadioButtonListProps<T extends string> = {
 };
 
 export const RadioButtonList: <T extends string>(
-	props: RadioButtonListProps<T>
+	props: RadioButtonListProps<T>,
 ) => ReactNode = (props) => {
 	return (
 		<>

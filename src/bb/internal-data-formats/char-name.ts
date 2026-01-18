@@ -8,11 +8,11 @@ import { Level } from "./level";
 import { getTiles } from "./tiles";
 
 export function levelToCharNames(
-	level: Level
+	level: Level,
 ): Tuple<Tuple<CharName, typeof levelSize.x>, typeof levelSize.y> {
 	// Create canvas.
 	const chars: CharName[][] = range(levelSize.y).map(() =>
-		range(levelSize.x).map(() => "empty")
+		range(levelSize.x).map(() => "empty"),
 	);
 
 	// Draw the platforms.
@@ -84,7 +84,7 @@ export function levelToCharNames(
 
 	return assertTuple(
 		chars.map((x) => assertTuple(x, levelSize.x)),
-		levelSize.y
+		levelSize.y,
 	);
 }
 
@@ -112,7 +112,7 @@ export const solidChar: Char = [
 
 export function makeCharset(
 	level: Level,
-	shadowChars: ShadowChars
+	shadowChars: ShadowChars,
 ): Readonly<Record<CharName, Char>> {
 	return {
 		empty: emptyChar,

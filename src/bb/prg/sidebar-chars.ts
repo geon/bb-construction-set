@@ -12,14 +12,14 @@ import {
 
 export function readSidebarChars(
 	sidebarCharsBytes: ReadonlyUint8Array,
-	sidebarCharsIndexBytes: ReadonlyUint8Array
+	sidebarCharsIndexBytes: ReadonlyUint8Array,
 ): Tuple<CharBlock | undefined, 100> {
 	const linesPerChar = 8;
 	const allSidebarCharBlocks = strictChunk(
 		strictChunk([...sidebarCharsBytes], linesPerChar).map(
-			(char): Char => mapTuple(char, parseColorPixelByte)
+			(char): Char => mapTuple(char, parseColorPixelByte),
 		),
-		4
+		4,
 	).map(charBlockFromTuple);
 
 	const mask = levelSegmentLocations.sidebarCharsIndex.mask;
@@ -34,19 +34,19 @@ export function readSidebarChars(
 				? allSidebarCharBlocks[sidebarCharsIndex]
 				: undefined;
 		}),
-		100
+		100,
 	);
 
 	return sidebarChars;
 }
 
 export function writeSidebarChars(
-	sidebarCharses: Tuple<CharBlock | undefined, 100>
+	sidebarCharses: Tuple<CharBlock | undefined, 100>,
 ): Uint8Array {
 	const sidebarLevels = sidebarCharses.filter(isDefined);
 	if (sidebarLevels.length > maxSidebars) {
 		throw new Error(
-			`Too many levels with sidebar graphics: ${sidebarLevels.length}. Should be max ${maxSidebars}.`
+			`Too many levels with sidebar graphics: ${sidebarLevels.length}. Should be max ${maxSidebars}.`,
 		);
 	}
 
@@ -61,25 +61,25 @@ export function writeSidebarChars(
 								(line[0] << 6) +
 								(line[1] << 4) +
 								(line[2] << 2) +
-								(line[3] << 0)
-						)
-					)
+								(line[3] << 0),
+						),
+					),
 				),
 			maxSidebars * 4 * 8,
-			0
-		)
+			0,
+		),
 	);
 }
 
 export function writeSidebarCharsIndex(
-	sidebarCharses: readonly (CharBlock | undefined)[]
+	sidebarCharses: readonly (CharBlock | undefined)[],
 ): Uint8Array {
 	// TODO: Rewrite to find duplicates and reuse blocks.
 
 	let index = 0;
 	const sidebarCharsBits = sidebarCharses.map((sidebarChars) =>
 		// Just use consecutive indices, just like the original levels.
-		!sidebarChars ? 0b01111111 : index++
+		!sidebarChars ? 0b01111111 : index++,
 	);
 
 	return new Uint8Array(sidebarCharsBits);

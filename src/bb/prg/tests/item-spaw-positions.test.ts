@@ -9,7 +9,7 @@ import { assertTuple } from "../../tuple";
 
 test("parseItemSpawnPositions / serializeItemSpawnPositions", () => {
 	const prgFileContent = readFileSync(
-		__dirname + "/decompressed-bb.prg"
+		__dirname + "/decompressed-bb.prg",
 	).buffer;
 	const parsedPrg = parsePrg(prgFileContent);
 
@@ -17,12 +17,12 @@ test("parseItemSpawnPositions / serializeItemSpawnPositions", () => {
 		serializeItemSpawnPositions(
 			assertTuple(
 				parsedPrg.levels.map((level) => level.itemSpawnPositions),
-				100
-			)
-		)
+				100,
+			),
+		),
 	);
 
 	expect(backAndForth).toStrictEqual(
-		parsedPrg.levels.map((level) => level.itemSpawnPositions)
+		parsedPrg.levels.map((level) => level.itemSpawnPositions),
 	);
 });

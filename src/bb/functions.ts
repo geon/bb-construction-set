@@ -4,7 +4,7 @@ import { NOfTuple, Tuple, MutableTuple, TOfTuple } from "./tuple";
 export function padRight<T>(
 	array: readonly T[],
 	length: number,
-	padding: T
+	padding: T,
 ): T[] {
 	const result = array.slice();
 	while (result.length < length) {
@@ -25,13 +25,13 @@ export function chunk<T>(array: readonly T[], chunkLength: number): T[][] {
 
 export function strictChunk<T, TChunkLength extends number>(
 	array: readonly T[],
-	chunkLength: TChunkLength
+	chunkLength: TChunkLength,
 ): MutableTuple<T, TChunkLength>[] {
 	if (array.length % chunkLength !== 0) {
 		throw new Error(
 			"Strict chunked array.length must be a multiple of chunkLength." +
 				" " +
-				`array.length: ${array.length}, chunkLength: ${chunkLength}`
+				`array.length: ${array.length}, chunkLength: ${chunkLength}`,
 		);
 	}
 	return chunk(array, chunkLength) as MutableTuple<T, TChunkLength>[];
@@ -42,7 +42,7 @@ export function sum(array: readonly number[]): number {
 }
 
 type ZipObjectReturnElement<
-	TInput extends Record<string, ReadonlyArray<unknown> | undefined>
+	TInput extends Record<string, ReadonlyArray<unknown> | undefined>,
 > = {
 	[Key in keyof TInput]:
 		| Exclude<TInput[Key], undefined>[number]
@@ -50,9 +50,9 @@ type ZipObjectReturnElement<
 };
 
 export function zipObject<
-	TInput extends Record<string, Tuple<unknown, number> | undefined>
+	TInput extends Record<string, Tuple<unknown, number> | undefined>,
 >(
-	arrays: TInput
+	arrays: TInput,
 ): MutableTuple<
 	ZipObjectReturnElement<TInput>,
 	NOfTuple<Exclude<TInput[keyof TInput], undefined>>
@@ -71,7 +71,7 @@ export function zipObject<
 			"Can't zip different length arrays. " +
 				arraysEntries
 					.map(([name, array]) => `${name}: ${array.length}`)
-					.join(", ")
+					.join(", "),
 		);
 	}
 
@@ -79,15 +79,15 @@ export function zipObject<
 	for (let index = 0; index < length; ++index) {
 		results.push(
 			Object.fromEntries(
-				arraysEntries.map(([name, array]) => [name, array[index]] as const)
-			) as ZipObjectReturnElement<TInput>
+				arraysEntries.map(([name, array]) => [name, array[index]] as const),
+			) as ZipObjectReturnElement<TInput>,
 		);
 	}
 	return results as ReturnType<typeof zipObject<TInput>>;
 }
 
 export function unzipObject<TTuple extends Tuple<object, number>>(
-	array: TTuple
+	array: TTuple,
 ): {
 	readonly [TKey in keyof TOfTuple<TTuple>]: Tuple<
 		TOfTuple<TTuple>[TKey],
@@ -110,19 +110,19 @@ export function unzipObject<TTuple extends Tuple<object, number>>(
 
 export function mapRecord<TKey extends string, TIn, TOut>(
 	record: Readonly<Record<TKey, TIn>>,
-	transform: (value: TIn, key: TKey) => TOut
+	transform: (value: TIn, key: TKey) => TOut,
 ): Record<TKey, TOut> {
 	return Object.fromEntries(
 		Object.entries(record).map(([key, value]) => [
 			key,
 			transform(value as TIn, key as TKey),
-		])
+		]),
 	) as Readonly<Record<TKey, TOut>>;
 }
 
 export function mapPartialRecord<TKey extends string, TIn, TOut>(
 	record: Partial<Readonly<Record<TKey, TIn>>>,
-	transform: (value: TIn, key: TKey) => TOut
+	transform: (value: TIn, key: TKey) => TOut,
 ): Readonly<Partial<Record<TKey, TOut>>> {
 	return mapRecord(record as Record<TKey, TIn>, transform);
 }
@@ -133,7 +133,7 @@ export function isDefined<T>(x: T | undefined): x is T {
 
 export function range<N extends number>(
 	length: N,
-	from: number = 0
+	from: number = 0,
 ): Tuple<number, N> {
 	return Array(length)
 		.fill(undefined)
@@ -142,13 +142,13 @@ export function range<N extends number>(
 
 // https://stackoverflow.com/questions/69019873/how-can-i-get-typed-object-entries-and-object-fromentries-in-typescript
 export function objectFromEntries<
-	const T extends ReadonlyArray<readonly [PropertyKey, unknown]>
+	const T extends ReadonlyArray<readonly [PropertyKey, unknown]>,
 >(entries: T): { [K in T[number] as K[0]]: K[1] } {
 	return Object.fromEntries(entries) as { [K in T[number] as K[0]]: K[1] };
 }
 
 export function objectEntries<T extends Record<PropertyKey, unknown>>(
-	obj: T
+	obj: T,
 ): { [K in keyof T]: [K, T[K]] }[keyof T][] {
 	return Object.entries(obj) as { [K in keyof T]: [K, T[K]] }[keyof T][];
 }
@@ -186,7 +186,7 @@ type Curried<TFn extends (...args: readonly unknown[]) => unknown> =
 
 // `args` must be `any` to allow the function to be used.
 export function curry<TFn extends (...args: readonly any[]) => unknown>(
-	fn: TFn
+	fn: TFn,
 ): Curried<TFn> {
 	return ((firstArg) =>
 		(...restArgs) =>
@@ -201,7 +201,7 @@ export type Grouped<Key extends string | number | symbol, Value> = Partial<
 export function groupBy<Key extends string | number, Item, Value>(
 	items: ReadonlyArray<Item>,
 	keySelector: (item: Item) => Key,
-	valueSelector: (item: Item) => Value = (x) => x as unknown as Value
+	valueSelector: (item: Item) => Value = (x) => x as unknown as Value,
 ): Grouped<Key, Value> {
 	const grouped: Partial<Record<Key, MutableOneOrMore<Value>>> = {};
 	for (const item of items) {
@@ -219,7 +219,7 @@ export function groupBy<Key extends string | number, Item, Value>(
 
 export async function mapAsync<TIn, TOut>(
 	array: ReadonlyArray<TIn>,
-	transform: (value: TIn, index: number) => Promise<TOut>
+	transform: (value: TIn, index: number) => Promise<TOut>,
 ): Promise<ReadonlyArray<TOut>> {
 	const result: Array<TOut> = [];
 	for (const [index, element] of array.entries()) {
@@ -230,7 +230,7 @@ export async function mapAsync<TIn, TOut>(
 
 export function indexOfMinBy<T>(
 	array: OneOrMore<T>,
-	accessor: (value: T) => number
+	accessor: (value: T) => number,
 ): number {
 	let min = Number.POSITIVE_INFINITY;
 	let minIndex = 0;
@@ -247,14 +247,14 @@ export function indexOfMinBy<T>(
 
 export function minBy<T>(
 	array: OneOrMore<T>,
-	accessor: (value: T) => number
+	accessor: (value: T) => number,
 ): T {
 	return array[indexOfMinBy(array, accessor) ?? 0]!;
 }
 
 export function checkedAccess<Indexable, Key extends keyof Indexable>(
 	record: Indexable,
-	key: Key
+	key: Key,
 	// https://www.reddit.com/r/typescript/comments/18ya5sv/type_narrowing_and_t_null/
 ): Exclude<Indexable[Key], undefined> {
 	const value = record[key];
@@ -269,11 +269,11 @@ export function checkedAccess<Indexable, Key extends keyof Indexable>(
 export function updateArrayAtIndex<T>(
 	array: ReadonlyArray<T>,
 	index: number,
-	updater: (oldElement: T) => T
+	updater: (oldElement: T) => T,
 ): Array<T> {
 	if (index >= array.length) {
 		throw new Error(
-			`Index out of bounds. index: ${index}, array.length: ${array.length}`
+			`Index out of bounds. index: ${index}, array.length: ${array.length}`,
 		);
 	}
 
@@ -284,11 +284,11 @@ export function updateArrayAtIndex<T>(
 
 export function deleteArrayElementAtIndex<T>(
 	array: ReadonlyArray<T>,
-	index: number
+	index: number,
 ): Array<T> {
 	if (index >= array.length) {
 		throw new Error(
-			`Index out of bounds. index: ${index}, array.length: ${array.length}`
+			`Index out of bounds. index: ${index}, array.length: ${array.length}`,
 		);
 	}
 
@@ -299,7 +299,7 @@ export function deleteArrayElementAtIndex<T>(
 
 export function uniqueBy<T>(
 	array: readonly T[],
-	keySelector: (element: T) => string | number
+	keySelector: (element: T) => string | number,
 ): T[] {
 	const seen = new Set();
 	return array.filter((element) => {
@@ -313,7 +313,7 @@ export function uniqueBy<T>(
 export function stringPadLeft(
 	string: string,
 	length: number,
-	padding: string
+	padding: string,
 ): string {
 	while (string.length < length) {
 		string = padding + string;
@@ -356,11 +356,11 @@ export function bresenham(begin: Coord2, end: Coord2) {
 export function reorder<T>(
 	list: readonly T[],
 	startIndex: number,
-	endIndex: number
+	endIndex: number,
 ): T[] {
 	if (list.length < startIndex || list.length < endIndex) {
 		throw new Error(
-			`Index out of bounds. length: ${list.length}, startIndex: ${startIndex}, endIndex: ${endIndex}`
+			`Index out of bounds. length: ${list.length}, startIndex: ${startIndex}, endIndex: ${endIndex}`,
 		);
 	}
 	const result = [...list];

@@ -59,13 +59,13 @@ const hardcodedPlayerColor = spriteColors.player;
 export function parseSpriteGroupsFromPrg(
 	spriteSegments: Record<SpriteGroupName, DataSegment>,
 	monsterColorSegment: DataSegment,
-	largeBonusColorSegment: DataSegment
+	largeBonusColorSegment: DataSegment,
 ): SpriteGroups {
 	const characterSpriteColors = parseCharacterSpriteColorsFromBuffer(
-		monsterColorSegment.buffer
+		monsterColorSegment.buffer,
 	);
 	const largeBonusColors = parseLargeBonusSpriteColorsFromBuffer(
-		largeBonusColorSegment.buffer
+		largeBonusColorSegment.buffer,
 	);
 
 	return mapRecord(
@@ -75,21 +75,21 @@ export function parseSpriteGroupsFromPrg(
 			return {
 				sprites: parseSprites(
 					[...segment].map((byte, byteIndex) =>
-						mask?.[byteIndex % mask?.length] !== false ? byte : 0
-					)
+						mask?.[byteIndex % mask?.length] !== false ? byte : 0,
+					),
 				),
 				color: getSpriteGroupColor(
 					groupName,
 					characterSpriteColors,
-					largeBonusColors
+					largeBonusColors,
 				),
 			};
-		}
+		},
 	);
 }
 
 function parseCharacterSpriteColorsFromBuffer(
-	monsterColorSegment: ReadonlyUint8Array
+	monsterColorSegment: ReadonlyUint8Array,
 ): Record<CharacterName, PaletteIndex> {
 	const characterColors = [
 		hardcodedPlayerColor,
@@ -100,14 +100,14 @@ function parseCharacterSpriteColorsFromBuffer(
 		characterNames.map((name, characterIndex) => [
 			name,
 			characterColors[characterIndex]!,
-		])
+		]),
 	);
 
 	return characterSpriteColors;
 }
 
 function parseLargeBonusSpriteColorsFromBuffer(
-	largeBonusColorSegment: ReadonlyUint8Array
+	largeBonusColorSegment: ReadonlyUint8Array,
 ): Record<LargeBonusName, PaletteIndex> {
 	return objectFromEntries(
 		objectEntries(largeBonusSpriteGroupNames)
@@ -115,30 +115,30 @@ function parseLargeBonusSpriteColorsFromBuffer(
 			.map((name, index) => [
 				name,
 				largeBonusColorSegment[index]! as PaletteIndex,
-			])
+			]),
 	);
 }
 
 export function parseSprite(spriteBytes: ReadonlyArray<number>): Sprite {
 	return assertTuple(
 		strictChunk(spriteBytes, spriteWidthBytes).map((byteRow) =>
-			assertTuple(byteRow.flatMap(parseColorPixelByte), spriteSizePixels.x)
+			assertTuple(byteRow.flatMap(parseColorPixelByte), spriteSizePixels.x),
 		),
-		spriteSizePixels.y
+		spriteSizePixels.y,
 	);
 }
 
 export function serializeSprite(sprite: Sprite): ReadonlyArray<number> {
 	return assertTuple(
 		sprite.flatMap((row) =>
-			mapTuple(strictChunk(row, 4), serializeColorPixelByte)
+			mapTuple(strictChunk(row, 4), serializeColorPixelByte),
 		),
-		spriteSizeBytes
+		spriteSizeBytes,
 	);
 }
 
 export function parseSprites(
-	segment: ReadonlyArray<number>
+	segment: ReadonlyArray<number>,
 ): ReadonlyArray<Sprite> {
 	return strictChunk(segment, 64)
 		.map((withPadding) => withPadding.slice(0, -1))
@@ -148,7 +148,7 @@ export function parseSprites(
 export function getSpriteGroupColor(
 	groupName: SpriteGroupName,
 	characterSpriteColors: Partial<Record<SpriteGroupName, PaletteIndex>>,
-	largeBonusSpriteColors: Record<LargeBonusName, PaletteIndex>
+	largeBonusSpriteColors: Record<LargeBonusName, PaletteIndex>,
 ) {
 	return (
 		characterSpriteColors[groupName] ??
@@ -177,7 +177,7 @@ export function getSpritesPatch(spriteGroups: SpriteGroups) {
 			return patchFromSegment(
 				individualSpriteSegmentLocation,
 				new Uint8Array(spriteBytes),
-				mask
+				mask,
 			);
 		});
 	});
@@ -188,25 +188,25 @@ export function getSpriteColorsPatch(spriteGroups: SpriteGroups) {
 		characterNames
 			// The player color is not included in the segment.
 			.slice(1)
-			.map((name) => spriteGroups[name].color)
+			.map((name) => spriteGroups[name].color),
 	);
 
 	const largeBonusColors = mapRecord(
 		largeBonusSpriteGroupNames,
-		(name) => spriteGroups[name].color
+		(name) => spriteGroups[name].color,
 	);
 	// Hardcoded because I don't have 3 diamonds in the sprite sheet.
 	largeBonusColors.yellowDiamond = palette.yellow;
 	largeBonusColors.purpleDiamond = palette.purple;
 	const largeBonusColorsSegment = new Uint8Array(
-		Object.values(largeBonusColors)
+		Object.values(largeBonusColors),
 	);
 
 	const spriteColorsPatch = [
 		patchFromSegment(monsterSpriteColorsSegmentLocation, spriteColorsSegment),
 		patchFromSegment(
 			largeBonusSpriteColorsSegmentLocation,
-			largeBonusColorsSegment
+			largeBonusColorsSegment,
 		),
 	].flat();
 	return spriteColorsPatch;

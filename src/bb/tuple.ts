@@ -16,15 +16,15 @@ export type Tuple<T, N extends number> = N extends N
 type _ReadonlyTupleOf<
 	T,
 	N extends number,
-	R extends readonly unknown[]
+	R extends readonly unknown[],
 > = R["length"] extends N ? R : _ReadonlyTupleOf<T, N, readonly [T, ...R]>;
 
 export function assertTuple<
 	TTuple extends ReadonlyArray<unknown>,
-	N extends number
+	N extends number,
 >(
 	array: TTuple,
-	n: N
+	n: N,
 ): TTuple extends Array<unknown>
 	? MutableTuple<TOfTuple<TTuple>, N>
 	: Tuple<TOfTuple<TTuple>, N> {
@@ -36,18 +36,17 @@ export function assertTuple<
 		: Tuple<TOfTuple<TTuple>, N>;
 }
 
-export type TOfTuple<TTuple> = TTuple extends Tuple<infer T, number>
-	? T
-	: never;
+export type TOfTuple<TTuple> =
+	TTuple extends Tuple<infer T, number> ? T : never;
 export type NOfTuple<TTuple extends ReadonlyArray<unknown>> = TTuple["length"];
 
 // Just a typed wrapper.
 export function mapTuple<const TTuple extends Tuple<unknown, number>, TOut>(
 	tuple: TTuple,
-	fn: (value: TOfTuple<TTuple>) => TOut
+	fn: (value: TOfTuple<TTuple>) => TOut,
 ): MutableTuple<TOut, NOfTuple<typeof tuple>> {
 	return assertTuple(
 		(tuple as ReadonlyArray<TOfTuple<TTuple>>).map(fn),
-		tuple.length as NOfTuple<typeof tuple>
+		tuple.length as NOfTuple<typeof tuple>,
 	);
 }

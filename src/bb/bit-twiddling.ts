@@ -14,7 +14,7 @@ export function bitsToByte(bits: ReadonlyArray<boolean>): number {
 		bits
 			.slice()
 			.reverse()
-			.map((set, index) => (set ? 2 ** index : 0))
+			.map((set, index) => (set ? 2 ** index : 0)),
 	);
 }
 
@@ -23,6 +23,6 @@ export function mirrorBits(byte: number): number {
 		byteToBits(byte)
 			.slice()
 			.reverse()
-			.map((bit, index) => (bit ? 1 : 0) << (7 - index))
+			.map((bit, index) => (bit ? 1 : 0) << (7 - index)),
 	);
 }

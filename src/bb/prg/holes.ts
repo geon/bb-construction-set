@@ -17,7 +17,7 @@ export function parseHoles(holeMetadata: number): Holes {
 }
 
 export function readHoles(
-	holeMetadataBytes: ReadonlyUint8Array
+	holeMetadataBytes: ReadonlyUint8Array,
 ): Tuple<Holes, 100> {
 	return mapTuple(assertTuple([...holeMetadataBytes], 100), parseHoles);
 }

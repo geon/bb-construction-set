@@ -45,7 +45,7 @@ export function Purge(props: {
 }): ReactNode {
 	const [selectedDataCategories, setSelectedDataCategories] =
 		useState<DataCategorySelection>(
-			mapRecord(dataCategoryLabels, (_) => false)
+			mapRecord(dataCategoryLabels, (_) => false),
 		);
 
 	return (
@@ -79,15 +79,15 @@ export function Purge(props: {
 														? purgedLevelProperty
 														: props.state.parsedPrg.levels[levelIndex]![
 																levelPropertyName
-														  ]
-											)
+															],
+											),
 										);
 									}
 
 									return selectedDataCategories[propertyName]
 										? purgedProperty
 										: props.state.parsedPrg[propertyName];
-								}
+								},
 							) as ParsedPrg,
 						});
 					}}

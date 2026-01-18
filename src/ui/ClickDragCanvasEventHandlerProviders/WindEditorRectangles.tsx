@@ -43,11 +43,11 @@ export const WindEditorRectangles = (props: {
 		levelEditorOptions: Omit<
 			Extract<LevelEditorOptions, { type: "wind-editor" }>,
 			"dust"
-		>
+		>,
 	) => React.ReactNode;
 }) => {
 	const [selectedIndex, setSelectedIndex] = useState<number | undefined>(
-		undefined
+		undefined,
 	);
 	useEffect(() => {
 		setSelectedIndex(undefined);
@@ -62,7 +62,7 @@ export const WindEditorRectangles = (props: {
 	};
 
 	let [draggedRect, setDraggedRect] = useState<DraggedRect | undefined>(
-		undefined
+		undefined,
 	);
 
 	function updateDraggedRect(rect: Rect, lastCoord: Coord2): void {
@@ -77,7 +77,7 @@ export const WindEditorRectangles = (props: {
 				...x,
 				rect,
 				lastCoord,
-			}))
+			})),
 		);
 	}
 
@@ -109,14 +109,14 @@ export const WindEditorRectangles = (props: {
 						flooredCoord.x === foundRect.rect.pos.x
 							? "left"
 							: flooredCoord.x === bottomRight(foundRect.rect).x - 1
-							? "right"
-							: "center",
+								? "right"
+								: "center",
 					grabY:
 						flooredCoord.y === foundRect.rect.pos.y
 							? "top"
 							: flooredCoord.y === bottomRight(foundRect.rect).y - 1
-							? "bottom"
-							: "center",
+								? "bottom"
+								: "center",
 					rect: foundRect.rect,
 					lastCoord: scaledEventCoord,
 				});
@@ -136,7 +136,7 @@ export const WindEditorRectangles = (props: {
 
 				const scaledEventCoord = scale(eventCoord, 1 / 8);
 				const sinceLast = floor(
-					subtract(scaledEventCoord, draggedRect.lastCoord)
+					subtract(scaledEventCoord, draggedRect.lastCoord),
 				);
 				const resizedRect: Rect = {
 					pos: floor(
@@ -153,7 +153,7 @@ export const WindEditorRectangles = (props: {
 									draggedRect.grabX === "center")
 									? sinceLast.y
 									: 0,
-						})
+						}),
 					),
 					size: floor(
 						add(draggedRect.rect.size, {
@@ -161,21 +161,21 @@ export const WindEditorRectangles = (props: {
 								draggedRect.grabX === "right"
 									? sinceLast.x
 									: draggedRect.grabX === "left"
-									? -sinceLast.x
-									: 0,
+										? -sinceLast.x
+										: 0,
 							y:
 								draggedRect.grabY === "bottom"
 									? sinceLast.y
 									: draggedRect.grabY === "top"
-									? -sinceLast.y
-									: 0,
-						})
+										? -sinceLast.y
+										: 0,
+						}),
 					),
 				};
 				const newRect: Rect = {
 					pos: mapRecord(
 						resizedRect.pos,
-						(value, axis) => value + Math.min(resizedRect.size[axis], 0)
+						(value, axis) => value + Math.min(resizedRect.size[axis], 0),
 					),
 					size: mapRecord(resizedRect.size, (value) => Math.abs(value)),
 				};
@@ -206,7 +206,7 @@ export const WindEditorRectangles = (props: {
 						updateArrayAtIndex(props.rectangles, selectedIndex!, () => ({
 							...selectedRect,
 							direction: rotateDirectionClockwise(selectedRect.direction),
-						}))
+						})),
 					);
 				}}
 			>
@@ -236,11 +236,11 @@ export const WindEditorRectangles = (props: {
 								? {
 										pos: add(selectedRect.rect.pos, { x: 5, y: 5 }),
 										size: selectedRect.rect.size,
-								  }
+									}
 								: {
 										pos: { x: 5, y: 5 },
 										size: { x: 5, y: 5 },
-								  },
+									},
 						},
 					]);
 					setSelectedIndex(props.rectangles.length);
@@ -255,7 +255,7 @@ export const WindEditorRectangles = (props: {
 						return;
 					}
 					props.setRectangles(
-						deleteArrayElementAtIndex(props.rectangles, selectedIndex)
+						deleteArrayElementAtIndex(props.rectangles, selectedIndex),
 					);
 					setSelectedIndex(undefined);
 				}}
@@ -272,7 +272,7 @@ export const WindEditorRectangles = (props: {
 		{
 			type: "wind-editor",
 			selectedRectangleIndex: selectedIndex,
-		}
+		},
 	);
 };
 
@@ -295,7 +295,7 @@ const RectsListElementStyle = styled.li<{
 			? ""
 			: css`
 					color: red;
-			  `}
+				`}
 
 	${({ $direction }) =>
 		$direction === undefined
@@ -304,7 +304,7 @@ const RectsListElementStyle = styled.li<{
 					svg {
 						transform: rotate(${$direction * 90}deg);
 					}
-			  `}
+				`}
 
 	${({ $active }) =>
 		!$active
@@ -314,7 +314,7 @@ const RectsListElementStyle = styled.li<{
 					svg {
 						color: ${colors.active};
 					}
-			  `}
+				`}
 `;
 
 const RectsListStyle = styled.ul`
@@ -326,7 +326,7 @@ const RectsListStyle = styled.ul`
 function RectsList(props: {
 	readonly rectangles: readonly BubbleCurrentRectangleOrSymmetry[];
 	readonly setRectangles: (
-		rectangles: readonly BubbleCurrentRectangleOrSymmetry[]
+		rectangles: readonly BubbleCurrentRectangleOrSymmetry[],
 	) => void;
 	readonly selectedIndex: number | undefined;
 	readonly setSelectedIndex: (index: number | undefined) => void;
@@ -343,8 +343,8 @@ function RectsList(props: {
 					reorder(
 						props.rectangles,
 						result.source.index,
-						result.destination.index
-					)
+						result.destination.index,
+					),
 				);
 			}}
 		>
@@ -389,8 +389,8 @@ function RectsList(props: {
 															updateArrayAtIndex(
 																props.rectangles,
 																index,
-																(rectangle) => ({ ...rectangle, rect })
-															)
+																(rectangle) => ({ ...rectangle, rect }),
+															),
 														)
 													}
 												/>

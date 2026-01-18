@@ -36,7 +36,7 @@ export const PlatformGraphics: ClickDragCanvasEventHandlerProvider = (props: {
 	children: (
 		eventHandlers: ClickDragCanvasDragEventHandlers,
 		extraTools?: React.ReactNode,
-		levelEditorOptions?: LevelEditorOptions
+		levelEditorOptions?: LevelEditorOptions,
 	) => React.ReactNode;
 }) => {
 	const level = props.levels[props.levelIndex];
@@ -65,7 +65,7 @@ export const PlatformGraphics: ClickDragCanvasEventHandlerProvider = (props: {
 				</ButtonRow>
 			))}
 			<PlatformGraphicsEditor level={level} setLevel={props.setLevel} />
-		</Flex>
+		</Flex>,
 	);
 };
 
@@ -184,7 +184,7 @@ function CharBlockEditor(props: {
 		<ClickDragCanvas
 			style={{ width: editorSize }}
 			imageData={imageDataFromPaletteImage(
-				doubleImageWidth(drawCharBlock(props.charBlock, props.palette))
+				doubleImageWidth(drawCharBlock(props.charBlock, props.palette)),
 			)}
 			{...useDraw(
 				() => 0 as const,
@@ -193,10 +193,10 @@ function CharBlockEditor(props: {
 						coords.reduce(
 							(soFar, current) =>
 								updatePixelInCharBlock(soFar, current, props.drawValue),
-							props.charBlock
-						)
+							props.charBlock,
+						),
 					),
-				(coord) => floor(divide(coord, { x: 2, y: 1 }))
+				(coord) => floor(divide(coord, { x: 2, y: 1 })),
 			)}
 		/>
 	);
@@ -205,11 +205,11 @@ function CharBlockEditor(props: {
 function updatePixelInCharBlock(
 	charBlock: CharBlock,
 	eventCoord: Coord2,
-	subPaletteIndex: SubPaletteIndex
+	subPaletteIndex: SubPaletteIndex,
 ): CharBlock {
 	const tileCoord = floor(divide(eventCoord, { x: 4, y: 8 }));
 	const pixelCoord = floor(
-		mapRecord(eventCoord, (value, axis) => value % { x: 4, y: 8 }[axis])
+		mapRecord(eventCoord, (value, axis) => value % { x: 4, y: 8 }[axis]),
 	);
 	return updateArrayAtIndex(charBlock, tileCoord.x, (column) =>
 		updateArrayAtIndex(column, tileCoord.y, (char) =>
@@ -217,11 +217,11 @@ function updatePixelInCharBlock(
 				updateArrayAtIndex(char, pixelCoord.y, (row) =>
 					assertTuple(
 						updateArrayAtIndex(row, pixelCoord.x, () => subPaletteIndex),
-						4
-					)
+						4,
+					),
 				),
-				8
-			)
-		)
+				8,
+			),
+		),
 	);
 }

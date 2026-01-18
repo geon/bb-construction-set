@@ -107,7 +107,7 @@ export type LevelIndex =
 
 export function getLevelIndexToCopyWindFrom(
 	levels: Levels,
-	levelIndex: LevelIndex
+	levelIndex: LevelIndex,
 ): LevelIndex {
 	for (const _ of range(100)) {
 		const bubbleCurrentRectangles = levels[levelIndex].bubbleCurrentRectangles;

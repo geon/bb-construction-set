@@ -9,7 +9,7 @@ export function readBgColors(bytes: ReadonlyUint8Array): Tuple<BgColors, 100> {
 			light: (bgColorMetadata & 0b1111) as PaletteIndex,
 			dark: ((bgColorMetadata & 0b11110000) >> 4) as PaletteIndex,
 		})),
-		100
+		100,
 	);
 }
 

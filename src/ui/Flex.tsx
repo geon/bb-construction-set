@@ -29,11 +29,11 @@ export const Flex = styled.div<
 			? ""
 			: css`
 					justify-content: space-between;
-			  `};
+				`};
 	${(props) =>
 		!("$center" in props)
 			? ""
 			: css`
 					justify-content: center;
-			  `};
+				`};
 `;

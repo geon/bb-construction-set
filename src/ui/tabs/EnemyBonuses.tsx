@@ -37,7 +37,7 @@ export function EnemyBonuses(props: {
 					return {
 						charBlock: checkedAccess(
 							props.parsedPrg.chars.items,
-							item.charBlockIndex
+							item.charBlockIndex,
 						),
 						palette: getCharPalette(item.paletteIndex, bgColors),
 					};
@@ -49,13 +49,13 @@ export function EnemyBonuses(props: {
 				charBlocks={props.parsedPrg.items.points.map((item) => ({
 					charBlock: checkedAccess(
 						props.parsedPrg.chars.items,
-						item.charBlockIndex
+						item.charBlockIndex,
 					),
 					palette: getCharPalette(item.paletteIndex, bgColors),
 				}))}
 				charBlockIndex={checkedAccess(
 					props.parsedPrg.enemyDeathBonusIndices,
-					bonusIndex
+					bonusIndex,
 				)}
 				setCharBlockIndex={(itemIndex) => {
 					props.setParsedPrg({
@@ -64,9 +64,9 @@ export function EnemyBonuses(props: {
 							updateArrayAtIndex(
 								props.parsedPrg.enemyDeathBonusIndices,
 								bonusIndex,
-								() => itemIndex
+								() => itemIndex,
 							),
-							6
+							6,
 						),
 					});
 				}}

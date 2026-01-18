@@ -89,8 +89,8 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 							y: spriteSizePixels.y,
 						},
 					},
-					eventCoord
-				)
+					eventCoord,
+				),
 			);
 	}
 
@@ -109,7 +109,7 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 					index: monster.index,
 					offset: subtract(
 						eventCoord,
-						pixelCoordToHalfPixelCoord(monster.spawnPoint)
+						pixelCoordToHalfPixelCoord(monster.spawnPoint),
 					),
 				});
 				setSelectedMonsterIndex(monster.index);
@@ -122,7 +122,7 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 					return;
 				}
 				setSelectedMonsterPosition(
-					add(subtract(eventCoord, draggedMonster.offset), spritePosOffset)
+					add(subtract(eventCoord, draggedMonster.offset), spritePosOffset),
 				);
 			},
 		},
@@ -135,7 +135,7 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 						<button
 							onClick={() =>
 								setMonsters(
-									monsters.map((monster) => ({ ...monster, delay: 20 }))
+									monsters.map((monster) => ({ ...monster, delay: 20 })),
 								)
 							}
 						>
@@ -219,14 +219,14 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 											x: 20,
 											y: 30,
 										}),
-								  }
+									}
 								: {
 										characterName: "bubbleBuster",
 										spawnPoint: { x: 100, y: 100 },
 										facingLeft: false,
 										delay: 0,
 										confirmed_mystery_bits_A_3A1C: undefined,
-								  };
+									};
 
 							setMonsters([...monsters, newMonster]);
 							setSelectedMonsterIndex(monsters.length);
@@ -241,7 +241,7 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 								return;
 							}
 							setMonsters(
-								deleteArrayElementAtIndex(monsters, selectedMonsterIndex)
+								deleteArrayElementAtIndex(monsters, selectedMonsterIndex),
 							);
 							setSelectedMonsterIndex(undefined);
 						}}
@@ -282,6 +282,6 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 			type: "move-enemies",
 			selectedMonsterIndex,
 			dragging: !!draggedMonster,
-		}
+		},
 	);
 };

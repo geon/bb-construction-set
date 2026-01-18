@@ -116,7 +116,7 @@ const BudgetView = styled(
 		<span className={props.className}>
 			{props.budget.used}/{props.budget.max}
 		</span>
-	)
+	),
 )`
 	${(props) =>
 		!budgetBlown(props.budget)
@@ -125,7 +125,7 @@ const BudgetView = styled(
 					background: red;
 					color: white;
 					border-radius: 0.1em;
-			  `}
+				`}
 	padding: 0.2em;
 `;
 
@@ -147,9 +147,9 @@ export function LevelPreviewCard(props: {
 				updateArrayAtIndex(
 					props.parsedPrg.levels,
 					props.levelIndex,
-					() => level
+					() => level,
 				),
-				100
+				100,
 			),
 		});
 
@@ -168,7 +168,7 @@ export function LevelPreviewCard(props: {
 						<ClickDragCanvas
 							style={{ width: "100%" }}
 							imageData={imageDataFromPaletteImage(
-								drawLevel(props.levelIndex, props.parsedPrg, renderOptions)
+								drawLevel(props.levelIndex, props.parsedPrg, renderOptions),
 							)}
 							{...eventHandlers}
 						/>
@@ -201,7 +201,7 @@ export function LevelPreviewCard(props: {
 							<button
 								onClick={() =>
 									navigator.clipboard.writeText(
-										`>10 ${((props.levelIndex - 1) & 0xff).toString(16)}`
+										`>10 ${((props.levelIndex - 1) & 0xff).toString(16)}`,
 									)
 								}
 								title="Copy Vice code"
@@ -226,7 +226,7 @@ export function LevelPreviewCard(props: {
 										fileName: `level-${stringPadLeft(
 											(props.levelIndex + 1).toString(),
 											2,
-											"0"
+											"0",
 										)}.json`,
 									})}
 									title="Export Level File"

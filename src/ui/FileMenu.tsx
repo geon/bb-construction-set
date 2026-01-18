@@ -56,8 +56,8 @@ export function FileMenu(props: {
 									fileName: (index + 1).toString().padStart(3, "0") + ".png",
 									blob: await imageDataToBlob(
 										imageDataFromPaletteImage(
-											drawLevel(index as LevelIndex, parsedPrg, undefined)
-										)
+											drawLevel(index as LevelIndex, parsedPrg, undefined),
+										),
 									),
 								})),
 								fileName: "bubble bobble c64 - all level images.zip",
@@ -84,8 +84,8 @@ export function FileMenu(props: {
 											//
 											prg,
 											parsedPrg,
-											props.manualPatch
-										)
+											props.manualPatch,
+										),
 									);
 
 									if (maybePatched.type === "error") {
@@ -101,7 +101,7 @@ export function FileMenu(props: {
 										}),
 										fileName: "custom bubble bobble.prg",
 									};
-							  }
+								}
 					}
 				>
 					Save Custom Prg

@@ -25,7 +25,7 @@ export function flexboxChildPositions(
 	sizes: ReadonlyArray<Coord2>,
 	direction: "row" | "column",
 	gap: number,
-	alignItems: "start" | "end" = "start"
+	alignItems: "start" | "end" = "start",
 ): ReadonlyArray<Coord2> {
 	const axis = ({ row: "x", column: "y" } as const)[direction];
 	const orthogonalAxis = ({ row: "y", column: "x" } as const)[direction];
@@ -35,7 +35,7 @@ export function flexboxChildPositions(
 			? 0
 			: boundingBox(sizes.map((size) => ({ pos: origo, size }))).size[
 					orthogonalAxis
-			  ];
+				];
 
 	let pos = origo;
 	const positions: Array<Coord2> = [];
@@ -84,13 +84,13 @@ export function flexbox(
 	rects: ReadonlyArray<LayoutRect>,
 	direction: "row" | "column",
 	gap: number,
-	alignItems: "start" | "end" = "start"
+	alignItems: "start" | "end" = "start",
 ): LayoutRect {
 	const childPositions = flexboxChildPositions(
 		rects.map(({ size }) => size),
 		direction,
 		gap,
-		alignItems
+		alignItems,
 	);
 
 	const children = rects.map((rect, index) => ({
@@ -107,18 +107,18 @@ export function flexbox(
 export function grid(
 	rects: ReadonlyArray<LayoutRect>,
 	rowWidth: number,
-	gap: Coord2
+	gap: Coord2,
 ): LayoutRect {
 	return flexbox(
 		chunk(rects, rowWidth).map((row) => flexbox(row, "row", gap.x)),
 		"column",
-		gap.y
+		gap.y,
 	);
 }
 
 function _leafs(
 	rect: LayoutRect,
-	parentPos: Coord2
+	parentPos: Coord2,
 ): Array<Rect & { readonly index: number }> {
 	const rectPosInParentSpace = add(rect.pos, parentPos);
 
@@ -136,7 +136,7 @@ function _leafs(
 }
 
 export function leafs(
-	rect: LayoutRect
+	rect: LayoutRect,
 ): ReadonlyArray<Rect & { index: number }> {
 	return _leafs(rect, origo).sort((a, b) => a.index - b.index);
 }
@@ -178,6 +178,6 @@ export function rectContainsPoint(rect: Rect, coord: Coord2): boolean {
 	return (["x", "y"] as const).every(
 		(axis) =>
 			coord[axis] >= rect.pos[axis] &&
-			coord[axis] < rect.pos[axis] + rect.size[axis]
+			coord[axis] < rect.pos[axis] + rect.size[axis],
 	);
 }

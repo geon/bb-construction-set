@@ -21,7 +21,7 @@ import { ButtonRow } from "../ButtonRow";
 import { icons } from "../icons";
 
 const holes = objectEntries(holeRects).flatMap(([row, holes]) =>
-	objectEntries(holes).map(([side, hole]) => ({ row, side, hole }))
+	objectEntries(holes).map(([side, hole]) => ({ row, side, hole })),
 );
 
 export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
@@ -54,10 +54,10 @@ export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 									const leftHalf = row.slice(0, platformTilesSize.x / 2);
 									return assertTuple(
 										[leftHalf, leftHalf.slice().reverse()].flat(),
-										platformTilesSize.x
+										platformTilesSize.x,
 									);
 								}),
-								platformTilesSize.y
+								platformTilesSize.y,
 							),
 						})
 					}
@@ -72,7 +72,7 @@ export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 							...level,
 							platformTiles: assertTuple(
 								level.platformTiles.slice().reverse(),
-								platformTilesSize.y
+								platformTilesSize.y,
 							),
 							monsters: level.monsters.map((monster) => ({
 								...monster,
@@ -100,9 +100,9 @@ export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 							...level,
 							platformTiles: assertTuple(
 								level.platformTiles.map((row) =>
-									assertTuple(row.slice().reverse(), platformTilesSize.x)
+									assertTuple(row.slice().reverse(), platformTilesSize.x),
 								),
-								platformTilesSize.y
+								platformTilesSize.y,
 							),
 							monsters: level.monsters.map((monster) => ({
 								...monster,
@@ -142,10 +142,10 @@ export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 											row.slice(platformTilesSize.x / 2),
 											row.slice(0, platformTilesSize.x / 2),
 										].flat(),
-										platformTilesSize.x
-									)
+										platformTilesSize.x,
+									),
 								),
-								platformTilesSize.y
+								platformTilesSize.y,
 							),
 						})
 					}
@@ -167,7 +167,7 @@ export const DrawPlatforms: ClickDragCanvasEventHandlerProvider = (props) => {
 					{icons.arrowRight}
 				</button>
 			</ButtonGroup>
-		</ButtonRow>
+		</ButtonRow>,
 	);
 };
 
@@ -177,12 +177,12 @@ export function getTileCoord(eventCoord: Coord2): Coord2 {
 
 export function createSetSomeTiles(
 	setTiles: (tiles: Tiles) => void,
-	tiles: Tiles
+	tiles: Tiles,
 ) {
 	return (coords: readonly Coord2[], value: boolean) => {
 		const newTiles = assertTuple(
 			tiles.map((row) => assertTuple([...row], levelSize.x)),
-			levelSize.y
+			levelSize.y,
 		);
 
 		for (const coord of coords) {
@@ -226,7 +226,7 @@ function scrollLevelY(direction: "up" | "down", level: Level) {
 						level.platformTiles.slice(0, -1),
 					].flat(),
 			}[direction](),
-			platformTilesSize.y
+			platformTilesSize.y,
 		),
 		monsters: level.monsters.map((monster) => ({
 			...monster,
@@ -261,15 +261,15 @@ function scrollLevelX(direction: "left" | "right", level: Level) {
 				mapTuple(level.platformTiles, (row) =>
 					assertTuple(
 						[row.slice(1), row.slice(0, 1)].flat(),
-						platformTilesSize.x
-					)
+						platformTilesSize.x,
+					),
 				),
 			right: () =>
 				mapTuple(level.platformTiles, (row) =>
 					assertTuple(
 						[row.slice(-1), row.slice(0, -1)].flat(),
-						platformTilesSize.x
-					)
+						platformTilesSize.x,
+					),
 				),
 		}[direction](),
 		monsters: level.monsters.map((monster) => ({

@@ -13,7 +13,7 @@ test("readBubbleCurrentRectangles", () => {
 		.flatMap((foo) =>
 			foo.rectangles
 				.filter((rect) => rect.type === "rectangle")
-				.map(({ type, ...rect }) => rect)
+				.map(({ type, ...rect }) => rect),
 		);
 	const backAndForth = rectanglesOnly
 		.map(bubbleCurrentRectangleToBytes)
@@ -24,7 +24,7 @@ test("readBubbleCurrentRectangles", () => {
 
 test("parsePrg", () => {
 	const levelFromPrg = parsePrg(
-		readFileSync(__dirname + "/decompressed-bb.prg").buffer
+		readFileSync(__dirname + "/decompressed-bb.prg").buffer,
 	).levels[0]!;
 
 	expect(levelFromPrg).toMatchSnapshot();
@@ -32,7 +32,7 @@ test("parsePrg", () => {
 
 test("parsePrg chars", () => {
 	expect(
-		parsePrg(readFileSync(__dirname + "/decompressed-bb.prg").buffer).chars
+		parsePrg(readFileSync(__dirname + "/decompressed-bb.prg").buffer).chars,
 	).toMatchSnapshot();
 });
 
@@ -50,7 +50,7 @@ test("First few levels bubble current rectangles.", () => {
 
 test("patchPrg", () => {
 	const prgFileContent = readFileSync(
-		__dirname + "/decompressed-bb.prg"
+		__dirname + "/decompressed-bb.prg",
 	).buffer;
 
 	const parsedPrg = parsePrg(prgFileContent);

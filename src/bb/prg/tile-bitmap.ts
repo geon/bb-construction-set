@@ -9,7 +9,7 @@ export type TileBitmap = {
 
 export function readTileBitmaps(
 	bitmapBytes: ReadonlyUint8Array,
-	symmetryMetadataBytes: ReadonlyUint8Array
+	symmetryMetadataBytes: ReadonlyUint8Array,
 ): Tuple<TileBitmap, 100> {
 	const tileBitmaps: TileBitmap[] = [];
 
@@ -20,8 +20,8 @@ export function readTileBitmaps(
 		tileBitmaps.push(
 			readTileBitmap(
 				isSymmetric,
-				bitmapBytes.subarray(offset, offset + levelBitmapByteLength)
-			)
+				bitmapBytes.subarray(offset, offset + levelBitmapByteLength),
+			),
 		);
 		offset += levelBitmapByteLength;
 	}
@@ -31,7 +31,7 @@ export function readTileBitmaps(
 
 function readTileBitmap(
 	isSymmetric: boolean,
-	byteArray: ReadonlyUint8Array
+	byteArray: ReadonlyUint8Array,
 ): TileBitmap {
 	const bytesPerRow = 4;
 
@@ -59,7 +59,7 @@ function readTileBitmap(
 				++halfRowIndex
 			) {
 				bitmapBytes[bytesPerRow / 2 + halfRowIndex] = mirrorBits(
-					bitmapBytes[bytesPerRow / 2 - halfRowIndex - 1]!
+					bitmapBytes[bytesPerRow / 2 - halfRowIndex - 1]!,
 				);
 			}
 		}

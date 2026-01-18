@@ -28,16 +28,16 @@ export function parsePrg(prg: ArrayBuffer): ParsedPrg {
 	const sprites = parseSpriteGroupsFromPrg(
 		getDataSegments(prg, spriteDataSegmentLocations),
 		getDataSegment(prg, monsterSpriteColorsSegmentLocation),
-		getDataSegment(prg, largeBonusSpriteColorsSegmentLocation)
+		getDataSegment(prg, largeBonusSpriteColorsSegmentLocation),
 	);
 	const chars = parseCharGroups(getDataSegments(prg, charSegmentLocations));
 	const items = parseItems(
 		mapRecord(itemSegmentLocations, (sublocations) =>
-			getDataSegments(prg, sublocations)
-		)
+			getDataSegments(prg, sublocations),
+		),
 	);
 	const enemyDeathBonusIndices = parseEnemyDeathBonusIndices(
-		getDataSegment(prg, enemyDeathBonusItemIndicesSegmentLocation)
+		getDataSegment(prg, enemyDeathBonusItemIndicesSegmentLocation),
 	);
 
 	return {
@@ -52,7 +52,7 @@ export function parsePrg(prg: ArrayBuffer): ParsedPrg {
 export function patchPrg(
 	prg: ArrayBuffer,
 	parsedPrg: ParsedPrg,
-	manualPatch: Patch
+	manualPatch: Patch,
 ): ArrayBuffer {
 	return applyPatch(
 		prg,
@@ -64,6 +64,6 @@ export function patchPrg(
 			getItemsPatch(parsedPrg.items),
 			getEnemyDeathBonusIndicesPatch(parsedPrg.enemyDeathBonusIndices),
 			manualPatch,
-		].flat()
+		].flat(),
 	);
 }

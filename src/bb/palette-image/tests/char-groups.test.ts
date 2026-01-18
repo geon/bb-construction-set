@@ -13,7 +13,7 @@ import { leafs } from "../../../math/rect";
 
 test("Sanity check: layOutChars, getAllChars, getAllCharMasks, getAllCharPalettes", () => {
 	const charGroups = parsePrg(
-		readFileSync(__dirname + "/../../prg/tests/decompressed-bb.prg").buffer
+		readFileSync(__dirname + "/../../prg/tests/decompressed-bb.prg").buffer,
 	).chars;
 
 	const layout = layOutChars();
@@ -28,7 +28,7 @@ test("Sanity check: layOutChars, getAllChars, getAllCharMasks, getAllCharPalette
 
 test("drawCharGroups / parseCharGroups", () => {
 	const charGroups = parsePrg(
-		readFileSync(__dirname + "/../../prg/tests/decompressed-bb.prg").buffer
+		readFileSync(__dirname + "/../../prg/tests/decompressed-bb.prg").buffer,
 	).chars;
 
 	expect(parseCharGroups(drawCharGroups(charGroups))).toStrictEqual(charGroups);
