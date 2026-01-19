@@ -204,10 +204,12 @@ export const MoveEnemies: ClickDragCanvasEventHandlerProvider = (props) => {
 						disabled={selectedMonster === undefined}
 						onClick={() =>
 							selectedMonster &&
-							updateSelectedMonster((monster) => ({
-								...monster,
-								facingLeft: !monster.facingLeft,
-							}))
+							updateSelectedMonster((monster) =>
+								setMysteryBits({
+									...monster,
+									facingLeft: !monster.facingLeft,
+								}),
+							)
 						}
 					>
 						{icons.symmetry}
