@@ -52,6 +52,7 @@ import {
 } from "../internal-data-formats/levels";
 import { getBubbleCurrentDirections } from "../internal-data-formats/level";
 import { arrowImages } from "./arrow-chars";
+import { itemNames } from "../game-definitions/item-names";
 
 export type LevelEditorOptions =
 	| {
@@ -135,12 +136,19 @@ export function drawLevel(
 
 	function drawItem(itemCategoryName: ItemCategoryName): void {
 		const spawnPosition = level.itemSpawnPositions[itemCategoryName];
-		const item = checkedAccess(
-			parsedPrg.items[itemCategoryName],
-			itemCategoryName === "powerups"
-				? getDesignatedPowerupItemIndex(levelIndex)
-				: levelIndex % 47,
-		);
+		const item =
+			levelIndex === 99
+				? // Boss level lightning urn.
+					checkedAccess(
+						parsedPrg.items.powerups,
+						itemNames.powerups.indexOf("lightning"),
+					)
+				: checkedAccess(
+						parsedPrg.items[itemCategoryName],
+						itemCategoryName === "powerups"
+							? getDesignatedPowerupItemIndex(levelIndex)
+							: levelIndex % 47,
+					);
 		blitPaletteImage(
 			image,
 			drawCharBlock(
@@ -155,10 +163,7 @@ export function drawLevel(
 	}
 
 	if (options?.type !== "wind-editor") {
-		// No normal items on the boss level.
-		if (levelIndex !== 99) {
-			validItemCategoryNames.forEach(drawItem);
-		}
+		validItemCategoryNames.forEach(drawItem);
 
 		for (const [index, character] of [
 			...[...level.monsters, pl1, pl2].entries(),
