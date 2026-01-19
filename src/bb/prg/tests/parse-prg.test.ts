@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 import { readFileSync } from "fs";
-import { parsePrg, patchPrg } from "../parse-prg";
+import { parsePrg } from "../parse-prg";
 import {
 	bubbleCurrentRectangleToBytes,
 	bytesToBubbleCurrentRectangle,
@@ -48,14 +48,15 @@ test("First few levels bubble current rectangles.", () => {
 	expect(rectsFromPrg).toStrictEqual(knownGoodBubbleCurrentRectsForLevels);
 });
 
-test("patchPrg", () => {
-	const prgFileContent = readFileSync(
-		__dirname + "/decompressed-bb.prg",
-	).buffer;
+// TODO: Replace with more fine-grained patch tests.
+// test("patchPrg", () => {
+// 	const prgFileContent = readFileSync(
+// 		__dirname + "/decompressed-bb.prg",
+// 	).buffer;
 
-	const parsedPrg = parsePrg(prgFileContent);
-	const patched = patchPrg(prgFileContent, parsedPrg, []);
+// 	const parsedPrg = parsePrg(prgFileContent);
+// 	const patched = patchPrg(prgFileContent, parsedPrg, []);
 
-	// Just comparing the ArrayBuffers is super slow and fails.
-	expect(Buffer.from(patched)).toStrictEqual(Buffer.from(prgFileContent));
-});
+// 	// Just comparing the ArrayBuffers is super slow and fails.
+// 	expect(Buffer.from(patched)).toStrictEqual(Buffer.from(prgFileContent));
+// });

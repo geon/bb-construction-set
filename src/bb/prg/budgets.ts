@@ -1,4 +1,10 @@
-import { objectEntries, objectFromEntries, sum, zipObject } from "../functions";
+import {
+	isDefined,
+	objectEntries,
+	objectFromEntries,
+	sum,
+	zipObject,
+} from "../functions";
 import { levelIsSymmetric } from "../internal-data-formats/level";
 import { Levels } from "../internal-data-formats/levels";
 import {
@@ -48,7 +54,12 @@ function getUsedAsymmetric(levels: Levels): number {
 		.length;
 }
 function getUsedSidebars(levels: Levels): number {
-	return levels.filter((level) => !!level.sidebarChars).length;
+	return new Set(
+		levels
+			.map((level) => level.sidebarChars)
+			.filter(isDefined)
+			.map((x) => JSON.stringify(x)),
+	).size;
 }
 function getUsedMonsters(levels: Levels): number {
 	return levels.flatMap((level) => level.monsters).length;

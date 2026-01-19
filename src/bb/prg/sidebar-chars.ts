@@ -1,12 +1,13 @@
 import { Char, serializeChar } from "../internal-data-formats/char";
 import { parseColorPixelByte } from "../internal-data-formats/color-pixel-byte";
-import { isDefined, padRight, strictChunk } from "../functions";
+import { isDefined, padRight, strictChunk, uniqueBy } from "../functions";
 import { assertTuple, mapTuple, Tuple } from "../tuple";
 import { maxSidebars, levelSegmentLocations } from "./data-locations";
 import { ReadonlyUint8Array } from "../types";
 import {
 	CharBlock,
 	charBlockFromTuple,
+	isEqualCharBlock,
 	tupleFromBlockFrom2x2CharBlock,
 } from "../internal-data-formats/char-block";
 
@@ -46,16 +47,20 @@ export function writeSidebarCharsAndIndices(
 	readonly sidebarChars: Uint8Array;
 	readonly sidebarCharsIndex: Uint8Array;
 } {
-	const usedBlocks = sidebarCharBlocks.filter(isDefined);
-	if (usedBlocks.length > maxSidebars) {
+	const deduplicatedBlocks = uniqueBy(
+		sidebarCharBlocks.filter(isDefined),
+		(block) => JSON.stringify(block),
+	);
+
+	if (deduplicatedBlocks.length > maxSidebars) {
 		throw new Error(
-			`Too many levels with sidebar graphics: ${usedBlocks.length}. Should be max ${maxSidebars}.`,
+			`Too many levels with unique sidebar graphics: ${deduplicatedBlocks.length}. Should be max ${maxSidebars}.`,
 		);
 	}
 
 	const sidebarChars = new Uint8Array(
 		padRight(
-			usedBlocks
+			deduplicatedBlocks
 				.map(tupleFromBlockFrom2x2CharBlock)
 				.flatMap((sidebarChars) => sidebarChars.flatMap(serializeChar)),
 			maxSidebars * 4 * 8,
@@ -63,15 +68,14 @@ export function writeSidebarCharsAndIndices(
 		),
 	);
 
-	// TODO: Rewrite to find duplicates and reuse blocks.
-
-	let index = 0;
-	const sidebarCharsBits = sidebarCharBlocks.map((sidebarChars) =>
-		// Just use consecutive indices, just like the original levels.
-		!sidebarChars ? 0b01111111 : index++,
+	const foundIndices = sidebarCharBlocks.map(
+		(block) =>
+			block && deduplicatedBlocks.findIndex((x) => isEqualCharBlock(x, block)),
 	);
 
-	const sidebarCharsIndex = new Uint8Array(sidebarCharsBits);
+	const sidebarCharsIndex = new Uint8Array(
+		foundIndices.map((index) => index ?? 0b01111111),
+	);
 
 	return {
 		sidebarChars,

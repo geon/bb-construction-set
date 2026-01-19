@@ -1,5 +1,6 @@
+import { zipObject } from "../functions";
 import { Tuple } from "../tuple";
-import { Char } from "./char";
+import { Char, isEqualChar } from "./char";
 
 export type CharBlock =
 	// The chars are column-order just like in the game.
@@ -23,4 +24,10 @@ export function tupleFromBlockFrom2x2CharBlock(
 		charBlock[0]![1]!,
 		charBlock[1]![1]!,
 	];
+}
+
+export function isEqualCharBlock(a: CharBlock, b: CharBlock): boolean {
+	return zipObject({ a: a.flat(), b: b.flat() }).every(({ a, b }) =>
+		isEqualChar(a, b),
+	);
 }

@@ -20,3 +20,10 @@ export function serializeColorPixelByte(colorIndices: ColorPixelByte): number {
 		(colorIndices[3] << 0)
 	);
 }
+
+export function isEqualColorPixelByte(
+	a: ColorPixelByte,
+	b: ColorPixelByte,
+): boolean {
+	return serializeColorPixelByte(a) === serializeColorPixelByte(b);
+}
