@@ -21,7 +21,7 @@ import { PaletteImage, drawLayout, parseLayout } from "./palette-image";
 export function getSpritePalette(color: PaletteIndex): SubPalette {
 	return [
 		//
-		palette.black,
+		undefined,
 		palette.red,
 		color,
 		palette.white,
@@ -158,7 +158,7 @@ export function drawSprite(
 ): PaletteImage {
 	return sprite.map((row) =>
 		row.map((pixelValue) =>
-			pixelValue ? spritePalette[pixelValue] : undefined,
+			pixelValue !== undefined ? spritePalette[pixelValue] : undefined,
 		),
 	);
 }
