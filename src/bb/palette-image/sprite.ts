@@ -28,6 +28,10 @@ export function getSpritePalette(color: PaletteIndex): SubPalette {
 	];
 }
 
+export function getOpaqueSpritePalette(color: PaletteIndex): SubPalette {
+	return assertTuple([palette.black, ...getSpritePalette(color).slice(1)], 4);
+}
+
 export const spriteGroupMultiWidths: Record<SpriteGroupName, number> = {
 	player: 1,
 	bubbleBuster: 1,
@@ -142,7 +146,7 @@ export function drawSprites(spriteGroups: SpriteGroups): PaletteImage {
 	const sprites = Object.values(
 		mapRecord(spriteGroups, (spriteGroup) => {
 			return spriteGroup.sprites.map((sprite) =>
-				drawSprite(sprite, getSpritePalette(spriteGroup.color)),
+				drawSprite(sprite, getOpaqueSpritePalette(spriteGroup.color)),
 			);
 		}),
 	).flat();
@@ -191,7 +195,7 @@ export function parseSprite(
 	readonly sprite: Sprite;
 	readonly color: PaletteIndex;
 } {
-	let spritePalette = getSpritePalette(tryColor);
+	let spritePalette = getOpaqueSpritePalette(tryColor);
 
 	const sprite = assertTuple(
 		image.map((row) =>
@@ -202,7 +206,7 @@ export function parseSprite(
 						| SubPaletteIndex
 						| -1;
 					if (subPaletteIndex === -1) {
-						spritePalette = getSpritePalette(color);
+						spritePalette = getOpaqueSpritePalette(color);
 						subPaletteIndex = 2; // The argument to getSpritePalette is on index 2.
 					}
 					return subPaletteIndex;
