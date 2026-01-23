@@ -1,7 +1,14 @@
 import { spriteSizePixels } from "../../c64/consts";
 import { origo } from "../../math/coord2";
 import { LayoutRect, flexbox } from "../../math/rect";
-import { mapRecord, range, chunk } from "../functions";
+import {
+	mapRecord,
+	range,
+	chunk,
+	zipObject,
+	strictChunk,
+	repeat,
+} from "../functions";
 import { SpriteGroupName } from "../game-definitions/sprite-segment-name";
 import {
 	SubPalette,
@@ -14,9 +21,14 @@ import {
 	Sprite,
 	SpriteGroup,
 } from "../internal-data-formats/sprite";
-import { spriteCounts } from "../prg/data-locations";
+import { spriteCounts, spriteMasks } from "../prg/data-locations";
 import { assertTuple } from "../tuple";
-import { PaletteImage, drawLayout, parseLayout } from "./palette-image";
+import {
+	PaletteImage,
+	blitPaletteImage,
+	drawLayout,
+	parseLayout,
+} from "./palette-image";
 
 export function getSpritePalette(color: PaletteIndex): SubPalette {
 	return [
@@ -144,10 +156,34 @@ export function layOutSpriteGroups(): LayoutRect {
 
 export function drawSprites(spriteGroups: SpriteGroups): PaletteImage {
 	const sprites = Object.values(
-		mapRecord(spriteGroups, (spriteGroup) => {
-			return spriteGroup.sprites.map((sprite) =>
-				drawSprite(sprite, getOpaqueSpritePalette(spriteGroup.color)),
-			);
+		mapRecord(spriteGroups, (spriteGroup, groupName) => {
+			const maskBytes = spriteMasks[groupName];
+			if (!maskBytes) {
+				// Draw the sprites opaque, so they get the black background..
+				return spriteGroup.sprites.map((sprite) =>
+					drawSprite(sprite, getOpaqueSpritePalette(spriteGroup.color)),
+				);
+			}
+
+			return zipObject({
+				sprite: spriteGroup.sprites,
+				// Build masked black backgrounds from the maskBytes.
+				maskedBg: strictChunk(
+					strictChunk(
+						maskBytes.flatMap((x) => repeat(x ? palette.black : undefined, 4)),
+						spriteSizePixels.x,
+					),
+					spriteSizePixels.y,
+				),
+			}).map(({ sprite, maskedBg }) => {
+				// Draw transparent sprite on masked bg.
+				blitPaletteImage(
+					maskedBg,
+					drawSprite(sprite, getSpritePalette(spriteGroup.color)),
+					origo,
+				);
+				return maskedBg;
+			});
 		}),
 	).flat();
 
