@@ -112,7 +112,7 @@ export function Sprites(props: {
 
 								if (parsedSpriteSheet.type !== "ok") {
 									alert(
-										`Could not parse bin: ${
+										`Could not parse sprite sheet: ${
 											parsedSpriteSheet.error ?? "No reason."
 										}`,
 									);
