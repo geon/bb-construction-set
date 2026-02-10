@@ -10,6 +10,7 @@ export type LargeBonusName =
 export const largeBonusSpriteGroupNames = {
 	cupCake: "bonusCupCake",
 	melon: "bonusMelonBottom",
+	// TODO: Only store one diamond sprite, but have 2 squares in the sprite sheet for the colors.
 	// I don't have 3 diamonds in the sprite sheet, so just use the one.
 	yellowDiamond: "bonusDiamond",
 	blueDiamond: "bonusDiamond",
