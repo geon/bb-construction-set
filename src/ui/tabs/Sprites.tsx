@@ -103,17 +103,17 @@ export function Sprites(props: {
 							onChange={async (file) => {
 								const imageData = imageDataFromImage(await imageFromFile(file));
 
-								const parsedSpriteBinData = attempt(() => {
+								const parsedSpriteSheet = attempt(() => {
 									const parsed = parseSprites(
 										halfImageWidth(paletteImageFromImageData(imageData)),
 									);
 									return parsed;
 								});
 
-								if (parsedSpriteBinData.type !== "ok") {
+								if (parsedSpriteSheet.type !== "ok") {
 									alert(
 										`Could not parse bin: ${
-											parsedSpriteBinData.error ?? "No reason."
+											parsedSpriteSheet.error ?? "No reason."
 										}`,
 									);
 									return;
@@ -121,7 +121,7 @@ export function Sprites(props: {
 
 								props.setParsedPrg({
 									...props.parsedPrg,
-									sprites: parsedSpriteBinData.result,
+									sprites: parsedSpriteSheet.result,
 								});
 							}}
 						>
