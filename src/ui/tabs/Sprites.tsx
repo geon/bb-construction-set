@@ -99,7 +99,7 @@ export function Sprites(props: {
 							Save
 						</BlobDownloadButton>
 						<FileInput
-							accept={["bin"]}
+							accept={["image/*"]}
 							onChange={async (file) => {
 								const imageData = imageDataFromImage(await imageFromFile(file));
 
