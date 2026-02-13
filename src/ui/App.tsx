@@ -18,6 +18,7 @@ import { originalPrg as originalPrg } from "../bb/prg/parsed-prg";
 import { LevelIndex } from "../bb/internal-data-formats/levels";
 import { getBudgets } from "../bb/prg/budgets";
 import { Purge } from "./tabs/Purge";
+import { TitleScreen } from "./tabs/TitleScreen";
 
 const Page = styled.div`
 	width: 100%;
@@ -212,6 +213,19 @@ export function App() {
 												setState={setState}
 												setManualPatch={setManualPatch}
 											/>
+										</Card>
+									</>
+								);
+							},
+						},
+						titleScreen: {
+							title: "Title Screen",
+							render: (tab) => {
+								return (
+									<>
+										<Card>
+											<h2>{tab.title}</h2>
+											<TitleScreen setManualPatch={setManualPatch} />
 										</Card>
 									</>
 								);
